@@ -1,0 +1,84 @@
+{
+  "vocab": [
+    "dog",
+    "cat",
+    "car",
+    "bus",
+    "clock",
+    "bird",
+    "train",
+    "horse",
+    "bicycle",
+    "airplane",
+    "boat",
+    "pizza",
+    "laptop"
+  ],
+  "crop_gate": {
+    "dog": {
+      "kept": 11,
+      "total": 12
+    },
+    "cat": {
+      "kept": 12,
+      "total": 12
+    },
+    "car": {
+      "kept": 4,
+      "total": 12
+    },
+    "bus": {
+      "kept": 10,
+      "total": 12
+    },
+    "chair": {
+      "kept": 3,
+      "total": 12
+    },
+    "clock": {
+      "kept": 12,
+      "total": 12
+    },
+    "cup": {
+      "kept": 2,
+      "total": 12
+    },
+    "bird": {
+      "kept": 7,
+      "total": 12
+    },
+    "train": {
+      "kept": 11,
+      "total": 12
+    },
+    "horse": {
+      "kept": 11,
+      "total": 12
+    },
+    "bicycle": {
+      "kept": 10,
+      "total": 12
+    },
+    "airplane": {
+      "kept": 12,
+      "total": 12
+    },
+    "boat": {
+      "kept": 8,
+      "total": 12
+    },
+    "bed": {
+      "kept": 0,
+      "total": 12
+    },
+    "pizza": {
+      "kept": 11,
+      "total": 12
+    },
+    "laptop": {
+      "kept": 8,
+      "total": 12
+    }
+  },
+  "gate_question": "What object is this? Reply with the noun only."
+}

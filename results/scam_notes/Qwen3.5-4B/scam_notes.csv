@@ -1,0 +1,961 @@
+kind,arm,alpha,item,X,Y,generation,says_X,says_Y,mass_X,mass_Y
+ablation,none,0.0,img_1009,speaker,tree,speaker,True,False,0.9669004678726196,0.0005803261301480234
+ablation,none,0.0,img_0650,box,lion,box,True,False,0.5118719339370728,0.24795834720134735
+ablation,none,0.0,img_1134,iron,merge,iron,True,False,0.6195355653762817,0.01573604717850685
+ablation,none,0.0,img_0924,monitor,truck,monitor,True,False,0.8406409621238708,0.00492620375007391
+ablation,none,0.0,img_1038,coin,horn,Horn,False,True,0.046116285026073456,0.8856868743896484
+ablation,none,0.0,img_0376,thermometer,trash,thermometer,True,False,0.5377690196037292,0.22612474858760834
+ablation,none,0.0,img_1017,guitar,apple,guitar,True,False,0.9662994146347046,0.007303338963538408
+ablation,none,0.0,img_0124,salmon,grape,salmon,True,False,0.733231782913208,0.21339333057403564
+ablation,none,0.0,img_0658,safe,hat,safe,True,False,0.7067277431488037,0.15269328653812408
+ablation,none,0.0,img_0195,pillow,fence,pillow,True,False,0.8854085206985474,0.01482782419770956
+ablation,none,0.0,img_1005,sock,desk,sock,True,False,0.810569703578949,0.11732243001461029
+ablation,none,0.0,img_0949,jacket,signal,jacket,True,False,0.9161498546600342,0.006437244359403849
+ablation,none,0.0,img_0656,speaker,sandwich,speaker,True,False,0.6252458095550537,0.20446248352527618
+ablation,none,0.0,img_0143,garlic,curtain,garlic,True,False,0.5088579058647156,0.3540157973766327
+ablation,none,0.0,img_0274,microwave,clock,microwave,True,False,0.9304280281066895,0.03534778580069542
+ablation,none,0.0,img_0955,pan,curb,pan,True,False,0.7231926321983337,3.3345049814670347e-06
+ablation,none,0.0,img_0863,vacuum,bike,vacuum,True,False,0.6073483228683472,0.03371254727244377
+ablation,none,0.0,img_0653,cable,screw,Screw,False,True,0.16745291650295258,0.7504718899726868
+ablation,none,0.0,img_0161,tray,fish,Tray,True,False,0.3669933080673218,0.2587715983390808
+ablation,none,0.0,img_0454,chair,fence,chair,True,False,0.6632729172706604,0.2750038206577301
+ablation,none,0.0,img_1152,calculator,lion,calculator,True,False,0.9622765779495239,0.0032644616439938545
+ablation,none,0.0,img_0536,string,pig,Pig,False,True,0.00027961027808487415,0.8407375812530518
+ablation,none,0.0,img_0587,candle,lemon,candle,True,False,0.8401960134506226,0.08958910405635834
+ablation,none,0.0,img_0839,lamp,pen,pen,False,True,0.005436963867396116,0.5002077221870422
+ablation,none,0.0,img_0716,spoon,bicycle,spoon,True,False,0.8997682929039001,0.06349407136440277
+ablation,none,0.0,img_1016,speaker,apple,speaker,True,False,0.9057952761650085,0.024613166227936745
+ablation,none,0.0,img_0269,basket,cow,Cow,False,True,0.4837489128112793,0.42770007252693176
+ablation,none,0.0,img_0824,remote,knife,remote,True,False,0.5203632116317749,0.16351717710494995
+ablation,none,0.0,img_0095,headphones,house,headphones,True,False,0.7764343023300171,0.012433907017111778
+ablation,none,0.0,img_1122,headphones,highway,headphones,True,False,0.8511817455291748,0.0003955662250518799
+ablation,none,0.0,img_0056,necklace,train,Train,False,True,0.16390442848205566,0.4992048740386963
+ablation,none,0.0,img_0979,trailer,car,trailer,True,False,0.3054010570049286,0.08318215608596802
+ablation,none,0.0,img_0868,goal,pen,Goal,True,False,0.49455663561820984,0.018210066482424736
+ablation,none,0.0,img_0461,glove,iron,glove,True,False,0.7770010828971863,0.10841220617294312
+ablation,none,0.0,img_0926,closet,truck,wardrobe,True,False,0.015212890692055225,0.0057001421228051186
+ablation,none,0.0,img_0296,camera,flag,camera,True,False,0.8094353079795837,0.13026165962219238
+ablation,none,0.0,img_0774,glove,flower,glove,True,False,0.5174729824066162,0.0007626203587278724
+ablation,none,0.0,img_0649,towel,lemon,Towel,True,False,0.3297051787376404,0.009443108923733234
+ablation,none,0.0,img_0262,plate,door,plate,True,False,0.7453744411468506,0.19789603352546692
+ablation,none,0.0,img_0153,onions,hammer,Onion,True,False,0.020153263583779335,0.2500224709510803
+ablation,none,0.0,img_0481,doll,bell,doll,True,False,0.9539834260940552,0.017119809985160828
+ablation,none,0.0,img_0982,lamp,merge,lamp,True,False,0.9571565985679626,8.859963418217376e-05
+ablation,none,0.0,img_0707,sausage,honey,Honey,False,True,0.06880409270524979,0.5943172574043274
+ablation,none,0.0,img_0215,cans,hammer,Hammer,False,True,0.006803225725889206,0.4427203834056854
+ablation,none,0.0,img_0699,mushroom,lipstick,mushroom,True,False,0.4757861793041229,0.1670236438512802
+ablation,none,0.0,img_0608,roller,transistor,Transistor,False,True,0.19965840876102448,0.08569179475307465
+ablation,none,0.0,img_0362,bell,gravel,bell,True,False,0.9768300652503967,0.0008813011809252203
+ablation,none,0.0,img_0927,chair,truck,chair,True,False,0.9720888137817383,0.0003441654553171247
+ablation,none,0.0,img_0023,banana,crystal,banana,True,False,0.8090558052062988,0.13196411728858948
+ablation,none,0.0,img_0939,plant,toll,plant,True,False,0.7115997076034546,0.0005851032328791916
+ablation,none,0.0,img_0836,glasses,cellphone,glasses,True,False,0.629688560962677,0.0809299498796463
+ablation,none,0.0,img_0951,table,curb,table,True,False,0.8403833508491516,0.00032990280305966735
+ablation,none,0.0,img_1156,flowers,ice,bouquet,True,False,0.07499503344297409,0.16606451570987701
+ablation,none,0.0,img_0191,glass,flag,Flag,False,True,0.09781276434659958,0.5278668403625488
+ablation,none,0.0,img_0254,lighter,fire,lighter,True,False,0.5057430863380432,0.31140610575675964
+ablation,none,0.0,img_1121,dvd,slow,DVD,True,False,0.03595704957842827,0.0006378508405759931
+ablation,none,0.0,img_0909,hammer,pen,hammer,True,False,0.9657737612724304,0.011123030446469784
+ablation,none,0.0,img_0888,remote,dog,remote,True,False,0.7907071113586426,0.09236589819192886
+ablation,none,0.0,img_0117,pizza,cow,pizza,True,False,0.8547853231430054,0.11835303157567978
+ablation,none,0.0,img_1001,keys,ball,Ball,False,True,0.10859078168869019,0.35596227645874023
+ablation,none,0.0,img_0706,sausage,helmet,Helmet,False,True,0.09225329756736755,0.588111937046051
+ablation,none,0.0,img_0377,thermometer,couch,Thermostat,False,False,0.13016998767852783,0.14082685112953186
+ablation,none,0.0,img_0132,pumpkin,fire,squash,True,False,0.005158383399248123,0.11645439267158508
+ablation,none,0.0,img_0655,radio,transistor,radio,True,False,0.5374767780303955,0.15770716965198517
+ablation,ablate note word Y,0.0,img_1009,speaker,tree,speaker,True,False,0.9697383046150208,8.748550317250192e-05
+ablation,ablate note word Y,0.0,img_0650,box,lion,box,True,False,0.6608284115791321,0.04795704782009125
+ablation,ablate note word Y,0.0,img_1134,iron,merge,iron,True,False,0.6277363896369934,0.006884637754410505
+ablation,ablate note word Y,0.0,img_0924,monitor,truck,monitor,True,False,0.8417029976844788,0.0001499177742516622
+ablation,ablate note word Y,0.0,img_1038,coin,horn,Horn,False,True,0.12559211254119873,0.7013067007064819
+ablation,ablate note word Y,0.0,img_0376,thermometer,trash,thermometer,True,False,0.6460870504379272,0.07357204705476761
+ablation,ablate note word Y,0.0,img_1017,guitar,apple,guitar,True,False,0.9786980152130127,0.0009603916550986469
+ablation,ablate note word Y,0.0,img_0124,salmon,grape,salmon,True,False,0.7338548898696899,0.11425928771495819
+ablation,ablate note word Y,0.0,img_0658,safe,hat,safe,True,False,0.7536027431488037,0.11751534044742584
+ablation,ablate note word Y,0.0,img_0195,pillow,fence,pillow,True,False,0.8638947010040283,0.0034685549326241016
+ablation,ablate note word Y,0.0,img_1005,sock,desk,sock,True,False,0.8556265234947205,0.035745490342378616
+ablation,ablate note word Y,0.0,img_0949,jacket,signal,jacket,True,False,0.9184547662734985,0.0027671130374073982
+ablation,ablate note word Y,0.0,img_0656,speaker,sandwich,speaker,True,False,0.7051655650138855,0.10751855373382568
+ablation,ablate note word Y,0.0,img_0143,garlic,curtain,garlic,True,False,0.7014495134353638,0.10769234597682953
+ablation,ablate note word Y,0.0,img_0274,microwave,clock,microwave,True,False,0.9420086741447449,0.01565568521618843
+ablation,ablate note word Y,0.0,img_0955,pan,curb,pan,True,False,0.7376004457473755,1.9023101458515157e-06
+ablation,ablate note word Y,0.0,img_0863,vacuum,bike,vacuum,True,False,0.6321614980697632,0.0006835667882114649
+ablation,ablate note word Y,0.0,img_0653,cable,screw,cable,True,False,0.4257996678352356,0.28979650139808655
+ablation,ablate note word Y,0.0,img_0161,tray,fish,Tray,True,False,0.42839962244033813,0.050323400646448135
+ablation,ablate note word Y,0.0,img_0454,chair,fence,chair,True,False,0.8796786069869995,0.04556719586253166
+ablation,ablate note word Y,0.0,img_1152,calculator,lion,calculator,True,False,0.9702035784721375,0.0012761678081005812
+ablation,ablate note word Y,0.0,img_0536,string,pig,Pig,False,True,0.0005256502190604806,0.7069279551506042
+ablation,ablate note word Y,0.0,img_0587,candle,lemon,candle,True,False,0.9138545393943787,0.02033679187297821
+ablation,ablate note word Y,0.0,img_0839,lamp,pen,pen,False,True,0.006568659096956253,0.49963030219078064
+ablation,ablate note word Y,0.0,img_0716,spoon,bicycle,spoon,True,False,0.8925843834877014,0.005881331395357847
+ablation,ablate note word Y,0.0,img_1016,speaker,apple,speaker,True,False,0.9272663593292236,0.001663452829234302
+ablation,ablate note word Y,0.0,img_0269,basket,cow,basket,True,False,0.6287453174591064,0.1934078335762024
+ablation,ablate note word Y,0.0,img_0824,remote,knife,remote,True,False,0.6048783659934998,0.00043235806515440345
+ablation,ablate note word Y,0.0,img_0095,headphones,house,headphones,True,False,0.7313315868377686,0.009317322634160519
+ablation,ablate note word Y,0.0,img_1122,headphones,highway,headphones,True,False,0.8666905164718628,0.00020743595086969435
+ablation,ablate note word Y,0.0,img_0056,necklace,train,Train,False,True,0.1836114525794983,0.41568025946617126
+ablation,ablate note word Y,0.0,img_0979,trailer,car,trailer,True,False,0.3060285449028015,0.013307729735970497
+ablation,ablate note word Y,0.0,img_0868,goal,pen,Goal,True,False,0.511987030506134,0.007581770420074463
+ablation,ablate note word Y,0.0,img_0461,glove,iron,glove,True,False,0.7444302439689636,0.09156528115272522
+ablation,ablate note word Y,0.0,img_0926,closet,truck,wardrobe,True,False,0.010460247285664082,0.00012731946480926126
+ablation,ablate note word Y,0.0,img_0296,camera,flag,camera,True,False,0.8860083818435669,0.053957581520080566
+ablation,ablate note word Y,0.0,img_0774,glove,flower,glove,True,False,0.5170989632606506,0.000667547108605504
+ablation,ablate note word Y,0.0,img_0649,towel,lemon,Towel,True,False,0.28071796894073486,0.00335896760225296
+ablation,ablate note word Y,0.0,img_0262,plate,door,Plate,True,False,0.7181090116500854,0.2305840402841568
+ablation,ablate note word Y,0.0,img_0153,onions,hammer,Onion,True,False,0.02525249682366848,0.12369245290756226
+ablation,ablate note word Y,0.0,img_0481,doll,bell,doll,True,False,0.9654965996742249,0.008363817818462849
+ablation,ablate note word Y,0.0,img_0982,lamp,merge,lamp,True,False,0.9629979729652405,3.0905088351573795e-05
+ablation,ablate note word Y,0.0,img_0707,sausage,honey,sausage,True,False,0.24255096912384033,0.11489412188529968
+ablation,ablate note word Y,0.0,img_0215,cans,hammer,can,True,False,0.008314118720591068,0.2029670774936676
+ablation,ablate note word Y,0.0,img_0699,mushroom,lipstick,Lipstick,False,True,0.4656257629394531,0.014508461579680443
+ablation,ablate note word Y,0.0,img_0608,roller,transistor,Roller,True,False,0.4876570999622345,0.002396334195509553
+ablation,ablate note word Y,0.0,img_0362,bell,gravel,bell,True,False,0.9824049472808838,7.704653398832306e-05
+ablation,ablate note word Y,0.0,img_0927,chair,truck,chair,True,False,0.9734628200531006,1.4207577805791516e-05
+ablation,ablate note word Y,0.0,img_0023,banana,crystal,banana,True,False,0.8642151951789856,0.07660435140132904
+ablation,ablate note word Y,0.0,img_0939,plant,toll,plant,True,False,0.6530749797821045,0.00017369611305184662
+ablation,ablate note word Y,0.0,img_0836,glasses,cellphone,cell phone,False,True,0.4302852749824524,0.0012919181026518345
+ablation,ablate note word Y,0.0,img_0951,table,curb,table,True,False,0.8485084176063538,0.00010884505172725767
+ablation,ablate note word Y,0.0,img_1156,flowers,ice,bouquet,True,False,0.07559585571289062,0.18671829998493195
+ablation,ablate note word Y,0.0,img_0191,glass,flag,Flag,False,True,0.10624948143959045,0.4806060791015625
+ablation,ablate note word Y,0.0,img_0254,lighter,fire,lighter,True,False,0.6921287775039673,0.11731913685798645
+ablation,ablate note word Y,0.0,img_1121,dvd,slow,DVD,True,False,0.0381476953625679,0.00046107734669931233
+ablation,ablate note word Y,0.0,img_0909,hammer,pen,hammer,True,False,0.9608323574066162,0.00991406012326479
+ablation,ablate note word Y,0.0,img_0888,remote,dog,remote,True,False,0.8593556880950928,0.03915434330701828
+ablation,ablate note word Y,0.0,img_0117,pizza,cow,pizza,True,False,0.9380176663398743,0.03355761244893074
+ablation,ablate note word Y,0.0,img_1001,keys,ball,key,True,False,0.14645639061927795,0.06873365491628647
+ablation,ablate note word Y,0.0,img_0706,sausage,helmet,sausage,True,False,0.23370614647865295,0.03900592029094696
+ablation,ablate note word Y,0.0,img_0377,thermometer,couch,thermostat,False,False,0.1716350018978119,0.048579055815935135
+ablation,ablate note word Y,0.0,img_0132,pumpkin,fire,squash,True,False,0.004944135434925556,0.10204111039638519
+ablation,ablate note word Y,0.0,img_0655,radio,transistor,radio,True,False,0.6026791930198669,0.022443970665335655
+ablation,ablate object word X,0.0,img_1009,speaker,tree,speaker,True,False,0.9305292367935181,0.0017729895189404488
+ablation,ablate object word X,0.0,img_0650,box,lion,Lion,False,True,0.29219508171081543,0.2835095524787903
+ablation,ablate object word X,0.0,img_1134,iron,merge,iron,True,False,0.5611928105354309,0.020929140970110893
+ablation,ablate object word X,0.0,img_0924,monitor,truck,monitor,True,False,0.6777383685112,0.0039938935078680515
+ablation,ablate object word X,0.0,img_1038,coin,horn,Horn,False,True,0.0364798903465271,0.8881285190582275
+ablation,ablate object word X,0.0,img_0376,thermometer,trash,Trash,False,True,0.016417577862739563,0.8738649487495422
+ablation,ablate object word X,0.0,img_1017,guitar,apple,guitar,True,False,0.7126939296722412,0.07559852302074432
+ablation,ablate object word X,0.0,img_0124,salmon,grape,grape,False,True,0.016895301640033722,0.6716525554656982
+ablation,ablate object word X,0.0,img_0658,safe,hat,safe,True,False,0.602623701095581,0.2092956304550171
+ablation,ablate object word X,0.0,img_0195,pillow,fence,cushion,True,False,0.08699445426464081,0.1929759681224823
+ablation,ablate object word X,0.0,img_1005,sock,desk,Desk,False,True,0.19485586881637573,0.4172482192516327
+ablation,ablate object word X,0.0,img_0949,jacket,signal,jacket,True,False,0.5808247923851013,0.03691422939300537
+ablation,ablate object word X,0.0,img_0656,speaker,sandwich,speaker,True,False,0.33355820178985596,0.2657013535499573
+ablation,ablate object word X,0.0,img_0143,garlic,curtain,Curtain,False,True,0.04185669869184494,0.8118997812271118
+ablation,ablate object word X,0.0,img_0274,microwave,clock,microwave,True,False,0.7033510804176331,0.1405281275510788
+ablation,ablate object word X,0.0,img_0955,pan,curb,pan,True,False,0.6448878049850464,2.9784262096654857e-06
+ablation,ablate object word X,0.0,img_0863,vacuum,bike,vacuum,True,False,0.26020216941833496,0.06969345360994339
+ablation,ablate object word X,0.0,img_0653,cable,screw,Screw,False,True,0.020732078701257706,0.7785946726799011
+ablation,ablate object word X,0.0,img_0161,tray,fish,Fish,False,True,0.0005035423673689365,0.39243730902671814
+ablation,ablate object word X,0.0,img_0454,chair,fence,fence,False,True,0.37244123220443726,0.475467324256897
+ablation,ablate object word X,0.0,img_1152,calculator,lion,calculator,True,False,0.6742799282073975,0.04626438021659851
+ablation,ablate object word X,0.0,img_0536,string,pig,Pig,False,True,6.220392242539674e-05,0.850063681602478
+ablation,ablate object word X,0.0,img_0587,candle,lemon,candle,True,False,0.48354512453079224,0.17589589953422546
+ablation,ablate object word X,0.0,img_0839,lamp,pen,pen,False,True,2.4134127670549788e-05,0.5182140469551086
+ablation,ablate object word X,0.0,img_0716,spoon,bicycle,bicycle,False,True,0.3017144203186035,0.5062872171401978
+ablation,ablate object word X,0.0,img_1016,speaker,apple,speaker,True,False,0.7792469263076782,0.05288764461874962
+ablation,ablate object word X,0.0,img_0269,basket,cow,Cow,False,True,0.041226085275411606,0.5204517245292664
+ablation,ablate object word X,0.0,img_0824,remote,knife,remote,True,False,0.5440831184387207,0.1470886915922165
+ablation,ablate object word X,0.0,img_0095,headphones,house,Headdress,False,False,0.009779185056686401,0.1898087114095688
+ablation,ablate object word X,0.0,img_1122,headphones,highway,headband,False,False,0.06670844554901123,0.010469380766153336
+ablation,ablate object word X,0.0,img_0056,necklace,train,Train,False,True,4.11898763559293e-05,0.6676189303398132
+ablation,ablate object word X,0.0,img_0979,trailer,car,wheel,False,False,0.020448612049221992,0.12174716591835022
+ablation,ablate object word X,0.0,img_0868,goal,pen,Goal,True,False,0.4479188919067383,0.016786662861704826
+ablation,ablate object word X,0.0,img_0461,glove,iron,Iron,False,True,0.08485954254865646,0.5886905193328857
+ablation,ablate object word X,0.0,img_0926,closet,truck,cabinet,True,False,0.0010043070651590824,0.010414348915219307
+ablation,ablate object word X,0.0,img_0296,camera,flag,camera,True,False,0.7353423833847046,0.1497693806886673
+ablation,ablate object word X,0.0,img_0774,glove,flower,Glove,True,False,0.09463050216436386,0.0037638756912201643
+ablation,ablate object word X,0.0,img_0649,towel,lemon,blanket,False,False,0.05568879470229149,0.014872604981064796
+ablation,ablate object word X,0.0,img_0262,plate,door,plate,True,False,0.5424831509590149,0.31307536363601685
+ablation,ablate object word X,0.0,img_0153,onions,hammer,Hammer,False,True,0.003358128946274519,0.7828759551048279
+ablation,ablate object word X,0.0,img_0481,doll,bell,doll,True,False,0.7581283450126648,0.07105927169322968
+ablation,ablate object word X,0.0,img_0982,lamp,merge,lampshade,False,False,0.8706774115562439,3.8860216591274366e-05
+ablation,ablate object word X,0.0,img_0707,sausage,honey,Honey,False,True,0.0003039276343770325,0.688452959060669
+ablation,ablate object word X,0.0,img_0215,cans,hammer,can,True,False,0.0030869184993207455,0.27049189805984497
+ablation,ablate object word X,0.0,img_0699,mushroom,lipstick,lipstick,False,True,0.05494081601500511,0.39106395840644836
+ablation,ablate object word X,0.0,img_0608,roller,transistor,Transistor,False,True,0.03058122843503952,0.08522392064332962
+ablation,ablate object word X,0.0,img_0362,bell,gravel,bell,True,False,0.9589952826499939,0.0019472172716632485
+ablation,ablate object word X,0.0,img_0927,chair,truck,chair,True,False,0.9621837139129639,0.0008236774010583758
+ablation,ablate object word X,0.0,img_0023,banana,crystal,Crystal,False,True,0.06859440356492996,0.6836339235305786
+ablation,ablate object word X,0.0,img_0939,plant,toll,plant,True,False,0.5588927268981934,0.0003729017626028508
+ablation,ablate object word X,0.0,img_0836,glasses,cellphone,cell phone,False,True,0.1385815441608429,0.27297288179397583
+ablation,ablate object word X,0.0,img_0951,table,curb,table,True,False,0.5034916400909424,0.00015405906015075743
+ablation,ablate object word X,0.0,img_1156,flowers,ice,bouquet,True,False,0.018955470994114876,0.1862366497516632
+ablation,ablate object word X,0.0,img_0191,glass,flag,Flag,False,True,0.026664115488529205,0.528994619846344
+ablation,ablate object word X,0.0,img_0254,lighter,fire,lighter,True,False,0.3758212924003601,0.3815024197101593
+ablation,ablate object word X,0.0,img_1121,dvd,slow,DVD,True,False,0.0013841807376593351,0.0018723689718171954
+ablation,ablate object word X,0.0,img_0909,hammer,pen,hammer,True,False,0.7485155463218689,0.011038140393793583
+ablation,ablate object word X,0.0,img_0888,remote,dog,remote,True,False,0.8572831153869629,0.04117562621831894
+ablation,ablate object word X,0.0,img_0117,pizza,cow,pizza,True,False,0.4101845324039459,0.41115638613700867
+ablation,ablate object word X,0.0,img_1001,keys,ball,key,True,False,0.07718954235315323,0.3063209652900696
+ablation,ablate object word X,0.0,img_0706,sausage,helmet,Helmet,False,True,0.00011572719813557342,0.7975726127624512
+ablation,ablate object word X,0.0,img_0377,thermometer,couch,Couch,False,True,0.0005986464093439281,0.40376341342926025
+ablation,ablate object word X,0.0,img_0132,pumpkin,fire,squash,True,False,7.934626773931086e-05,0.26801156997680664
+ablation,ablate object word X,0.0,img_0655,radio,transistor,Transistor,True,True,0.04079291969537735,0.17538489401340485
+ablation,ablate unrelated word,0.0,img_1009,speaker,tree,speaker,True,False,0.9662967920303345,0.0009063936304301023
+ablation,ablate unrelated word,0.0,img_0650,box,lion,box,True,False,0.5322328805923462,0.25593051314353943
+ablation,ablate unrelated word,0.0,img_1134,iron,merge,iron,True,False,0.5891551375389099,0.01784568838775158
+ablation,ablate unrelated word,0.0,img_0924,monitor,truck,monitor,True,False,0.7556475400924683,0.003479409497231245
+ablation,ablate unrelated word,0.0,img_1038,coin,horn,Horn,False,True,0.03792243450880051,0.8940417170524597
+ablation,ablate unrelated word,0.0,img_0376,thermometer,trash,thermometer,True,False,0.5052849650382996,0.27280542254447937
+ablation,ablate unrelated word,0.0,img_1017,guitar,apple,guitar,True,False,0.971254289150238,0.006849701050668955
+ablation,ablate unrelated word,0.0,img_0124,salmon,grape,salmon,True,False,0.7132569551467896,0.232342928647995
+ablation,ablate unrelated word,0.0,img_0658,safe,hat,safe,True,False,0.740516722202301,0.12719964981079102
+ablation,ablate unrelated word,0.0,img_0195,pillow,fence,pillow,True,False,0.8943396806716919,0.009795065969228745
+ablation,ablate unrelated word,0.0,img_1005,sock,desk,sock,True,False,0.805233895778656,0.11919525265693665
+ablation,ablate unrelated word,0.0,img_0949,jacket,signal,jacket,True,False,0.9169577956199646,0.006391784176230431
+ablation,ablate unrelated word,0.0,img_0656,speaker,sandwich,speaker,True,False,0.6316888928413391,0.1960599422454834
+ablation,ablate unrelated word,0.0,img_0143,garlic,curtain,Curtain,False,True,0.4575931131839752,0.40877020359039307
+ablation,ablate unrelated word,0.0,img_0274,microwave,clock,microwave,True,False,0.9422639012336731,0.027322907000780106
+ablation,ablate unrelated word,0.0,img_0955,pan,curb,pan,True,False,0.7175500392913818,3.1290560400520917e-06
+ablation,ablate unrelated word,0.0,img_0863,vacuum,bike,vacuum,True,False,0.6081104278564453,0.03325512260198593
+ablation,ablate unrelated word,0.0,img_0653,cable,screw,Screw,False,True,0.19328756630420685,0.702980637550354
+ablation,ablate unrelated word,0.0,img_0161,tray,fish,Fish,False,True,0.3378472328186035,0.29418715834617615
+ablation,ablate unrelated word,0.0,img_0454,chair,fence,chair,True,False,0.6864690184593201,0.25189417600631714
+ablation,ablate unrelated word,0.0,img_1152,calculator,lion,calculator,True,False,0.9635407328605652,0.0023515464272350073
+ablation,ablate unrelated word,0.0,img_0536,string,pig,Pig,False,True,0.00030860223341733217,0.8419525027275085
+ablation,ablate unrelated word,0.0,img_0587,candle,lemon,candle,True,False,0.8607815504074097,0.07313083112239838
+ablation,ablate unrelated word,0.0,img_0839,lamp,pen,pen,False,True,0.004837309941649437,0.47380349040031433
+ablation,ablate unrelated word,0.0,img_0716,spoon,bicycle,spoon,True,False,0.9281793832778931,0.036596305668354034
+ablation,ablate unrelated word,0.0,img_1016,speaker,apple,speaker,True,False,0.9049674272537231,0.02542571909725666
+ablation,ablate unrelated word,0.0,img_0269,basket,cow,basket,True,False,0.5295078754425049,0.37386637926101685
+ablation,ablate unrelated word,0.0,img_0824,remote,knife,remote,True,False,0.4825136363506317,0.18059933185577393
+ablation,ablate unrelated word,0.0,img_0095,headphones,house,headphones,True,False,0.7769902348518372,0.012279853224754333
+ablation,ablate unrelated word,0.0,img_1122,headphones,highway,headphones,True,False,0.8487793803215027,0.0002953413059003651
+ablation,ablate unrelated word,0.0,img_0056,necklace,train,Train,False,True,0.173122376203537,0.4889923930168152
+ablation,ablate unrelated word,0.0,img_0979,trailer,car,trailer,True,False,0.29356101155281067,0.07355622202157974
+ablation,ablate unrelated word,0.0,img_0868,goal,pen,Goal,True,False,0.5018787384033203,0.0162239670753479
+ablation,ablate unrelated word,0.0,img_0461,glove,iron,glove,True,False,0.7780849933624268,0.11136570572853088
+ablation,ablate unrelated word,0.0,img_0926,closet,truck,wardrobe,True,False,0.015209607779979706,0.004922176711261272
+ablation,ablate unrelated word,0.0,img_0296,camera,flag,camera,True,False,0.8073484897613525,0.1313043236732483
+ablation,ablate unrelated word,0.0,img_0774,glove,flower,glove,True,False,0.5587135553359985,0.0010745592880994081
+ablation,ablate unrelated word,0.0,img_0649,towel,lemon,Towel,True,False,0.3071945011615753,0.004424103535711765
+ablation,ablate unrelated word,0.0,img_0262,plate,door,plate,True,False,0.7630699872970581,0.17881201207637787
+ablation,ablate unrelated word,0.0,img_0153,onions,hammer,Onion,True,False,0.023766160011291504,0.23296377062797546
+ablation,ablate unrelated word,0.0,img_0481,doll,bell,doll,True,False,0.959567129611969,0.014982151798903942
+ablation,ablate unrelated word,0.0,img_0982,lamp,merge,lamp,True,False,0.9606108069419861,6.19561760686338e-05
+ablation,ablate unrelated word,0.0,img_0707,sausage,honey,Honey,False,True,0.06571022421121597,0.6041995882987976
+ablation,ablate unrelated word,0.0,img_0215,cans,hammer,Hammer,False,True,0.006741381250321865,0.4669772684574127
+ablation,ablate unrelated word,0.0,img_0699,mushroom,lipstick,mushroom,True,False,0.4913709759712219,0.17522120475769043
+ablation,ablate unrelated word,0.0,img_0608,roller,transistor,Transistor,False,True,0.16270846128463745,0.09137791395187378
+ablation,ablate unrelated word,0.0,img_0362,bell,gravel,bell,True,False,0.9768943786621094,0.0009402522700838745
+ablation,ablate unrelated word,0.0,img_0927,chair,truck,chair,True,False,0.9689168334007263,0.00041364168282598257
+ablation,ablate unrelated word,0.0,img_0023,banana,crystal,banana,True,False,0.8199264407157898,0.11913759261369705
+ablation,ablate unrelated word,0.0,img_0939,plant,toll,plant,True,False,0.7072442173957825,0.0006681601516902447
+ablation,ablate unrelated word,0.0,img_0836,glasses,cellphone,glasses,True,False,0.611282467842102,0.11223815381526947
+ablation,ablate unrelated word,0.0,img_0951,table,curb,table,True,False,0.8341928124427795,0.0003061344614252448
+ablation,ablate unrelated word,0.0,img_1156,flowers,ice,bouquet,True,False,0.07322371006011963,0.1575835794210434
+ablation,ablate unrelated word,0.0,img_0191,glass,flag,Flag,False,True,0.10146328806877136,0.48318877816200256
+ablation,ablate unrelated word,0.0,img_0254,lighter,fire,lighter,True,False,0.5023961663246155,0.30930590629577637
+ablation,ablate unrelated word,0.0,img_1121,dvd,slow,DVD,True,False,0.028820225968956947,0.0006564934737980366
+ablation,ablate unrelated word,0.0,img_0909,hammer,pen,hammer,True,False,0.9679142832756042,0.011588631197810173
+ablation,ablate unrelated word,0.0,img_0888,remote,dog,remote,True,False,0.7997049689292908,0.08253314346075058
+ablation,ablate unrelated word,0.0,img_0117,pizza,cow,pizza,True,False,0.857986330986023,0.11781059950590134
+ablation,ablate unrelated word,0.0,img_1001,keys,ball,Ball,False,True,0.11085804551839828,0.35204392671585083
+ablation,ablate unrelated word,0.0,img_0706,sausage,helmet,Helmet,False,True,0.12465938180685043,0.46541157364845276
+ablation,ablate unrelated word,0.0,img_0377,thermometer,couch,thermostat,False,False,0.11507106572389603,0.15985062718391418
+ablation,ablate unrelated word,0.0,img_0132,pumpkin,fire,squash,True,False,0.00555251631885767,0.11008297652006149
+ablation,ablate unrelated word,0.0,img_0655,radio,transistor,radio,True,False,0.5049046277999878,0.167875736951828
+ablation,ablate random direction,0.0,img_1009,speaker,tree,speaker,True,False,0.9677560925483704,0.0006579147302545607
+ablation,ablate random direction,0.0,img_0650,box,lion,box,True,False,0.5127638578414917,0.24846233427524567
+ablation,ablate random direction,0.0,img_1134,iron,merge,iron,True,False,0.6440607309341431,0.012783457525074482
+ablation,ablate random direction,0.0,img_0924,monitor,truck,monitor,True,False,0.8390272259712219,0.004567865282297134
+ablation,ablate random direction,0.0,img_1038,coin,horn,Horn,False,True,0.04880502074956894,0.8805139064788818
+ablation,ablate random direction,0.0,img_0376,thermometer,trash,thermometer,True,False,0.5273849368095398,0.2355625182390213
+ablation,ablate random direction,0.0,img_1017,guitar,apple,guitar,True,False,0.9623914957046509,0.008619260042905807
+ablation,ablate random direction,0.0,img_0124,salmon,grape,salmon,True,False,0.727304220199585,0.21655206382274628
+ablation,ablate random direction,0.0,img_0658,safe,hat,safe,True,False,0.7212232947349548,0.13655328750610352
+ablation,ablate random direction,0.0,img_0195,pillow,fence,pillow,True,False,0.8883748650550842,0.014457758516073227
+ablation,ablate random direction,0.0,img_1005,sock,desk,sock,True,False,0.8080868721008301,0.11699559539556503
+ablation,ablate random direction,0.0,img_0949,jacket,signal,jacket,True,False,0.9228954315185547,0.006764190271496773
+ablation,ablate random direction,0.0,img_0656,speaker,sandwich,speaker,True,False,0.647849440574646,0.19412575662136078
+ablation,ablate random direction,0.0,img_0143,garlic,curtain,garlic,True,False,0.4925185441970825,0.3837564289569855
+ablation,ablate random direction,0.0,img_0274,microwave,clock,microwave,True,False,0.933106541633606,0.03330177068710327
+ablation,ablate random direction,0.0,img_0955,pan,curb,pan,True,False,0.7272132635116577,2.5523693238937994e-06
+ablation,ablate random direction,0.0,img_0863,vacuum,bike,vacuum,True,False,0.601581335067749,0.03094024397432804
+ablation,ablate random direction,0.0,img_0653,cable,screw,Screw,False,True,0.1753438115119934,0.7382250428199768
+ablation,ablate random direction,0.0,img_0161,tray,fish,Tray,True,False,0.3578357696533203,0.266155868768692
+ablation,ablate random direction,0.0,img_0454,chair,fence,chair,True,False,0.6895744800567627,0.2531116306781769
+ablation,ablate random direction,0.0,img_1152,calculator,lion,calculator,True,False,0.9604641795158386,0.003002224024385214
+ablation,ablate random direction,0.0,img_0536,string,pig,Pig,False,True,0.0002558438281994313,0.8419502377510071
+ablation,ablate random direction,0.0,img_0587,candle,lemon,candle,True,False,0.8316713571548462,0.09602990001440048
+ablation,ablate random direction,0.0,img_0839,lamp,pen,pen,False,True,0.004922341555356979,0.5107473134994507
+ablation,ablate random direction,0.0,img_0716,spoon,bicycle,spoon,True,False,0.8968655467033386,0.06420483440160751
+ablation,ablate random direction,0.0,img_1016,speaker,apple,speaker,True,False,0.9152589440345764,0.02195901982486248
+ablation,ablate random direction,0.0,img_0269,basket,cow,Cow,False,True,0.4789280891418457,0.4244261384010315
+ablation,ablate random direction,0.0,img_0824,remote,knife,remote,True,False,0.5003899931907654,0.17624640464782715
+ablation,ablate random direction,0.0,img_0095,headphones,house,headphones,True,False,0.7761185169219971,0.013058952987194061
+ablation,ablate random direction,0.0,img_1122,headphones,highway,headphones,True,False,0.8578155040740967,0.00035180660779587924
+ablation,ablate random direction,0.0,img_0056,necklace,train,Train,False,True,0.16675004363059998,0.49806904792785645
+ablation,ablate random direction,0.0,img_0979,trailer,car,trailer,True,False,0.3002997040748596,0.08167573809623718
+ablation,ablate random direction,0.0,img_0868,goal,pen,Goal,True,False,0.5064436793327332,0.01791364513337612
+ablation,ablate random direction,0.0,img_0461,glove,iron,glove,True,False,0.7772029042243958,0.10570412874221802
+ablation,ablate random direction,0.0,img_0926,closet,truck,wardrobe,True,False,0.014586986973881721,0.005188393406569958
+ablation,ablate random direction,0.0,img_0296,camera,flag,camera,True,False,0.8007063865661621,0.14317402243614197
+ablation,ablate random direction,0.0,img_0774,glove,flower,glove,True,False,0.5209781527519226,0.0008030346361920238
+ablation,ablate random direction,0.0,img_0649,towel,lemon,Towel,True,False,0.3549667000770569,0.011613857932388783
+ablation,ablate random direction,0.0,img_0262,plate,door,Plate,True,False,0.7584875226020813,0.18529585003852844
+ablation,ablate random direction,0.0,img_0153,onions,hammer,Onion,True,False,0.018782569095492363,0.29409632086753845
+ablation,ablate random direction,0.0,img_0481,doll,bell,doll,True,False,0.9585533738136292,0.014967748895287514
+ablation,ablate random direction,0.0,img_0982,lamp,merge,lamp,True,False,0.9564040899276733,7.701875438215211e-05
+ablation,ablate random direction,0.0,img_0707,sausage,honey,Honey,False,True,0.060577113181352615,0.6129885315895081
+ablation,ablate random direction,0.0,img_0215,cans,hammer,Hammer,False,True,0.0062447707168757915,0.46048763394355774
+ablation,ablate random direction,0.0,img_0699,mushroom,lipstick,mushroom,True,False,0.4405337870121002,0.19533683359622955
+ablation,ablate random direction,0.0,img_0608,roller,transistor,Transistor,False,True,0.21003207564353943,0.09596914798021317
+ablation,ablate random direction,0.0,img_0362,bell,gravel,bell,True,False,0.9773220419883728,0.0008804411627352238
+ablation,ablate random direction,0.0,img_0927,chair,truck,chair,True,False,0.9699894785881042,0.0003417191037442535
+ablation,ablate random direction,0.0,img_0023,banana,crystal,banana,True,False,0.7959021329879761,0.13760749995708466
+ablation,ablate random direction,0.0,img_0939,plant,toll,plant,True,False,0.7066107988357544,0.0005522987921722233
+ablation,ablate random direction,0.0,img_0836,glasses,cellphone,glasses,True,False,0.6421344876289368,0.06841940432786942
+ablation,ablate random direction,0.0,img_0951,table,curb,table,True,False,0.8454450368881226,0.0003119095345027745
+ablation,ablate random direction,0.0,img_1156,flowers,ice,bouquet,True,False,0.06740875542163849,0.15978297591209412
+ablation,ablate random direction,0.0,img_0191,glass,flag,Flag,False,True,0.10505358129739761,0.5003156661987305
+ablation,ablate random direction,0.0,img_0254,lighter,fire,lighter,True,False,0.5286285877227783,0.295369416475296
+ablation,ablate random direction,0.0,img_1121,dvd,slow,DVD,True,False,0.03343925252556801,0.0006395800737664104
+ablation,ablate random direction,0.0,img_0909,hammer,pen,hammer,True,False,0.9696138501167297,0.009257981553673744
+ablation,ablate random direction,0.0,img_0888,remote,dog,remote,True,False,0.7910639643669128,0.08681994676589966
+ablation,ablate random direction,0.0,img_0117,pizza,cow,pizza,True,False,0.8625388741493225,0.10975299030542374
+ablation,ablate random direction,0.0,img_1001,keys,ball,Ball,False,True,0.1092408299446106,0.34687507152557373
+ablation,ablate random direction,0.0,img_0706,sausage,helmet,Helmet,False,True,0.09380370378494263,0.5836853384971619
+ablation,ablate random direction,0.0,img_0377,thermometer,couch,Thermostat,False,False,0.1274997889995575,0.14001713693141937
+ablation,ablate random direction,0.0,img_0132,pumpkin,fire,squash,True,False,0.005257366690784693,0.12065500766038895
+ablation,ablate random direction,0.0,img_0655,radio,transistor,radio,True,False,0.5324053168296814,0.1561380922794342
+ablation,"ablate note word Y, W_U only",0.0,img_1009,speaker,tree,speaker,True,False,0.9648070335388184,0.0005006367573514581
+ablation,"ablate note word Y, W_U only",0.0,img_0650,box,lion,box,True,False,0.5255860686302185,0.23306798934936523
+ablation,"ablate note word Y, W_U only",0.0,img_1134,iron,merge,iron,True,False,0.6404929161071777,0.01342655997723341
+ablation,"ablate note word Y, W_U only",0.0,img_0924,monitor,truck,monitor,True,False,0.8409746289253235,0.004929074551910162
+ablation,"ablate note word Y, W_U only",0.0,img_1038,coin,horn,Horn,False,True,0.05182003229856491,0.8792049884796143
+ablation,"ablate note word Y, W_U only",0.0,img_0376,thermometer,trash,thermometer,True,False,0.5537803769111633,0.24929486215114594
+ablation,"ablate note word Y, W_U only",0.0,img_1017,guitar,apple,guitar,True,False,0.9555528163909912,0.009744475595653057
+ablation,"ablate note word Y, W_U only",0.0,img_0124,salmon,grape,salmon,True,False,0.735658586025238,0.21148176491260529
+ablation,"ablate note word Y, W_U only",0.0,img_0658,safe,hat,safe,True,False,0.7300750613212585,0.12588369846343994
+ablation,"ablate note word Y, W_U only",0.0,img_0195,pillow,fence,pillow,True,False,0.8742824792861938,0.023444566875696182
+ablation,"ablate note word Y, W_U only",0.0,img_1005,sock,desk,sock,True,False,0.813636302947998,0.10394912958145142
+ablation,"ablate note word Y, W_U only",0.0,img_0949,jacket,signal,jacket,True,False,0.9137009382247925,0.008008134551346302
+ablation,"ablate note word Y, W_U only",0.0,img_0656,speaker,sandwich,speaker,True,False,0.6020578145980835,0.23415490984916687
+ablation,"ablate note word Y, W_U only",0.0,img_0143,garlic,curtain,garlic,True,False,0.5094295144081116,0.3542099893093109
+ablation,"ablate note word Y, W_U only",0.0,img_0274,microwave,clock,microwave,True,False,0.9352232217788696,0.031136538833379745
+ablation,"ablate note word Y, W_U only",0.0,img_0955,pan,curb,pan,True,False,0.7202499508857727,2.844546315827756e-06
+ablation,"ablate note word Y, W_U only",0.0,img_0863,vacuum,bike,vacuum,True,False,0.6095451712608337,0.024224035441875458
+ablation,"ablate note word Y, W_U only",0.0,img_0653,cable,screw,Screw,False,True,0.23075617849826813,0.6541793346405029
+ablation,"ablate note word Y, W_U only",0.0,img_0161,tray,fish,Tray,True,False,0.3655581772327423,0.2282438427209854
+ablation,"ablate note word Y, W_U only",0.0,img_0454,chair,fence,chair,True,False,0.6120736598968506,0.3263121545314789
+ablation,"ablate note word Y, W_U only",0.0,img_1152,calculator,lion,calculator,True,False,0.9595493674278259,0.003978624474257231
+ablation,"ablate note word Y, W_U only",0.0,img_0536,string,pig,Pig,False,True,0.0003012136439792812,0.8218282461166382
+ablation,"ablate note word Y, W_U only",0.0,img_0587,candle,lemon,candle,True,False,0.8347684741020203,0.08901036530733109
+ablation,"ablate note word Y, W_U only",0.0,img_0839,lamp,pen,pen,False,True,0.006044243462383747,0.513296365737915
+ablation,"ablate note word Y, W_U only",0.0,img_0716,spoon,bicycle,spoon,True,False,0.9231261610984802,0.04540809988975525
+ablation,"ablate note word Y, W_U only",0.0,img_1016,speaker,apple,speaker,True,False,0.8928175568580627,0.031171442940831184
+ablation,"ablate note word Y, W_U only",0.0,img_0269,basket,cow,Cow,False,True,0.4799368381500244,0.4267652630805969
+ablation,"ablate note word Y, W_U only",0.0,img_0824,remote,knife,remote,True,False,0.5338045954704285,0.15852588415145874
+ablation,"ablate note word Y, W_U only",0.0,img_0095,headphones,house,headphones,True,False,0.7679570913314819,0.014125925488770008
+ablation,"ablate note word Y, W_U only",0.0,img_1122,headphones,highway,headphones,True,False,0.8539873361587524,0.00027914982638321817
+ablation,"ablate note word Y, W_U only",0.0,img_0056,necklace,train,Train,False,True,0.14850682020187378,0.5168909430503845
+ablation,"ablate note word Y, W_U only",0.0,img_0979,trailer,car,trailer,True,False,0.32988691329956055,0.07609062641859055
+ablation,"ablate note word Y, W_U only",0.0,img_0868,goal,pen,Goal,True,False,0.47747159004211426,0.011953018605709076
+ablation,"ablate note word Y, W_U only",0.0,img_0461,glove,iron,glove,True,False,0.7771099209785461,0.10844317823648453
+ablation,"ablate note word Y, W_U only",0.0,img_0926,closet,truck,wardrobe,True,False,0.014645065180957317,0.0052128746174275875
+ablation,"ablate note word Y, W_U only",0.0,img_0296,camera,flag,camera,True,False,0.8265827894210815,0.11510869860649109
+ablation,"ablate note word Y, W_U only",0.0,img_0774,glove,flower,glove,True,False,0.5506961345672607,0.001338073518127203
+ablation,"ablate note word Y, W_U only",0.0,img_0649,towel,lemon,Towel,True,False,0.30205845832824707,0.012491501867771149
+ablation,"ablate note word Y, W_U only",0.0,img_0262,plate,door,plate,True,False,0.7502198815345764,0.19548696279525757
+ablation,"ablate note word Y, W_U only",0.0,img_0153,onions,hammer,Onion,True,False,0.021319041028618813,0.2644851505756378
+ablation,"ablate note word Y, W_U only",0.0,img_0481,doll,bell,doll,True,False,0.9589102864265442,0.01333616953343153
+ablation,"ablate note word Y, W_U only",0.0,img_0982,lamp,merge,lamp,True,False,0.9596408009529114,7.026737148407847e-05
+ablation,"ablate note word Y, W_U only",0.0,img_0707,sausage,honey,Honey,False,True,0.07521355897188187,0.5648280382156372
+ablation,"ablate note word Y, W_U only",0.0,img_0215,cans,hammer,Hammer,False,True,0.006948662921786308,0.42771050333976746
+ablation,"ablate note word Y, W_U only",0.0,img_0699,mushroom,lipstick,Lipstick,False,True,0.3700443208217621,0.21417419612407684
+ablation,"ablate note word Y, W_U only",0.0,img_0608,roller,transistor,Transistor,False,True,0.19748447835445404,0.05825193598866463
+ablation,"ablate note word Y, W_U only",0.0,img_0362,bell,gravel,bell,True,False,0.9773460626602173,0.000851182674523443
+ablation,"ablate note word Y, W_U only",0.0,img_0927,chair,truck,chair,True,False,0.9679597616195679,0.000389352033380419
+ablation,"ablate note word Y, W_U only",0.0,img_0023,banana,crystal,banana,True,False,0.798180103302002,0.14380991458892822
+ablation,"ablate note word Y, W_U only",0.0,img_0939,plant,toll,plant,True,False,0.7008787989616394,0.0006786646554246545
+ablation,"ablate note word Y, W_U only",0.0,img_0836,glasses,cellphone,glasses,True,False,0.6682436466217041,0.06795702874660492
+ablation,"ablate note word Y, W_U only",0.0,img_0951,table,curb,table,True,False,0.8284622430801392,0.0003234986215829849
+ablation,"ablate note word Y, W_U only",0.0,img_1156,flowers,ice,bouquet,True,False,0.07357919961214066,0.1763840764760971
+ablation,"ablate note word Y, W_U only",0.0,img_0191,glass,flag,Flag,False,True,0.09775681048631668,0.5291807055473328
+ablation,"ablate note word Y, W_U only",0.0,img_0254,lighter,fire,lighter,True,False,0.5080592036247253,0.29675424098968506
+ablation,"ablate note word Y, W_U only",0.0,img_1121,dvd,slow,DVD,True,False,0.032159868627786636,0.00042827887227758765
+ablation,"ablate note word Y, W_U only",0.0,img_0909,hammer,pen,hammer,True,False,0.9664715528488159,0.010453993454575539
+ablation,"ablate note word Y, W_U only",0.0,img_0888,remote,dog,remote,True,False,0.8088896870613098,0.0691479742527008
+ablation,"ablate note word Y, W_U only",0.0,img_0117,pizza,cow,pizza,True,False,0.8545321822166443,0.11831841617822647
+ablation,"ablate note word Y, W_U only",0.0,img_1001,keys,ball,key,True,False,0.1173180341720581,0.2724020183086395
+ablation,"ablate note word Y, W_U only",0.0,img_0706,sausage,helmet,Helmet,False,True,0.09298326820135117,0.5723533630371094
+ablation,"ablate note word Y, W_U only",0.0,img_0377,thermometer,couch,Thermostat,False,False,0.1210281252861023,0.19338306784629822
+ablation,"ablate note word Y, W_U only",0.0,img_0132,pumpkin,fire,squash,True,False,0.005022848024964333,0.10689127445220947
+ablation,"ablate note word Y, W_U only",0.0,img_0655,radio,transistor,radio,True,False,0.5342231392860413,0.1249740943312645
+injection,none,0.0,img_1009,speaker,tree,speaker,True,False,0.933405876159668,1.0894274282691185e-06
+injection,none,0.0,img_0650,box,lion,box,True,False,0.525381326675415,1.5386701761599397e-06
+injection,none,0.0,img_1134,iron,merge,iron,True,False,0.7320457100868225,5.043634700996336e-07
+injection,none,0.0,img_0924,monitor,truck,monitor,True,False,0.8701911568641663,8.319039324078403e-08
+injection,none,0.0,img_1038,coin,horn,coin,True,False,0.39808109402656555,7.42860891023156e-07
+injection,none,0.0,img_0376,thermometer,trash,thermometer,True,False,0.9530519843101501,4.374665607542738e-08
+injection,none,0.0,img_1017,guitar,apple,guitar,True,False,0.9922454953193665,1.5423754007315438e-07
+injection,none,0.0,img_0124,salmon,grape,salmon,True,False,0.8930888772010803,6.221958301466657e-06
+injection,none,0.0,img_0658,safe,hat,safe,True,False,0.8677594661712646,5.5533396334794816e-06
+injection,none,0.0,img_0195,pillow,fence,pillow,True,False,0.8866047859191895,9.473563409301278e-07
+injection,none,0.0,img_1005,sock,desk,sock,True,False,0.9455639719963074,5.023483026889153e-06
+injection,none,0.0,img_0949,jacket,signal,jacket,True,False,0.8996155858039856,3.5042074841840076e-07
+injection,none,0.0,img_0656,speaker,sandwich,speaker,True,False,0.7432747483253479,8.234923711825104e-07
+injection,none,0.0,img_0143,garlic,curtain,garlic,True,False,0.8995838165283203,3.867129407808534e-07
+injection,none,0.0,img_0274,microwave,clock,microwave,True,False,0.9336481094360352,5.641459210892208e-05
+injection,none,0.0,img_0955,pan,curb,pan,True,False,0.6735514402389526,9.134565104318426e-09
+injection,none,0.0,img_0863,vacuum,bike,vacuum,True,False,0.8369318246841431,2.7793581466539763e-05
+injection,none,0.0,img_0653,cable,screw,cable,True,False,0.6395960450172424,0.0001283436722587794
+injection,none,0.0,img_0161,tray,fish,tray,True,False,0.3018369972705841,2.1165109501453117e-05
+injection,none,0.0,img_0454,chair,fence,chair,True,False,0.8843067288398743,9.348936873720959e-05
+injection,none,0.0,img_1152,calculator,lion,calculator,True,False,0.9836371541023254,9.676177192829982e-09
+injection,none,0.0,img_0536,string,pig,yarn,True,False,0.0020729200914502144,1.3706081517739221e-05
+injection,none,0.0,img_0587,candle,lemon,candle,True,False,0.9491647481918335,2.3510588107455987e-06
+injection,none,0.0,img_0839,lamp,pen,light,True,False,0.03207828104496002,0.0004067394766025245
+injection,none,0.0,img_0716,spoon,bicycle,spoon,True,False,0.9567199349403381,3.7583706102850556e-07
+injection,none,0.0,img_1016,speaker,apple,speaker,True,False,0.9684198498725891,2.05141168407863e-06
+injection,none,0.0,img_0269,basket,cow,basket,True,False,0.7844669818878174,1.481307208450744e-06
+injection,none,0.0,img_0824,remote,knife,remote,True,False,0.743575394153595,1.8289648551217397e-06
+injection,none,0.0,img_0095,headphones,house,headphones,True,False,0.8253517746925354,1.0772397445180104e-06
+injection,none,0.0,img_1122,headphones,highway,headphones,True,False,0.8651175498962402,1.3110724239595584e-07
+injection,none,0.0,img_0056,necklace,train,necklace,True,False,0.41477644443511963,4.563261609291658e-05
+injection,none,0.0,img_0979,trailer,car,trailer,True,False,0.16015926003456116,0.0010750442743301392
+injection,none,0.0,img_0868,goal,pen,goal,True,False,0.6250054240226746,1.2112639524275437e-05
+injection,none,0.0,img_0461,glove,iron,glove,True,False,0.92357337474823,9.102199527433186e-08
+injection,none,0.0,img_0926,closet,truck,cabinet,True,False,0.020062515512108803,6.063006594558829e-07
+injection,none,0.0,img_0296,camera,flag,camera,True,False,0.960022509098053,1.1240264257139643e-06
+injection,none,0.0,img_0774,glove,flower,glove,True,False,0.595346212387085,6.118827400314331e-07
+injection,none,0.0,img_0649,towel,lemon,towel,True,False,0.7703308463096619,5.13272837565637e-08
+injection,none,0.0,img_0262,plate,door,plate,True,False,0.9166080355644226,3.869328065775335e-05
+injection,none,0.0,img_0153,onions,hammer,onion,True,False,0.05898235738277435,1.1068639338418507e-07
+injection,none,0.0,img_0481,doll,bell,doll,True,False,0.9733202457427979,8.87208614130941e-07
+injection,none,0.0,img_0982,lamp,merge,lamp,True,False,0.9613348841667175,4.5696002537454206e-09
+injection,none,0.0,img_0707,sausage,honey,sausage,True,False,0.7423871159553528,1.869426887424197e-05
+injection,none,0.0,img_0215,cans,hammer,can,True,False,0.00633495207875967,1.546907924421248e-06
+injection,none,0.0,img_0699,mushroom,lipstick,mushroom,True,False,0.9303901791572571,1.4294812444859417e-06
+injection,none,0.0,img_0608,roller,transistor,roller,True,False,0.5706468820571899,2.387312463270064e-07
+injection,none,0.0,img_0362,bell,gravel,bell,True,False,0.983486533164978,1.9588181032759167e-07
+injection,none,0.0,img_0927,chair,truck,chair,True,False,0.9615887999534607,4.0999901784743997e-07
+injection,none,0.0,img_0023,banana,crystal,banana,True,False,0.922432005405426,9.739069994907368e-09
+injection,none,0.0,img_0939,plant,toll,plant,True,False,0.7249426245689392,5.2860436028367985e-09
+injection,none,0.0,img_0836,glasses,cellphone,glasses,True,False,0.7936620712280273,4.4013586375513114e-07
+injection,none,0.0,img_0951,table,curb,table,True,False,0.8060367703437805,3.3704091606523434e-07
+injection,none,0.0,img_1156,flowers,ice,bouquet,True,False,0.15469954907894135,3.0293554686977586e-07
+injection,none,0.0,img_0191,glass,flag,wine glass,True,False,0.28924843668937683,4.343694308772683e-05
+injection,none,0.0,img_0254,lighter,fire,lighter,True,False,0.8150147199630737,0.003262832062318921
+injection,none,0.0,img_1121,dvd,slow,DVD,True,False,0.062074072659015656,1.004152750283538e-06
+injection,none,0.0,img_0909,hammer,pen,hammer,True,False,0.9746367335319519,2.7324977054377086e-06
+injection,none,0.0,img_0888,remote,dog,remote,True,False,0.9197441935539246,6.2477324718202e-06
+injection,none,0.0,img_0117,pizza,cow,pizza,True,False,0.9850883483886719,5.575656132350559e-07
+injection,none,0.0,img_1001,keys,ball,key,True,False,0.21416059136390686,3.0259996492532082e-05
+injection,none,0.0,img_0706,sausage,helmet,sausage,True,False,0.6721760630607605,3.615968751091714e-07
+injection,none,0.0,img_0377,thermometer,couch,thermometer,True,False,0.6100500822067261,6.587064262930653e-07
+injection,none,0.0,img_0132,pumpkin,fire,squash,True,False,0.007556935306638479,4.218460674110247e-07
+injection,none,0.0,img_0655,radio,transistor,radio,True,False,0.3623389005661011,0.0006198899354785681
+injection,note word Y,0.5,img_1009,speaker,tree,speaker,True,False,0.9298173785209656,9.088365004572552e-06
+injection,note word Y,0.5,img_0650,box,lion,box,True,False,0.5314809083938599,2.367907109146472e-05
+injection,note word Y,0.5,img_1134,iron,merge,iron,True,False,0.7182801961898804,3.311884256618214e-06
+injection,note word Y,0.5,img_0924,monitor,truck,monitor,True,False,0.8658052682876587,5.052493747825793e-07
+injection,note word Y,0.5,img_1038,coin,horn,coin,True,False,0.4045039713382721,1.2484063518058974e-05
+injection,note word Y,0.5,img_0376,thermometer,trash,thermometer,True,False,0.9538313150405884,2.8514534733403707e-07
+injection,note word Y,0.5,img_1017,guitar,apple,guitar,True,False,0.9916970729827881,1.3785635246676975e-06
+injection,note word Y,0.5,img_0124,salmon,grape,salmon,True,False,0.8764454126358032,6.555424624821171e-05
+injection,note word Y,0.5,img_0658,safe,hat,safe,True,False,0.838783860206604,3.2546169677516446e-05
+injection,note word Y,0.5,img_0195,pillow,fence,pillow,True,False,0.8925212621688843,5.840229732712032e-06
+injection,note word Y,0.5,img_1005,sock,desk,sock,True,False,0.9298636317253113,4.733141395263374e-05
+injection,note word Y,0.5,img_0949,jacket,signal,jacket,True,False,0.8987487554550171,1.4494811466647661e-06
+injection,note word Y,0.5,img_0656,speaker,sandwich,speaker,True,False,0.7344059944152832,1.0658490282366984e-05
+injection,note word Y,0.5,img_0143,garlic,curtain,garlic,True,False,0.8516303300857544,4.558819000521908e-06
+injection,note word Y,0.5,img_0274,microwave,clock,microwave,True,False,0.9343823194503784,0.0006252630846574903
+injection,note word Y,0.5,img_0955,pan,curb,pan,True,False,0.6435829401016235,3.6790019919408223e-08
+injection,note word Y,0.5,img_0863,vacuum,bike,vacuum,True,False,0.831437885761261,0.000512933183927089
+injection,note word Y,0.5,img_0653,cable,screw,cable,True,False,0.6377019286155701,0.0018131419783458114
+injection,note word Y,0.5,img_0161,tray,fish,tray,True,False,0.2851293385028839,0.00029057831852696836
+injection,note word Y,0.5,img_0454,chair,fence,chair,True,False,0.8682394623756409,0.0006021631415933371
+injection,note word Y,0.5,img_1152,calculator,lion,calculator,True,False,0.9820519685745239,1.1210271821937567e-07
+injection,note word Y,0.5,img_0536,string,pig,yarn,True,False,0.0016777168493717909,0.00013781212328467518
+injection,note word Y,0.5,img_0587,candle,lemon,candle,True,False,0.9572120308876038,1.562591569381766e-05
+injection,note word Y,0.5,img_0839,lamp,pen,light,True,False,0.03194262459874153,0.0033899422269314528
+injection,note word Y,0.5,img_0716,spoon,bicycle,spoon,True,False,0.9513213634490967,4.8878118832362816e-06
+injection,note word Y,0.5,img_1016,speaker,apple,speaker,True,False,0.9628261923789978,3.663548341137357e-05
+injection,note word Y,0.5,img_0269,basket,cow,basket,True,False,0.8103704452514648,2.4681334252818488e-05
+injection,note word Y,0.5,img_0824,remote,knife,remote,True,False,0.784062922000885,3.4273176424903795e-05
+injection,note word Y,0.5,img_0095,headphones,house,headphones,True,False,0.8338521122932434,5.037801656726515e-06
+injection,note word Y,0.5,img_1122,headphones,highway,headphones,True,False,0.8501788973808289,9.63983893598197e-07
+injection,note word Y,0.5,img_0056,necklace,train,necklace,True,False,0.4077514111995697,0.0007621693075634539
+injection,note word Y,0.5,img_0979,trailer,car,trailer,True,False,0.16359755396842957,0.004609931260347366
+injection,note word Y,0.5,img_0868,goal,pen,goal,True,False,0.6273950934410095,0.0001599477545823902
+injection,note word Y,0.5,img_0461,glove,iron,glove,True,False,0.9359996914863586,3.1376509923575213e-07
+injection,note word Y,0.5,img_0926,closet,truck,cabinet,True,False,0.02114131860435009,3.743271690836991e-06
+injection,note word Y,0.5,img_0296,camera,flag,camera,True,False,0.9566054940223694,5.499383405549452e-06
+injection,note word Y,0.5,img_0774,glove,flower,glove,True,False,0.6159986853599548,1.752359457896091e-05
+injection,note word Y,0.5,img_0649,towel,lemon,towel,True,False,0.783799409866333,3.719572134741611e-07
+injection,note word Y,0.5,img_0262,plate,door,plate,True,False,0.8910653591156006,0.0002755875757429749
+injection,note word Y,0.5,img_0153,onions,hammer,onion,True,False,0.0522197000682354,7.855319381633308e-07
+injection,note word Y,0.5,img_0481,doll,bell,doll,True,False,0.9692500829696655,5.001249519409612e-06
+injection,note word Y,0.5,img_0982,lamp,merge,lamp,True,False,0.9587696194648743,1.4698037453797497e-08
+injection,note word Y,0.5,img_0707,sausage,honey,sausage,True,False,0.7136664390563965,0.00016517455514986068
+injection,note word Y,0.5,img_0215,cans,hammer,can,True,False,0.005230274982750416,2.2629521481576376e-05
+injection,note word Y,0.5,img_0699,mushroom,lipstick,mushroom,True,False,0.9362999200820923,9.403450349054765e-06
+injection,note word Y,0.5,img_0608,roller,transistor,roller,True,False,0.5410856604576111,4.325808731664438e-06
+injection,note word Y,0.5,img_0362,bell,gravel,bell,True,False,0.9816036224365234,3.273147513027652e-06
+injection,note word Y,0.5,img_0927,chair,truck,chair,True,False,0.9610245227813721,4.229208116157679e-06
+injection,note word Y,0.5,img_0023,banana,crystal,banana,True,False,0.8942685127258301,1.0454582621832742e-07
+injection,note word Y,0.5,img_0939,plant,toll,plant,True,False,0.7034527659416199,6.007714858924373e-08
+injection,note word Y,0.5,img_0836,glasses,cellphone,glasses,True,False,0.7925385236740112,3.876957180182217e-06
+injection,note word Y,0.5,img_0951,table,curb,table,True,False,0.7837989330291748,1.3968070788905607e-06
+injection,note word Y,0.5,img_1156,flowers,ice,bouquet,True,False,0.15252050757408142,1.3497939335138653e-06
+injection,note word Y,0.5,img_0191,glass,flag,wine glass,True,False,0.261588990688324,0.0003670107980724424
+injection,note word Y,0.5,img_0254,lighter,fire,lighter,True,False,0.7613023519515991,0.009906447492539883
+injection,note word Y,0.5,img_1121,dvd,slow,DVD,True,False,0.054805055260658264,4.655305474443594e-06
+injection,note word Y,0.5,img_0909,hammer,pen,hammer,True,False,0.9770694375038147,1.7620699509279802e-05
+injection,note word Y,0.5,img_0888,remote,dog,remote,True,False,0.910827100276947,6.77589705446735e-05
+injection,note word Y,0.5,img_0117,pizza,cow,pizza,True,False,0.9848056435585022,3.093034592893673e-06
+injection,note word Y,0.5,img_1001,keys,ball,key,True,False,0.2241067886352539,0.00020423554815351963
+injection,note word Y,0.5,img_0706,sausage,helmet,sausage,True,False,0.6668030023574829,2.4884707272576634e-06
+injection,note word Y,0.5,img_0377,thermometer,couch,thermometer,True,False,0.5397201776504517,7.540432761743432e-06
+injection,note word Y,0.5,img_0132,pumpkin,fire,squash,True,False,0.010209966450929642,2.678055807336932e-06
+injection,note word Y,0.5,img_0655,radio,transistor,radio,True,False,0.43328768014907837,0.002442355966195464
+injection,"random, matched norm",0.5,img_1009,speaker,tree,speaker,True,False,0.9314112067222595,9.90039438875101e-07
+injection,"random, matched norm",0.5,img_0650,box,lion,box,True,False,0.5260981321334839,1.5957998584781308e-06
+injection,"random, matched norm",0.5,img_1134,iron,merge,iron,True,False,0.7512627840042114,5.133010176905373e-07
+injection,"random, matched norm",0.5,img_0924,monitor,truck,monitor,True,False,0.8683403730392456,8.156561648320348e-08
+injection,"random, matched norm",0.5,img_1038,coin,horn,coin,True,False,0.4120599329471588,7.523348699578492e-07
+injection,"random, matched norm",0.5,img_0376,thermometer,trash,thermometer,True,False,0.9464799165725708,4.6367485850851153e-08
+injection,"random, matched norm",0.5,img_1017,guitar,apple,guitar,True,False,0.9915223717689514,1.6578486849994079e-07
+injection,"random, matched norm",0.5,img_0124,salmon,grape,salmon,True,False,0.8984845280647278,5.354192126105772e-06
+injection,"random, matched norm",0.5,img_0658,safe,hat,safe,True,False,0.8745989203453064,4.9020068217942026e-06
+injection,"random, matched norm",0.5,img_0195,pillow,fence,pillow,True,False,0.8841568231582642,9.158044349533156e-07
+injection,"random, matched norm",0.5,img_1005,sock,desk,sock,True,False,0.9445507526397705,5.138736923981924e-06
+injection,"random, matched norm",0.5,img_0949,jacket,signal,jacket,True,False,0.906566321849823,3.474672780612309e-07
+injection,"random, matched norm",0.5,img_0656,speaker,sandwich,speaker,True,False,0.7560698986053467,7.871140610404836e-07
+injection,"random, matched norm",0.5,img_0143,garlic,curtain,garlic,True,False,0.8942127227783203,4.384547480640322e-07
+injection,"random, matched norm",0.5,img_0274,microwave,clock,microwave,True,False,0.932976484298706,5.6550634326413274e-05
+injection,"random, matched norm",0.5,img_0955,pan,curb,pan,True,False,0.672977864742279,9.599370187629575e-09
+injection,"random, matched norm",0.5,img_0863,vacuum,bike,vacuum,True,False,0.8260282874107361,2.8267599191167392e-05
+injection,"random, matched norm",0.5,img_0653,cable,screw,cable,True,False,0.6230361461639404,0.0001217374810948968
+injection,"random, matched norm",0.5,img_0161,tray,fish,tray,True,False,0.3073959946632385,2.1311583623173647e-05
+injection,"random, matched norm",0.5,img_0454,chair,fence,chair,True,False,0.8891493678092957,8.88267022673972e-05
+injection,"random, matched norm",0.5,img_1152,calculator,lion,calculator,True,False,0.985034704208374,8.576727772435788e-09
+injection,"random, matched norm",0.5,img_0536,string,pig,yarn,True,False,0.0022184152621775866,1.4677429135190323e-05
+injection,"random, matched norm",0.5,img_0587,candle,lemon,candle,True,False,0.9503282308578491,2.3539407720818417e-06
+injection,"random, matched norm",0.5,img_0839,lamp,pen,light,True,False,0.03234477713704109,0.0004642963467631489
+injection,"random, matched norm",0.5,img_0716,spoon,bicycle,spoon,True,False,0.9532653093338013,4.091634480118955e-07
+injection,"random, matched norm",0.5,img_1016,speaker,apple,speaker,True,False,0.9684087634086609,1.918359885166865e-06
+injection,"random, matched norm",0.5,img_0269,basket,cow,basket,True,False,0.7867984175682068,1.441156769033114e-06
+injection,"random, matched norm",0.5,img_0824,remote,knife,remote,True,False,0.7412693500518799,1.8281648408446927e-06
+injection,"random, matched norm",0.5,img_0095,headphones,house,headphones,True,False,0.830337643623352,1.092427623916592e-06
+injection,"random, matched norm",0.5,img_1122,headphones,highway,headphones,True,False,0.8477230668067932,1.4628909639213816e-07
+injection,"random, matched norm",0.5,img_0056,necklace,train,necklace,True,False,0.41702374815940857,4.778089714818634e-05
+injection,"random, matched norm",0.5,img_0979,trailer,car,trailer,True,False,0.1587790697813034,0.0010699423728510737
+injection,"random, matched norm",0.5,img_0868,goal,pen,goal,True,False,0.622079610824585,1.1868384717672598e-05
+injection,"random, matched norm",0.5,img_0461,glove,iron,glove,True,False,0.9142808318138123,1.0991917065439338e-07
+injection,"random, matched norm",0.5,img_0926,closet,truck,cabinet,True,False,0.019247185438871384,5.782123935205163e-07
+injection,"random, matched norm",0.5,img_0296,camera,flag,camera,True,False,0.9588177800178528,1.1998027957815793e-06
+injection,"random, matched norm",0.5,img_0774,glove,flower,glove,True,False,0.5841812491416931,6.660891358478693e-07
+injection,"random, matched norm",0.5,img_0649,towel,lemon,towel,True,False,0.7343972325325012,5.808637126847316e-08
+injection,"random, matched norm",0.5,img_0262,plate,door,plate,True,False,0.9160549640655518,4.082735176780261e-05
+injection,"random, matched norm",0.5,img_0153,onions,hammer,onion,True,False,0.05884530767798424,1.2221460110595217e-07
+injection,"random, matched norm",0.5,img_0481,doll,bell,doll,True,False,0.9709600210189819,9.894805543808616e-07
+injection,"random, matched norm",0.5,img_0982,lamp,merge,lamp,True,False,0.9570670127868652,5.157221316665073e-09
+injection,"random, matched norm",0.5,img_0707,sausage,honey,sausage,True,False,0.732995867729187,2.091683927574195e-05
+injection,"random, matched norm",0.5,img_0215,cans,hammer,can,True,False,0.006362373474985361,1.3346228797672666e-06
+injection,"random, matched norm",0.5,img_0699,mushroom,lipstick,mushroom,True,False,0.9287033677101135,1.6157327991095372e-06
+injection,"random, matched norm",0.5,img_0608,roller,transistor,roller,True,False,0.5839600563049316,2.475063638485153e-07
+injection,"random, matched norm",0.5,img_0362,bell,gravel,bell,True,False,0.9835383892059326,2.0647392773298634e-07
+injection,"random, matched norm",0.5,img_0927,chair,truck,chair,True,False,0.9625040292739868,3.651533688753261e-07
+injection,"random, matched norm",0.5,img_0023,banana,crystal,banana,True,False,0.9148192405700684,1.0483534929051075e-08
+injection,"random, matched norm",0.5,img_0939,plant,toll,plant,True,False,0.7246165871620178,5.04242780863251e-09
+injection,"random, matched norm",0.5,img_0836,glasses,cellphone,glasses,True,False,0.8092445731163025,4.011255327895924e-07
+injection,"random, matched norm",0.5,img_0951,table,curb,table,True,False,0.8086003065109253,3.3453324022048037e-07
+injection,"random, matched norm",0.5,img_1156,flowers,ice,bouquet,True,False,0.1452932357788086,2.8004569685435854e-07
+injection,"random, matched norm",0.5,img_0191,glass,flag,wine glass,True,False,0.2664361000061035,4.304111280362122e-05
+injection,"random, matched norm",0.5,img_0254,lighter,fire,lighter,True,False,0.8206493854522705,0.0032986945006996393
+injection,"random, matched norm",0.5,img_1121,dvd,slow,DVD,True,False,0.05223824456334114,1.023505888042564e-06
+injection,"random, matched norm",0.5,img_0909,hammer,pen,hammer,True,False,0.9756477475166321,2.5688054847705644e-06
+injection,"random, matched norm",0.5,img_0888,remote,dog,remote,True,False,0.9160733222961426,5.879421678400831e-06
+injection,"random, matched norm",0.5,img_0117,pizza,cow,pizza,True,False,0.9863495826721191,4.797395831701579e-07
+injection,"random, matched norm",0.5,img_1001,keys,ball,key,True,False,0.2144334614276886,3.0506915209116414e-05
+injection,"random, matched norm",0.5,img_0706,sausage,helmet,sausage,True,False,0.6580461263656616,4.2701171310000063e-07
+injection,"random, matched norm",0.5,img_0377,thermometer,couch,thermometer,True,False,0.5849437117576599,6.84810288476001e-07
+injection,"random, matched norm",0.5,img_0132,pumpkin,fire,squash,True,False,0.007653344888240099,4.0256639977087616e-07
+injection,"random, matched norm",0.5,img_0655,radio,transistor,radio,True,False,0.34237831830978394,0.000585741363465786
+injection,note word Y,1.0,img_1009,speaker,tree,speaker,True,False,0.9210016131401062,0.00016505845997016877
+injection,note word Y,1.0,img_0650,box,lion,box,True,False,0.5735179781913757,0.00028889274108223617
+injection,note word Y,1.0,img_1134,iron,merge,iron,True,False,0.7009509205818176,1.905541830637958e-05
+injection,note word Y,1.0,img_0924,monitor,truck,monitor,True,False,0.8620023131370544,4.754187102662399e-06
+injection,note word Y,1.0,img_1038,coin,horn,coin,True,False,0.3915259838104248,0.00017583325097803026
+injection,note word Y,1.0,img_0376,thermometer,trash,thermometer,True,False,0.944378137588501,3.1239080726663815e-06
+injection,note word Y,1.0,img_1017,guitar,apple,guitar,True,False,0.9901949763298035,2.070348091365304e-05
+injection,note word Y,1.0,img_0124,salmon,grape,salmon,True,False,0.8648138642311096,0.0008923119748942554
+injection,note word Y,1.0,img_0658,safe,hat,safe,True,False,0.7817835807800293,0.0002512207720428705
+injection,note word Y,1.0,img_0195,pillow,fence,pillow,True,False,0.8706557154655457,5.752351717092097e-05
+injection,note word Y,1.0,img_1005,sock,desk,sock,True,False,0.9028649926185608,0.0005153410020284355
+injection,note word Y,1.0,img_0949,jacket,signal,jacket,True,False,0.8899861574172974,7.969283615238965e-06
+injection,note word Y,1.0,img_0656,speaker,sandwich,speaker,True,False,0.7089683413505554,0.00019343938038218766
+injection,note word Y,1.0,img_0143,garlic,curtain,garlic,True,False,0.8064867854118347,5.832545866724104e-05
+injection,note word Y,1.0,img_0274,microwave,clock,microwave,True,False,0.9382015466690063,0.005400931928306818
+injection,note word Y,1.0,img_0955,pan,curb,pan,True,False,0.688076913356781,1.6005797931484267e-07
+injection,note word Y,1.0,img_0863,vacuum,bike,vacuum,True,False,0.7926097512245178,0.008000069297850132
+injection,note word Y,1.0,img_0653,cable,screw,cable,True,False,0.6389523148536682,0.026541873812675476
+injection,note word Y,1.0,img_0161,tray,fish,tray,True,False,0.26276132464408875,0.0073441071435809135
+injection,note word Y,1.0,img_0454,chair,fence,chair,True,False,0.8597408533096313,0.0034304140135645866
+injection,note word Y,1.0,img_1152,calculator,lion,calculator,True,False,0.9796831011772156,1.4710402638229425e-06
+injection,note word Y,1.0,img_0536,string,pig,yarn,True,False,0.0014096619561314583,0.0013172687031328678
+injection,note word Y,1.0,img_0587,candle,lemon,candle,True,False,0.9621116518974304,9.48699816945009e-05
+injection,note word Y,1.0,img_0839,lamp,pen,light,True,False,0.026788722723722458,0.016400454565882683
+injection,note word Y,1.0,img_0716,spoon,bicycle,spoon,True,False,0.9448582530021667,7.560082303825766e-05
+injection,note word Y,1.0,img_1016,speaker,apple,speaker,True,False,0.9446713328361511,0.000646935950499028
+injection,note word Y,1.0,img_0269,basket,cow,basket,True,False,0.7933849096298218,0.0006036749691702425
+injection,note word Y,1.0,img_0824,remote,knife,remote,True,False,0.7842344641685486,0.00128351675812155
+injection,note word Y,1.0,img_0095,headphones,house,headphones,True,False,0.8309717774391174,2.6505418645683676e-05
+injection,note word Y,1.0,img_1122,headphones,highway,headphones,True,False,0.8339200615882874,9.440228495805059e-06
+injection,note word Y,1.0,img_0056,necklace,train,necklace,True,False,0.3615952730178833,0.01045690942555666
+injection,note word Y,1.0,img_0979,trailer,car,trailer,True,False,0.1587095558643341,0.017580077052116394
+injection,note word Y,1.0,img_0868,goal,pen,goal,True,False,0.6098085045814514,0.001832961686886847
+injection,note word Y,1.0,img_0461,glove,iron,glove,True,False,0.9415531754493713,1.1582520755837322e-06
+injection,note word Y,1.0,img_0926,closet,truck,cabinet,True,False,0.02475850284099579,5.076951129012741e-05
+injection,note word Y,1.0,img_0296,camera,flag,camera,True,False,0.9636355042457581,2.9097838705638424e-05
+injection,note word Y,1.0,img_0774,glove,flower,glove,True,False,0.6284136176109314,0.000752437743358314
+injection,note word Y,1.0,img_0649,towel,lemon,towel,True,False,0.7758888006210327,3.884541911247652e-06
+injection,note word Y,1.0,img_0262,plate,door,plate,True,False,0.8733450174331665,0.0014569550985470414
+injection,note word Y,1.0,img_0153,onions,hammer,onion,True,False,0.058483902364969254,6.61156582282274e-06
+injection,note word Y,1.0,img_0481,doll,bell,doll,True,False,0.9651489853858948,2.8968242986593395e-05
+injection,note word Y,1.0,img_0982,lamp,merge,lamp,True,False,0.9595362544059753,5.256350021909384e-08
+injection,note word Y,1.0,img_0707,sausage,honey,sausage,True,False,0.6650334596633911,0.0018728708382695913
+injection,note word Y,1.0,img_0215,cans,hammer,can,True,False,0.005286828149110079,0.0004137573705520481
+injection,note word Y,1.0,img_0699,mushroom,lipstick,mushroom,True,False,0.9297831654548645,0.000106975574453827
+injection,note word Y,1.0,img_0608,roller,transistor,roller,True,False,0.4440882205963135,9.499036968918517e-05
+injection,note word Y,1.0,img_0362,bell,gravel,bell,True,False,0.9741854071617126,8.659913873998448e-05
+injection,note word Y,1.0,img_0927,chair,truck,chair,True,False,0.95392906665802,6.076117279008031e-05
+injection,note word Y,1.0,img_0023,banana,crystal,banana,True,False,0.8644222021102905,1.611393372513703e-06
+injection,note word Y,1.0,img_0939,plant,toll,plant,True,False,0.6693450212478638,9.202628916682443e-07
+injection,note word Y,1.0,img_0836,glasses,cellphone,glasses,True,False,0.777800440788269,4.987275315215811e-05
+injection,note word Y,1.0,img_0951,table,curb,table,True,False,0.7928760051727295,4.656087185139768e-06
+injection,note word Y,1.0,img_1156,flowers,ice,bouquet,True,False,0.1362893432378769,6.7386858972895425e-06
+injection,note word Y,1.0,img_0191,glass,flag,wine glass,True,False,0.23386453092098236,0.0027274731546640396
+injection,note word Y,1.0,img_0254,lighter,fire,lighter,True,False,0.6729226112365723,0.028634825721383095
+injection,note word Y,1.0,img_1121,dvd,slow,DVD,True,False,0.046113353222608566,2.1658044715877622e-05
+injection,note word Y,1.0,img_0909,hammer,pen,hammer,True,False,0.9805552363395691,0.00011971169442404062
+injection,note word Y,1.0,img_0888,remote,dog,remote,True,False,0.9032441973686218,0.0007137619541026652
+injection,note word Y,1.0,img_0117,pizza,cow,pizza,True,False,0.9778797030448914,3.1589643185725436e-05
+injection,note word Y,1.0,img_1001,keys,ball,key,True,False,0.22568167746067047,0.0011652217945083976
+injection,note word Y,1.0,img_0706,sausage,helmet,sausage,True,False,0.6551898121833801,2.046514600806404e-05
+injection,note word Y,1.0,img_0377,thermometer,couch,thermometer,True,False,0.4754456579685211,8.608134521637112e-05
+injection,note word Y,1.0,img_0132,pumpkin,fire,squash,True,False,0.013518835417926311,4.062277730554342e-05
+injection,note word Y,1.0,img_0655,radio,transistor,radio,True,False,0.5178835391998291,0.008961965329945087
+injection,"random, matched norm",1.0,img_1009,speaker,tree,speaker,True,False,0.9330825805664062,9.290637876802066e-07
+injection,"random, matched norm",1.0,img_0650,box,lion,box,True,False,0.5311723351478577,1.6889334801817313e-06
+injection,"random, matched norm",1.0,img_1134,iron,merge,iron,True,False,0.7384667992591858,5.494478614309628e-07
+injection,"random, matched norm",1.0,img_0924,monitor,truck,monitor,True,False,0.8678019046783447,7.408639390860117e-08
+injection,"random, matched norm",1.0,img_1038,coin,horn,coin,True,False,0.40631240606307983,7.208544161585451e-07
+injection,"random, matched norm",1.0,img_0376,thermometer,trash,thermometer,True,False,0.9522145986557007,4.653771412677088e-08
+injection,"random, matched norm",1.0,img_1017,guitar,apple,guitar,True,False,0.9922604560852051,1.476508515452224e-07
+injection,"random, matched norm",1.0,img_0124,salmon,grape,salmon,True,False,0.893900454044342,6.228783604456112e-06
+injection,"random, matched norm",1.0,img_0658,safe,hat,safe,True,False,0.86275714635849,5.0824505706259515e-06
+injection,"random, matched norm",1.0,img_0195,pillow,fence,pillow,True,False,0.8848195672035217,8.88417844180367e-07
+injection,"random, matched norm",1.0,img_1005,sock,desk,sock,True,False,0.9392971396446228,5.357565896701999e-06
+injection,"random, matched norm",1.0,img_0949,jacket,signal,jacket,True,False,0.8951062560081482,4.2245335407642415e-07
+injection,"random, matched norm",1.0,img_0656,speaker,sandwich,speaker,True,False,0.7688969373703003,6.729080723744119e-07
+injection,"random, matched norm",1.0,img_0143,garlic,curtain,garlic,True,False,0.8953272104263306,4.3920809389419446e-07
+injection,"random, matched norm",1.0,img_0274,microwave,clock,microwave,True,False,0.9404246211051941,5.3021492931293324e-05
+injection,"random, matched norm",1.0,img_0955,pan,curb,pan,True,False,0.6744348406791687,9.612748819165517e-09
+injection,"random, matched norm",1.0,img_0863,vacuum,bike,vacuum,True,False,0.8200412392616272,2.8291477065067738e-05
+injection,"random, matched norm",1.0,img_0653,cable,screw,cable,True,False,0.6250598430633545,0.00011135674139950424
+injection,"random, matched norm",1.0,img_0161,tray,fish,tray,True,False,0.32108786702156067,1.9805982446996495e-05
+injection,"random, matched norm",1.0,img_0454,chair,fence,chair,True,False,0.8859854936599731,8.781708311289549e-05
+injection,"random, matched norm",1.0,img_1152,calculator,lion,calculator,True,False,0.9833481311798096,9.834947078957157e-09
+injection,"random, matched norm",1.0,img_0536,string,pig,yarn,True,False,0.0022300281561911106,1.5679264834034257e-05
+injection,"random, matched norm",1.0,img_0587,candle,lemon,candle,True,False,0.9514364004135132,2.5110880415013526e-06
+injection,"random, matched norm",1.0,img_0839,lamp,pen,light,True,False,0.03450470045208931,0.0004948583082295954
+injection,"random, matched norm",1.0,img_0716,spoon,bicycle,spoon,True,False,0.9531028866767883,4.3629151491586526e-07
+injection,"random, matched norm",1.0,img_1016,speaker,apple,speaker,True,False,0.969441294670105,1.82080850663624e-06
+injection,"random, matched norm",1.0,img_0269,basket,cow,basket,True,False,0.786094605922699,1.4405802630790276e-06
+injection,"random, matched norm",1.0,img_0824,remote,knife,remote,True,False,0.7336961030960083,1.796951323740359e-06
+injection,"random, matched norm",1.0,img_0095,headphones,house,headphones,True,False,0.8306498527526855,1.0681234243747895e-06
+injection,"random, matched norm",1.0,img_1122,headphones,highway,headphones,True,False,0.8626545667648315,1.3120993003212789e-07
+injection,"random, matched norm",1.0,img_0056,necklace,train,necklace,True,False,0.40977194905281067,4.894345693173818e-05
+injection,"random, matched norm",1.0,img_0979,trailer,car,trailer,True,False,0.15214435756206512,0.001083751325495541
+injection,"random, matched norm",1.0,img_0868,goal,pen,goal,True,False,0.5993910431861877,1.4688842384202871e-05
+injection,"random, matched norm",1.0,img_0461,glove,iron,glove,True,False,0.9245897531509399,1.0412011874905147e-07
+injection,"random, matched norm",1.0,img_0926,closet,truck,cabinet,True,False,0.018666110932826996,5.402725946623832e-07
+injection,"random, matched norm",1.0,img_0296,camera,flag,camera,True,False,0.9573925733566284,1.1262238786002854e-06
+injection,"random, matched norm",1.0,img_0774,glove,flower,glove,True,False,0.5848255157470703,6.054988830328512e-07
+injection,"random, matched norm",1.0,img_0649,towel,lemon,towel,True,False,0.7513766884803772,6.127844187631126e-08
+injection,"random, matched norm",1.0,img_0262,plate,door,plate,True,False,0.9136573076248169,4.121004167245701e-05
+injection,"random, matched norm",1.0,img_0153,onions,hammer,onion,True,False,0.05882783234119415,1.15000304390378e-07
+injection,"random, matched norm",1.0,img_0481,doll,bell,doll,True,False,0.9733719825744629,8.488713660881331e-07
+injection,"random, matched norm",1.0,img_0982,lamp,merge,lampshade,False,False,0.960926353931427,4.784443063954313e-09
+injection,"random, matched norm",1.0,img_0707,sausage,honey,sausage,True,False,0.7439731955528259,2.1247602489893325e-05
+injection,"random, matched norm",1.0,img_0215,cans,hammer,can,True,False,0.006544311065226793,1.4179273648551316e-06
+injection,"random, matched norm",1.0,img_0699,mushroom,lipstick,mushroom,True,False,0.9296520948410034,1.5157377220020862e-06
+injection,"random, matched norm",1.0,img_0608,roller,transistor,roller,True,False,0.5857850313186646,2.535516330226528e-07
+injection,"random, matched norm",1.0,img_0362,bell,gravel,bell,True,False,0.9852505922317505,2.0059867722466151e-07
+injection,"random, matched norm",1.0,img_0927,chair,truck,chair,True,False,0.960685133934021,3.6434769867810246e-07
+injection,"random, matched norm",1.0,img_0023,banana,crystal,banana,True,False,0.9080650210380554,1.0475400991083461e-08
+injection,"random, matched norm",1.0,img_0939,plant,toll,plant,True,False,0.7094377279281616,4.7309489659141946e-09
+injection,"random, matched norm",1.0,img_0836,glasses,cellphone,glasses,True,False,0.802629828453064,4.1047573517971614e-07
+injection,"random, matched norm",1.0,img_0951,table,curb,table,True,False,0.8227220177650452,3.5139498777425615e-07
+injection,"random, matched norm",1.0,img_1156,flowers,ice,bouquet,True,False,0.16209541261196136,2.9468327511494863e-07
+injection,"random, matched norm",1.0,img_0191,glass,flag,wine glass,True,False,0.2863771617412567,4.629424438462593e-05
+injection,"random, matched norm",1.0,img_0254,lighter,fire,lighter,True,False,0.8196861147880554,0.003489894326776266
+injection,"random, matched norm",1.0,img_1121,dvd,slow,DVD,True,False,0.04954550042748451,9.850011792877922e-07
+injection,"random, matched norm",1.0,img_0909,hammer,pen,hammer,True,False,0.9755358695983887,2.318135329915094e-06
+injection,"random, matched norm",1.0,img_0888,remote,dog,remote,True,False,0.915747344493866,5.349470939108869e-06
+injection,"random, matched norm",1.0,img_0117,pizza,cow,pizza,True,False,0.9852932691574097,5.606965487459092e-07
+injection,"random, matched norm",1.0,img_1001,keys,ball,key,True,False,0.20793119072914124,2.863843837985769e-05
+injection,"random, matched norm",1.0,img_0706,sausage,helmet,sausage,True,False,0.6809892654418945,4.15168102563257e-07
+injection,"random, matched norm",1.0,img_0377,thermometer,couch,thermometer,True,False,0.603320300579071,6.60436455746094e-07
+injection,"random, matched norm",1.0,img_0132,pumpkin,fire,squash,True,False,0.0076785520650446415,4.2866295757448825e-07
+injection,"random, matched norm",1.0,img_0655,radio,transistor,radio,True,False,0.39292144775390625,0.0005576833500526845
+injection,note word Y,2.0,img_1009,speaker,tree,speaker,True,False,0.8743365406990051,0.05157376453280449
+injection,note word Y,2.0,img_0650,box,lion,box,True,False,0.5419294834136963,0.010151575319468975
+injection,note word Y,2.0,img_1134,iron,merge,iron,True,False,0.6508963704109192,0.0004714258830063045
+injection,note word Y,2.0,img_0924,monitor,truck,monitor,True,False,0.8473367094993591,0.001866137608885765
+injection,note word Y,2.0,img_1038,coin,horn,coin,True,False,0.3635386824607849,0.014999600127339363
+injection,note word Y,2.0,img_0376,thermometer,trash,thermometer,True,False,0.9151270389556885,0.0011435169726610184
+injection,note word Y,2.0,img_1017,guitar,apple,guitar,True,False,0.978447675704956,0.005512875039130449
+injection,note word Y,2.0,img_0124,salmon,grape,salmon,True,False,0.7340726256370544,0.08197755366563797
+injection,note word Y,2.0,img_0658,safe,hat,safe,True,False,0.5946295261383057,0.019804921001195908
+injection,note word Y,2.0,img_0195,pillow,fence,pillow,True,False,0.8001365065574646,0.010719932615756989
+injection,note word Y,2.0,img_1005,sock,desk,sock,True,False,0.7469196319580078,0.04708518087863922
+injection,note word Y,2.0,img_0949,jacket,signal,jacket,True,False,0.8613241910934448,0.0004064844979438931
+injection,note word Y,2.0,img_0656,speaker,sandwich,speaker,True,False,0.5619966387748718,0.12300987541675568
+injection,note word Y,2.0,img_0143,garlic,curtain,garlic,True,False,0.6427027583122253,0.013268839567899704
+injection,note word Y,2.0,img_0274,microwave,clock,microwave,True,False,0.9046117067337036,0.04271933436393738
+injection,note word Y,2.0,img_0955,pan,curb,pan,True,False,0.7055396437644958,7.39556344342418e-06
+injection,note word Y,2.0,img_0863,vacuum,bike,vacuum,True,False,0.5262185335159302,0.15979930758476257
+injection,note word Y,2.0,img_0653,cable,screw,screw,False,True,0.2414032220840454,0.6589308381080627
+injection,note word Y,2.0,img_0161,tray,fish,tray,True,False,0.23189297318458557,0.167812779545784
+injection,note word Y,2.0,img_0454,chair,fence,chair,True,False,0.7459129691123962,0.06716644018888474
+injection,note word Y,2.0,img_1152,calculator,lion,calculator,True,False,0.9585573077201843,0.00022249051835387945
+injection,note word Y,2.0,img_0536,string,pig,yarn,True,False,0.0008626142516732216,0.05218759551644325
+injection,note word Y,2.0,img_0587,candle,lemon,candle,True,False,0.9534554481506348,0.00537798972800374
+injection,note word Y,2.0,img_0839,lamp,pen,paper,False,False,0.018068546429276466,0.10034553706645966
+injection,note word Y,2.0,img_0716,spoon,bicycle,spoon,True,False,0.8405942320823669,0.019391980022192
+injection,note word Y,2.0,img_1016,speaker,apple,speaker,True,False,0.8971638083457947,0.01584187150001526
+injection,note word Y,2.0,img_0269,basket,cow,basket,True,False,0.7122009992599487,0.04588139057159424
+injection,note word Y,2.0,img_0824,remote,knife,remote,True,False,0.6474992632865906,0.2212812751531601
+injection,note word Y,2.0,img_0095,headphones,house,headphones,True,False,0.7426915168762207,0.0008297589374706149
+injection,note word Y,2.0,img_1122,headphones,highway,headphones,True,False,0.7665703296661377,0.0026756087318062782
+injection,note word Y,2.0,img_0056,necklace,train,train,False,True,0.15595588088035583,0.23147492110729218
+injection,note word Y,2.0,img_0979,trailer,car,bumper,False,False,0.12145349383354187,0.08794350922107697
+injection,note word Y,2.0,img_0868,goal,pen,goal,True,False,0.5482307076454163,0.039746299386024475
+injection,note word Y,2.0,img_0461,glove,iron,glove,True,False,0.9472314715385437,3.217582343495451e-05
+injection,note word Y,2.0,img_0926,closet,truck,cabinet,True,False,0.026263441890478134,0.030755411833524704
+injection,note word Y,2.0,img_0296,camera,flag,camera,True,False,0.9670674204826355,0.0018429721239954233
+injection,note word Y,2.0,img_0774,glove,flower,glove,True,False,0.43843355774879456,0.13382023572921753
+injection,note word Y,2.0,img_0649,towel,lemon,towel,True,False,0.6957616806030273,0.0014552565990015864
+injection,note word Y,2.0,img_0262,plate,door,plate,True,False,0.8172537088394165,0.01753774657845497
+injection,note word Y,2.0,img_0153,onions,hammer,onion,True,False,0.045466501265764236,0.0007486253161914647
+injection,note word Y,2.0,img_0481,doll,bell,doll,True,False,0.9485985636711121,0.0009813359938561916
+injection,note word Y,2.0,img_0982,lamp,merge,lamp,True,False,0.9570032954216003,1.8261069953950937e-06
+injection,note word Y,2.0,img_0707,sausage,honey,honeycomb,False,False,0.1604585200548172,0.2489207535982132
+injection,note word Y,2.0,img_0215,cans,hammer,can,True,False,0.003159658517688513,0.07710801810026169
+injection,note word Y,2.0,img_0699,mushroom,lipstick,mushroom,True,False,0.8846943974494934,0.019465893507003784
+injection,note word Y,2.0,img_0608,roller,transistor,roller,True,False,0.1710823029279709,0.0338749922811985
+injection,note word Y,2.0,img_0362,bell,gravel,bell,True,False,0.9082648158073425,0.03207845240831375
+injection,note word Y,2.0,img_0927,chair,truck,chair,True,False,0.9134458303451538,0.006994145922362804
+injection,note word Y,2.0,img_0023,banana,crystal,banana,True,False,0.6917546987533569,0.0073759411461651325
+injection,note word Y,2.0,img_0939,plant,toll,plant,True,False,0.6032469272613525,0.0003419419517740607
+injection,note word Y,2.0,img_0836,glasses,cellphone,glasses,True,False,0.6618037223815918,0.0040418063290417194
+injection,note word Y,2.0,img_0951,table,curb,table,True,False,0.7516621351242065,7.804776396369562e-05
+injection,note word Y,2.0,img_1156,flowers,ice,bouquet,True,False,0.13646365702152252,0.0003660905931610614
+injection,note word Y,2.0,img_0191,glass,flag,wine glass,True,False,0.17145177721977234,0.0607343353331089
+injection,note word Y,2.0,img_0254,lighter,fire,lighter,True,False,0.3913983106613159,0.1780749261379242
+injection,note word Y,2.0,img_1121,dvd,slow,DVD,True,False,0.036797963082790375,0.000540189619641751
+injection,note word Y,2.0,img_0909,hammer,pen,hammer,True,False,0.9748146533966064,0.003248200984671712
+injection,note word Y,2.0,img_0888,remote,dog,remote,True,False,0.8398743867874146,0.04805712029337883
+injection,note word Y,2.0,img_0117,pizza,cow,pizza,True,False,0.9588671326637268,0.0020322157070040703
+injection,note word Y,2.0,img_1001,keys,ball,key,True,False,0.20136167109012604,0.029379768297076225
+injection,note word Y,2.0,img_0706,sausage,helmet,sausage,True,False,0.5304545760154724,0.0066805495880544186
+injection,note word Y,2.0,img_0377,thermometer,couch,thermostat,False,False,0.3160039484500885,0.00864684209227562
+injection,note word Y,2.0,img_0132,pumpkin,fire,squash,True,False,0.02192004770040512,0.031228840351104736
+injection,note word Y,2.0,img_0655,radio,transistor,radio,True,False,0.6472135186195374,0.06839888542890549
+injection,"random, matched norm",2.0,img_1009,speaker,tree,speaker,True,False,0.9222817420959473,8.068884653766872e-07
+injection,"random, matched norm",2.0,img_0650,box,lion,box,True,False,0.5541481971740723,1.849081968430255e-06
+injection,"random, matched norm",2.0,img_1134,iron,merge,iron,True,False,0.7433591485023499,5.971227210466168e-07
+injection,"random, matched norm",2.0,img_0924,monitor,truck,monitor,True,False,0.8683874607086182,6.48294076199818e-08
+injection,"random, matched norm",2.0,img_1038,coin,horn,coin,True,False,0.4104614555835724,6.929103051334096e-07
+injection,"random, matched norm",2.0,img_0376,thermometer,trash,thermometer,True,False,0.9564523100852966,4.5285936778327596e-08
+injection,"random, matched norm",2.0,img_1017,guitar,apple,guitar,True,False,0.9915968179702759,1.6169265393273236e-07
+injection,"random, matched norm",2.0,img_0124,salmon,grape,salmon,True,False,0.8932181000709534,6.036169907019939e-06
+injection,"random, matched norm",2.0,img_0658,safe,hat,safe,True,False,0.856836199760437,4.840612746193074e-06
+injection,"random, matched norm",2.0,img_0195,pillow,fence,pillow,True,False,0.8740825653076172,9.6416886208317e-07
+injection,"random, matched norm",2.0,img_1005,sock,desk,sock,True,False,0.9322202205657959,6.179253887239611e-06
+injection,"random, matched norm",2.0,img_0949,jacket,signal,jacket,True,False,0.8907200694084167,5.118708372719993e-07
+injection,"random, matched norm",2.0,img_0656,speaker,sandwich,speaker,True,False,0.7732046246528625,6.160559564705181e-07
+injection,"random, matched norm",2.0,img_0143,garlic,curtain,garlic,True,False,0.9004884958267212,4.7009581294332747e-07
+injection,"random, matched norm",2.0,img_0274,microwave,clock,microwave,True,False,0.9336438775062561,5.6372406106675044e-05
+injection,"random, matched norm",2.0,img_0955,pan,curb,pan,True,False,0.7254924774169922,8.75010641721019e-09
+injection,"random, matched norm",2.0,img_0863,vacuum,bike,vacuum,True,False,0.8341193199157715,2.8761014618794434e-05
+injection,"random, matched norm",2.0,img_0653,cable,screw,cable,True,False,0.6181290745735168,0.00011743330105673522
+injection,"random, matched norm",2.0,img_0161,tray,fish,tray,True,False,0.32871636748313904,2.032777229032945e-05
+injection,"random, matched norm",2.0,img_0454,chair,fence,chair,True,False,0.8923978209495544,8.904588321456686e-05
+injection,"random, matched norm",2.0,img_1152,calculator,lion,calculator,True,False,0.9836832880973816,1.0369559433343056e-08
+injection,"random, matched norm",2.0,img_0536,string,pig,yarn,True,False,0.00237900298088789,1.7335181837552227e-05
+injection,"random, matched norm",2.0,img_0587,candle,lemon,candle,True,False,0.9552758932113647,2.808815452226554e-06
+injection,"random, matched norm",2.0,img_0839,lamp,pen,light,True,False,0.03377779945731163,0.0005826984415762126
+injection,"random, matched norm",2.0,img_0716,spoon,bicycle,spoon,True,False,0.9527615904808044,4.744864838812646e-07
+injection,"random, matched norm",2.0,img_1016,speaker,apple,speaker,True,False,0.9709826707839966,1.682487322796078e-06
+injection,"random, matched norm",2.0,img_0269,basket,cow,basket,True,False,0.7592023015022278,1.4393123137779185e-06
+injection,"random, matched norm",2.0,img_0824,remote,knife,remote,True,False,0.727692723274231,1.8386419924354414e-06
+injection,"random, matched norm",2.0,img_0095,headphones,house,headphones,True,False,0.8303587436676025,9.6544874850224e-07
+injection,"random, matched norm",2.0,img_1122,headphones,highway,headphones,True,False,0.8604546785354614,1.172126928850048e-07
+injection,"random, matched norm",2.0,img_0056,necklace,train,necklace,True,False,0.4287075400352478,5.3393257985590026e-05
+injection,"random, matched norm",2.0,img_0979,trailer,car,trailer,True,False,0.1422809660434723,0.001170713105238974
+injection,"random, matched norm",2.0,img_0868,goal,pen,goal,True,False,0.6156196594238281,1.552125468151644e-05
+injection,"random, matched norm",2.0,img_0461,glove,iron,glove,True,False,0.9208027720451355,1.279911430174252e-07
+injection,"random, matched norm",2.0,img_0926,closet,truck,cabinet,True,False,0.018787316977977753,4.822617256650119e-07
+injection,"random, matched norm",2.0,img_0296,camera,flag,camera,True,False,0.9579630494117737,1.1699944479914848e-06
+injection,"random, matched norm",2.0,img_0774,glove,flower,glove,True,False,0.5486260056495667,6.540722097270191e-07
+injection,"random, matched norm",2.0,img_0649,towel,lemon,towel,True,False,0.7356346249580383,6.820067000035124e-08
+injection,"random, matched norm",2.0,img_0262,plate,door,plate,True,False,0.9164921045303345,3.88875268981792e-05
+injection,"random, matched norm",2.0,img_0153,onions,hammer,onion,True,False,0.05873563513159752,1.2341975264007488e-07
+injection,"random, matched norm",2.0,img_0481,doll,bell,doll,True,False,0.9737652540206909,8.345680839738634e-07
+injection,"random, matched norm",2.0,img_0982,lamp,merge,lampshade,False,False,0.9614386558532715,5.108344414139765e-09
+injection,"random, matched norm",2.0,img_0707,sausage,honey,sausage,True,False,0.7501859068870544,2.3570693883812055e-05
+injection,"random, matched norm",2.0,img_0215,cans,hammer,can,True,False,0.0063475933857262135,1.333476006948331e-06
+injection,"random, matched norm",2.0,img_0699,mushroom,lipstick,mushroom,True,False,0.9194244742393494,1.7456086425227113e-06
+injection,"random, matched norm",2.0,img_0608,roller,transistor,roller,True,False,0.5674945116043091,2.5995805685852247e-07
+injection,"random, matched norm",2.0,img_0362,bell,gravel,bell,True,False,0.9865438342094421,1.8621919650740892e-07
+injection,"random, matched norm",2.0,img_0927,chair,truck,chair,True,False,0.9680205583572388,2.619006238546717e-07
+injection,"random, matched norm",2.0,img_0023,banana,crystal,banana,True,False,0.9009618759155273,1.127308379977876e-08
+injection,"random, matched norm",2.0,img_0939,plant,toll,plant,True,False,0.7116014957427979,4.429312028264576e-09
+injection,"random, matched norm",2.0,img_0836,glasses,cellphone,glasses,True,False,0.7971134185791016,4.574589240746718e-07
+injection,"random, matched norm",2.0,img_0951,table,curb,table,True,False,0.805731475353241,4.1029633734979143e-07
+injection,"random, matched norm",2.0,img_1156,flowers,ice,bouquet,True,False,0.1516636461019516,3.0984548970991455e-07
+injection,"random, matched norm",2.0,img_0191,glass,flag,wine glass,True,False,0.2655750513076782,4.1359231545357034e-05
+injection,"random, matched norm",2.0,img_0254,lighter,fire,lighter,True,False,0.8116737008094788,0.00418082857504487
+injection,"random, matched norm",2.0,img_1121,dvd,slow,DVD,True,False,0.054094213992357254,9.512594374427863e-07
+injection,"random, matched norm",2.0,img_0909,hammer,pen,hammer,True,False,0.9756328463554382,2.3208153834275436e-06
+injection,"random, matched norm",2.0,img_0888,remote,dog,remote,True,False,0.9189081788063049,3.842691512545571e-06
+injection,"random, matched norm",2.0,img_0117,pizza,cow,pizza,True,False,0.9851040840148926,5.491348815667152e-07
+injection,"random, matched norm",2.0,img_1001,keys,ball,key,True,False,0.19956617057323456,2.5969506168621592e-05
+injection,"random, matched norm",2.0,img_0706,sausage,helmet,sausage,True,False,0.6478189826011658,5.07533570726082e-07
+injection,"random, matched norm",2.0,img_0377,thermometer,couch,thermometer,True,False,0.6251880526542664,6.459219434873376e-07
+injection,"random, matched norm",2.0,img_0132,pumpkin,fire,squash,True,False,0.008214031346142292,4.4851159941572405e-07
+injection,"random, matched norm",2.0,img_0655,radio,transistor,radio,True,False,0.4255591332912445,0.0005617623683065176
+injection,note word Y,4.0,img_1009,speaker,tree,tree,False,True,0.0017896612407639623,0.9047163724899292
+injection,note word Y,4.0,img_0650,box,lion,box,True,False,0.341817170381546,0.11960405856370926
+injection,note word Y,4.0,img_1134,iron,merge,iron,True,False,0.2039536088705063,0.0465884655714035
+injection,note word Y,4.0,img_0924,monitor,truck,truck,False,True,0.14385707676410675,0.7016902565956116
+injection,note word Y,4.0,img_1038,coin,horn,horn,False,True,0.07089696824550629,0.5894215106964111
+injection,note word Y,4.0,img_0376,thermometer,trash,trash can,False,True,0.29443731904029846,0.623810350894928
+injection,note word Y,4.0,img_1017,guitar,apple,guitar,True,False,0.45399823784828186,0.4031063914299011
+injection,note word Y,4.0,img_0124,salmon,grape,grapefruit,False,False,0.09492466598749161,0.5677942037582397
+injection,note word Y,4.0,img_0658,safe,hat,hat,False,True,0.059073448181152344,0.531863808631897
+injection,note word Y,4.0,img_0195,pillow,fence,fence,False,True,0.04540536552667618,0.8034483194351196
+injection,note word Y,4.0,img_1005,sock,desk,desk,False,True,0.036146607249975204,0.7757549285888672
+injection,note word Y,4.0,img_0949,jacket,signal,jacket,True,False,0.743934690952301,0.0508882999420166
+injection,note word Y,4.0,img_0656,speaker,sandwich,sandwich,False,True,0.01040607038885355,0.8847174048423767
+injection,note word Y,4.0,img_0143,garlic,curtain,curtain,False,True,0.008152414113283157,0.9177522659301758
+injection,note word Y,4.0,img_0274,microwave,clock,microwave,True,False,0.48724934458732605,0.39867550134658813
+injection,note word Y,4.0,img_0955,pan,curb,pan,True,False,0.6249784231185913,0.04131319373846054
+injection,note word Y,4.0,img_0863,vacuum,bike,bike,False,True,0.04389173537492752,0.42867156863212585
+injection,note word Y,4.0,img_0653,cable,screw,screw,False,True,0.028025684878230095,0.9299551844596863
+injection,note word Y,4.0,img_0161,tray,fish,fish,False,True,0.10616186261177063,0.46309995651245117
+injection,note word Y,4.0,img_0454,chair,fence,fence,False,True,0.32886451482772827,0.450634628534317
+injection,note word Y,4.0,img_1152,calculator,lion,calculator,True,False,0.5896030068397522,0.14672839641571045
+injection,note word Y,4.0,img_0536,string,pig,pig,False,True,0.00011714716674759984,0.6284279227256775
+injection,note word Y,4.0,img_0587,candle,lemon,candle,True,False,0.6269266605377197,0.29677262902259827
+injection,note word Y,4.0,img_0839,lamp,pen,pen,False,True,0.004865242168307304,0.4583498239517212
+injection,note word Y,4.0,img_0716,spoon,bicycle,bicycle,False,True,0.04132829234004021,0.5425947904586792
+injection,note word Y,4.0,img_1016,speaker,apple,speaker,True,False,0.4667353630065918,0.22865186631679535
+injection,note word Y,4.0,img_0269,basket,cow,cow,False,True,0.049674708396196365,0.3736783266067505
+injection,note word Y,4.0,img_0824,remote,knife,knife,False,True,0.00020778771431650966,0.9547021389007568
+injection,note word Y,4.0,img_0095,headphones,house,headphones,True,False,0.11908175051212311,0.08866119384765625
+injection,note word Y,4.0,img_1122,headphones,highway,highway,False,True,0.014488879591226578,0.6686031222343445
+injection,note word Y,4.0,img_0056,necklace,train,train,False,True,0.003139524720609188,0.691014289855957
+injection,note word Y,4.0,img_0979,trailer,car,car,False,True,0.043992698192596436,0.2966688275337219
+injection,note word Y,4.0,img_0868,goal,pen,pen,False,True,0.1471380889415741,0.43290427327156067
+injection,note word Y,4.0,img_0461,glove,iron,glove,True,False,0.9173848032951355,0.00783248245716095
+injection,note word Y,4.0,img_0926,closet,truck,truck,False,True,0.0005415849154815078,0.6846386790275574
+injection,note word Y,4.0,img_0296,camera,flag,camera,True,False,0.8185104131698608,0.14211882650852203
+injection,note word Y,4.0,img_0774,glove,flower,flower,False,True,0.00747530534863472,0.8922714591026306
+injection,note word Y,4.0,img_0649,towel,lemon,lemonade,False,False,0.1898609846830368,0.5659708380699158
+injection,note word Y,4.0,img_0262,plate,door,plate,True,False,0.3729875087738037,0.27558115124702454
+injection,note word Y,4.0,img_0153,onions,hammer,onion,True,False,0.016028784215450287,0.3675297498703003
+injection,note word Y,4.0,img_0481,doll,bell,doll,True,False,0.74587082862854,0.09278850257396698
+injection,note word Y,4.0,img_0982,lamp,merge,lamp,True,False,0.9469997882843018,0.0011364794336259365
+injection,note word Y,4.0,img_0707,sausage,honey,honeycomb,False,False,0.00047994955093599856,0.5606718063354492
+injection,note word Y,4.0,img_0215,cans,hammer,hammer,False,True,0.00024692327133379877,0.7867176532745361
+injection,note word Y,4.0,img_0699,mushroom,lipstick,lipstick,False,True,0.00974572915583849,0.9307091236114502
+injection,note word Y,4.0,img_0608,roller,transistor,transistor,False,True,0.00033027183962985873,0.7240363359451294
+injection,note word Y,4.0,img_0362,bell,gravel,gravel,False,True,0.07478056102991104,0.7600430250167847
+injection,note word Y,4.0,img_0927,chair,truck,truck,False,True,0.18957318365573883,0.5058754682540894
+injection,note word Y,4.0,img_0023,banana,crystal,crystal,False,True,0.01475973054766655,0.7431244254112244
+injection,note word Y,4.0,img_0939,plant,toll,toll,False,True,0.07796231657266617,0.7818765044212341
+injection,note word Y,4.0,img_0836,glasses,cellphone,phone,False,True,0.0921948105096817,0.18680523335933685
+injection,note word Y,4.0,img_0951,table,curb,table,True,False,0.6353840231895447,0.0096820630133152
+injection,note word Y,4.0,img_1156,flowers,ice,flower,True,False,0.13493289053440094,0.08277732133865356
+injection,note word Y,4.0,img_0191,glass,flag,flag,False,True,0.03162163496017456,0.5298774242401123
+injection,note word Y,4.0,img_0254,lighter,fire,fire,False,True,0.043756213039159775,0.6192564368247986
+injection,note word Y,4.0,img_1121,dvd,slow,book,False,False,0.01107398234307766,0.007537402678281069
+injection,note word Y,4.0,img_0909,hammer,pen,hammer,True,False,0.7430405020713806,0.14515136182308197
+injection,note word Y,4.0,img_0888,remote,dog,dog,False,True,0.39696553349494934,0.5053061842918396
+injection,note word Y,4.0,img_0117,pizza,cow,pizza,True,False,0.5778632164001465,0.2707497477531433
+injection,note word Y,4.0,img_1001,keys,ball,ball,False,True,0.07824530452489853,0.28353220224380493
+injection,note word Y,4.0,img_0706,sausage,helmet,helmet,False,True,0.0020985009614378214,0.8469654321670532
+injection,note word Y,4.0,img_0377,thermometer,couch,couch,False,True,0.009786352515220642,0.5117304921150208
+injection,note word Y,4.0,img_0132,pumpkin,fire,fire,False,True,0.004554931540042162,0.5816889405250549
+injection,note word Y,4.0,img_0655,radio,transistor,radio,True,False,0.6159903407096863,0.23937182128429413
+injection,"random, matched norm",4.0,img_1009,speaker,tree,speaker,True,False,0.9081012606620789,5.766983690591587e-07
+injection,"random, matched norm",4.0,img_0650,box,lion,box,True,False,0.5492441058158875,2.512078935978934e-06
+injection,"random, matched norm",4.0,img_1134,iron,merge,iron,True,False,0.7556228041648865,7.029238417999295e-07
+injection,"random, matched norm",4.0,img_0924,monitor,truck,monitor,True,False,0.8761622905731201,6.293275589541736e-08
+injection,"random, matched norm",4.0,img_1038,coin,horn,coin,True,False,0.44065654277801514,6.325504955384531e-07
+injection,"random, matched norm",4.0,img_0376,thermometer,trash,thermometer,True,False,0.9532028436660767,5.294611682415962e-08
+injection,"random, matched norm",4.0,img_1017,guitar,apple,guitar,True,False,0.988775908946991,2.155365166345291e-07
+injection,"random, matched norm",4.0,img_0124,salmon,grape,salmon,True,False,0.8836003541946411,6.357939128065482e-06
+injection,"random, matched norm",4.0,img_0658,safe,hat,safe,True,False,0.818625807762146,4.902245564153418e-06
+injection,"random, matched norm",4.0,img_0195,pillow,fence,pillow,True,False,0.8683618307113647,9.892813750411733e-07
+injection,"random, matched norm",4.0,img_1005,sock,desk,sock,True,False,0.9260625243186951,7.105859367584344e-06
+injection,"random, matched norm",4.0,img_0949,jacket,signal,jacket,True,False,0.8933354616165161,6.132306111794605e-07
+injection,"random, matched norm",4.0,img_0656,speaker,sandwich,speaker,True,False,0.7924709320068359,5.171719976715394e-07
+injection,"random, matched norm",4.0,img_0143,garlic,curtain,garlic,True,False,0.9140386581420898,5.274376917441259e-07
+injection,"random, matched norm",4.0,img_0274,microwave,clock,microwave,True,False,0.9390220642089844,5.068657992524095e-05
+injection,"random, matched norm",4.0,img_0955,pan,curb,pan,True,False,0.7471965551376343,8.028441911278605e-09
+injection,"random, matched norm",4.0,img_0863,vacuum,bike,vacuum,True,False,0.819591224193573,3.629388447734527e-05
+injection,"random, matched norm",4.0,img_0653,cable,screw,cable,True,False,0.5927430391311646,0.00010048985132016242
+injection,"random, matched norm",4.0,img_0161,tray,fish,tray,True,False,0.3426319658756256,2.120207682310138e-05
+injection,"random, matched norm",4.0,img_0454,chair,fence,chair,True,False,0.8902674317359924,8.81339656189084e-05
+injection,"random, matched norm",4.0,img_1152,calculator,lion,calculator,True,False,0.9800339937210083,1.3061655756985147e-08
+injection,"random, matched norm",4.0,img_0536,string,pig,yarn,True,False,0.00263699097558856,2.184457116527483e-05
+injection,"random, matched norm",4.0,img_0587,candle,lemon,candle,True,False,0.9489514231681824,3.945599019061774e-06
+injection,"random, matched norm",4.0,img_0839,lamp,pen,light,True,False,0.03003419004380703,0.0007994447369128466
+injection,"random, matched norm",4.0,img_0716,spoon,bicycle,spoon,True,False,0.9472119212150574,6.050457841411117e-07
+injection,"random, matched norm",4.0,img_1016,speaker,apple,speaker,True,False,0.9677208662033081,1.7316017419943819e-06
+injection,"random, matched norm",4.0,img_0269,basket,cow,basket,True,False,0.6878438591957092,1.583366156410193e-06
+injection,"random, matched norm",4.0,img_0824,remote,knife,remote,True,False,0.7128012180328369,2.075033762594103e-06
+injection,"random, matched norm",4.0,img_0095,headphones,house,headphones,True,False,0.8089731335639954,9.946320460585412e-07
+injection,"random, matched norm",4.0,img_1122,headphones,highway,headphones,True,False,0.8659883141517639,1.1756134199458756e-07
+injection,"random, matched norm",4.0,img_0056,necklace,train,necklace,True,False,0.37828099727630615,7.17184302629903e-05
+injection,"random, matched norm",4.0,img_0979,trailer,car,tongue,False,False,0.12752586603164673,0.0014286786317825317
+injection,"random, matched norm",4.0,img_0868,goal,pen,goal,True,False,0.6097033023834229,1.759741280693561e-05
+injection,"random, matched norm",4.0,img_0461,glove,iron,glove,True,False,0.907601535320282,1.676809517903166e-07
+injection,"random, matched norm",4.0,img_0926,closet,truck,cabinet,True,False,0.017974937334656715,4.249841936143639e-07
+injection,"random, matched norm",4.0,img_0296,camera,flag,camera,True,False,0.9571033120155334,1.0897891797867487e-06
+injection,"random, matched norm",4.0,img_0774,glove,flower,glove,True,False,0.5436863303184509,5.798493702968699e-07
+injection,"random, matched norm",4.0,img_0649,towel,lemon,towel,True,False,0.6933931112289429,9.513487242429619e-08
+injection,"random, matched norm",4.0,img_0262,plate,door,plate,True,False,0.9117245078086853,4.2465751903364435e-05
+injection,"random, matched norm",4.0,img_0153,onions,hammer,onion,True,False,0.05201979726552963,1.2704545326869265e-07
+injection,"random, matched norm",4.0,img_0481,doll,bell,doll,True,False,0.9734789729118347,7.983679779499653e-07
+injection,"random, matched norm",4.0,img_0982,lamp,merge,lampshade,False,False,0.9618735909461975,5.965933080886998e-09
+injection,"random, matched norm",4.0,img_0707,sausage,honey,sausage,True,False,0.7385566830635071,2.8932128770975396e-05
+injection,"random, matched norm",4.0,img_0215,cans,hammer,can,True,False,0.006716477684676647,1.2904230288768304e-06
+injection,"random, matched norm",4.0,img_0699,mushroom,lipstick,mushroom,True,False,0.9145150780677795,1.9545752820704365e-06
+injection,"random, matched norm",4.0,img_0608,roller,transistor,roller,True,False,0.5242695808410645,3.4661684367165435e-07
+injection,"random, matched norm",4.0,img_0362,bell,gravel,bell,True,False,0.9864752292633057,2.3590315834098874e-07
+injection,"random, matched norm",4.0,img_0927,chair,truck,chair,True,False,0.9714124798774719,2.065030457742978e-07
+injection,"random, matched norm",4.0,img_0023,banana,crystal,banana,True,False,0.8697913885116577,1.558376361288083e-08
+injection,"random, matched norm",4.0,img_0939,plant,toll,plant,True,False,0.6934001445770264,3.693311878549821e-09
+injection,"random, matched norm",4.0,img_0836,glasses,cellphone,glasses,True,False,0.7814145088195801,4.888378839495999e-07
+injection,"random, matched norm",4.0,img_0951,table,curb,table,True,False,0.8210071325302124,4.5429374040395487e-07
+injection,"random, matched norm",4.0,img_1156,flowers,ice,bouquet,True,False,0.1460450440645218,3.766416796224803e-07
+injection,"random, matched norm",4.0,img_0191,glass,flag,wine glass,True,False,0.2607235014438629,4.712782902061008e-05
+injection,"random, matched norm",4.0,img_0254,lighter,fire,lighter,True,False,0.79572594165802,0.005903479643166065
+injection,"random, matched norm",4.0,img_1121,dvd,slow,DVD,True,False,0.03833666071295738,9.577914852343383e-07
+injection,"random, matched norm",4.0,img_0909,hammer,pen,hammer,True,False,0.973136305809021,2.5749343421921367e-06
+injection,"random, matched norm",4.0,img_0888,remote,dog,remote,True,False,0.9102622866630554,2.794486135826446e-06
+injection,"random, matched norm",4.0,img_0117,pizza,cow,pizza,True,False,0.9819989204406738,6.469830964306311e-07
+injection,"random, matched norm",4.0,img_1001,keys,ball,sticky note,False,False,0.1854197233915329,2.1534964616876096e-05
+injection,"random, matched norm",4.0,img_0706,sausage,helmet,sausage,True,False,0.6545749306678772,6.097220648371149e-07
+injection,"random, matched norm",4.0,img_0377,thermometer,couch,thermometer,True,False,0.6205111742019653,7.255098921632452e-07
+injection,"random, matched norm",4.0,img_0132,pumpkin,fire,squash,True,False,0.008816265501081944,5.27937515926169e-07
+injection,"random, matched norm",4.0,img_0655,radio,transistor,radio,True,False,0.49079248309135437,0.000500132271554321

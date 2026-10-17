@@ -1,0 +1,71 @@
+[project]
+name = "jspace"
+version = "1.0.0"
+description = "A vision-language model reads an object's image tokens for meaning early and for its name late: J-lens experiments on Qwen3.5 and Gemma-4"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+# Exact versions of the environment the original runs used (13-14 Oct 2026). uv.lock pins everything else.
+dependencies = [
+    "jlens",
+    "torch==2.8.0",
+    "torchvision==0.23.0",                # the Qwen3.5 image processor
+    "transformers==5.19.0",
+    "tokenizers==0.23.3",
+    "huggingface-hub==2.2.0",
+    "hf-xet==1.7.0",
+    "safetensors==0.8.0",
+    "accelerate==1.15.0",
+    "flash-linear-attention==0.5.2",      # the Qwen3.5 linear-attention kernels: without them the numbers change slightly
+    "fla-core==0.5.2",
+    "einops==0.8.2",
+    "numpy==2.1.2",
+    "pandas==3.0.6",
+    "pyarrow==26.0.0",
+    "pillow==11.0.0",                     # draws the stimuli: another version may change the pictures
+    "matplotlib==3.11.2",
+    "seaborn==0.13.2",
+    "requests==2.32.5",
+    "tqdm==4.70.1",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[build-system]
+requires = ["uv_build>=0.9.0,<0.10"]
+build-backend = "uv_build"
+
+[tool.uv]
+# the indirect dependencies at the versions of the original environment too
+constraint-dependencies = [
+    "anyio==4.11.0", "certifi==2025.10.5", "charset-normalizer==3.4.3", "filelock==3.20.0", "fonttools==4.66.1", "fsspec==2024.6.1",
+    "markupsafe==3.0.3", "networkx==3.3", "packaging==25.0", "psutil==7.1.0", "pygments==2.19.2", "pyparsing==3.1.1",
+    "setuptools==80.9.0", "six==1.16.0", "sympy==1.13.3", "truststore==0.10.4", "typing-extensions==4.15.0", "urllib3==2.5.0",
+]
+
+[tool.uv.sources]
+jlens = { git = "https://github.com/anthropics/jacobian-lens", rev = "581d398613e5602a5af361e1c34d3a92ea82ba8e" }
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.ruff]
+line-length = 200
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = ["E741", "B023", "B905"]  # E741: L and I as in the papers; B023: hooks bind loop variables through default arguments; B905: zips of equal length by construction
+
+[tool.ruff.lint.per-file-ignores]
+"src/jspace/judge.py" = ["E501"]  # the rubrics are frozen text: their sha1 is the verdict cache key
+
+[tool.ruff.lint.isort]
+known-first-party = ["jspace"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

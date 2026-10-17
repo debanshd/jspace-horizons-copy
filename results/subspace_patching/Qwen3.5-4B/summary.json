@@ -1,0 +1,2745 @@
+{
+  "n": 64,
+  "rank": 256,
+  "crop_set": 1,
+  "crops": [
+    {
+      "scene": 0,
+      "X": "bird",
+      "Z": "airplane",
+      "q": 1,
+      "crop_x": [
+        176847,
+        [
+          246,
+          216,
+          271,
+          143
+        ]
+      ],
+      "crop_z": [
+        5477,
+        [
+          9,
+          105,
+          621,
+          183
+        ]
+      ]
+    },
+    {
+      "scene": 1,
+      "X": "train",
+      "Z": "cat",
+      "q": 5,
+      "crop_x": [
+        39670,
+        [
+          48,
+          101,
+          523,
+          351
+        ]
+      ],
+      "crop_z": [
+        15497,
+        [
+          32,
+          20,
+          451,
+          433
+        ]
+      ]
+    },
+    {
+      "scene": 2,
+      "X": "dog",
+      "Z": "bus",
+      "q": 3,
+      "crop_x": [
+        131273,
+        [
+          120,
+          0,
+          359,
+          596
+        ]
+      ],
+      "crop_z": [
+        1584,
+        [
+          126,
+          90,
+          397,
+          444
+        ]
+      ]
+    },
+    {
+      "scene": 3,
+      "X": "laptop",
+      "Z": "horse",
+      "q": 3,
+      "crop_x": [
+        239318,
+        [
+          40,
+          13,
+          314,
+          398
+        ]
+      ],
+      "crop_z": [
+        506656,
+        [
+          184,
+          93,
+          381,
+          339
+        ]
+      ]
+    },
+    {
+      "scene": 4,
+      "X": "bird",
+      "Z": "car",
+      "q": 5,
+      "crop_x": [
+        264335,
+        [
+          63,
+          45,
+          283,
+          546
+        ]
+      ],
+      "crop_z": [
+        76417,
+        [
+          190,
+          153,
+          449,
+          316
+        ]
+      ]
+    },
+    {
+      "scene": 5,
+      "X": "car",
+      "Z": "bird",
+      "q": 2,
+      "crop_x": [
+        76417,
+        [
+          190,
+          153,
+          449,
+          316
+        ]
+      ],
+      "crop_z": [
+        176847,
+        [
+          246,
+          216,
+          271,
+          143
+        ]
+      ]
+    },
+    {
+      "scene": 6,
+      "X": "bird",
+      "Z": "car",
+      "q": 1,
+      "crop_x": [
+        176847,
+        [
+          246,
+          216,
+          271,
+          143
+        ]
+      ],
+      "crop_z": [
+        55150,
+        [
+          0,
+          36,
+          191,
+          389
+        ]
+      ]
+    },
+    {
+      "scene": 7,
+      "X": "laptop",
+      "Z": "horse",
+      "q": 5,
+      "crop_x": [
+        181499,
+        [
+          231,
+          6,
+          408,
+          499
+        ]
+      ],
+      "crop_z": [
+        275392,
+        [
+          67,
+          112,
+          234,
+          512
+        ]
+      ]
+    },
+    {
+      "scene": 8,
+      "X": "cat",
+      "Z": "bus",
+      "q": 4,
+      "crop_x": [
+        80666,
+        [
+          64,
+          120,
+          469,
+          418
+        ]
+      ],
+      "crop_z": [
+        143931,
+        [
+          0,
+          0,
+          638,
+          472
+        ]
+      ]
+    },
+    {
+      "scene": 9,
+      "X": "boat",
+      "Z": "cat",
+      "q": 3,
+      "crop_x": [
+        421757,
+        [
+          24,
+          114,
+          258,
+          158
+        ]
+      ],
+      "crop_z": [
+        405306,
+        [
+          11,
+          1,
+          628,
+          410
+        ]
+      ]
+    },
+    {
+      "scene": 10,
+      "X": "bird",
+      "Z": "car",
+      "q": 3,
+      "crop_x": [
+        264335,
+        [
+          63,
+          45,
+          283,
+          546
+        ]
+      ],
+      "crop_z": [
+        23272,
+        [
+          0,
+          0,
+          499,
+          370
+        ]
+      ]
+    },
+    {
+      "scene": 11,
+      "X": "bicycle",
+      "Z": "dog",
+      "q": 3,
+      "crop_x": [
+        403565,
+        [
+          39,
+          318,
+          318,
+          213
+        ]
+      ],
+      "crop_z": [
+        364636,
+        [
+          118,
+          88,
+          520,
+          439
+        ]
+      ]
+    },
+    {
+      "scene": 12,
+      "X": "dog",
+      "Z": "train",
+      "q": 5,
+      "crop_x": [
+        364636,
+        [
+          118,
+          88,
+          520,
+          439
+        ]
+      ],
+      "crop_z": [
+        477623,
+        [
+          97,
+          75,
+          457,
+          354
+        ]
+      ]
+    },
+    {
+      "scene": 13,
+      "X": "chair",
+      "Z": "horse",
+      "q": 5,
+      "crop_x": [
+        99810,
+        [
+          26,
+          75,
+          327,
+          242
+        ]
+      ],
+      "crop_z": [
+        252216,
+        [
+          276,
+          36,
+          258,
+          411
+        ]
+      ]
+    },
+    {
+      "scene": 14,
+      "X": "cat",
+      "Z": "boat",
+      "q": 2,
+      "crop_x": [
+        286708,
+        [
+          37,
+          107,
+          602,
+          341
+        ]
+      ],
+      "crop_z": [
+        532575,
+        [
+          1,
+          0,
+          638,
+          421
+        ]
+      ]
+    },
+    {
+      "scene": 15,
+      "X": "clock",
+      "Z": "horse",
+      "q": 4,
+      "crop_x": [
+        525286,
+        [
+          25,
+          174,
+          263,
+          274
+        ]
+      ],
+      "crop_z": [
+        380203,
+        [
+          42,
+          109,
+          346,
+          462
+        ]
+      ]
+    },
+    {
+      "scene": 16,
+      "X": "cat",
+      "Z": "train",
+      "q": 6,
+      "crop_x": [
+        284623,
+        [
+          36,
+          0,
+          427,
+          412
+        ]
+      ],
+      "crop_z": [
+        572303,
+        [
+          12,
+          33,
+          607,
+          319
+        ]
+      ]
+    },
+    {
+      "scene": 17,
+      "X": "boat",
+      "Z": "cat",
+      "q": 5,
+      "crop_x": [
+        445722,
+        [
+          4,
+          1,
+          313,
+          493
+        ]
+      ],
+      "crop_z": [
+        433134,
+        [
+          224,
+          6,
+          415,
+          468
+        ]
+      ]
+    },
+    {
+      "scene": 18,
+      "X": "dog",
+      "Z": "bicycle",
+      "q": 2,
+      "crop_x": [
+        138492,
+        [
+          89,
+          45,
+          285,
+          562
+        ]
+      ],
+      "crop_z": [
+        472623,
+        [
+          191,
+          347,
+          233,
+          255
+        ]
+      ]
+    },
+    {
+      "scene": 19,
+      "X": "chair",
+      "Z": "horse",
+      "q": 4,
+      "crop_x": [
+        517832,
+        [
+          2,
+          140,
+          637,
+          408
+        ]
+      ],
+      "crop_z": [
+        29187,
+        [
+          211,
+          83,
+          252,
+          384
+        ]
+      ]
+    },
+    {
+      "scene": 20,
+      "X": "cat",
+      "Z": "bicycle",
+      "q": 4,
+      "crop_x": [
+        402473,
+        [
+          231,
+          85,
+          408,
+          389
+        ]
+      ],
+      "crop_z": [
+        203317,
+        [
+          212,
+          211,
+          257,
+          203
+        ]
+      ]
+    },
+    {
+      "scene": 21,
+      "X": "train",
+      "Z": "bird",
+      "q": 4,
+      "crop_x": [
+        151857,
+        [
+          50,
+          69,
+          589,
+          327
+        ]
+      ],
+      "crop_z": [
+        264335,
+        [
+          63,
+          45,
+          283,
+          546
+        ]
+      ]
+    },
+    {
+      "scene": 22,
+      "X": "bird",
+      "Z": "airplane",
+      "q": 1,
+      "crop_x": [
+        264335,
+        [
+          63,
+          45,
+          283,
+          546
+        ]
+      ],
+      "crop_z": [
+        5477,
+        [
+          9,
+          105,
+          621,
+          183
+        ]
+      ]
+    },
+    {
+      "scene": 23,
+      "X": "pizza",
+      "Z": "horse",
+      "q": 3,
+      "crop_x": [
+        312192,
+        [
+          46,
+          135,
+          557,
+          280
+        ]
+      ],
+      "crop_z": [
+        353051,
+        [
+          327,
+          7,
+          312,
+          354
+        ]
+      ]
+    },
+    {
+      "scene": 24,
+      "X": "horse",
+      "Z": "clock",
+      "q": 1,
+      "crop_x": [
+        353051,
+        [
+          327,
+          7,
+          312,
+          354
+        ]
+      ],
+      "crop_z": [
+        217425,
+        [
+          232,
+          137,
+          154,
+          117
+        ]
+      ]
+    },
+    {
+      "scene": 25,
+      "X": "laptop",
+      "Z": "horse",
+      "q": 3,
+      "crop_x": [
+        181499,
+        [
+          231,
+          6,
+          408,
+          499
+        ]
+      ],
+      "crop_z": [
+        506656,
+        [
+          184,
+          93,
+          381,
+          339
+        ]
+      ]
+    },
+    {
+      "scene": 26,
+      "X": "bird",
+      "Z": "car",
+      "q": 4,
+      "crop_x": [
+        284279,
+        [
+          347,
+          160,
+          235,
+          240
+        ]
+      ],
+      "crop_z": [
+        55150,
+        [
+          0,
+          36,
+          191,
+          389
+        ]
+      ]
+    },
+    {
+      "scene": 27,
+      "X": "airplane",
+      "Z": "dog",
+      "q": 3,
+      "crop_x": [
+        144114,
+        [
+          25,
+          188,
+          555,
+          155
+        ]
+      ],
+      "crop_z": [
+        464522,
+        [
+          155,
+          2,
+          338,
+          628
+        ]
+      ]
+    },
+    {
+      "scene": 28,
+      "X": "horse",
+      "Z": "chair",
+      "q": 3,
+      "crop_x": [
+        61171,
+        [
+          1,
+          84,
+          279,
+          325
+        ]
+      ],
+      "crop_z": [
+        459662,
+        [
+          1,
+          3,
+          387,
+          333
+        ]
+      ]
+    },
+    {
+      "scene": 29,
+      "X": "bicycle",
+      "Z": "cat",
+      "q": 4,
+      "crop_x": [
+        291634,
+        [
+          40,
+          311,
+          368,
+          260
+        ]
+      ],
+      "crop_z": [
+        80666,
+        [
+          64,
+          120,
+          469,
+          418
+        ]
+      ]
+    },
+    {
+      "scene": 30,
+      "X": "dog",
+      "Z": "bus",
+      "q": 2,
+      "crop_x": [
+        364636,
+        [
+          118,
+          88,
+          520,
+          439
+        ]
+      ],
+      "crop_z": [
+        344029,
+        [
+          91,
+          112,
+          503,
+          291
+        ]
+      ]
+    },
+    {
+      "scene": 31,
+      "X": "car",
+      "Z": "dog",
+      "q": 2,
+      "crop_x": [
+        23272,
+        [
+          0,
+          0,
+          499,
+          370
+        ]
+      ],
+      "crop_z": [
+        355905,
+        [
+          83,
+          64,
+          456,
+          398
+        ]
+      ]
+    },
+    {
+      "scene": 32,
+      "X": "dog",
+      "Z": "bicycle",
+      "q": 2,
+      "crop_x": [
+        355905,
+        [
+          83,
+          64,
+          456,
+          398
+        ]
+      ],
+      "crop_z": [
+        203317,
+        [
+          212,
+          211,
+          257,
+          203
+        ]
+      ]
+    },
+    {
+      "scene": 33,
+      "X": "cup",
+      "Z": "horse",
+      "q": 1,
+      "crop_x": [
+        414638,
+        [
+          23,
+          0,
+          202,
+          191
+        ]
+      ],
+      "crop_z": [
+        227686,
+        [
+          17,
+          226,
+          324,
+          398
+        ]
+      ]
+    },
+    {
+      "scene": 34,
+      "X": "dog",
+      "Z": "boat",
+      "q": 6,
+      "crop_x": [
+        221693,
+        [
+          73,
+          17,
+          452,
+          403
+        ]
+      ],
+      "crop_z": [
+        445722,
+        [
+          4,
+          1,
+          313,
+          493
+        ]
+      ]
+    },
+    {
+      "scene": 35,
+      "X": "train",
+      "Z": "cat",
+      "q": 2,
+      "crop_x": [
+        477623,
+        [
+          97,
+          75,
+          457,
+          354
+        ]
+      ],
+      "crop_z": [
+        286708,
+        [
+          37,
+          107,
+          602,
+          341
+        ]
+      ]
+    },
+    {
+      "scene": 36,
+      "X": "horse",
+      "Z": "clock",
+      "q": 4,
+      "crop_x": [
+        252216,
+        [
+          276,
+          36,
+          258,
+          411
+        ]
+      ],
+      "crop_z": [
+        217425,
+        [
+          232,
+          137,
+          154,
+          117
+        ]
+      ]
+    },
+    {
+      "scene": 37,
+      "X": "boat",
+      "Z": "dog",
+      "q": 5,
+      "crop_x": [
+        400803,
+        [
+          108,
+          97,
+          256,
+          303
+        ]
+      ],
+      "crop_z": [
+        131273,
+        [
+          120,
+          0,
+          359,
+          596
+        ]
+      ]
+    },
+    {
+      "scene": 38,
+      "X": "horse",
+      "Z": "cup",
+      "q": 4,
+      "crop_x": [
+        380203,
+        [
+          42,
+          109,
+          346,
+          462
+        ]
+      ],
+      "crop_z": [
+        463283,
+        [
+          31,
+          79,
+          424,
+          511
+        ]
+      ]
+    },
+    {
+      "scene": 39,
+      "X": "chair",
+      "Z": "horse",
+      "q": 5,
+      "crop_x": [
+        65288,
+        [
+          214,
+          237,
+          407,
+          182
+        ]
+      ],
+      "crop_z": [
+        281447,
+        [
+          248,
+          134,
+          328,
+          281
+        ]
+      ]
+    },
+    {
+      "scene": 40,
+      "X": "bird",
+      "Z": "airplane",
+      "q": 2,
+      "crop_x": [
+        264335,
+        [
+          63,
+          45,
+          283,
+          546
+        ]
+      ],
+      "crop_z": [
+        579158,
+        [
+          0,
+          2,
+          574,
+          418
+        ]
+      ]
+    },
+    {
+      "scene": 41,
+      "X": "cup",
+      "Z": "horse",
+      "q": 1,
+      "crop_x": [
+        414638,
+        [
+          23,
+          0,
+          202,
+          191
+        ]
+      ],
+      "crop_z": [
+        29187,
+        [
+          211,
+          83,
+          252,
+          384
+        ]
+      ]
+    },
+    {
+      "scene": 42,
+      "X": "dog",
+      "Z": "car",
+      "q": 1,
+      "crop_x": [
+        498286,
+        [
+          0,
+          9,
+          467,
+          463
+        ]
+      ],
+      "crop_z": [
+        55150,
+        [
+          435,
+          0,
+          204,
+          392
+        ]
+      ]
+    },
+    {
+      "scene": 43,
+      "X": "bicycle",
+      "Z": "dog",
+      "q": 2,
+      "crop_x": [
+        472623,
+        [
+          191,
+          347,
+          233,
+          255
+        ]
+      ],
+      "crop_z": [
+        532575,
+        [
+          2,
+          64,
+          490,
+          362
+        ]
+      ]
+    },
+    {
+      "scene": 44,
+      "X": "cat",
+      "Z": "bicycle",
+      "q": 4,
+      "crop_x": [
+        89271,
+        [
+          0,
+          169,
+          620,
+          348
+        ]
+      ],
+      "crop_z": [
+        203317,
+        [
+          212,
+          211,
+          257,
+          203
+        ]
+      ]
+    },
+    {
+      "scene": 45,
+      "X": "clock",
+      "Z": "horse",
+      "q": 1,
+      "crop_x": [
+        164363,
+        [
+          58,
+          6,
+          511,
+          504
+        ]
+      ],
+      "crop_z": [
+        353051,
+        [
+          327,
+          7,
+          312,
+          354
+        ]
+      ]
+    },
+    {
+      "scene": 46,
+      "X": "dog",
+      "Z": "car",
+      "q": 6,
+      "crop_x": [
+        464522,
+        [
+          155,
+          2,
+          338,
+          628
+        ]
+      ],
+      "crop_z": [
+        55150,
+        [
+          0,
+          36,
+          191,
+          389
+        ]
+      ]
+    },
+    {
+      "scene": 47,
+      "X": "cup",
+      "Z": "horse",
+      "q": 2,
+      "crop_x": [
+        463283,
+        [
+          31,
+          79,
+          424,
+          511
+        ]
+      ],
+      "crop_z": [
+        506656,
+        [
+          184,
+          93,
+          381,
+          339
+        ]
+      ]
+    },
+    {
+      "scene": 48,
+      "X": "bird",
+      "Z": "airplane",
+      "q": 1,
+      "crop_x": [
+        176847,
+        [
+          246,
+          216,
+          271,
+          143
+        ]
+      ],
+      "crop_z": [
+        144114,
+        [
+          25,
+          188,
+          555,
+          155
+        ]
+      ]
+    },
+    {
+      "scene": 49,
+      "X": "car",
+      "Z": "bird",
+      "q": 6,
+      "crop_x": [
+        114770,
+        [
+          148,
+          139,
+          385,
+          195
+        ]
+      ],
+      "crop_z": [
+        284279,
+        [
+          347,
+          160,
+          235,
+          240
+        ]
+      ]
+    },
+    {
+      "scene": 50,
+      "X": "bird",
+      "Z": "train",
+      "q": 3,
+      "crop_x": [
+        284279,
+        [
+          347,
+          160,
+          235,
+          240
+        ]
+      ],
+      "crop_z": [
+        186624,
+        [
+          128,
+          1,
+          511,
+          514
+        ]
+      ]
+    },
+    {
+      "scene": 51,
+      "X": "car",
+      "Z": "bird",
+      "q": 1,
+      "crop_x": [
+        23272,
+        [
+          0,
+          0,
+          499,
+          370
+        ]
+      ],
+      "crop_z": [
+        264335,
+        [
+          63,
+          45,
+          283,
+          546
+        ]
+      ]
+    },
+    {
+      "scene": 52,
+      "X": "horse",
+      "Z": "cup",
+      "q": 6,
+      "crop_x": [
+        275392,
+        [
+          67,
+          112,
+          234,
+          512
+        ]
+      ],
+      "crop_z": [
+        414638,
+        [
+          23,
+          0,
+          202,
+          191
+        ]
+      ]
+    },
+    {
+      "scene": 53,
+      "X": "train",
+      "Z": "bird",
+      "q": 2,
+      "crop_x": [
+        57244,
+        [
+          0,
+          2,
+          640,
+          329
+        ]
+      ],
+      "crop_z": [
+        176847,
+        [
+          246,
+          216,
+          271,
+          143
+        ]
+      ]
+    },
+    {
+      "scene": 54,
+      "X": "cat",
+      "Z": "airplane",
+      "q": 4,
+      "crop_x": [
+        405306,
+        [
+          11,
+          1,
+          628,
+          410
+        ]
+      ],
+      "crop_z": [
+        52017,
+        [
+          52,
+          84,
+          429,
+          202
+        ]
+      ]
+    },
+    {
+      "scene": 55,
+      "X": "cup",
+      "Z": "horse",
+      "q": 4,
+      "crop_x": [
+        463283,
+        [
+          31,
+          79,
+          424,
+          511
+        ]
+      ],
+      "crop_z": [
+        227686,
+        [
+          17,
+          226,
+          324,
+          398
+        ]
+      ]
+    },
+    {
+      "scene": 56,
+      "X": "horse",
+      "Z": "clock",
+      "q": 5,
+      "crop_x": [
+        227686,
+        [
+          17,
+          226,
+          324,
+          398
+        ]
+      ],
+      "crop_z": [
+        164363,
+        [
+          58,
+          6,
+          511,
+          504
+        ]
+      ]
+    },
+    {
+      "scene": 57,
+      "X": "bus",
+      "Z": "dog",
+      "q": 3,
+      "crop_x": [
+        405205,
+        [
+          70,
+          22,
+          441,
+          352
+        ]
+      ],
+      "crop_z": [
+        555005,
+        [
+          108,
+          150,
+          444,
+          329
+        ]
+      ]
+    },
+    {
+      "scene": 58,
+      "X": "bird",
+      "Z": "car",
+      "q": 5,
+      "crop_x": [
+        264335,
+        [
+          63,
+          45,
+          283,
+          546
+        ]
+      ],
+      "crop_z": [
+        114770,
+        [
+          148,
+          139,
+          385,
+          195
+        ]
+      ]
+    },
+    {
+      "scene": 59,
+      "X": "bus",
+      "Z": "dog",
+      "q": 5,
+      "crop_x": [
+        143931,
+        [
+          0,
+          0,
+          638,
+          472
+        ]
+      ],
+      "crop_z": [
+        498286,
+        [
+          0,
+          9,
+          467,
+          463
+        ]
+      ]
+    },
+    {
+      "scene": 60,
+      "X": "bird",
+      "Z": "train",
+      "q": 1,
+      "crop_x": [
+        176847,
+        [
+          246,
+          216,
+          271,
+          143
+        ]
+      ],
+      "crop_z": [
+        572303,
+        [
+          12,
+          33,
+          607,
+          319
+        ]
+      ]
+    },
+    {
+      "scene": 61,
+      "X": "train",
+      "Z": "dog",
+      "q": 3,
+      "crop_x": [
+        572303,
+        [
+          12,
+          33,
+          607,
+          319
+        ]
+      ],
+      "crop_z": [
+        532575,
+        [
+          2,
+          64,
+          490,
+          362
+        ]
+      ]
+    },
+    {
+      "scene": 62,
+      "X": "cat",
+      "Z": "bicycle",
+      "q": 2,
+      "crop_x": [
+        433134,
+        [
+          224,
+          6,
+          415,
+          468
+        ]
+      ],
+      "crop_z": [
+        424162,
+        [
+          305,
+          230,
+          117,
+          243
+        ]
+      ]
+    },
+    {
+      "scene": 63,
+      "X": "cup",
+      "Z": "horse",
+      "q": 5,
+      "crop_x": [
+        463283,
+        [
+          31,
+          79,
+          424,
+          511
+        ]
+      ],
+      "crop_z": [
+        29187,
+        [
+          211,
+          83,
+          252,
+          384
+        ]
+      ]
+    }
+  ],
+  "carried": {
+    "say": {
+      "receiver alone": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full state, read layers": [
+        0.90625,
+        0.828125,
+        0.96875
+      ],
+      "lens part, read layers": [
+        0.84375,
+        0.75,
+        0.921875
+      ],
+      "random part, read layers, draw 1": [
+        0.40625,
+        0.296875,
+        0.5160156249999979
+      ],
+      "random part, read layers, draw 2": [
+        0.40625,
+        0.296875,
+        0.53125
+      ],
+      "random part, read layers, draw 3": [
+        0.359375,
+        0.25,
+        0.484375
+      ],
+      "complement of the lens part, read layers": [
+        0.84375,
+        0.75,
+        0.921875
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full state, every layer": [
+        0.921875,
+        0.84375,
+        0.984375
+      ],
+      "lens part, every layer": [
+        0.90625,
+        0.828125,
+        0.96875
+      ],
+      "random part, every layer": [
+        0.890625,
+        0.8125,
+        0.953125
+      ],
+      "non-target donor, full state, every layer": [
+        0.6875,
+        0.578125,
+        0.796875
+      ],
+      "the fact typed as text": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "letter": {
+      "receiver alone": [
+        0.015625,
+        0.0,
+        0.046875
+      ],
+      "full state, read layers": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "lens part, read layers": [
+        0.921875,
+        0.859375,
+        0.984375
+      ],
+      "random part, read layers, draw 1": [
+        0.421875,
+        0.296875,
+        0.546875
+      ],
+      "random part, read layers, draw 2": [
+        0.453125,
+        0.328125,
+        0.578125
+      ],
+      "random part, read layers, draw 3": [
+        0.3125,
+        0.203125,
+        0.4375
+      ],
+      "complement of the lens part, read layers": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.234375,
+        0.140625,
+        0.34375
+      ],
+      "full state, every layer": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "lens part, every layer": [
+        0.984375,
+        0.953125,
+        1.0
+      ],
+      "random part, every layer": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "non-target donor, full state, every layer": [
+        0.609375,
+        0.484375,
+        0.71875
+      ],
+      "the fact typed as text": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "animal": {
+      "receiver alone": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "full state, read layers": [
+        0.859375,
+        0.765625,
+        0.9375
+      ],
+      "lens part, read layers": [
+        0.109375,
+        0.04648437500000002,
+        0.1875
+      ],
+      "random part, read layers, draw 1": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "random part, read layers, draw 2": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "random part, read layers, draw 3": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "complement of the lens part, read layers": [
+        0.171875,
+        0.078125,
+        0.265625
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.5,
+        0.375,
+        0.625
+      ],
+      "full state, every layer": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "lens part, every layer": [
+        0.96875,
+        0.921875,
+        1.0
+      ],
+      "random part, every layer": [
+        0.9375,
+        0.875,
+        0.984375
+      ],
+      "non-target donor, full state, every layer": [
+        0.5,
+        0.375,
+        0.625
+      ],
+      "the fact typed as text": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "ride": {
+      "receiver alone": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "full state, read layers": [
+        0.765625,
+        0.65625,
+        0.859375
+      ],
+      "lens part, read layers": [
+        0.46875,
+        0.34375,
+        0.59375
+      ],
+      "random part, read layers, draw 1": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "random part, read layers, draw 2": [
+        0.078125,
+        0.015625,
+        0.15625
+      ],
+      "random part, read layers, draw 3": [
+        0.0625,
+        0.015625,
+        0.125
+      ],
+      "complement of the lens part, read layers": [
+        0.203125,
+        0.109375,
+        0.29726562499999787
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.625,
+        0.5,
+        0.734375
+      ],
+      "full state, every layer": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "lens part, every layer": [
+        0.875,
+        0.78125,
+        0.953125
+      ],
+      "random part, every layer": [
+        0.875,
+        0.78125,
+        0.953125
+      ],
+      "non-target donor, full state, every layer": [
+        0.6875,
+        0.578125,
+        0.796875
+      ],
+      "the fact typed as text": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "name then animal": {
+      "receiver alone": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full state, read layers": [
+        0.359375,
+        0.25,
+        0.484375
+      ],
+      "lens part, read layers": [
+        0.125,
+        0.046875,
+        0.203125
+      ],
+      "random part, read layers, draw 1": [
+        0.0625,
+        0.015625,
+        0.125
+      ],
+      "random part, read layers, draw 2": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "random part, read layers, draw 3": [
+        0.03125,
+        0.0,
+        0.078125
+      ],
+      "complement of the lens part, read layers": [
+        0.15625,
+        0.078125,
+        0.25
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full state, every layer": [
+        0.515625,
+        0.390625,
+        0.640625
+      ],
+      "lens part, every layer": [
+        0.375,
+        0.265625,
+        0.5
+      ],
+      "random part, every layer": [
+        0.40625,
+        0.28125,
+        0.53125
+      ],
+      "non-target donor, full state, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "the fact typed as text": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "animal then name": {
+      "receiver alone": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full state, read layers": [
+        0.75,
+        0.640625,
+        0.84375
+      ],
+      "lens part, read layers": [
+        0.296875,
+        0.1875,
+        0.40625
+      ],
+      "random part, read layers, draw 1": [
+        0.03125,
+        0.0,
+        0.078125
+      ],
+      "random part, read layers, draw 2": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "random part, read layers, draw 3": [
+        0.03125,
+        0.0,
+        0.078125
+      ],
+      "complement of the lens part, read layers": [
+        0.140625,
+        0.0625,
+        0.234375
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full state, every layer": [
+        0.9375,
+        0.875,
+        0.984375
+      ],
+      "lens part, every layer": [
+        0.84375,
+        0.75,
+        0.921875
+      ],
+      "random part, every layer": [
+        0.8125,
+        0.703125,
+        0.90625
+      ],
+      "non-target donor, full state, every layer": [
+        0.4375,
+        0.3125,
+        0.5625
+      ],
+      "the fact typed as text": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "kept": {
+    "say": {
+      "receiver alone": [
+        0.9375,
+        0.875,
+        0.984375
+      ],
+      "full state, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens part, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "random part, read layers, draw 1": [
+        0.59375,
+        0.483984375,
+        0.703125
+      ],
+      "random part, read layers, draw 2": [
+        0.578125,
+        0.453125,
+        0.6875
+      ],
+      "random part, read layers, draw 3": [
+        0.640625,
+        0.515625,
+        0.75
+      ],
+      "complement of the lens part, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full state, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens part, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "random part, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "non-target donor, full state, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "the fact typed as text": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "letter": {
+      "receiver alone": [
+        0.9375,
+        0.875,
+        0.984375
+      ],
+      "full state, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens part, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "random part, read layers, draw 1": [
+        0.515625,
+        0.390625,
+        0.640625
+      ],
+      "random part, read layers, draw 2": [
+        0.5,
+        0.375,
+        0.625
+      ],
+      "random part, read layers, draw 3": [
+        0.65625,
+        0.53125,
+        0.765625
+      ],
+      "complement of the lens part, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.28125,
+        0.1875,
+        0.390625
+      ],
+      "full state, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens part, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "random part, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "non-target donor, full state, every layer": [
+        0.125,
+        0.046875,
+        0.20351562499999787
+      ],
+      "the fact typed as text": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "animal": {
+      "receiver alone": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "full state, read layers": [
+        0.140625,
+        0.0625,
+        0.234375
+      ],
+      "lens part, read layers": [
+        0.890625,
+        0.8125,
+        0.9535156249999979
+      ],
+      "random part, read layers, draw 1": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "random part, read layers, draw 2": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "random part, read layers, draw 3": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "complement of the lens part, read layers": [
+        0.828125,
+        0.734375,
+        0.921875
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.5,
+        0.375,
+        0.625
+      ],
+      "full state, every layer": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "lens part, every layer": [
+        0.03125,
+        0.0,
+        0.078125
+      ],
+      "random part, every layer": [
+        0.0625,
+        0.015625,
+        0.125
+      ],
+      "non-target donor, full state, every layer": [
+        0.5,
+        0.375,
+        0.625
+      ],
+      "the fact typed as text": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "ride": {
+      "receiver alone": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "full state, read layers": [
+        0.234375,
+        0.140625,
+        0.34375
+      ],
+      "lens part, read layers": [
+        0.53125,
+        0.40625,
+        0.65625
+      ],
+      "random part, read layers, draw 1": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "random part, read layers, draw 2": [
+        0.921875,
+        0.84375,
+        0.984375
+      ],
+      "random part, read layers, draw 3": [
+        0.9375,
+        0.875,
+        0.984375
+      ],
+      "complement of the lens part, read layers": [
+        0.796875,
+        0.702734375,
+        0.890625
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.375,
+        0.265625,
+        0.5
+      ],
+      "full state, every layer": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "lens part, every layer": [
+        0.125,
+        0.046875,
+        0.21875
+      ],
+      "random part, every layer": [
+        0.125,
+        0.046875,
+        0.21875
+      ],
+      "non-target donor, full state, every layer": [
+        0.3125,
+        0.203125,
+        0.421875
+      ],
+      "the fact typed as text": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "name then animal": {
+      "receiver alone": [
+        0.5,
+        0.375,
+        0.609375
+      ],
+      "full state, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens part, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "random part, read layers, draw 1": [
+        0.359375,
+        0.24960937500000002,
+        0.46875
+      ],
+      "random part, read layers, draw 2": [
+        0.3125,
+        0.203125,
+        0.421875
+      ],
+      "random part, read layers, draw 3": [
+        0.390625,
+        0.280859375,
+        0.515625
+      ],
+      "complement of the lens part, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full state, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens part, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "random part, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "non-target donor, full state, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "the fact typed as text": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "animal then name": {
+      "receiver alone": [
+        0.921875,
+        0.84375,
+        0.984375
+      ],
+      "full state, read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens part, read layers": [
+        0.03125,
+        0.0,
+        0.078125
+      ],
+      "random part, read layers, draw 1": [
+        0.5625,
+        0.4375,
+        0.6875
+      ],
+      "random part, read layers, draw 2": [
+        0.59375,
+        0.46875,
+        0.71875
+      ],
+      "random part, read layers, draw 3": [
+        0.65625,
+        0.546875,
+        0.765625
+      ],
+      "complement of the lens part, read layers": [
+        0.0625,
+        0.015625,
+        0.125
+      ],
+      "placebo donor (empty canvas), read layers": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "full state, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "lens part, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "random part, every layer": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "non-target donor, full state, every layer": [
+        0.0625,
+        0.015625,
+        0.125
+      ],
+      "the fact typed as text": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "D": {
+    "receiver alone": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "full state, read layers": [
+      0.09375,
+      0.03125,
+      0.171875
+    ],
+    "lens part, read layers": [
+      0.75,
+      0.640625,
+      0.859375
+    ],
+    "random part, read layers, draw 1": [
+      0.359375,
+      0.25,
+      0.46914062499999787
+    ],
+    "random part, read layers, draw 2": [
+      0.359375,
+      0.25,
+      0.484375
+    ],
+    "random part, read layers, draw 3": [
+      0.3125,
+      0.203125,
+      0.4375
+    ],
+    "complement of the lens part, read layers": [
+      0.75,
+      0.640625,
+      0.859375
+    ],
+    "placebo donor (empty canvas), read layers": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "full state, every layer": [
+      0.03125,
+      0.0,
+      0.078125
+    ],
+    "lens part, every layer": [
+      0.015625,
+      0.0,
+      0.046875
+    ],
+    "random part, every layer": [
+      0.03125,
+      0.0,
+      0.078125
+    ],
+    "non-target donor, full state, every layer": [
+      0.421875,
+      0.312109375,
+      0.546875
+    ],
+    "the fact typed as text": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "random part, read layers (mean of 3)": [
+      0.34375,
+      0.23958333333333331,
+      0.453125
+    ]
+  },
+  "D_ride": {
+    "receiver alone": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "full state, read layers": [
+      0.234375,
+      0.140625,
+      0.34375
+    ],
+    "lens part, read layers": [
+      0.46875,
+      0.34375,
+      0.59375
+    ],
+    "random part, read layers, draw 1": [
+      0.390625,
+      0.28125,
+      0.515625
+    ],
+    "random part, read layers, draw 2": [
+      0.375,
+      0.265625,
+      0.5
+    ],
+    "random part, read layers, draw 3": [
+      0.34375,
+      0.234375,
+      0.46875
+    ],
+    "complement of the lens part, read layers": [
+      0.640625,
+      0.515625,
+      0.75
+    ],
+    "placebo donor (empty canvas), read layers": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "full state, every layer": [
+      0.046875,
+      0.0,
+      0.109375
+    ],
+    "lens part, every layer": [
+      0.125,
+      0.046875,
+      0.21875
+    ],
+    "random part, every layer": [
+      0.125,
+      0.046875,
+      0.21875
+    ],
+    "non-target donor, full state, every layer": [
+      0.1875,
+      0.09375,
+      0.28125
+    ],
+    "the fact typed as text": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "joint": {
+    "receiver alone": {
+      "name then animal": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal then name": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "full state, read layers": {
+      "name then animal": [
+        0.03125,
+        0.0,
+        0.078125
+      ],
+      "animal then name": [
+        0.078125,
+        0.015625,
+        0.140625
+      ]
+    },
+    "lens part, read layers": {
+      "name then animal": [
+        0.125,
+        0.046875,
+        0.21875
+      ],
+      "animal then name": [
+        0.5,
+        0.375,
+        0.625
+      ]
+    },
+    "random part, read layers, draw 1": {
+      "name then animal": [
+        0.0625,
+        0.015625,
+        0.125
+      ],
+      "animal then name": [
+        0.296875,
+        0.1875,
+        0.40625
+      ]
+    },
+    "random part, read layers, draw 2": {
+      "name then animal": [
+        0.09375,
+        0.03125,
+        0.171875
+      ],
+      "animal then name": [
+        0.25,
+        0.15625,
+        0.375
+      ]
+    },
+    "random part, read layers, draw 3": {
+      "name then animal": [
+        0.078125,
+        0.015625,
+        0.15625
+      ],
+      "animal then name": [
+        0.203125,
+        0.109375,
+        0.296875
+      ]
+    },
+    "complement of the lens part, read layers": {
+      "name then animal": [
+        0.1875,
+        0.09375,
+        0.28125
+      ],
+      "animal then name": [
+        0.609375,
+        0.484375,
+        0.734375
+      ]
+    },
+    "placebo donor (empty canvas), read layers": {
+      "name then animal": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal then name": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "full state, every layer": {
+      "name then animal": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal then name": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "lens part, every layer": {
+      "name then animal": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal then name": [
+        0.015625,
+        0.0,
+        0.046875
+      ]
+    },
+    "random part, every layer": {
+      "name then animal": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal then name": [
+        0.015625,
+        0.0,
+        0.046875
+      ]
+    },
+    "non-target donor, full state, every layer": {
+      "name then animal": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal then name": [
+        0.25,
+        0.140625,
+        0.359375
+      ]
+    },
+    "the fact typed as text": {
+      "name then animal": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal then name": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "verdict": {
+    "headline": "positive control or gate failed: placebo_inert"
+  },
+  "lens_minus_full_D": [
+    0.65625,
+    0.53125,
+    0.78125
+  ],
+  "lens_minus_random_say": [
+    0.45312500000000006,
+    0.3385416666666667,
+    0.5677083333333334
+  ],
+  "gate": {
+    "animal": true,
+    "ride": true
+  },
+  "positive_controls": {
+    "full_read_names_X": true,
+    "full_every_flips_animal": true,
+    "placebo_inert": false
+  },
+  "rank_sweep": {
+    "lens part r=16, read layers": {
+      "say": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal": [
+        0.046875,
+        0.0,
+        0.109375
+      ]
+    },
+    "random part r=16, read layers": {
+      "say": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal": [
+        0.046875,
+        0.0,
+        0.109375
+      ]
+    },
+    "lens part r=64, read layers": {
+      "say": [
+        0.125,
+        0.046875,
+        0.203125
+      ],
+      "animal": [
+        0.046875,
+        0.0,
+        0.109375
+      ]
+    },
+    "random part r=64, read layers": {
+      "say": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "animal": [
+        0.046875,
+        0.0,
+        0.109375
+      ]
+    },
+    "lens part r=1024, read layers": {
+      "say": [
+        0.90625,
+        0.828125,
+        0.96875
+      ],
+      "animal": [
+        0.78125,
+        0.671875,
+        0.875
+      ]
+    },
+    "random part r=1024, read layers": {
+      "say": [
+        0.90625,
+        0.828125,
+        0.96875
+      ],
+      "animal": [
+        0.046875,
+        0.0,
+        0.109375
+      ]
+    }
+  },
+  "seconds": 261.29626727104187
+}

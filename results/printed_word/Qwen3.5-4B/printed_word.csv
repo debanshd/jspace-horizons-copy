@@ -1,0 +1,705 @@
+arm,scene,X,Y,Z,generation,says_X,says_Y
+clean,0,bird,clock,airplane,clock,False,True
+clean,1,airplane,laptop,cat,laptop,False,True
+clean,2,clock,airplane,bus,clock,True,False
+clean,3,horse,train,chair,train,False,True
+clean,4,airplane,boat,bicycle,airplane,True,False
+clean,5,clock,boat,bus,boat,False,True
+clean,6,clock,laptop,cat,laptop,False,True
+clean,7,car,chair,boat,chair,False,True
+clean,8,bicycle,laptop,dog,laptop,False,True
+clean,9,clock,cat,laptop,cat,False,True
+clean,10,cat,chair,bicycle,chair,False,True
+clean,11,car,bicycle,bus,bicycle,False,True
+clean,12,bird,chair,clock,chair,False,True
+clean,13,train,airplane,clock,airplane,False,True
+clean,14,clock,boat,bicycle,clock,True,False
+clean,15,laptop,bird,boat,laptop,True,False
+clean,16,horse,clock,airplane,horse,True,False
+clean,17,train,bus,airplane,bus,False,True
+clean,18,bird,bicycle,pizza,bicycle,False,True
+clean,19,bicycle,car,dog,car,False,True
+clean,20,dog,horse,airplane,horse,False,True
+clean,21,boat,car,train,boat,True,False
+clean,22,clock,cat,bus,cat,False,True
+clean,23,pizza,laptop,airplane,laptop,False,True
+clean,24,pizza,bus,train,pizza,True,False
+clean,25,train,airplane,bus,airplane,False,True
+clean,26,bird,bus,boat,bus,False,True
+clean,27,train,airplane,boat,train,True,False
+clean,28,dog,airplane,cat,airplane,False,True
+clean,29,airplane,clock,pizza,clock,False,True
+clean,30,dog,airplane,bird,dog,True,False
+clean,31,boat,laptop,pizza,laptop,False,True
+clean,32,bus,horse,dog,horse,False,True
+clean,33,bicycle,boat,car,boat,False,True
+clean,34,dog,bus,airplane,dog,True,False
+clean,35,pizza,cat,clock,pizza,True,False
+clean,36,airplane,horse,dog,horse,False,True
+clean,37,dog,chair,bird,chair,False,True
+clean,38,clock,horse,bird,clock,True,False
+clean,39,clock,bicycle,train,bicycle,False,True
+clean,40,bird,car,horse,car,False,True
+clean,41,horse,chair,airplane,horse,True,False
+clean,42,bus,laptop,chair,laptop,False,True
+clean,43,bicycle,laptop,car,laptop,False,True
+clean,44,chair,bus,cat,bus,False,True
+clean,45,airplane,boat,bus,boat,False,True
+clean,46,laptop,bicycle,cat,laptop,True,False
+clean,47,bicycle,clock,bird,clock,False,True
+clean,48,car,train,bird,train,False,True
+clean,49,train,clock,horse,clock,False,True
+clean,50,chair,car,bird,car,False,True
+clean,51,clock,bus,car,bus,False,True
+clean,52,pizza,horse,chair,pizza,True,False
+clean,53,airplane,pizza,boat,airplane,True,False
+clean,54,laptop,horse,bicycle,laptop,True,False
+clean,55,boat,bicycle,pizza,bicycle,False,True
+clean,56,bird,laptop,cat,laptop,False,True
+clean,57,car,bus,cat,car,True,False
+clean,58,laptop,airplane,bus,airplane,False,True
+clean,59,airplane,bicycle,train,bicycle,False,True
+clean,60,cat,bird,pizza,cat,True,False
+clean,61,horse,bus,boat,horse,True,False
+clean,62,laptop,bicycle,boat,bicycle,False,True
+clean,63,bus,pizza,chair,pizza,False,True
+ablate label word Y,0,bird,clock,airplane,clock,False,True
+ablate label word Y,1,airplane,laptop,cat,laptop,False,True
+ablate label word Y,2,clock,airplane,bus,clock,True,False
+ablate label word Y,3,horse,train,chair,train,False,True
+ablate label word Y,4,airplane,boat,bicycle,airplane,True,False
+ablate label word Y,5,clock,boat,bus,clock,True,False
+ablate label word Y,6,clock,laptop,cat,clock,True,False
+ablate label word Y,7,car,chair,boat,chair,False,True
+ablate label word Y,8,bicycle,laptop,dog,bicycle,True,False
+ablate label word Y,9,clock,cat,laptop,cat,False,True
+ablate label word Y,10,cat,chair,bicycle,chair,False,True
+ablate label word Y,11,car,bicycle,bus,car,True,False
+ablate label word Y,12,bird,chair,clock,chair,False,True
+ablate label word Y,13,train,airplane,clock,train,True,False
+ablate label word Y,14,clock,boat,bicycle,clock,True,False
+ablate label word Y,15,laptop,bird,boat,laptop,True,False
+ablate label word Y,16,horse,clock,airplane,horse,True,False
+ablate label word Y,17,train,bus,airplane,bus,False,True
+ablate label word Y,18,bird,bicycle,pizza,bicycle,False,True
+ablate label word Y,19,bicycle,car,dog,car,False,True
+ablate label word Y,20,dog,horse,airplane,dog,True,False
+ablate label word Y,21,boat,car,train,boat,True,False
+ablate label word Y,22,clock,cat,bus,cat,False,True
+ablate label word Y,23,pizza,laptop,airplane,laptop,False,True
+ablate label word Y,24,pizza,bus,train,bus,False,True
+ablate label word Y,25,train,airplane,bus,train,True,False
+ablate label word Y,26,bird,bus,boat,bus,False,True
+ablate label word Y,27,train,airplane,boat,train,True,False
+ablate label word Y,28,dog,airplane,cat,dog,True,False
+ablate label word Y,29,airplane,clock,pizza,clock,False,True
+ablate label word Y,30,dog,airplane,bird,dog,True,False
+ablate label word Y,31,boat,laptop,pizza,boat,True,False
+ablate label word Y,32,bus,horse,dog,bus,True,False
+ablate label word Y,33,bicycle,boat,car,boat,False,True
+ablate label word Y,34,dog,bus,airplane,dog,True,False
+ablate label word Y,35,pizza,cat,clock,pizza,True,False
+ablate label word Y,36,airplane,horse,dog,airplane,True,False
+ablate label word Y,37,dog,chair,bird,chair,False,True
+ablate label word Y,38,clock,horse,bird,clock,True,False
+ablate label word Y,39,clock,bicycle,train,bicycle,False,True
+ablate label word Y,40,bird,car,horse,car,False,True
+ablate label word Y,41,horse,chair,airplane,horse,True,False
+ablate label word Y,42,bus,laptop,chair,bus,True,False
+ablate label word Y,43,bicycle,laptop,car,bicycle,True,False
+ablate label word Y,44,chair,bus,cat,bus,False,True
+ablate label word Y,45,airplane,boat,bus,plane,True,False
+ablate label word Y,46,laptop,bicycle,cat,laptop,True,False
+ablate label word Y,47,bicycle,clock,bird,clock,False,True
+ablate label word Y,48,car,train,bird,train,False,True
+ablate label word Y,49,train,clock,horse,train,True,False
+ablate label word Y,50,chair,car,bird,car,False,True
+ablate label word Y,51,clock,bus,car,bus,False,True
+ablate label word Y,52,pizza,horse,chair,pizza,True,False
+ablate label word Y,53,airplane,pizza,boat,airplane,True,False
+ablate label word Y,54,laptop,horse,bicycle,laptop,True,False
+ablate label word Y,55,boat,bicycle,pizza,boat,True,False
+ablate label word Y,56,bird,laptop,cat,laptop,False,True
+ablate label word Y,57,car,bus,cat,bus,False,True
+ablate label word Y,58,laptop,airplane,bus,laptop,True,False
+ablate label word Y,59,airplane,bicycle,train,airplane,True,False
+ablate label word Y,60,cat,bird,pizza,cat,True,False
+ablate label word Y,61,horse,bus,boat,horse,True,False
+ablate label word Y,62,laptop,bicycle,boat,laptop,True,False
+ablate label word Y,63,bus,pizza,chair,bus,True,False
+ablate object word X,0,bird,clock,airplane,clock,False,True
+ablate object word X,1,airplane,laptop,cat,laptop,False,True
+ablate object word X,2,clock,airplane,bus,airplane,False,True
+ablate object word X,3,horse,train,chair,train,False,True
+ablate object word X,4,airplane,boat,bicycle,boat,False,True
+ablate object word X,5,clock,boat,bus,boat,False,True
+ablate object word X,6,clock,laptop,cat,laptop,False,True
+ablate object word X,7,car,chair,boat,chair,False,True
+ablate object word X,8,bicycle,laptop,dog,laptop,False,True
+ablate object word X,9,clock,cat,laptop,cat,False,True
+ablate object word X,10,cat,chair,bicycle,chair,False,True
+ablate object word X,11,car,bicycle,bus,bicycle,False,True
+ablate object word X,12,bird,chair,clock,chair,False,True
+ablate object word X,13,train,airplane,clock,airplane,False,True
+ablate object word X,14,clock,boat,bicycle,clock,True,False
+ablate object word X,15,laptop,bird,boat,bird,False,True
+ablate object word X,16,horse,clock,airplane,clock,False,True
+ablate object word X,17,train,bus,airplane,bus,False,True
+ablate object word X,18,bird,bicycle,pizza,bicycle,False,True
+ablate object word X,19,bicycle,car,dog,bike,True,False
+ablate object word X,20,dog,horse,airplane,horse,False,True
+ablate object word X,21,boat,car,train,car,False,True
+ablate object word X,22,clock,cat,bus,cat,False,True
+ablate object word X,23,pizza,laptop,airplane,laptop,False,True
+ablate object word X,24,pizza,bus,train,bus,False,True
+ablate object word X,25,train,airplane,bus,airplane,False,True
+ablate object word X,26,bird,bus,boat,bus,False,True
+ablate object word X,27,train,airplane,boat,train,True,False
+ablate object word X,28,dog,airplane,cat,airplane,False,True
+ablate object word X,29,airplane,clock,pizza,clock,False,True
+ablate object word X,30,dog,airplane,bird,dog,True,False
+ablate object word X,31,boat,laptop,pizza,laptop,False,True
+ablate object word X,32,bus,horse,dog,horse,False,True
+ablate object word X,33,bicycle,boat,car,boat,False,True
+ablate object word X,34,dog,bus,airplane,dog,True,False
+ablate object word X,35,pizza,cat,clock,cat,False,True
+ablate object word X,36,airplane,horse,dog,horse,False,True
+ablate object word X,37,dog,chair,bird,chair,False,True
+ablate object word X,38,clock,horse,bird,clock,True,False
+ablate object word X,39,clock,bicycle,train,bicycle,False,True
+ablate object word X,40,bird,car,horse,car,False,True
+ablate object word X,41,horse,chair,airplane,horse,True,False
+ablate object word X,42,bus,laptop,chair,laptop,False,True
+ablate object word X,43,bicycle,laptop,car,laptop,False,True
+ablate object word X,44,chair,bus,cat,bus,False,True
+ablate object word X,45,airplane,boat,bus,boat,False,True
+ablate object word X,46,laptop,bicycle,cat,bicycle,False,True
+ablate object word X,47,bicycle,clock,bird,clock,False,True
+ablate object word X,48,car,train,bird,train,False,True
+ablate object word X,49,train,clock,horse,clock,False,True
+ablate object word X,50,chair,car,bird,car,False,True
+ablate object word X,51,clock,bus,car,bus,False,True
+ablate object word X,52,pizza,horse,chair,horse,False,True
+ablate object word X,53,airplane,pizza,boat,biplane,True,False
+ablate object word X,54,laptop,horse,bicycle,horse,False,True
+ablate object word X,55,boat,bicycle,pizza,bicycle,False,True
+ablate object word X,56,bird,laptop,cat,laptop,False,True
+ablate object word X,57,car,bus,cat,bus,False,True
+ablate object word X,58,laptop,airplane,bus,airplane,False,True
+ablate object word X,59,airplane,bicycle,train,bicycle,False,True
+ablate object word X,60,cat,bird,pizza,cat,True,False
+ablate object word X,61,horse,bus,boat,horse,True,False
+ablate object word X,62,laptop,bicycle,boat,bicycle,False,True
+ablate object word X,63,bus,pizza,chair,pizza,False,True
+ablate other word Z,0,bird,clock,airplane,clock,False,True
+ablate other word Z,1,airplane,laptop,cat,laptop,False,True
+ablate other word Z,2,clock,airplane,bus,airplane,False,True
+ablate other word Z,3,horse,train,chair,train,False,True
+ablate other word Z,4,airplane,boat,bicycle,airplane,True,False
+ablate other word Z,5,clock,boat,bus,boat,False,True
+ablate other word Z,6,clock,laptop,cat,laptop,False,True
+ablate other word Z,7,car,chair,boat,chair,False,True
+ablate other word Z,8,bicycle,laptop,dog,laptop,False,True
+ablate other word Z,9,clock,cat,laptop,cat,False,True
+ablate other word Z,10,cat,chair,bicycle,chair,False,True
+ablate other word Z,11,car,bicycle,bus,bicycle,False,True
+ablate other word Z,12,bird,chair,clock,chair,False,True
+ablate other word Z,13,train,airplane,clock,airplane,False,True
+ablate other word Z,14,clock,boat,bicycle,clock,True,False
+ablate other word Z,15,laptop,bird,boat,laptop,True,False
+ablate other word Z,16,horse,clock,airplane,clock,False,True
+ablate other word Z,17,train,bus,airplane,bus,False,True
+ablate other word Z,18,bird,bicycle,pizza,bicycle,False,True
+ablate other word Z,19,bicycle,car,dog,car,False,True
+ablate other word Z,20,dog,horse,airplane,horse,False,True
+ablate other word Z,21,boat,car,train,boat,True,False
+ablate other word Z,22,clock,cat,bus,cat,False,True
+ablate other word Z,23,pizza,laptop,airplane,laptop,False,True
+ablate other word Z,24,pizza,bus,train,bus,False,True
+ablate other word Z,25,train,airplane,bus,airplane,False,True
+ablate other word Z,26,bird,bus,boat,bus,False,True
+ablate other word Z,27,train,airplane,boat,train,True,False
+ablate other word Z,28,dog,airplane,cat,airplane,False,True
+ablate other word Z,29,airplane,clock,pizza,clock,False,True
+ablate other word Z,30,dog,airplane,bird,dog,True,False
+ablate other word Z,31,boat,laptop,pizza,laptop,False,True
+ablate other word Z,32,bus,horse,dog,horse,False,True
+ablate other word Z,33,bicycle,boat,car,boat,False,True
+ablate other word Z,34,dog,bus,airplane,dog,True,False
+ablate other word Z,35,pizza,cat,clock,pizza,True,False
+ablate other word Z,36,airplane,horse,dog,horse,False,True
+ablate other word Z,37,dog,chair,bird,chair,False,True
+ablate other word Z,38,clock,horse,bird,clock,True,False
+ablate other word Z,39,clock,bicycle,train,bicycle,False,True
+ablate other word Z,40,bird,car,horse,car,False,True
+ablate other word Z,41,horse,chair,airplane,horse,True,False
+ablate other word Z,42,bus,laptop,chair,laptop,False,True
+ablate other word Z,43,bicycle,laptop,car,laptop,False,True
+ablate other word Z,44,chair,bus,cat,bus,False,True
+ablate other word Z,45,airplane,boat,bus,boat,False,True
+ablate other word Z,46,laptop,bicycle,cat,laptop,True,False
+ablate other word Z,47,bicycle,clock,bird,clock,False,True
+ablate other word Z,48,car,train,bird,train,False,True
+ablate other word Z,49,train,clock,horse,clock,False,True
+ablate other word Z,50,chair,car,bird,car,False,True
+ablate other word Z,51,clock,bus,car,bus,False,True
+ablate other word Z,52,pizza,horse,chair,pizza,True,False
+ablate other word Z,53,airplane,pizza,boat,airplane,True,False
+ablate other word Z,54,laptop,horse,bicycle,laptop,True,False
+ablate other word Z,55,boat,bicycle,pizza,bicycle,False,True
+ablate other word Z,56,bird,laptop,cat,laptop,False,True
+ablate other word Z,57,car,bus,cat,car,True,False
+ablate other word Z,58,laptop,airplane,bus,airplane,False,True
+ablate other word Z,59,airplane,bicycle,train,bicycle,False,True
+ablate other word Z,60,cat,bird,pizza,cat,True,False
+ablate other word Z,61,horse,bus,boat,horse,True,False
+ablate other word Z,62,laptop,bicycle,boat,bicycle,False,True
+ablate other word Z,63,bus,pizza,chair,pizza,False,True
+ablate random direction,0,bird,clock,airplane,clock,False,True
+ablate random direction,1,airplane,laptop,cat,laptop,False,True
+ablate random direction,2,clock,airplane,bus,clock,True,False
+ablate random direction,3,horse,train,chair,train,False,True
+ablate random direction,4,airplane,boat,bicycle,airplane,True,False
+ablate random direction,5,clock,boat,bus,boat,False,True
+ablate random direction,6,clock,laptop,cat,laptop,False,True
+ablate random direction,7,car,chair,boat,chair,False,True
+ablate random direction,8,bicycle,laptop,dog,laptop,False,True
+ablate random direction,9,clock,cat,laptop,cat,False,True
+ablate random direction,10,cat,chair,bicycle,chair,False,True
+ablate random direction,11,car,bicycle,bus,bicycle,False,True
+ablate random direction,12,bird,chair,clock,chair,False,True
+ablate random direction,13,train,airplane,clock,airplane,False,True
+ablate random direction,14,clock,boat,bicycle,clock,True,False
+ablate random direction,15,laptop,bird,boat,laptop,True,False
+ablate random direction,16,horse,clock,airplane,horse,True,False
+ablate random direction,17,train,bus,airplane,bus,False,True
+ablate random direction,18,bird,bicycle,pizza,bicycle,False,True
+ablate random direction,19,bicycle,car,dog,car,False,True
+ablate random direction,20,dog,horse,airplane,horse,False,True
+ablate random direction,21,boat,car,train,boat,True,False
+ablate random direction,22,clock,cat,bus,cat,False,True
+ablate random direction,23,pizza,laptop,airplane,laptop,False,True
+ablate random direction,24,pizza,bus,train,bus,False,True
+ablate random direction,25,train,airplane,bus,airplane,False,True
+ablate random direction,26,bird,bus,boat,bus,False,True
+ablate random direction,27,train,airplane,boat,train,True,False
+ablate random direction,28,dog,airplane,cat,airplane,False,True
+ablate random direction,29,airplane,clock,pizza,clock,False,True
+ablate random direction,30,dog,airplane,bird,dog,True,False
+ablate random direction,31,boat,laptop,pizza,laptop,False,True
+ablate random direction,32,bus,horse,dog,horse,False,True
+ablate random direction,33,bicycle,boat,car,boat,False,True
+ablate random direction,34,dog,bus,airplane,dog,True,False
+ablate random direction,35,pizza,cat,clock,pizza,True,False
+ablate random direction,36,airplane,horse,dog,horse,False,True
+ablate random direction,37,dog,chair,bird,chair,False,True
+ablate random direction,38,clock,horse,bird,clock,True,False
+ablate random direction,39,clock,bicycle,train,bicycle,False,True
+ablate random direction,40,bird,car,horse,car,False,True
+ablate random direction,41,horse,chair,airplane,horse,True,False
+ablate random direction,42,bus,laptop,chair,laptop,False,True
+ablate random direction,43,bicycle,laptop,car,laptop,False,True
+ablate random direction,44,chair,bus,cat,bus,False,True
+ablate random direction,45,airplane,boat,bus,boat,False,True
+ablate random direction,46,laptop,bicycle,cat,laptop,True,False
+ablate random direction,47,bicycle,clock,bird,clock,False,True
+ablate random direction,48,car,train,bird,train,False,True
+ablate random direction,49,train,clock,horse,clock,False,True
+ablate random direction,50,chair,car,bird,car,False,True
+ablate random direction,51,clock,bus,car,bus,False,True
+ablate random direction,52,pizza,horse,chair,pizza,True,False
+ablate random direction,53,airplane,pizza,boat,airplane,True,False
+ablate random direction,54,laptop,horse,bicycle,laptop,True,False
+ablate random direction,55,boat,bicycle,pizza,bicycle,False,True
+ablate random direction,56,bird,laptop,cat,laptop,False,True
+ablate random direction,57,car,bus,cat,car,True,False
+ablate random direction,58,laptop,airplane,bus,airplane,False,True
+ablate random direction,59,airplane,bicycle,train,bicycle,False,True
+ablate random direction,60,cat,bird,pizza,cat,True,False
+ablate random direction,61,horse,bus,boat,horse,True,False
+ablate random direction,62,laptop,bicycle,boat,bicycle,False,True
+ablate random direction,63,bus,pizza,chair,pizza,False,True
+mean-ablate label word Y,0,bird,clock,airplane,clock,False,True
+mean-ablate label word Y,1,airplane,laptop,cat,laptop,False,True
+mean-ablate label word Y,2,clock,airplane,bus,clock,True,False
+mean-ablate label word Y,3,horse,train,chair,train,False,True
+mean-ablate label word Y,4,airplane,boat,bicycle,airplane,True,False
+mean-ablate label word Y,5,clock,boat,bus,clock,True,False
+mean-ablate label word Y,6,clock,laptop,cat,clock,True,False
+mean-ablate label word Y,7,car,chair,boat,chair,False,True
+mean-ablate label word Y,8,bicycle,laptop,dog,laptop,False,True
+mean-ablate label word Y,9,clock,cat,laptop,cat,False,True
+mean-ablate label word Y,10,cat,chair,bicycle,chair,False,True
+mean-ablate label word Y,11,car,bicycle,bus,car,True,False
+mean-ablate label word Y,12,bird,chair,clock,chair,False,True
+mean-ablate label word Y,13,train,airplane,clock,train,True,False
+mean-ablate label word Y,14,clock,boat,bicycle,clock,True,False
+mean-ablate label word Y,15,laptop,bird,boat,laptop,True,False
+mean-ablate label word Y,16,horse,clock,airplane,horse,True,False
+mean-ablate label word Y,17,train,bus,airplane,bus,False,True
+mean-ablate label word Y,18,bird,bicycle,pizza,bicycle,False,True
+mean-ablate label word Y,19,bicycle,car,dog,car,False,True
+mean-ablate label word Y,20,dog,horse,airplane,dog,True,False
+mean-ablate label word Y,21,boat,car,train,boat,True,False
+mean-ablate label word Y,22,clock,cat,bus,cat,False,True
+mean-ablate label word Y,23,pizza,laptop,airplane,laptop,False,True
+mean-ablate label word Y,24,pizza,bus,train,bus,False,True
+mean-ablate label word Y,25,train,airplane,bus,train,True,False
+mean-ablate label word Y,26,bird,bus,boat,bus,False,True
+mean-ablate label word Y,27,train,airplane,boat,train,True,False
+mean-ablate label word Y,28,dog,airplane,cat,dog,True,False
+mean-ablate label word Y,29,airplane,clock,pizza,clock,False,True
+mean-ablate label word Y,30,dog,airplane,bird,dog,True,False
+mean-ablate label word Y,31,boat,laptop,pizza,laptop,False,True
+mean-ablate label word Y,32,bus,horse,dog,bus,True,False
+mean-ablate label word Y,33,bicycle,boat,car,boat,False,True
+mean-ablate label word Y,34,dog,bus,airplane,dog,True,False
+mean-ablate label word Y,35,pizza,cat,clock,pizza,True,False
+mean-ablate label word Y,36,airplane,horse,dog,airplane,True,False
+mean-ablate label word Y,37,dog,chair,bird,chair,False,True
+mean-ablate label word Y,38,clock,horse,bird,clock,True,False
+mean-ablate label word Y,39,clock,bicycle,train,bicycle,False,True
+mean-ablate label word Y,40,bird,car,horse,car,False,True
+mean-ablate label word Y,41,horse,chair,airplane,horse,True,False
+mean-ablate label word Y,42,bus,laptop,chair,laptop,False,True
+mean-ablate label word Y,43,bicycle,laptop,car,laptop,False,True
+mean-ablate label word Y,44,chair,bus,cat,bus,False,True
+mean-ablate label word Y,45,airplane,boat,bus,boat,False,True
+mean-ablate label word Y,46,laptop,bicycle,cat,laptop,True,False
+mean-ablate label word Y,47,bicycle,clock,bird,clock,False,True
+mean-ablate label word Y,48,car,train,bird,train,False,True
+mean-ablate label word Y,49,train,clock,horse,clock,False,True
+mean-ablate label word Y,50,chair,car,bird,car,False,True
+mean-ablate label word Y,51,clock,bus,car,bus,False,True
+mean-ablate label word Y,52,pizza,horse,chair,pizza,True,False
+mean-ablate label word Y,53,airplane,pizza,boat,airplane,True,False
+mean-ablate label word Y,54,laptop,horse,bicycle,laptop,True,False
+mean-ablate label word Y,55,boat,bicycle,pizza,bicycle,False,True
+mean-ablate label word Y,56,bird,laptop,cat,laptop,False,True
+mean-ablate label word Y,57,car,bus,cat,bus,False,True
+mean-ablate label word Y,58,laptop,airplane,bus,laptop,True,False
+mean-ablate label word Y,59,airplane,bicycle,train,bicycle,False,True
+mean-ablate label word Y,60,cat,bird,pizza,cat,True,False
+mean-ablate label word Y,61,horse,bus,boat,horse,True,False
+mean-ablate label word Y,62,laptop,bicycle,boat,laptop,True,False
+mean-ablate label word Y,63,bus,pizza,chair,bus,True,False
+mean-ablate object word X,0,bird,clock,airplane,clock,False,True
+mean-ablate object word X,1,airplane,laptop,cat,laptop,False,True
+mean-ablate object word X,2,clock,airplane,bus,airplane,False,True
+mean-ablate object word X,3,horse,train,chair,train,False,True
+mean-ablate object word X,4,airplane,boat,bicycle,plane,True,False
+mean-ablate object word X,5,clock,boat,bus,boat,False,True
+mean-ablate object word X,6,clock,laptop,cat,laptop,False,True
+mean-ablate object word X,7,car,chair,boat,chair,False,True
+mean-ablate object word X,8,bicycle,laptop,dog,laptop,False,True
+mean-ablate object word X,9,clock,cat,laptop,cat,False,True
+mean-ablate object word X,10,cat,chair,bicycle,chair,False,True
+mean-ablate object word X,11,car,bicycle,bus,bicycle,False,True
+mean-ablate object word X,12,bird,chair,clock,chair,False,True
+mean-ablate object word X,13,train,airplane,clock,airplane,False,True
+mean-ablate object word X,14,clock,boat,bicycle,clock,True,False
+mean-ablate object word X,15,laptop,bird,boat,laptop,True,False
+mean-ablate object word X,16,horse,clock,airplane,clock,False,True
+mean-ablate object word X,17,train,bus,airplane,bus,False,True
+mean-ablate object word X,18,bird,bicycle,pizza,bicycle,False,True
+mean-ablate object word X,19,bicycle,car,dog,bike,True,False
+mean-ablate object word X,20,dog,horse,airplane,horse,False,True
+mean-ablate object word X,21,boat,car,train,boat,True,False
+mean-ablate object word X,22,clock,cat,bus,cat,False,True
+mean-ablate object word X,23,pizza,laptop,airplane,laptop,False,True
+mean-ablate object word X,24,pizza,bus,train,bus,False,True
+mean-ablate object word X,25,train,airplane,bus,airplane,False,True
+mean-ablate object word X,26,bird,bus,boat,bus,False,True
+mean-ablate object word X,27,train,airplane,boat,train,True,False
+mean-ablate object word X,28,dog,airplane,cat,airplane,False,True
+mean-ablate object word X,29,airplane,clock,pizza,clock,False,True
+mean-ablate object word X,30,dog,airplane,bird,dog,True,False
+mean-ablate object word X,31,boat,laptop,pizza,laptop,False,True
+mean-ablate object word X,32,bus,horse,dog,horse,False,True
+mean-ablate object word X,33,bicycle,boat,car,boat,False,True
+mean-ablate object word X,34,dog,bus,airplane,dog,True,False
+mean-ablate object word X,35,pizza,cat,clock,cat,False,True
+mean-ablate object word X,36,airplane,horse,dog,horse,False,True
+mean-ablate object word X,37,dog,chair,bird,chair,False,True
+mean-ablate object word X,38,clock,horse,bird,clock,True,False
+mean-ablate object word X,39,clock,bicycle,train,bicycle,False,True
+mean-ablate object word X,40,bird,car,horse,car,False,True
+mean-ablate object word X,41,horse,chair,airplane,horse,True,False
+mean-ablate object word X,42,bus,laptop,chair,laptop,False,True
+mean-ablate object word X,43,bicycle,laptop,car,laptop,False,True
+mean-ablate object word X,44,chair,bus,cat,bus,False,True
+mean-ablate object word X,45,airplane,boat,bus,boat,False,True
+mean-ablate object word X,46,laptop,bicycle,cat,bicycle,False,True
+mean-ablate object word X,47,bicycle,clock,bird,clock,False,True
+mean-ablate object word X,48,car,train,bird,train,False,True
+mean-ablate object word X,49,train,clock,horse,clock,False,True
+mean-ablate object word X,50,chair,car,bird,car,False,True
+mean-ablate object word X,51,clock,bus,car,bus,False,True
+mean-ablate object word X,52,pizza,horse,chair,pizza,True,False
+mean-ablate object word X,53,airplane,pizza,boat,biplane,True,False
+mean-ablate object word X,54,laptop,horse,bicycle,horse,False,True
+mean-ablate object word X,55,boat,bicycle,pizza,bicycle,False,True
+mean-ablate object word X,56,bird,laptop,cat,laptop,False,True
+mean-ablate object word X,57,car,bus,cat,car,True,False
+mean-ablate object word X,58,laptop,airplane,bus,airplane,False,True
+mean-ablate object word X,59,airplane,bicycle,train,bicycle,False,True
+mean-ablate object word X,60,cat,bird,pizza,cat,True,False
+mean-ablate object word X,61,horse,bus,boat,horse,True,False
+mean-ablate object word X,62,laptop,bicycle,boat,bicycle,False,True
+mean-ablate object word X,63,bus,pizza,chair,pizza,False,True
+ablate J part on the label band,0,bird,clock,airplane,clock,False,True
+ablate J part on the label band,1,airplane,laptop,cat,laptop,False,True
+ablate J part on the label band,2,clock,airplane,bus,airplane,False,True
+ablate J part on the label band,3,horse,train,chair,train,False,True
+ablate J part on the label band,4,airplane,boat,bicycle,airplane,True,False
+ablate J part on the label band,5,clock,boat,bus,boat,False,True
+ablate J part on the label band,6,clock,laptop,cat,laptop,False,True
+ablate J part on the label band,7,car,chair,boat,chair,False,True
+ablate J part on the label band,8,bicycle,laptop,dog,laptop,False,True
+ablate J part on the label band,9,clock,cat,laptop,cat,False,True
+ablate J part on the label band,10,cat,chair,bicycle,chair,False,True
+ablate J part on the label band,11,car,bicycle,bus,bicycle,False,True
+ablate J part on the label band,12,bird,chair,clock,chair,False,True
+ablate J part on the label band,13,train,airplane,clock,airplane,False,True
+ablate J part on the label band,14,clock,boat,bicycle,clock,True,False
+ablate J part on the label band,15,laptop,bird,boat,laptop,True,False
+ablate J part on the label band,16,horse,clock,airplane,horse,True,False
+ablate J part on the label band,17,train,bus,airplane,bus,False,True
+ablate J part on the label band,18,bird,bicycle,pizza,bicycle,False,True
+ablate J part on the label band,19,bicycle,car,dog,bicycle,True,False
+ablate J part on the label band,20,dog,horse,airplane,horse,False,True
+ablate J part on the label band,21,boat,car,train,boat,True,False
+ablate J part on the label band,22,clock,cat,bus,clock,True,False
+ablate J part on the label band,23,pizza,laptop,airplane,laptop,False,True
+ablate J part on the label band,24,pizza,bus,train,bus,False,True
+ablate J part on the label band,25,train,airplane,bus,airplane,False,True
+ablate J part on the label band,26,bird,bus,boat,bus,False,True
+ablate J part on the label band,27,train,airplane,boat,train,True,False
+ablate J part on the label band,28,dog,airplane,cat,airplane,False,True
+ablate J part on the label band,29,airplane,clock,pizza,clock,False,True
+ablate J part on the label band,30,dog,airplane,bird,dog,True,False
+ablate J part on the label band,31,boat,laptop,pizza,laptop,False,True
+ablate J part on the label band,32,bus,horse,dog,horse,False,True
+ablate J part on the label band,33,bicycle,boat,car,boat,False,True
+ablate J part on the label band,34,dog,bus,airplane,dog,True,False
+ablate J part on the label band,35,pizza,cat,clock,pizza,True,False
+ablate J part on the label band,36,airplane,horse,dog,airplane,True,False
+ablate J part on the label band,37,dog,chair,bird,chair,False,True
+ablate J part on the label band,38,clock,horse,bird,clock,True,False
+ablate J part on the label band,39,clock,bicycle,train,bicycle,False,True
+ablate J part on the label band,40,bird,car,horse,car,False,True
+ablate J part on the label band,41,horse,chair,airplane,horse,True,False
+ablate J part on the label band,42,bus,laptop,chair,laptop,False,True
+ablate J part on the label band,43,bicycle,laptop,car,laptop,False,True
+ablate J part on the label band,44,chair,bus,cat,bus,False,True
+ablate J part on the label band,45,airplane,boat,bus,boat,False,True
+ablate J part on the label band,46,laptop,bicycle,cat,laptop,True,False
+ablate J part on the label band,47,bicycle,clock,bird,clock,False,True
+ablate J part on the label band,48,car,train,bird,train,False,True
+ablate J part on the label band,49,train,clock,horse,clock,False,True
+ablate J part on the label band,50,chair,car,bird,car,False,True
+ablate J part on the label band,51,clock,bus,car,clock,True,False
+ablate J part on the label band,52,pizza,horse,chair,pizza,True,False
+ablate J part on the label band,53,airplane,pizza,boat,plane,True,False
+ablate J part on the label band,54,laptop,horse,bicycle,laptop,True,False
+ablate J part on the label band,55,boat,bicycle,pizza,bicycle,False,True
+ablate J part on the label band,56,bird,laptop,cat,laptop,False,True
+ablate J part on the label band,57,car,bus,cat,car,True,False
+ablate J part on the label band,58,laptop,airplane,bus,laptop,True,False
+ablate J part on the label band,59,airplane,bicycle,train,airplane,True,False
+ablate J part on the label band,60,cat,bird,pizza,cat,True,False
+ablate J part on the label band,61,horse,bus,boat,horse,True,False
+ablate J part on the label band,62,laptop,bicycle,boat,laptop,True,False
+ablate J part on the label band,63,bus,pizza,chair,pizza,False,True
+ablate random part on the label band,0,bird,clock,airplane,clock,False,True
+ablate random part on the label band,1,airplane,laptop,cat,laptop,False,True
+ablate random part on the label band,2,clock,airplane,bus,clock,True,False
+ablate random part on the label band,3,horse,train,chair,train,False,True
+ablate random part on the label band,4,airplane,boat,bicycle,airplane,True,False
+ablate random part on the label band,5,clock,boat,bus,boat,False,True
+ablate random part on the label band,6,clock,laptop,cat,laptop,False,True
+ablate random part on the label band,7,car,chair,boat,chair,False,True
+ablate random part on the label band,8,bicycle,laptop,dog,laptop,False,True
+ablate random part on the label band,9,clock,cat,laptop,cat,False,True
+ablate random part on the label band,10,cat,chair,bicycle,chair,False,True
+ablate random part on the label band,11,car,bicycle,bus,bicycle,False,True
+ablate random part on the label band,12,bird,chair,clock,chair,False,True
+ablate random part on the label band,13,train,airplane,clock,airplane,False,True
+ablate random part on the label band,14,clock,boat,bicycle,clock,True,False
+ablate random part on the label band,15,laptop,bird,boat,laptop,True,False
+ablate random part on the label band,16,horse,clock,airplane,horse,True,False
+ablate random part on the label band,17,train,bus,airplane,bus,False,True
+ablate random part on the label band,18,bird,bicycle,pizza,bicycle,False,True
+ablate random part on the label band,19,bicycle,car,dog,car,False,True
+ablate random part on the label band,20,dog,horse,airplane,horse,False,True
+ablate random part on the label band,21,boat,car,train,boat,True,False
+ablate random part on the label band,22,clock,cat,bus,cat,False,True
+ablate random part on the label band,23,pizza,laptop,airplane,laptop,False,True
+ablate random part on the label band,24,pizza,bus,train,pizza,True,False
+ablate random part on the label band,25,train,airplane,bus,airplane,False,True
+ablate random part on the label band,26,bird,bus,boat,bus,False,True
+ablate random part on the label band,27,train,airplane,boat,train,True,False
+ablate random part on the label band,28,dog,airplane,cat,airplane,False,True
+ablate random part on the label band,29,airplane,clock,pizza,clock,False,True
+ablate random part on the label band,30,dog,airplane,bird,dog,True,False
+ablate random part on the label band,31,boat,laptop,pizza,laptop,False,True
+ablate random part on the label band,32,bus,horse,dog,horse,False,True
+ablate random part on the label band,33,bicycle,boat,car,boat,False,True
+ablate random part on the label band,34,dog,bus,airplane,dog,True,False
+ablate random part on the label band,35,pizza,cat,clock,pizza,True,False
+ablate random part on the label band,36,airplane,horse,dog,horse,False,True
+ablate random part on the label band,37,dog,chair,bird,chair,False,True
+ablate random part on the label band,38,clock,horse,bird,clock,True,False
+ablate random part on the label band,39,clock,bicycle,train,bicycle,False,True
+ablate random part on the label band,40,bird,car,horse,car,False,True
+ablate random part on the label band,41,horse,chair,airplane,horse,True,False
+ablate random part on the label band,42,bus,laptop,chair,laptop,False,True
+ablate random part on the label band,43,bicycle,laptop,car,laptop,False,True
+ablate random part on the label band,44,chair,bus,cat,bus,False,True
+ablate random part on the label band,45,airplane,boat,bus,boat,False,True
+ablate random part on the label band,46,laptop,bicycle,cat,laptop,True,False
+ablate random part on the label band,47,bicycle,clock,bird,clock,False,True
+ablate random part on the label band,48,car,train,bird,train,False,True
+ablate random part on the label band,49,train,clock,horse,clock,False,True
+ablate random part on the label band,50,chair,car,bird,car,False,True
+ablate random part on the label band,51,clock,bus,car,bus,False,True
+ablate random part on the label band,52,pizza,horse,chair,pizza,True,False
+ablate random part on the label band,53,airplane,pizza,boat,airplane,True,False
+ablate random part on the label band,54,laptop,horse,bicycle,laptop,True,False
+ablate random part on the label band,55,boat,bicycle,pizza,bicycle,False,True
+ablate random part on the label band,56,bird,laptop,cat,laptop,False,True
+ablate random part on the label band,57,car,bus,cat,bus,False,True
+ablate random part on the label band,58,laptop,airplane,bus,airplane,False,True
+ablate random part on the label band,59,airplane,bicycle,train,bicycle,False,True
+ablate random part on the label band,60,cat,bird,pizza,cat,True,False
+ablate random part on the label band,61,horse,bus,boat,horse,True,False
+ablate random part on the label band,62,laptop,bicycle,boat,bicycle,False,True
+ablate random part on the label band,63,bus,pizza,chair,pizza,False,True
+ablate J part on the object rows,0,bird,clock,airplane,clock,False,True
+ablate J part on the object rows,1,airplane,laptop,cat,laptop,False,True
+ablate J part on the object rows,2,clock,airplane,bus,airplane,False,True
+ablate J part on the object rows,3,horse,train,chair,train,False,True
+ablate J part on the object rows,4,airplane,boat,bicycle,plane,True,False
+ablate J part on the object rows,5,clock,boat,bus,clock,True,False
+ablate J part on the object rows,6,clock,laptop,cat,laptop,False,True
+ablate J part on the object rows,7,car,chair,boat,chair,False,True
+ablate J part on the object rows,8,bicycle,laptop,dog,laptop,False,True
+ablate J part on the object rows,9,clock,cat,laptop,cat,False,True
+ablate J part on the object rows,10,cat,chair,bicycle,chair,False,True
+ablate J part on the object rows,11,car,bicycle,bus,bicycle,False,True
+ablate J part on the object rows,12,bird,chair,clock,chair,False,True
+ablate J part on the object rows,13,train,airplane,clock,airplane,False,True
+ablate J part on the object rows,14,clock,boat,bicycle,clock,True,False
+ablate J part on the object rows,15,laptop,bird,boat,laptop,True,False
+ablate J part on the object rows,16,horse,clock,airplane,clock,False,True
+ablate J part on the object rows,17,train,bus,airplane,bus,False,True
+ablate J part on the object rows,18,bird,bicycle,pizza,bicycle,False,True
+ablate J part on the object rows,19,bicycle,car,dog,car,False,True
+ablate J part on the object rows,20,dog,horse,airplane,horse,False,True
+ablate J part on the object rows,21,boat,car,train,boat,True,False
+ablate J part on the object rows,22,clock,cat,bus,clock,True,False
+ablate J part on the object rows,23,pizza,laptop,airplane,laptop,False,True
+ablate J part on the object rows,24,pizza,bus,train,bus,False,True
+ablate J part on the object rows,25,train,airplane,bus,airplane,False,True
+ablate J part on the object rows,26,bird,bus,boat,bus,False,True
+ablate J part on the object rows,27,train,airplane,boat,train,True,False
+ablate J part on the object rows,28,dog,airplane,cat,airplane,False,True
+ablate J part on the object rows,29,airplane,clock,pizza,clock,False,True
+ablate J part on the object rows,30,dog,airplane,bird,dog,True,False
+ablate J part on the object rows,31,boat,laptop,pizza,laptop,False,True
+ablate J part on the object rows,32,bus,horse,dog,horse,False,True
+ablate J part on the object rows,33,bicycle,boat,car,boat,False,True
+ablate J part on the object rows,34,dog,bus,airplane,bus,False,True
+ablate J part on the object rows,35,pizza,cat,clock,cat,False,True
+ablate J part on the object rows,36,airplane,horse,dog,horse,False,True
+ablate J part on the object rows,37,dog,chair,bird,chair,False,True
+ablate J part on the object rows,38,clock,horse,bird,clock,True,False
+ablate J part on the object rows,39,clock,bicycle,train,bicycle,False,True
+ablate J part on the object rows,40,bird,car,horse,car,False,True
+ablate J part on the object rows,41,horse,chair,airplane,chair,False,True
+ablate J part on the object rows,42,bus,laptop,chair,laptop,False,True
+ablate J part on the object rows,43,bicycle,laptop,car,laptop,False,True
+ablate J part on the object rows,44,chair,bus,cat,bus,False,True
+ablate J part on the object rows,45,airplane,boat,bus,boat,False,True
+ablate J part on the object rows,46,laptop,bicycle,cat,bicycle,False,True
+ablate J part on the object rows,47,bicycle,clock,bird,clock,False,True
+ablate J part on the object rows,48,car,train,bird,train,False,True
+ablate J part on the object rows,49,train,clock,horse,clock,False,True
+ablate J part on the object rows,50,chair,car,bird,car,False,True
+ablate J part on the object rows,51,clock,bus,car,bus,False,True
+ablate J part on the object rows,52,pizza,horse,chair,horse,False,True
+ablate J part on the object rows,53,airplane,pizza,boat,plane,True,False
+ablate J part on the object rows,54,laptop,horse,bicycle,laptop,True,False
+ablate J part on the object rows,55,boat,bicycle,pizza,bicycle,False,True
+ablate J part on the object rows,56,bird,laptop,cat,laptop,False,True
+ablate J part on the object rows,57,car,bus,cat,car,True,False
+ablate J part on the object rows,58,laptop,airplane,bus,laptop,True,False
+ablate J part on the object rows,59,airplane,bicycle,train,bicycle,False,True
+ablate J part on the object rows,60,cat,bird,pizza,cat,True,False
+ablate J part on the object rows,61,horse,bus,boat,bus,False,True
+ablate J part on the object rows,62,laptop,bicycle,boat,bicycle,False,True
+ablate J part on the object rows,63,bus,pizza,chair,pizza,False,True
+ablate random part on the object rows,0,bird,clock,airplane,clock,False,True
+ablate random part on the object rows,1,airplane,laptop,cat,laptop,False,True
+ablate random part on the object rows,2,clock,airplane,bus,airplane,False,True
+ablate random part on the object rows,3,horse,train,chair,train,False,True
+ablate random part on the object rows,4,airplane,boat,bicycle,airplane,True,False
+ablate random part on the object rows,5,clock,boat,bus,boat,False,True
+ablate random part on the object rows,6,clock,laptop,cat,laptop,False,True
+ablate random part on the object rows,7,car,chair,boat,chair,False,True
+ablate random part on the object rows,8,bicycle,laptop,dog,laptop,False,True
+ablate random part on the object rows,9,clock,cat,laptop,cat,False,True
+ablate random part on the object rows,10,cat,chair,bicycle,chair,False,True
+ablate random part on the object rows,11,car,bicycle,bus,car,True,False
+ablate random part on the object rows,12,bird,chair,clock,chair,False,True
+ablate random part on the object rows,13,train,airplane,clock,airplane,False,True
+ablate random part on the object rows,14,clock,boat,bicycle,boat,False,True
+ablate random part on the object rows,15,laptop,bird,boat,laptop,True,False
+ablate random part on the object rows,16,horse,clock,airplane,clock,False,True
+ablate random part on the object rows,17,train,bus,airplane,bus,False,True
+ablate random part on the object rows,18,bird,bicycle,pizza,bicycle,False,True
+ablate random part on the object rows,19,bicycle,car,dog,car,False,True
+ablate random part on the object rows,20,dog,horse,airplane,horse,False,True
+ablate random part on the object rows,21,boat,car,train,boat,True,False
+ablate random part on the object rows,22,clock,cat,bus,cat,False,True
+ablate random part on the object rows,23,pizza,laptop,airplane,laptop,False,True
+ablate random part on the object rows,24,pizza,bus,train,bus,False,True
+ablate random part on the object rows,25,train,airplane,bus,airplane,False,True
+ablate random part on the object rows,26,bird,bus,boat,bus,False,True
+ablate random part on the object rows,27,train,airplane,boat,train,True,False
+ablate random part on the object rows,28,dog,airplane,cat,airplane,False,True
+ablate random part on the object rows,29,airplane,clock,pizza,clock,False,True
+ablate random part on the object rows,30,dog,airplane,bird,dog,True,False
+ablate random part on the object rows,31,boat,laptop,pizza,laptop,False,True
+ablate random part on the object rows,32,bus,horse,dog,horse,False,True
+ablate random part on the object rows,33,bicycle,boat,car,boat,False,True
+ablate random part on the object rows,34,dog,bus,airplane,dog,True,False
+ablate random part on the object rows,35,pizza,cat,clock,pizza,True,False
+ablate random part on the object rows,36,airplane,horse,dog,horse,False,True
+ablate random part on the object rows,37,dog,chair,bird,chair,False,True
+ablate random part on the object rows,38,clock,horse,bird,clock,True,False
+ablate random part on the object rows,39,clock,bicycle,train,bicycle,False,True
+ablate random part on the object rows,40,bird,car,horse,car,False,True
+ablate random part on the object rows,41,horse,chair,airplane,horse,True,False
+ablate random part on the object rows,42,bus,laptop,chair,laptop,False,True
+ablate random part on the object rows,43,bicycle,laptop,car,laptop,False,True
+ablate random part on the object rows,44,chair,bus,cat,bus,False,True
+ablate random part on the object rows,45,airplane,boat,bus,boat,False,True
+ablate random part on the object rows,46,laptop,bicycle,cat,laptop,True,False
+ablate random part on the object rows,47,bicycle,clock,bird,bicycle,True,False
+ablate random part on the object rows,48,car,train,bird,train,False,True
+ablate random part on the object rows,49,train,clock,horse,clock,False,True
+ablate random part on the object rows,50,chair,car,bird,car,False,True
+ablate random part on the object rows,51,clock,bus,car,bus,False,True
+ablate random part on the object rows,52,pizza,horse,chair,horse,False,True
+ablate random part on the object rows,53,airplane,pizza,boat,pizza,False,True
+ablate random part on the object rows,54,laptop,horse,bicycle,laptop,True,False
+ablate random part on the object rows,55,boat,bicycle,pizza,bicycle,False,True
+ablate random part on the object rows,56,bird,laptop,cat,laptop,False,True
+ablate random part on the object rows,57,car,bus,cat,car,True,False
+ablate random part on the object rows,58,laptop,airplane,bus,airplane,False,True
+ablate random part on the object rows,59,airplane,bicycle,train,bicycle,False,True
+ablate random part on the object rows,60,cat,bird,pizza,bird,False,True
+ablate random part on the object rows,61,horse,bus,boat,bus,False,True
+ablate random part on the object rows,62,laptop,bicycle,boat,bicycle,False,True
+ablate random part on the object rows,63,bus,pizza,chair,pizza,False,True

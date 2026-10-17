@@ -1,0 +1,2305 @@
+source,task,arm,scene,X,Z,generation,follows_X,keeps_Z
+picture,say,receiver alone,0,bird,airplane,airplane,False,True
+picture,say,receiver alone,1,train,cat,cat,False,True
+picture,say,receiver alone,2,dog,bus,bus,False,True
+picture,say,receiver alone,3,laptop,horse,horse,False,True
+picture,say,receiver alone,4,bird,car,cat,False,False
+picture,say,receiver alone,5,car,bird,bird,False,True
+picture,say,receiver alone,6,bird,car,car,False,True
+picture,say,receiver alone,7,laptop,horse,horse,False,True
+picture,say,receiver alone,8,cat,bus,bus,False,True
+picture,say,receiver alone,9,boat,cat,cat,False,True
+picture,say,receiver alone,10,bird,car,car,False,True
+picture,say,receiver alone,11,bicycle,dog,dog,False,True
+picture,say,receiver alone,12,dog,train,train,False,True
+picture,say,receiver alone,13,chair,horse,horse,False,True
+picture,say,receiver alone,14,cat,boat,boat,False,True
+picture,say,receiver alone,15,clock,horse,horse,False,True
+picture,say,receiver alone,16,cat,train,train,False,True
+picture,say,receiver alone,17,boat,cat,cat,False,True
+picture,say,receiver alone,18,dog,bicycle,bicycle,False,True
+picture,say,receiver alone,19,chair,horse,horse,False,True
+picture,say,receiver alone,20,cat,bicycle,bicycle,False,True
+picture,say,receiver alone,21,train,bird,bird,False,True
+picture,say,receiver alone,22,bird,airplane,airplane,False,True
+picture,say,receiver alone,23,pizza,horse,horse,False,True
+picture,say,receiver alone,24,horse,clock,clock,False,True
+picture,say,receiver alone,25,laptop,horse,horse,False,True
+picture,say,receiver alone,26,bird,car,car,False,True
+picture,say,receiver alone,27,airplane,dog,dog,False,True
+picture,say,receiver alone,28,horse,chair,cat,False,False
+picture,say,receiver alone,29,bicycle,cat,cat,False,True
+picture,say,receiver alone,30,dog,bus,bus,False,True
+picture,say,receiver alone,31,car,dog,dog,False,True
+picture,say,receiver alone,32,dog,bicycle,bicycle,False,True
+picture,say,receiver alone,33,cup,horse,horse,False,True
+picture,say,receiver alone,34,dog,boat,boat,False,True
+picture,say,receiver alone,35,train,cat,cat,False,True
+picture,say,receiver alone,36,horse,clock,clock,False,True
+picture,say,receiver alone,37,boat,dog,dog,False,True
+picture,say,receiver alone,38,horse,cup,cup,False,True
+picture,say,receiver alone,39,chair,horse,horse,False,True
+picture,say,receiver alone,40,bird,airplane,airplane,False,True
+picture,say,receiver alone,41,cup,horse,horse,False,True
+picture,say,receiver alone,42,dog,car,cat,False,False
+picture,say,receiver alone,43,bicycle,dog,dog,False,True
+picture,say,receiver alone,44,cat,bicycle,bicycle,False,True
+picture,say,receiver alone,45,clock,horse,horse,False,True
+picture,say,receiver alone,46,dog,car,car,False,True
+picture,say,receiver alone,47,cup,horse,horse,False,True
+picture,say,receiver alone,48,bird,airplane,airplane,False,True
+picture,say,receiver alone,49,car,bird,bird,False,True
+picture,say,receiver alone,50,bird,train,bus,False,False
+picture,say,receiver alone,51,car,bird,bird,False,True
+picture,say,receiver alone,52,horse,cup,cup,False,True
+picture,say,receiver alone,53,train,bird,bird,False,True
+picture,say,receiver alone,54,cat,airplane,airplane,False,True
+picture,say,receiver alone,55,cup,horse,horse,False,True
+picture,say,receiver alone,56,horse,clock,clock,False,True
+picture,say,receiver alone,57,bus,dog,dog,False,True
+picture,say,receiver alone,58,bird,car,car,False,True
+picture,say,receiver alone,59,bus,dog,dog,False,True
+picture,say,receiver alone,60,bird,train,train,False,True
+picture,say,receiver alone,61,train,dog,dog,False,True
+picture,say,receiver alone,62,cat,bicycle,bicycle,False,True
+picture,say,receiver alone,63,cup,horse,horse,False,True
+picture,say,donor early only,0,bird,airplane,bird,True,False
+picture,say,donor early only,1,train,cat,train,True,False
+picture,say,donor early only,2,dog,bus,dog,True,False
+picture,say,donor early only,3,laptop,horse,laptop,True,False
+picture,say,donor early only,4,bird,car,bird,True,False
+picture,say,donor early only,5,car,bird,cat,False,False
+picture,say,donor early only,6,bird,car,bird,True,False
+picture,say,donor early only,7,laptop,horse,laptop,True,False
+picture,say,donor early only,8,cat,bus,cat,True,False
+picture,say,donor early only,9,boat,cat,boat,True,False
+picture,say,donor early only,10,bird,car,bird,True,False
+picture,say,donor early only,11,bicycle,dog,bicycle,True,False
+picture,say,donor early only,12,dog,train,dog,True,False
+picture,say,donor early only,13,chair,horse,chair,True,False
+picture,say,donor early only,14,cat,boat,cat,True,False
+picture,say,donor early only,15,clock,horse,clock,True,False
+picture,say,donor early only,16,cat,train,cat,True,False
+picture,say,donor early only,17,boat,cat,boat,True,False
+picture,say,donor early only,18,dog,bicycle,dog,True,False
+picture,say,donor early only,19,chair,horse,chair,True,False
+picture,say,donor early only,20,cat,bicycle,cat,True,False
+picture,say,donor early only,21,train,bird,train,True,False
+picture,say,donor early only,22,bird,airplane,bird,True,False
+picture,say,donor early only,23,pizza,horse,pizza,True,False
+picture,say,donor early only,24,horse,clock,horse,True,False
+picture,say,donor early only,25,laptop,horse,laptop,True,False
+picture,say,donor early only,26,bird,car,bird,True,False
+picture,say,donor early only,27,airplane,dog,airplane,True,False
+picture,say,donor early only,28,horse,chair,horse,True,False
+picture,say,donor early only,29,bicycle,cat,motorcycle,False,False
+picture,say,donor early only,30,dog,bus,dog,True,False
+picture,say,donor early only,31,car,dog,car,True,False
+picture,say,donor early only,32,dog,bicycle,dog,True,False
+picture,say,donor early only,33,cup,horse,mug,False,False
+picture,say,donor early only,34,dog,boat,dog,True,False
+picture,say,donor early only,35,train,cat,train,True,False
+picture,say,donor early only,36,horse,clock,horse,True,False
+picture,say,donor early only,37,boat,dog,boat,True,False
+picture,say,donor early only,38,horse,cup,horse,True,False
+picture,say,donor early only,39,chair,horse,chair,True,False
+picture,say,donor early only,40,bird,airplane,bird,True,False
+picture,say,donor early only,41,cup,horse,mug,False,False
+picture,say,donor early only,42,dog,car,dog,True,False
+picture,say,donor early only,43,bicycle,dog,bicycle,True,False
+picture,say,donor early only,44,cat,bicycle,cat,True,False
+picture,say,donor early only,45,clock,horse,clock,True,False
+picture,say,donor early only,46,dog,car,dog,True,False
+picture,say,donor early only,47,cup,horse,cup,True,False
+picture,say,donor early only,48,bird,airplane,bird,True,False
+picture,say,donor early only,49,car,bird,car,True,False
+picture,say,donor early only,50,bird,train,bird,True,False
+picture,say,donor early only,51,car,bird,car,True,False
+picture,say,donor early only,52,horse,cup,horse,True,False
+picture,say,donor early only,53,train,bird,train,True,False
+picture,say,donor early only,54,cat,airplane,cat,True,False
+picture,say,donor early only,55,cup,horse,cup,True,False
+picture,say,donor early only,56,horse,clock,horse,True,False
+picture,say,donor early only,57,bus,dog,bus,True,False
+picture,say,donor early only,58,bird,car,bird,True,False
+picture,say,donor early only,59,bus,dog,bus,True,False
+picture,say,donor early only,60,bird,train,bird,True,False
+picture,say,donor early only,61,train,dog,train,True,False
+picture,say,donor early only,62,cat,bicycle,cat,True,False
+picture,say,donor early only,63,cup,horse,cup,True,False
+picture,say,"donor early, receiver restored in the band",0,bird,airplane,airplane,False,True
+picture,say,"donor early, receiver restored in the band",1,train,cat,cat,False,True
+picture,say,"donor early, receiver restored in the band",2,dog,bus,bus,False,True
+picture,say,"donor early, receiver restored in the band",3,laptop,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",4,bird,car,cat,False,False
+picture,say,"donor early, receiver restored in the band",5,car,bird,bird,False,True
+picture,say,"donor early, receiver restored in the band",6,bird,car,car,False,True
+picture,say,"donor early, receiver restored in the band",7,laptop,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",8,cat,bus,bus,False,True
+picture,say,"donor early, receiver restored in the band",9,boat,cat,cat,False,True
+picture,say,"donor early, receiver restored in the band",10,bird,car,car,False,True
+picture,say,"donor early, receiver restored in the band",11,bicycle,dog,dog,False,True
+picture,say,"donor early, receiver restored in the band",12,dog,train,train,False,True
+picture,say,"donor early, receiver restored in the band",13,chair,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",14,cat,boat,boat,False,True
+picture,say,"donor early, receiver restored in the band",15,clock,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",16,cat,train,train,False,True
+picture,say,"donor early, receiver restored in the band",17,boat,cat,cat,False,True
+picture,say,"donor early, receiver restored in the band",18,dog,bicycle,bicycle,False,True
+picture,say,"donor early, receiver restored in the band",19,chair,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",20,cat,bicycle,bicycle,False,True
+picture,say,"donor early, receiver restored in the band",21,train,bird,bird,False,True
+picture,say,"donor early, receiver restored in the band",22,bird,airplane,airplane,False,True
+picture,say,"donor early, receiver restored in the band",23,pizza,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",24,horse,clock,clock,False,True
+picture,say,"donor early, receiver restored in the band",25,laptop,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",26,bird,car,car,False,True
+picture,say,"donor early, receiver restored in the band",27,airplane,dog,dog,False,True
+picture,say,"donor early, receiver restored in the band",28,horse,chair,cat,False,False
+picture,say,"donor early, receiver restored in the band",29,bicycle,cat,cat,False,True
+picture,say,"donor early, receiver restored in the band",30,dog,bus,bus,False,True
+picture,say,"donor early, receiver restored in the band",31,car,dog,dog,False,True
+picture,say,"donor early, receiver restored in the band",32,dog,bicycle,bicycle,False,True
+picture,say,"donor early, receiver restored in the band",33,cup,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",34,dog,boat,boat,False,True
+picture,say,"donor early, receiver restored in the band",35,train,cat,cat,False,True
+picture,say,"donor early, receiver restored in the band",36,horse,clock,clock,False,True
+picture,say,"donor early, receiver restored in the band",37,boat,dog,dog,False,True
+picture,say,"donor early, receiver restored in the band",38,horse,cup,coffee,False,False
+picture,say,"donor early, receiver restored in the band",39,chair,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",40,bird,airplane,airplane,False,True
+picture,say,"donor early, receiver restored in the band",41,cup,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",42,dog,car,cat,False,False
+picture,say,"donor early, receiver restored in the band",43,bicycle,dog,dog,False,True
+picture,say,"donor early, receiver restored in the band",44,cat,bicycle,bicycle,False,True
+picture,say,"donor early, receiver restored in the band",45,clock,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",46,dog,car,car,False,True
+picture,say,"donor early, receiver restored in the band",47,cup,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",48,bird,airplane,airplane,False,True
+picture,say,"donor early, receiver restored in the band",49,car,bird,bird,False,True
+picture,say,"donor early, receiver restored in the band",50,bird,train,Graffiti,False,False
+picture,say,"donor early, receiver restored in the band",51,car,bird,bird,False,True
+picture,say,"donor early, receiver restored in the band",52,horse,cup,cup,False,True
+picture,say,"donor early, receiver restored in the band",53,train,bird,bird,False,True
+picture,say,"donor early, receiver restored in the band",54,cat,airplane,airplane,False,True
+picture,say,"donor early, receiver restored in the band",55,cup,horse,horse,False,True
+picture,say,"donor early, receiver restored in the band",56,horse,clock,clock,False,True
+picture,say,"donor early, receiver restored in the band",57,bus,dog,dog,False,True
+picture,say,"donor early, receiver restored in the band",58,bird,car,car,False,True
+picture,say,"donor early, receiver restored in the band",59,bus,dog,dog,False,True
+picture,say,"donor early, receiver restored in the band",60,bird,train,train,False,True
+picture,say,"donor early, receiver restored in the band",61,train,dog,dog,False,True
+picture,say,"donor early, receiver restored in the band",62,cat,bicycle,bicycle,False,True
+picture,say,"donor early, receiver restored in the band",63,cup,horse,horse,False,True
+picture,say,donor in the band only,0,bird,airplane,bird,True,False
+picture,say,donor in the band only,1,train,cat,train,True,False
+picture,say,donor in the band only,2,dog,bus,dog,True,False
+picture,say,donor in the band only,3,laptop,horse,laptop,True,False
+picture,say,donor in the band only,4,bird,car,bird,True,False
+picture,say,donor in the band only,5,car,bird,cat,False,False
+picture,say,donor in the band only,6,bird,car,bird,True,False
+picture,say,donor in the band only,7,laptop,horse,cat,False,False
+picture,say,donor in the band only,8,cat,bus,cat,True,False
+picture,say,donor in the band only,9,boat,cat,boat,True,False
+picture,say,donor in the band only,10,bird,car,bird,True,False
+picture,say,donor in the band only,11,bicycle,dog,bicycle,True,False
+picture,say,donor in the band only,12,dog,train,dog,True,False
+picture,say,donor in the band only,13,chair,horse,chair,True,False
+picture,say,donor in the band only,14,cat,boat,cat,True,False
+picture,say,donor in the band only,15,clock,horse,clock,True,False
+picture,say,donor in the band only,16,cat,train,cat,True,False
+picture,say,donor in the band only,17,boat,cat,boat,True,False
+picture,say,donor in the band only,18,dog,bicycle,dog,True,False
+picture,say,donor in the band only,19,chair,horse,chair,True,False
+picture,say,donor in the band only,20,cat,bicycle,cat,True,False
+picture,say,donor in the band only,21,train,bird,train,True,False
+picture,say,donor in the band only,22,bird,airplane,bird,True,False
+picture,say,donor in the band only,23,pizza,horse,pizza,True,False
+picture,say,donor in the band only,24,horse,clock,horse,True,False
+picture,say,donor in the band only,25,laptop,horse,laptop,True,False
+picture,say,donor in the band only,26,bird,car,bird,True,False
+picture,say,donor in the band only,27,airplane,dog,airplane,True,False
+picture,say,donor in the band only,28,horse,chair,horse,True,False
+picture,say,donor in the band only,29,bicycle,cat,motorcycle,False,False
+picture,say,donor in the band only,30,dog,bus,dog,True,False
+picture,say,donor in the band only,31,car,dog,car,True,False
+picture,say,donor in the band only,32,dog,bicycle,dog,True,False
+picture,say,donor in the band only,33,cup,horse,mug,False,False
+picture,say,donor in the band only,34,dog,boat,dog,True,False
+picture,say,donor in the band only,35,train,cat,train,True,False
+picture,say,donor in the band only,36,horse,clock,horse,True,False
+picture,say,donor in the band only,37,boat,dog,boat,True,False
+picture,say,donor in the band only,38,horse,cup,horse,True,False
+picture,say,donor in the band only,39,chair,horse,chair,True,False
+picture,say,donor in the band only,40,bird,airplane,bird,True,False
+picture,say,donor in the band only,41,cup,horse,mug,False,False
+picture,say,donor in the band only,42,dog,car,dog,True,False
+picture,say,donor in the band only,43,bicycle,dog,bicycle,True,False
+picture,say,donor in the band only,44,cat,bicycle,cat,True,False
+picture,say,donor in the band only,45,clock,horse,clock,True,False
+picture,say,donor in the band only,46,dog,car,dog,True,False
+picture,say,donor in the band only,47,cup,horse,coffee,False,False
+picture,say,donor in the band only,48,bird,airplane,bird,True,False
+picture,say,donor in the band only,49,car,bird,car,True,False
+picture,say,donor in the band only,50,bird,train,bird,True,False
+picture,say,donor in the band only,51,car,bird,car,True,False
+picture,say,donor in the band only,52,horse,cup,horse,True,False
+picture,say,donor in the band only,53,train,bird,train,True,False
+picture,say,donor in the band only,54,cat,airplane,cat,True,False
+picture,say,donor in the band only,55,cup,horse,coffee,False,False
+picture,say,donor in the band only,56,horse,clock,horse,True,False
+picture,say,donor in the band only,57,bus,dog,bus,True,False
+picture,say,donor in the band only,58,bird,car,bird,True,False
+picture,say,donor in the band only,59,bus,dog,bus,True,False
+picture,say,donor in the band only,60,bird,train,bird,True,False
+picture,say,donor in the band only,61,train,dog,train,True,False
+picture,say,donor in the band only,62,cat,bicycle,cat,True,False
+picture,say,donor in the band only,63,cup,horse,coffee,False,False
+picture,say,donor early and band,0,bird,airplane,bird,True,False
+picture,say,donor early and band,1,train,cat,train,True,False
+picture,say,donor early and band,2,dog,bus,dog,True,False
+picture,say,donor early and band,3,laptop,horse,laptop,True,False
+picture,say,donor early and band,4,bird,car,bird,True,False
+picture,say,donor early and band,5,car,bird,cat,False,False
+picture,say,donor early and band,6,bird,car,bird,True,False
+picture,say,donor early and band,7,laptop,horse,laptop,True,False
+picture,say,donor early and band,8,cat,bus,cat,True,False
+picture,say,donor early and band,9,boat,cat,boat,True,False
+picture,say,donor early and band,10,bird,car,bird,True,False
+picture,say,donor early and band,11,bicycle,dog,bicycle,True,False
+picture,say,donor early and band,12,dog,train,dog,True,False
+picture,say,donor early and band,13,chair,horse,chair,True,False
+picture,say,donor early and band,14,cat,boat,cat,True,False
+picture,say,donor early and band,15,clock,horse,clock,True,False
+picture,say,donor early and band,16,cat,train,cat,True,False
+picture,say,donor early and band,17,boat,cat,boat,True,False
+picture,say,donor early and band,18,dog,bicycle,dog,True,False
+picture,say,donor early and band,19,chair,horse,chair,True,False
+picture,say,donor early and band,20,cat,bicycle,cat,True,False
+picture,say,donor early and band,21,train,bird,train,True,False
+picture,say,donor early and band,22,bird,airplane,bird,True,False
+picture,say,donor early and band,23,pizza,horse,pizza,True,False
+picture,say,donor early and band,24,horse,clock,horse,True,False
+picture,say,donor early and band,25,laptop,horse,laptop,True,False
+picture,say,donor early and band,26,bird,car,bird,True,False
+picture,say,donor early and band,27,airplane,dog,airplane,True,False
+picture,say,donor early and band,28,horse,chair,horse,True,False
+picture,say,donor early and band,29,bicycle,cat,motorcycle,False,False
+picture,say,donor early and band,30,dog,bus,dog,True,False
+picture,say,donor early and band,31,car,dog,car,True,False
+picture,say,donor early and band,32,dog,bicycle,dog,True,False
+picture,say,donor early and band,33,cup,horse,mug,False,False
+picture,say,donor early and band,34,dog,boat,dog,True,False
+picture,say,donor early and band,35,train,cat,train,True,False
+picture,say,donor early and band,36,horse,clock,horse,True,False
+picture,say,donor early and band,37,boat,dog,boat,True,False
+picture,say,donor early and band,38,horse,cup,horse,True,False
+picture,say,donor early and band,39,chair,horse,chair,True,False
+picture,say,donor early and band,40,bird,airplane,bird,True,False
+picture,say,donor early and band,41,cup,horse,mug,False,False
+picture,say,donor early and band,42,dog,car,dog,True,False
+picture,say,donor early and band,43,bicycle,dog,bicycle,True,False
+picture,say,donor early and band,44,cat,bicycle,cat,True,False
+picture,say,donor early and band,45,clock,horse,clock,True,False
+picture,say,donor early and band,46,dog,car,dog,True,False
+picture,say,donor early and band,47,cup,horse,coffee cup,True,False
+picture,say,donor early and band,48,bird,airplane,bird,True,False
+picture,say,donor early and band,49,car,bird,car,True,False
+picture,say,donor early and band,50,bird,train,bird,True,False
+picture,say,donor early and band,51,car,bird,car,True,False
+picture,say,donor early and band,52,horse,cup,horse,True,False
+picture,say,donor early and band,53,train,bird,train,True,False
+picture,say,donor early and band,54,cat,airplane,cat,True,False
+picture,say,donor early and band,55,cup,horse,cup,True,False
+picture,say,donor early and band,56,horse,clock,horse,True,False
+picture,say,donor early and band,57,bus,dog,bus,True,False
+picture,say,donor early and band,58,bird,car,bird,True,False
+picture,say,donor early and band,59,bus,dog,bus,True,False
+picture,say,donor early and band,60,bird,train,bird,True,False
+picture,say,donor early and band,61,train,dog,train,True,False
+picture,say,donor early and band,62,cat,bicycle,cat,True,False
+picture,say,donor early and band,63,cup,horse,coffee,False,False
+picture,say,donor every layer,0,bird,airplane,bird,True,False
+picture,say,donor every layer,1,train,cat,train,True,False
+picture,say,donor every layer,2,dog,bus,dog,True,False
+picture,say,donor every layer,3,laptop,horse,laptop,True,False
+picture,say,donor every layer,4,bird,car,bird,True,False
+picture,say,donor every layer,5,car,bird,cat,False,False
+picture,say,donor every layer,6,bird,car,bird,True,False
+picture,say,donor every layer,7,laptop,horse,laptop,True,False
+picture,say,donor every layer,8,cat,bus,cat,True,False
+picture,say,donor every layer,9,boat,cat,boat,True,False
+picture,say,donor every layer,10,bird,car,bird,True,False
+picture,say,donor every layer,11,bicycle,dog,bicycle,True,False
+picture,say,donor every layer,12,dog,train,dog,True,False
+picture,say,donor every layer,13,chair,horse,chair,True,False
+picture,say,donor every layer,14,cat,boat,cat,True,False
+picture,say,donor every layer,15,clock,horse,clock,True,False
+picture,say,donor every layer,16,cat,train,cat,True,False
+picture,say,donor every layer,17,boat,cat,boat,True,False
+picture,say,donor every layer,18,dog,bicycle,dog,True,False
+picture,say,donor every layer,19,chair,horse,chair,True,False
+picture,say,donor every layer,20,cat,bicycle,cat,True,False
+picture,say,donor every layer,21,train,bird,train,True,False
+picture,say,donor every layer,22,bird,airplane,bird,True,False
+picture,say,donor every layer,23,pizza,horse,pizza,True,False
+picture,say,donor every layer,24,horse,clock,horse,True,False
+picture,say,donor every layer,25,laptop,horse,laptop,True,False
+picture,say,donor every layer,26,bird,car,bird,True,False
+picture,say,donor every layer,27,airplane,dog,airplane,True,False
+picture,say,donor every layer,28,horse,chair,horse,True,False
+picture,say,donor every layer,29,bicycle,cat,motorcycle,False,False
+picture,say,donor every layer,30,dog,bus,dog,True,False
+picture,say,donor every layer,31,car,dog,car,True,False
+picture,say,donor every layer,32,dog,bicycle,dog,True,False
+picture,say,donor every layer,33,cup,horse,mug,False,False
+picture,say,donor every layer,34,dog,boat,dog,True,False
+picture,say,donor every layer,35,train,cat,train,True,False
+picture,say,donor every layer,36,horse,clock,horse,True,False
+picture,say,donor every layer,37,boat,dog,boat,True,False
+picture,say,donor every layer,38,horse,cup,horse,True,False
+picture,say,donor every layer,39,chair,horse,chair,True,False
+picture,say,donor every layer,40,bird,airplane,bird,True,False
+picture,say,donor every layer,41,cup,horse,mug,False,False
+picture,say,donor every layer,42,dog,car,dog,True,False
+picture,say,donor every layer,43,bicycle,dog,bicycle,True,False
+picture,say,donor every layer,44,cat,bicycle,cat,True,False
+picture,say,donor every layer,45,clock,horse,clock,True,False
+picture,say,donor every layer,46,dog,car,dog,True,False
+picture,say,donor every layer,47,cup,horse,cup,True,False
+picture,say,donor every layer,48,bird,airplane,bird,True,False
+picture,say,donor every layer,49,car,bird,car,True,False
+picture,say,donor every layer,50,bird,train,bird,True,False
+picture,say,donor every layer,51,car,bird,car,True,False
+picture,say,donor every layer,52,horse,cup,horse,True,False
+picture,say,donor every layer,53,train,bird,train,True,False
+picture,say,donor every layer,54,cat,airplane,cat,True,False
+picture,say,donor every layer,55,cup,horse,cup,True,False
+picture,say,donor every layer,56,horse,clock,horse,True,False
+picture,say,donor every layer,57,bus,dog,bus,True,False
+picture,say,donor every layer,58,bird,car,bird,True,False
+picture,say,donor every layer,59,bus,dog,bus,True,False
+picture,say,donor every layer,60,bird,train,bird,True,False
+picture,say,donor every layer,61,train,dog,train,True,False
+picture,say,donor every layer,62,cat,bicycle,cat,True,False
+picture,say,donor every layer,63,cup,horse,coffee,False,False
+picture,say,donor's band state delivered in the early window,0,bird,airplane,bird,True,False
+picture,say,donor's band state delivered in the early window,1,train,cat,train,True,False
+picture,say,donor's band state delivered in the early window,2,dog,bus,dog,True,False
+picture,say,donor's band state delivered in the early window,3,laptop,horse,laptop,True,False
+picture,say,donor's band state delivered in the early window,4,bird,car,bird,True,False
+picture,say,donor's band state delivered in the early window,5,car,bird,car,True,False
+picture,say,donor's band state delivered in the early window,6,bird,car,bird,True,False
+picture,say,donor's band state delivered in the early window,7,laptop,horse,laptop,True,False
+picture,say,donor's band state delivered in the early window,8,cat,bus,cat,True,False
+picture,say,donor's band state delivered in the early window,9,boat,cat,boat,True,False
+picture,say,donor's band state delivered in the early window,10,bird,car,bird,True,False
+picture,say,donor's band state delivered in the early window,11,bicycle,dog,bicycle,True,False
+picture,say,donor's band state delivered in the early window,12,dog,train,dog,True,False
+picture,say,donor's band state delivered in the early window,13,chair,horse,chair,True,False
+picture,say,donor's band state delivered in the early window,14,cat,boat,cat,True,False
+picture,say,donor's band state delivered in the early window,15,clock,horse,clock,True,False
+picture,say,donor's band state delivered in the early window,16,cat,train,cat,True,False
+picture,say,donor's band state delivered in the early window,17,boat,cat,boat,True,False
+picture,say,donor's band state delivered in the early window,18,dog,bicycle,dog,True,False
+picture,say,donor's band state delivered in the early window,19,chair,horse,chair,True,False
+picture,say,donor's band state delivered in the early window,20,cat,bicycle,cat,True,False
+picture,say,donor's band state delivered in the early window,21,train,bird,train,True,False
+picture,say,donor's band state delivered in the early window,22,bird,airplane,bird,True,False
+picture,say,donor's band state delivered in the early window,23,pizza,horse,pizza,True,False
+picture,say,donor's band state delivered in the early window,24,horse,clock,horse,True,False
+picture,say,donor's band state delivered in the early window,25,laptop,horse,laptop,True,False
+picture,say,donor's band state delivered in the early window,26,bird,car,bird,True,False
+picture,say,donor's band state delivered in the early window,27,airplane,dog,airplane,True,False
+picture,say,donor's band state delivered in the early window,28,horse,chair,horse,True,False
+picture,say,donor's band state delivered in the early window,29,bicycle,cat,motorcycle,False,False
+picture,say,donor's band state delivered in the early window,30,dog,bus,dog,True,False
+picture,say,donor's band state delivered in the early window,31,car,dog,car,True,False
+picture,say,donor's band state delivered in the early window,32,dog,bicycle,dog,True,False
+picture,say,donor's band state delivered in the early window,33,cup,horse,mug,False,False
+picture,say,donor's band state delivered in the early window,34,dog,boat,dog,True,False
+picture,say,donor's band state delivered in the early window,35,train,cat,train,True,False
+picture,say,donor's band state delivered in the early window,36,horse,clock,horse,True,False
+picture,say,donor's band state delivered in the early window,37,boat,dog,boat,True,False
+picture,say,donor's band state delivered in the early window,38,horse,cup,horse,True,False
+picture,say,donor's band state delivered in the early window,39,chair,horse,chair,True,False
+picture,say,donor's band state delivered in the early window,40,bird,airplane,bird,True,False
+picture,say,donor's band state delivered in the early window,41,cup,horse,cup,True,False
+picture,say,donor's band state delivered in the early window,42,dog,car,dog,True,False
+picture,say,donor's band state delivered in the early window,43,bicycle,dog,bicycle,True,False
+picture,say,donor's band state delivered in the early window,44,cat,bicycle,cat,True,False
+picture,say,donor's band state delivered in the early window,45,clock,horse,clock,True,False
+picture,say,donor's band state delivered in the early window,46,dog,car,dog,True,False
+picture,say,donor's band state delivered in the early window,47,cup,horse,coffee cup,True,False
+picture,say,donor's band state delivered in the early window,48,bird,airplane,bird,True,False
+picture,say,donor's band state delivered in the early window,49,car,bird,car,True,False
+picture,say,donor's band state delivered in the early window,50,bird,train,bird,True,False
+picture,say,donor's band state delivered in the early window,51,car,bird,car,True,False
+picture,say,donor's band state delivered in the early window,52,horse,cup,horse,True,False
+picture,say,donor's band state delivered in the early window,53,train,bird,train,True,False
+picture,say,donor's band state delivered in the early window,54,cat,airplane,cat,True,False
+picture,say,donor's band state delivered in the early window,55,cup,horse,coffee cup,True,False
+picture,say,donor's band state delivered in the early window,56,horse,clock,horse,True,False
+picture,say,donor's band state delivered in the early window,57,bus,dog,bus,True,False
+picture,say,donor's band state delivered in the early window,58,bird,car,bird,True,False
+picture,say,donor's band state delivered in the early window,59,bus,dog,bus,True,False
+picture,say,donor's band state delivered in the early window,60,bird,train,bird,True,False
+picture,say,donor's band state delivered in the early window,61,train,dog,train,True,False
+picture,say,donor's band state delivered in the early window,62,cat,bicycle,cat,True,False
+picture,say,donor's band state delivered in the early window,63,cup,horse,coffee,False,False
+picture,say,donor's early state delivered in the band,0,bird,airplane,bird,True,False
+picture,say,donor's early state delivered in the band,1,train,cat,train,True,False
+picture,say,donor's early state delivered in the band,2,dog,bus,dog,True,False
+picture,say,donor's early state delivered in the band,3,laptop,horse,laptop,True,False
+picture,say,donor's early state delivered in the band,4,bird,car,bird,True,False
+picture,say,donor's early state delivered in the band,5,car,bird,cat,False,False
+picture,say,donor's early state delivered in the band,6,bird,car,bird,True,False
+picture,say,donor's early state delivered in the band,7,laptop,horse,cat,False,False
+picture,say,donor's early state delivered in the band,8,cat,bus,cat,True,False
+picture,say,donor's early state delivered in the band,9,boat,cat,boat,True,False
+picture,say,donor's early state delivered in the band,10,bird,car,bird,True,False
+picture,say,donor's early state delivered in the band,11,bicycle,dog,bicycle,True,False
+picture,say,donor's early state delivered in the band,12,dog,train,dog,True,False
+picture,say,donor's early state delivered in the band,13,chair,horse,chair,True,False
+picture,say,donor's early state delivered in the band,14,cat,boat,cat,True,False
+picture,say,donor's early state delivered in the band,15,clock,horse,clock,True,False
+picture,say,donor's early state delivered in the band,16,cat,train,cat,True,False
+picture,say,donor's early state delivered in the band,17,boat,cat,boat,True,False
+picture,say,donor's early state delivered in the band,18,dog,bicycle,dog,True,False
+picture,say,donor's early state delivered in the band,19,chair,horse,chair,True,False
+picture,say,donor's early state delivered in the band,20,cat,bicycle,cat,True,False
+picture,say,donor's early state delivered in the band,21,train,bird,train,True,False
+picture,say,donor's early state delivered in the band,22,bird,airplane,bird,True,False
+picture,say,donor's early state delivered in the band,23,pizza,horse,pizza,True,False
+picture,say,donor's early state delivered in the band,24,horse,clock,horse,True,False
+picture,say,donor's early state delivered in the band,25,laptop,horse,laptop,True,False
+picture,say,donor's early state delivered in the band,26,bird,car,bird,True,False
+picture,say,donor's early state delivered in the band,27,airplane,dog,airplane,True,False
+picture,say,donor's early state delivered in the band,28,horse,chair,horse,True,False
+picture,say,donor's early state delivered in the band,29,bicycle,cat,motorcycle,False,False
+picture,say,donor's early state delivered in the band,30,dog,bus,dog,True,False
+picture,say,donor's early state delivered in the band,31,car,dog,car,True,False
+picture,say,donor's early state delivered in the band,32,dog,bicycle,dog,True,False
+picture,say,donor's early state delivered in the band,33,cup,horse,mug,False,False
+picture,say,donor's early state delivered in the band,34,dog,boat,dog,True,False
+picture,say,donor's early state delivered in the band,35,train,cat,train,True,False
+picture,say,donor's early state delivered in the band,36,horse,clock,horse,True,False
+picture,say,donor's early state delivered in the band,37,boat,dog,boat,True,False
+picture,say,donor's early state delivered in the band,38,horse,cup,horse,True,False
+picture,say,donor's early state delivered in the band,39,chair,horse,chair,True,False
+picture,say,donor's early state delivered in the band,40,bird,airplane,bird,True,False
+picture,say,donor's early state delivered in the band,41,cup,horse,mug,False,False
+picture,say,donor's early state delivered in the band,42,dog,car,dog,True,False
+picture,say,donor's early state delivered in the band,43,bicycle,dog,bicycle,True,False
+picture,say,donor's early state delivered in the band,44,cat,bicycle,cat,True,False
+picture,say,donor's early state delivered in the band,45,clock,horse,clock,True,False
+picture,say,donor's early state delivered in the band,46,dog,car,dog,True,False
+picture,say,donor's early state delivered in the band,47,cup,horse,coffee,False,False
+picture,say,donor's early state delivered in the band,48,bird,airplane,bird,True,False
+picture,say,donor's early state delivered in the band,49,car,bird,car,True,False
+picture,say,donor's early state delivered in the band,50,bird,train,bird,True,False
+picture,say,donor's early state delivered in the band,51,car,bird,car,True,False
+picture,say,donor's early state delivered in the band,52,horse,cup,horse,True,False
+picture,say,donor's early state delivered in the band,53,train,bird,train,True,False
+picture,say,donor's early state delivered in the band,54,cat,airplane,cat,True,False
+picture,say,donor's early state delivered in the band,55,cup,horse,cup,True,False
+picture,say,donor's early state delivered in the band,56,horse,clock,horse,True,False
+picture,say,donor's early state delivered in the band,57,bus,dog,bus,True,False
+picture,say,donor's early state delivered in the band,58,bird,car,bird,True,False
+picture,say,donor's early state delivered in the band,59,bus,dog,bus,True,False
+picture,say,donor's early state delivered in the band,60,bird,train,bird,True,False
+picture,say,donor's early state delivered in the band,61,train,dog,train,True,False
+picture,say,donor's early state delivered in the band,62,cat,bicycle,cat,True,False
+picture,say,donor's early state delivered in the band,63,cup,horse,coffee,False,False
+picture,say,donor's early-window state in place (control),0,bird,airplane,bird,True,False
+picture,say,donor's early-window state in place (control),1,train,cat,train,True,False
+picture,say,donor's early-window state in place (control),2,dog,bus,dog,True,False
+picture,say,donor's early-window state in place (control),3,laptop,horse,laptop,True,False
+picture,say,donor's early-window state in place (control),4,bird,car,bird,True,False
+picture,say,donor's early-window state in place (control),5,car,bird,cat,False,False
+picture,say,donor's early-window state in place (control),6,bird,car,bird,True,False
+picture,say,donor's early-window state in place (control),7,laptop,horse,cat,False,False
+picture,say,donor's early-window state in place (control),8,cat,bus,cat,True,False
+picture,say,donor's early-window state in place (control),9,boat,cat,boat,True,False
+picture,say,donor's early-window state in place (control),10,bird,car,bird,True,False
+picture,say,donor's early-window state in place (control),11,bicycle,dog,bicycle,True,False
+picture,say,donor's early-window state in place (control),12,dog,train,dog,True,False
+picture,say,donor's early-window state in place (control),13,chair,horse,chair,True,False
+picture,say,donor's early-window state in place (control),14,cat,boat,cat,True,False
+picture,say,donor's early-window state in place (control),15,clock,horse,clock,True,False
+picture,say,donor's early-window state in place (control),16,cat,train,cat,True,False
+picture,say,donor's early-window state in place (control),17,boat,cat,boat,True,False
+picture,say,donor's early-window state in place (control),18,dog,bicycle,dog,True,False
+picture,say,donor's early-window state in place (control),19,chair,horse,chair,True,False
+picture,say,donor's early-window state in place (control),20,cat,bicycle,cat,True,False
+picture,say,donor's early-window state in place (control),21,train,bird,train,True,False
+picture,say,donor's early-window state in place (control),22,bird,airplane,bird,True,False
+picture,say,donor's early-window state in place (control),23,pizza,horse,pizza,True,False
+picture,say,donor's early-window state in place (control),24,horse,clock,horse,True,False
+picture,say,donor's early-window state in place (control),25,laptop,horse,laptop,True,False
+picture,say,donor's early-window state in place (control),26,bird,car,bird,True,False
+picture,say,donor's early-window state in place (control),27,airplane,dog,airplane,True,False
+picture,say,donor's early-window state in place (control),28,horse,chair,horse,True,False
+picture,say,donor's early-window state in place (control),29,bicycle,cat,motorcycle,False,False
+picture,say,donor's early-window state in place (control),30,dog,bus,dog,True,False
+picture,say,donor's early-window state in place (control),31,car,dog,car,True,False
+picture,say,donor's early-window state in place (control),32,dog,bicycle,dog,True,False
+picture,say,donor's early-window state in place (control),33,cup,horse,mug,False,False
+picture,say,donor's early-window state in place (control),34,dog,boat,dog,True,False
+picture,say,donor's early-window state in place (control),35,train,cat,train,True,False
+picture,say,donor's early-window state in place (control),36,horse,clock,horse,True,False
+picture,say,donor's early-window state in place (control),37,boat,dog,boat,True,False
+picture,say,donor's early-window state in place (control),38,horse,cup,horse,True,False
+picture,say,donor's early-window state in place (control),39,chair,horse,chair,True,False
+picture,say,donor's early-window state in place (control),40,bird,airplane,bird,True,False
+picture,say,donor's early-window state in place (control),41,cup,horse,mug,False,False
+picture,say,donor's early-window state in place (control),42,dog,car,dog,True,False
+picture,say,donor's early-window state in place (control),43,bicycle,dog,bicycle,True,False
+picture,say,donor's early-window state in place (control),44,cat,bicycle,cat,True,False
+picture,say,donor's early-window state in place (control),45,clock,horse,clock,True,False
+picture,say,donor's early-window state in place (control),46,dog,car,dog,True,False
+picture,say,donor's early-window state in place (control),47,cup,horse,cup,True,False
+picture,say,donor's early-window state in place (control),48,bird,airplane,bird,True,False
+picture,say,donor's early-window state in place (control),49,car,bird,car,True,False
+picture,say,donor's early-window state in place (control),50,bird,train,bird,True,False
+picture,say,donor's early-window state in place (control),51,car,bird,car,True,False
+picture,say,donor's early-window state in place (control),52,horse,cup,horse,True,False
+picture,say,donor's early-window state in place (control),53,train,bird,train,True,False
+picture,say,donor's early-window state in place (control),54,cat,airplane,cat,True,False
+picture,say,donor's early-window state in place (control),55,cup,horse,cup,True,False
+picture,say,donor's early-window state in place (control),56,horse,clock,horse,True,False
+picture,say,donor's early-window state in place (control),57,bus,dog,bus,True,False
+picture,say,donor's early-window state in place (control),58,bird,car,bird,True,False
+picture,say,donor's early-window state in place (control),59,bus,dog,bus,True,False
+picture,say,donor's early-window state in place (control),60,bird,train,bird,True,False
+picture,say,donor's early-window state in place (control),61,train,dog,train,True,False
+picture,say,donor's early-window state in place (control),62,cat,bicycle,cat,True,False
+picture,say,donor's early-window state in place (control),63,cup,horse,coffee,False,False
+picture,animal,receiver alone,0,bird,airplane,3,False,True
+picture,animal,receiver alone,1,train,cat,7,False,True
+picture,animal,receiver alone,2,dog,bus,3,False,True
+picture,animal,receiver alone,3,laptop,horse,7,False,True
+picture,animal,receiver alone,4,bird,car,7,True,False
+picture,animal,receiver alone,5,car,bird,7,False,True
+picture,animal,receiver alone,6,bird,car,3,False,True
+picture,animal,receiver alone,7,laptop,horse,7,False,True
+picture,animal,receiver alone,8,cat,bus,3,False,True
+picture,animal,receiver alone,9,boat,cat,7,False,True
+picture,animal,receiver alone,10,bird,car,3,False,True
+picture,animal,receiver alone,11,bicycle,dog,7,False,True
+picture,animal,receiver alone,12,dog,train,3,False,True
+picture,animal,receiver alone,13,chair,horse,7,False,True
+picture,animal,receiver alone,14,cat,boat,3,False,True
+picture,animal,receiver alone,15,clock,horse,7,False,True
+picture,animal,receiver alone,16,cat,train,3,False,True
+picture,animal,receiver alone,17,boat,cat,7,False,True
+picture,animal,receiver alone,18,dog,bicycle,3,False,True
+picture,animal,receiver alone,19,chair,horse,7,False,True
+picture,animal,receiver alone,20,cat,bicycle,3,False,True
+picture,animal,receiver alone,21,train,bird,7,False,True
+picture,animal,receiver alone,22,bird,airplane,3,False,True
+picture,animal,receiver alone,23,pizza,horse,7,False,True
+picture,animal,receiver alone,24,horse,clock,3,False,True
+picture,animal,receiver alone,25,laptop,horse,7,False,True
+picture,animal,receiver alone,26,bird,car,3,False,True
+picture,animal,receiver alone,27,airplane,dog,7,False,True
+picture,animal,receiver alone,28,horse,chair,7,True,False
+picture,animal,receiver alone,29,bicycle,cat,7,False,True
+picture,animal,receiver alone,30,dog,bus,3,False,True
+picture,animal,receiver alone,31,car,dog,7,False,True
+picture,animal,receiver alone,32,dog,bicycle,3,False,True
+picture,animal,receiver alone,33,cup,horse,7,False,True
+picture,animal,receiver alone,34,dog,boat,3,False,True
+picture,animal,receiver alone,35,train,cat,7,False,True
+picture,animal,receiver alone,36,horse,clock,3,False,True
+picture,animal,receiver alone,37,boat,dog,7,False,True
+picture,animal,receiver alone,38,horse,cup,3,False,True
+picture,animal,receiver alone,39,chair,horse,7,False,True
+picture,animal,receiver alone,40,bird,airplane,3,False,True
+picture,animal,receiver alone,41,cup,horse,7,False,True
+picture,animal,receiver alone,42,dog,car,7,True,False
+picture,animal,receiver alone,43,bicycle,dog,7,False,True
+picture,animal,receiver alone,44,cat,bicycle,3,False,True
+picture,animal,receiver alone,45,clock,horse,7,False,True
+picture,animal,receiver alone,46,dog,car,3,False,True
+picture,animal,receiver alone,47,cup,horse,7,False,True
+picture,animal,receiver alone,48,bird,airplane,3,False,True
+picture,animal,receiver alone,49,car,bird,7,False,True
+picture,animal,receiver alone,50,bird,train,3,False,True
+picture,animal,receiver alone,51,car,bird,7,False,True
+picture,animal,receiver alone,52,horse,cup,3,False,True
+picture,animal,receiver alone,53,train,bird,7,False,True
+picture,animal,receiver alone,54,cat,airplane,3,False,True
+picture,animal,receiver alone,55,cup,horse,7,False,True
+picture,animal,receiver alone,56,horse,clock,3,False,True
+picture,animal,receiver alone,57,bus,dog,7,False,True
+picture,animal,receiver alone,58,bird,car,3,False,True
+picture,animal,receiver alone,59,bus,dog,7,False,True
+picture,animal,receiver alone,60,bird,train,3,False,True
+picture,animal,receiver alone,61,train,dog,7,False,True
+picture,animal,receiver alone,62,cat,bicycle,3,False,True
+picture,animal,receiver alone,63,cup,horse,7,False,True
+picture,animal,donor early only,0,bird,airplane,7,True,False
+picture,animal,donor early only,1,train,cat,3,True,False
+picture,animal,donor early only,2,dog,bus,7,True,False
+picture,animal,donor early only,3,laptop,horse,3,True,False
+picture,animal,donor early only,4,bird,car,7,True,False
+picture,animal,donor early only,5,car,bird,7,False,True
+picture,animal,donor early only,6,bird,car,7,True,False
+picture,animal,donor early only,7,laptop,horse,7,False,True
+picture,animal,donor early only,8,cat,bus,7,True,False
+picture,animal,donor early only,9,boat,cat,3,True,False
+picture,animal,donor early only,10,bird,car,7,True,False
+picture,animal,donor early only,11,bicycle,dog,3,True,False
+picture,animal,donor early only,12,dog,train,7,True,False
+picture,animal,donor early only,13,chair,horse,3,True,False
+picture,animal,donor early only,14,cat,boat,7,True,False
+picture,animal,donor early only,15,clock,horse,3,True,False
+picture,animal,donor early only,16,cat,train,7,True,False
+picture,animal,donor early only,17,boat,cat,3,True,False
+picture,animal,donor early only,18,dog,bicycle,7,True,False
+picture,animal,donor early only,19,chair,horse,3,True,False
+picture,animal,donor early only,20,cat,bicycle,7,True,False
+picture,animal,donor early only,21,train,bird,3,True,False
+picture,animal,donor early only,22,bird,airplane,7,True,False
+picture,animal,donor early only,23,pizza,horse,3,True,False
+picture,animal,donor early only,24,horse,clock,7,True,False
+picture,animal,donor early only,25,laptop,horse,7,False,True
+picture,animal,donor early only,26,bird,car,7,True,False
+picture,animal,donor early only,27,airplane,dog,3,True,False
+picture,animal,donor early only,28,horse,chair,7,True,False
+picture,animal,donor early only,29,bicycle,cat,3,True,False
+picture,animal,donor early only,30,dog,bus,7,True,False
+picture,animal,donor early only,31,car,dog,3,True,False
+picture,animal,donor early only,32,dog,bicycle,7,True,False
+picture,animal,donor early only,33,cup,horse,3,True,False
+picture,animal,donor early only,34,dog,boat,7,True,False
+picture,animal,donor early only,35,train,cat,3,True,False
+picture,animal,donor early only,36,horse,clock,7,True,False
+picture,animal,donor early only,37,boat,dog,3,True,False
+picture,animal,donor early only,38,horse,cup,7,True,False
+picture,animal,donor early only,39,chair,horse,3,True,False
+picture,animal,donor early only,40,bird,airplane,7,True,False
+picture,animal,donor early only,41,cup,horse,3,True,False
+picture,animal,donor early only,42,dog,car,7,True,False
+picture,animal,donor early only,43,bicycle,dog,3,True,False
+picture,animal,donor early only,44,cat,bicycle,7,True,False
+picture,animal,donor early only,45,clock,horse,3,True,False
+picture,animal,donor early only,46,dog,car,7,True,False
+picture,animal,donor early only,47,cup,horse,3,True,False
+picture,animal,donor early only,48,bird,airplane,7,True,False
+picture,animal,donor early only,49,car,bird,3,True,False
+picture,animal,donor early only,50,bird,train,7,True,False
+picture,animal,donor early only,51,car,bird,3,True,False
+picture,animal,donor early only,52,horse,cup,7,True,False
+picture,animal,donor early only,53,train,bird,3,True,False
+picture,animal,donor early only,54,cat,airplane,7,True,False
+picture,animal,donor early only,55,cup,horse,3,True,False
+picture,animal,donor early only,56,horse,clock,7,True,False
+picture,animal,donor early only,57,bus,dog,3,True,False
+picture,animal,donor early only,58,bird,car,7,True,False
+picture,animal,donor early only,59,bus,dog,3,True,False
+picture,animal,donor early only,60,bird,train,7,True,False
+picture,animal,donor early only,61,train,dog,3,True,False
+picture,animal,donor early only,62,cat,bicycle,7,True,False
+picture,animal,donor early only,63,cup,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",0,bird,airplane,7,True,False
+picture,animal,"donor early, receiver restored in the band",1,train,cat,3,True,False
+picture,animal,"donor early, receiver restored in the band",2,dog,bus,7,True,False
+picture,animal,"donor early, receiver restored in the band",3,laptop,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",4,bird,car,7,True,False
+picture,animal,"donor early, receiver restored in the band",5,car,bird,7,False,True
+picture,animal,"donor early, receiver restored in the band",6,bird,car,7,True,False
+picture,animal,"donor early, receiver restored in the band",7,laptop,horse,7,False,True
+picture,animal,"donor early, receiver restored in the band",8,cat,bus,7,True,False
+picture,animal,"donor early, receiver restored in the band",9,boat,cat,3,True,False
+picture,animal,"donor early, receiver restored in the band",10,bird,car,7,True,False
+picture,animal,"donor early, receiver restored in the band",11,bicycle,dog,3,True,False
+picture,animal,"donor early, receiver restored in the band",12,dog,train,7,True,False
+picture,animal,"donor early, receiver restored in the band",13,chair,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",14,cat,boat,7,True,False
+picture,animal,"donor early, receiver restored in the band",15,clock,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",16,cat,train,7,True,False
+picture,animal,"donor early, receiver restored in the band",17,boat,cat,3,True,False
+picture,animal,"donor early, receiver restored in the band",18,dog,bicycle,7,True,False
+picture,animal,"donor early, receiver restored in the band",19,chair,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",20,cat,bicycle,7,True,False
+picture,animal,"donor early, receiver restored in the band",21,train,bird,3,True,False
+picture,animal,"donor early, receiver restored in the band",22,bird,airplane,7,True,False
+picture,animal,"donor early, receiver restored in the band",23,pizza,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",24,horse,clock,7,True,False
+picture,animal,"donor early, receiver restored in the band",25,laptop,horse,7,False,True
+picture,animal,"donor early, receiver restored in the band",26,bird,car,7,True,False
+picture,animal,"donor early, receiver restored in the band",27,airplane,dog,3,True,False
+picture,animal,"donor early, receiver restored in the band",28,horse,chair,7,True,False
+picture,animal,"donor early, receiver restored in the band",29,bicycle,cat,3,True,False
+picture,animal,"donor early, receiver restored in the band",30,dog,bus,7,True,False
+picture,animal,"donor early, receiver restored in the band",31,car,dog,3,True,False
+picture,animal,"donor early, receiver restored in the band",32,dog,bicycle,7,True,False
+picture,animal,"donor early, receiver restored in the band",33,cup,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",34,dog,boat,7,True,False
+picture,animal,"donor early, receiver restored in the band",35,train,cat,3,True,False
+picture,animal,"donor early, receiver restored in the band",36,horse,clock,7,True,False
+picture,animal,"donor early, receiver restored in the band",37,boat,dog,3,True,False
+picture,animal,"donor early, receiver restored in the band",38,horse,cup,7,True,False
+picture,animal,"donor early, receiver restored in the band",39,chair,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",40,bird,airplane,7,True,False
+picture,animal,"donor early, receiver restored in the band",41,cup,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",42,dog,car,7,True,False
+picture,animal,"donor early, receiver restored in the band",43,bicycle,dog,3,True,False
+picture,animal,"donor early, receiver restored in the band",44,cat,bicycle,7,True,False
+picture,animal,"donor early, receiver restored in the band",45,clock,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",46,dog,car,7,True,False
+picture,animal,"donor early, receiver restored in the band",47,cup,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",48,bird,airplane,7,True,False
+picture,animal,"donor early, receiver restored in the band",49,car,bird,3,True,False
+picture,animal,"donor early, receiver restored in the band",50,bird,train,7,True,False
+picture,animal,"donor early, receiver restored in the band",51,car,bird,3,True,False
+picture,animal,"donor early, receiver restored in the band",52,horse,cup,7,True,False
+picture,animal,"donor early, receiver restored in the band",53,train,bird,3,True,False
+picture,animal,"donor early, receiver restored in the band",54,cat,airplane,7,True,False
+picture,animal,"donor early, receiver restored in the band",55,cup,horse,3,True,False
+picture,animal,"donor early, receiver restored in the band",56,horse,clock,7,True,False
+picture,animal,"donor early, receiver restored in the band",57,bus,dog,3,True,False
+picture,animal,"donor early, receiver restored in the band",58,bird,car,7,True,False
+picture,animal,"donor early, receiver restored in the band",59,bus,dog,3,True,False
+picture,animal,"donor early, receiver restored in the band",60,bird,train,7,True,False
+picture,animal,"donor early, receiver restored in the band",61,train,dog,3,True,False
+picture,animal,"donor early, receiver restored in the band",62,cat,bicycle,7,True,False
+picture,animal,"donor early, receiver restored in the band",63,cup,horse,3,True,False
+picture,animal,donor in the band only,0,bird,airplane,3,False,True
+picture,animal,donor in the band only,1,train,cat,7,False,True
+picture,animal,donor in the band only,2,dog,bus,3,False,True
+picture,animal,donor in the band only,3,laptop,horse,7,False,True
+picture,animal,donor in the band only,4,bird,car,7,True,False
+picture,animal,donor in the band only,5,car,bird,7,False,True
+picture,animal,donor in the band only,6,bird,car,3,False,True
+picture,animal,donor in the band only,7,laptop,horse,7,False,True
+picture,animal,donor in the band only,8,cat,bus,3,False,True
+picture,animal,donor in the band only,9,boat,cat,7,False,True
+picture,animal,donor in the band only,10,bird,car,3,False,True
+picture,animal,donor in the band only,11,bicycle,dog,7,False,True
+picture,animal,donor in the band only,12,dog,train,3,False,True
+picture,animal,donor in the band only,13,chair,horse,7,False,True
+picture,animal,donor in the band only,14,cat,boat,3,False,True
+picture,animal,donor in the band only,15,clock,horse,7,False,True
+picture,animal,donor in the band only,16,cat,train,3,False,True
+picture,animal,donor in the band only,17,boat,cat,7,False,True
+picture,animal,donor in the band only,18,dog,bicycle,3,False,True
+picture,animal,donor in the band only,19,chair,horse,7,False,True
+picture,animal,donor in the band only,20,cat,bicycle,3,False,True
+picture,animal,donor in the band only,21,train,bird,7,False,True
+picture,animal,donor in the band only,22,bird,airplane,3,False,True
+picture,animal,donor in the band only,23,pizza,horse,7,False,True
+picture,animal,donor in the band only,24,horse,clock,3,False,True
+picture,animal,donor in the band only,25,laptop,horse,7,False,True
+picture,animal,donor in the band only,26,bird,car,3,False,True
+picture,animal,donor in the band only,27,airplane,dog,7,False,True
+picture,animal,donor in the band only,28,horse,chair,7,True,False
+picture,animal,donor in the band only,29,bicycle,cat,7,False,True
+picture,animal,donor in the band only,30,dog,bus,3,False,True
+picture,animal,donor in the band only,31,car,dog,7,False,True
+picture,animal,donor in the band only,32,dog,bicycle,3,False,True
+picture,animal,donor in the band only,33,cup,horse,7,False,True
+picture,animal,donor in the band only,34,dog,boat,3,False,True
+picture,animal,donor in the band only,35,train,cat,7,False,True
+picture,animal,donor in the band only,36,horse,clock,3,False,True
+picture,animal,donor in the band only,37,boat,dog,7,False,True
+picture,animal,donor in the band only,38,horse,cup,3,False,True
+picture,animal,donor in the band only,39,chair,horse,7,False,True
+picture,animal,donor in the band only,40,bird,airplane,3,False,True
+picture,animal,donor in the band only,41,cup,horse,7,False,True
+picture,animal,donor in the band only,42,dog,car,7,True,False
+picture,animal,donor in the band only,43,bicycle,dog,7,False,True
+picture,animal,donor in the band only,44,cat,bicycle,3,False,True
+picture,animal,donor in the band only,45,clock,horse,7,False,True
+picture,animal,donor in the band only,46,dog,car,3,False,True
+picture,animal,donor in the band only,47,cup,horse,7,False,True
+picture,animal,donor in the band only,48,bird,airplane,3,False,True
+picture,animal,donor in the band only,49,car,bird,7,False,True
+picture,animal,donor in the band only,50,bird,train,3,False,True
+picture,animal,donor in the band only,51,car,bird,7,False,True
+picture,animal,donor in the band only,52,horse,cup,3,False,True
+picture,animal,donor in the band only,53,train,bird,7,False,True
+picture,animal,donor in the band only,54,cat,airplane,3,False,True
+picture,animal,donor in the band only,55,cup,horse,7,False,True
+picture,animal,donor in the band only,56,horse,clock,3,False,True
+picture,animal,donor in the band only,57,bus,dog,7,False,True
+picture,animal,donor in the band only,58,bird,car,3,False,True
+picture,animal,donor in the band only,59,bus,dog,7,False,True
+picture,animal,donor in the band only,60,bird,train,3,False,True
+picture,animal,donor in the band only,61,train,dog,7,False,True
+picture,animal,donor in the band only,62,cat,bicycle,3,False,True
+picture,animal,donor in the band only,63,cup,horse,7,False,True
+picture,animal,donor early and band,0,bird,airplane,7,True,False
+picture,animal,donor early and band,1,train,cat,3,True,False
+picture,animal,donor early and band,2,dog,bus,7,True,False
+picture,animal,donor early and band,3,laptop,horse,3,True,False
+picture,animal,donor early and band,4,bird,car,7,True,False
+picture,animal,donor early and band,5,car,bird,7,False,True
+picture,animal,donor early and band,6,bird,car,7,True,False
+picture,animal,donor early and band,7,laptop,horse,7,False,True
+picture,animal,donor early and band,8,cat,bus,7,True,False
+picture,animal,donor early and band,9,boat,cat,3,True,False
+picture,animal,donor early and band,10,bird,car,7,True,False
+picture,animal,donor early and band,11,bicycle,dog,3,True,False
+picture,animal,donor early and band,12,dog,train,7,True,False
+picture,animal,donor early and band,13,chair,horse,3,True,False
+picture,animal,donor early and band,14,cat,boat,7,True,False
+picture,animal,donor early and band,15,clock,horse,3,True,False
+picture,animal,donor early and band,16,cat,train,7,True,False
+picture,animal,donor early and band,17,boat,cat,3,True,False
+picture,animal,donor early and band,18,dog,bicycle,7,True,False
+picture,animal,donor early and band,19,chair,horse,3,True,False
+picture,animal,donor early and band,20,cat,bicycle,7,True,False
+picture,animal,donor early and band,21,train,bird,3,True,False
+picture,animal,donor early and band,22,bird,airplane,7,True,False
+picture,animal,donor early and band,23,pizza,horse,3,True,False
+picture,animal,donor early and band,24,horse,clock,7,True,False
+picture,animal,donor early and band,25,laptop,horse,7,False,True
+picture,animal,donor early and band,26,bird,car,7,True,False
+picture,animal,donor early and band,27,airplane,dog,3,True,False
+picture,animal,donor early and band,28,horse,chair,7,True,False
+picture,animal,donor early and band,29,bicycle,cat,3,True,False
+picture,animal,donor early and band,30,dog,bus,7,True,False
+picture,animal,donor early and band,31,car,dog,3,True,False
+picture,animal,donor early and band,32,dog,bicycle,7,True,False
+picture,animal,donor early and band,33,cup,horse,3,True,False
+picture,animal,donor early and band,34,dog,boat,7,True,False
+picture,animal,donor early and band,35,train,cat,3,True,False
+picture,animal,donor early and band,36,horse,clock,7,True,False
+picture,animal,donor early and band,37,boat,dog,3,True,False
+picture,animal,donor early and band,38,horse,cup,7,True,False
+picture,animal,donor early and band,39,chair,horse,3,True,False
+picture,animal,donor early and band,40,bird,airplane,7,True,False
+picture,animal,donor early and band,41,cup,horse,3,True,False
+picture,animal,donor early and band,42,dog,car,7,True,False
+picture,animal,donor early and band,43,bicycle,dog,3,True,False
+picture,animal,donor early and band,44,cat,bicycle,7,True,False
+picture,animal,donor early and band,45,clock,horse,3,True,False
+picture,animal,donor early and band,46,dog,car,7,True,False
+picture,animal,donor early and band,47,cup,horse,3,True,False
+picture,animal,donor early and band,48,bird,airplane,7,True,False
+picture,animal,donor early and band,49,car,bird,3,True,False
+picture,animal,donor early and band,50,bird,train,7,True,False
+picture,animal,donor early and band,51,car,bird,3,True,False
+picture,animal,donor early and band,52,horse,cup,7,True,False
+picture,animal,donor early and band,53,train,bird,3,True,False
+picture,animal,donor early and band,54,cat,airplane,7,True,False
+picture,animal,donor early and band,55,cup,horse,3,True,False
+picture,animal,donor early and band,56,horse,clock,7,True,False
+picture,animal,donor early and band,57,bus,dog,3,True,False
+picture,animal,donor early and band,58,bird,car,7,True,False
+picture,animal,donor early and band,59,bus,dog,3,True,False
+picture,animal,donor early and band,60,bird,train,7,True,False
+picture,animal,donor early and band,61,train,dog,3,True,False
+picture,animal,donor early and band,62,cat,bicycle,7,True,False
+picture,animal,donor early and band,63,cup,horse,3,True,False
+picture,animal,donor every layer,0,bird,airplane,7,True,False
+picture,animal,donor every layer,1,train,cat,3,True,False
+picture,animal,donor every layer,2,dog,bus,7,True,False
+picture,animal,donor every layer,3,laptop,horse,3,True,False
+picture,animal,donor every layer,4,bird,car,7,True,False
+picture,animal,donor every layer,5,car,bird,7,False,True
+picture,animal,donor every layer,6,bird,car,7,True,False
+picture,animal,donor every layer,7,laptop,horse,7,False,True
+picture,animal,donor every layer,8,cat,bus,7,True,False
+picture,animal,donor every layer,9,boat,cat,3,True,False
+picture,animal,donor every layer,10,bird,car,7,True,False
+picture,animal,donor every layer,11,bicycle,dog,3,True,False
+picture,animal,donor every layer,12,dog,train,7,True,False
+picture,animal,donor every layer,13,chair,horse,3,True,False
+picture,animal,donor every layer,14,cat,boat,7,True,False
+picture,animal,donor every layer,15,clock,horse,3,True,False
+picture,animal,donor every layer,16,cat,train,7,True,False
+picture,animal,donor every layer,17,boat,cat,3,True,False
+picture,animal,donor every layer,18,dog,bicycle,7,True,False
+picture,animal,donor every layer,19,chair,horse,3,True,False
+picture,animal,donor every layer,20,cat,bicycle,7,True,False
+picture,animal,donor every layer,21,train,bird,3,True,False
+picture,animal,donor every layer,22,bird,airplane,7,True,False
+picture,animal,donor every layer,23,pizza,horse,3,True,False
+picture,animal,donor every layer,24,horse,clock,7,True,False
+picture,animal,donor every layer,25,laptop,horse,7,False,True
+picture,animal,donor every layer,26,bird,car,7,True,False
+picture,animal,donor every layer,27,airplane,dog,3,True,False
+picture,animal,donor every layer,28,horse,chair,7,True,False
+picture,animal,donor every layer,29,bicycle,cat,3,True,False
+picture,animal,donor every layer,30,dog,bus,7,True,False
+picture,animal,donor every layer,31,car,dog,3,True,False
+picture,animal,donor every layer,32,dog,bicycle,7,True,False
+picture,animal,donor every layer,33,cup,horse,3,True,False
+picture,animal,donor every layer,34,dog,boat,7,True,False
+picture,animal,donor every layer,35,train,cat,3,True,False
+picture,animal,donor every layer,36,horse,clock,7,True,False
+picture,animal,donor every layer,37,boat,dog,3,True,False
+picture,animal,donor every layer,38,horse,cup,7,True,False
+picture,animal,donor every layer,39,chair,horse,3,True,False
+picture,animal,donor every layer,40,bird,airplane,7,True,False
+picture,animal,donor every layer,41,cup,horse,3,True,False
+picture,animal,donor every layer,42,dog,car,7,True,False
+picture,animal,donor every layer,43,bicycle,dog,3,True,False
+picture,animal,donor every layer,44,cat,bicycle,7,True,False
+picture,animal,donor every layer,45,clock,horse,3,True,False
+picture,animal,donor every layer,46,dog,car,7,True,False
+picture,animal,donor every layer,47,cup,horse,3,True,False
+picture,animal,donor every layer,48,bird,airplane,7,True,False
+picture,animal,donor every layer,49,car,bird,3,True,False
+picture,animal,donor every layer,50,bird,train,7,True,False
+picture,animal,donor every layer,51,car,bird,3,True,False
+picture,animal,donor every layer,52,horse,cup,7,True,False
+picture,animal,donor every layer,53,train,bird,3,True,False
+picture,animal,donor every layer,54,cat,airplane,7,True,False
+picture,animal,donor every layer,55,cup,horse,3,True,False
+picture,animal,donor every layer,56,horse,clock,7,True,False
+picture,animal,donor every layer,57,bus,dog,3,True,False
+picture,animal,donor every layer,58,bird,car,7,True,False
+picture,animal,donor every layer,59,bus,dog,3,True,False
+picture,animal,donor every layer,60,bird,train,7,True,False
+picture,animal,donor every layer,61,train,dog,3,True,False
+picture,animal,donor every layer,62,cat,bicycle,7,True,False
+picture,animal,donor every layer,63,cup,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,0,bird,airplane,7,True,False
+picture,animal,donor's band state delivered in the early window,1,train,cat,3,True,False
+picture,animal,donor's band state delivered in the early window,2,dog,bus,7,True,False
+picture,animal,donor's band state delivered in the early window,3,laptop,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,4,bird,car,7,True,False
+picture,animal,donor's band state delivered in the early window,5,car,bird,3,True,False
+picture,animal,donor's band state delivered in the early window,6,bird,car,7,True,False
+picture,animal,donor's band state delivered in the early window,7,laptop,horse,7,False,True
+picture,animal,donor's band state delivered in the early window,8,cat,bus,7,True,False
+picture,animal,donor's band state delivered in the early window,9,boat,cat,3,True,False
+picture,animal,donor's band state delivered in the early window,10,bird,car,7,True,False
+picture,animal,donor's band state delivered in the early window,11,bicycle,dog,3,True,False
+picture,animal,donor's band state delivered in the early window,12,dog,train,7,True,False
+picture,animal,donor's band state delivered in the early window,13,chair,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,14,cat,boat,7,True,False
+picture,animal,donor's band state delivered in the early window,15,clock,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,16,cat,train,7,True,False
+picture,animal,donor's band state delivered in the early window,17,boat,cat,3,True,False
+picture,animal,donor's band state delivered in the early window,18,dog,bicycle,7,True,False
+picture,animal,donor's band state delivered in the early window,19,chair,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,20,cat,bicycle,7,True,False
+picture,animal,donor's band state delivered in the early window,21,train,bird,3,True,False
+picture,animal,donor's band state delivered in the early window,22,bird,airplane,7,True,False
+picture,animal,donor's band state delivered in the early window,23,pizza,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,24,horse,clock,7,True,False
+picture,animal,donor's band state delivered in the early window,25,laptop,horse,7,False,True
+picture,animal,donor's band state delivered in the early window,26,bird,car,7,True,False
+picture,animal,donor's band state delivered in the early window,27,airplane,dog,7,False,True
+picture,animal,donor's band state delivered in the early window,28,horse,chair,7,True,False
+picture,animal,donor's band state delivered in the early window,29,bicycle,cat,3,True,False
+picture,animal,donor's band state delivered in the early window,30,dog,bus,7,True,False
+picture,animal,donor's band state delivered in the early window,31,car,dog,3,True,False
+picture,animal,donor's band state delivered in the early window,32,dog,bicycle,7,True,False
+picture,animal,donor's band state delivered in the early window,33,cup,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,34,dog,boat,7,True,False
+picture,animal,donor's band state delivered in the early window,35,train,cat,3,True,False
+picture,animal,donor's band state delivered in the early window,36,horse,clock,7,True,False
+picture,animal,donor's band state delivered in the early window,37,boat,dog,3,True,False
+picture,animal,donor's band state delivered in the early window,38,horse,cup,7,True,False
+picture,animal,donor's band state delivered in the early window,39,chair,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,40,bird,airplane,3,False,True
+picture,animal,donor's band state delivered in the early window,41,cup,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,42,dog,car,7,True,False
+picture,animal,donor's band state delivered in the early window,43,bicycle,dog,3,True,False
+picture,animal,donor's band state delivered in the early window,44,cat,bicycle,7,True,False
+picture,animal,donor's band state delivered in the early window,45,clock,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,46,dog,car,7,True,False
+picture,animal,donor's band state delivered in the early window,47,cup,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,48,bird,airplane,7,True,False
+picture,animal,donor's band state delivered in the early window,49,car,bird,3,True,False
+picture,animal,donor's band state delivered in the early window,50,bird,train,7,True,False
+picture,animal,donor's band state delivered in the early window,51,car,bird,3,True,False
+picture,animal,donor's band state delivered in the early window,52,horse,cup,3,False,True
+picture,animal,donor's band state delivered in the early window,53,train,bird,3,True,False
+picture,animal,donor's band state delivered in the early window,54,cat,airplane,7,True,False
+picture,animal,donor's band state delivered in the early window,55,cup,horse,3,True,False
+picture,animal,donor's band state delivered in the early window,56,horse,clock,7,True,False
+picture,animal,donor's band state delivered in the early window,57,bus,dog,3,True,False
+picture,animal,donor's band state delivered in the early window,58,bird,car,7,True,False
+picture,animal,donor's band state delivered in the early window,59,bus,dog,3,True,False
+picture,animal,donor's band state delivered in the early window,60,bird,train,3,False,True
+picture,animal,donor's band state delivered in the early window,61,train,dog,3,True,False
+picture,animal,donor's band state delivered in the early window,62,cat,bicycle,7,True,False
+picture,animal,donor's band state delivered in the early window,63,cup,horse,3,True,False
+picture,animal,donor's early state delivered in the band,0,bird,airplane,3,False,True
+picture,animal,donor's early state delivered in the band,1,train,cat,7,False,True
+picture,animal,donor's early state delivered in the band,2,dog,bus,3,False,True
+picture,animal,donor's early state delivered in the band,3,laptop,horse,7,False,True
+picture,animal,donor's early state delivered in the band,4,bird,car,7,True,False
+picture,animal,donor's early state delivered in the band,5,car,bird,7,False,True
+picture,animal,donor's early state delivered in the band,6,bird,car,3,False,True
+picture,animal,donor's early state delivered in the band,7,laptop,horse,7,False,True
+picture,animal,donor's early state delivered in the band,8,cat,bus,3,False,True
+picture,animal,donor's early state delivered in the band,9,boat,cat,7,False,True
+picture,animal,donor's early state delivered in the band,10,bird,car,3,False,True
+picture,animal,donor's early state delivered in the band,11,bicycle,dog,7,False,True
+picture,animal,donor's early state delivered in the band,12,dog,train,3,False,True
+picture,animal,donor's early state delivered in the band,13,chair,horse,7,False,True
+picture,animal,donor's early state delivered in the band,14,cat,boat,3,False,True
+picture,animal,donor's early state delivered in the band,15,clock,horse,7,False,True
+picture,animal,donor's early state delivered in the band,16,cat,train,3,False,True
+picture,animal,donor's early state delivered in the band,17,boat,cat,7,False,True
+picture,animal,donor's early state delivered in the band,18,dog,bicycle,3,False,True
+picture,animal,donor's early state delivered in the band,19,chair,horse,7,False,True
+picture,animal,donor's early state delivered in the band,20,cat,bicycle,3,False,True
+picture,animal,donor's early state delivered in the band,21,train,bird,7,False,True
+picture,animal,donor's early state delivered in the band,22,bird,airplane,3,False,True
+picture,animal,donor's early state delivered in the band,23,pizza,horse,7,False,True
+picture,animal,donor's early state delivered in the band,24,horse,clock,3,False,True
+picture,animal,donor's early state delivered in the band,25,laptop,horse,7,False,True
+picture,animal,donor's early state delivered in the band,26,bird,car,3,False,True
+picture,animal,donor's early state delivered in the band,27,airplane,dog,7,False,True
+picture,animal,donor's early state delivered in the band,28,horse,chair,7,True,False
+picture,animal,donor's early state delivered in the band,29,bicycle,cat,7,False,True
+picture,animal,donor's early state delivered in the band,30,dog,bus,3,False,True
+picture,animal,donor's early state delivered in the band,31,car,dog,7,False,True
+picture,animal,donor's early state delivered in the band,32,dog,bicycle,3,False,True
+picture,animal,donor's early state delivered in the band,33,cup,horse,7,False,True
+picture,animal,donor's early state delivered in the band,34,dog,boat,3,False,True
+picture,animal,donor's early state delivered in the band,35,train,cat,7,False,True
+picture,animal,donor's early state delivered in the band,36,horse,clock,3,False,True
+picture,animal,donor's early state delivered in the band,37,boat,dog,7,False,True
+picture,animal,donor's early state delivered in the band,38,horse,cup,3,False,True
+picture,animal,donor's early state delivered in the band,39,chair,horse,7,False,True
+picture,animal,donor's early state delivered in the band,40,bird,airplane,3,False,True
+picture,animal,donor's early state delivered in the band,41,cup,horse,7,False,True
+picture,animal,donor's early state delivered in the band,42,dog,car,7,True,False
+picture,animal,donor's early state delivered in the band,43,bicycle,dog,7,False,True
+picture,animal,donor's early state delivered in the band,44,cat,bicycle,3,False,True
+picture,animal,donor's early state delivered in the band,45,clock,horse,7,False,True
+picture,animal,donor's early state delivered in the band,46,dog,car,3,False,True
+picture,animal,donor's early state delivered in the band,47,cup,horse,7,False,True
+picture,animal,donor's early state delivered in the band,48,bird,airplane,3,False,True
+picture,animal,donor's early state delivered in the band,49,car,bird,7,False,True
+picture,animal,donor's early state delivered in the band,50,bird,train,3,False,True
+picture,animal,donor's early state delivered in the band,51,car,bird,7,False,True
+picture,animal,donor's early state delivered in the band,52,horse,cup,3,False,True
+picture,animal,donor's early state delivered in the band,53,train,bird,7,False,True
+picture,animal,donor's early state delivered in the band,54,cat,airplane,3,False,True
+picture,animal,donor's early state delivered in the band,55,cup,horse,7,False,True
+picture,animal,donor's early state delivered in the band,56,horse,clock,3,False,True
+picture,animal,donor's early state delivered in the band,57,bus,dog,7,False,True
+picture,animal,donor's early state delivered in the band,58,bird,car,3,False,True
+picture,animal,donor's early state delivered in the band,59,bus,dog,7,False,True
+picture,animal,donor's early state delivered in the band,60,bird,train,3,False,True
+picture,animal,donor's early state delivered in the band,61,train,dog,7,False,True
+picture,animal,donor's early state delivered in the band,62,cat,bicycle,3,False,True
+picture,animal,donor's early state delivered in the band,63,cup,horse,7,False,True
+picture,animal,donor's early-window state in place (control),0,bird,airplane,7,True,False
+picture,animal,donor's early-window state in place (control),1,train,cat,3,True,False
+picture,animal,donor's early-window state in place (control),2,dog,bus,7,True,False
+picture,animal,donor's early-window state in place (control),3,laptop,horse,3,True,False
+picture,animal,donor's early-window state in place (control),4,bird,car,7,True,False
+picture,animal,donor's early-window state in place (control),5,car,bird,7,False,True
+picture,animal,donor's early-window state in place (control),6,bird,car,7,True,False
+picture,animal,donor's early-window state in place (control),7,laptop,horse,7,False,True
+picture,animal,donor's early-window state in place (control),8,cat,bus,7,True,False
+picture,animal,donor's early-window state in place (control),9,boat,cat,3,True,False
+picture,animal,donor's early-window state in place (control),10,bird,car,7,True,False
+picture,animal,donor's early-window state in place (control),11,bicycle,dog,3,True,False
+picture,animal,donor's early-window state in place (control),12,dog,train,7,True,False
+picture,animal,donor's early-window state in place (control),13,chair,horse,3,True,False
+picture,animal,donor's early-window state in place (control),14,cat,boat,7,True,False
+picture,animal,donor's early-window state in place (control),15,clock,horse,3,True,False
+picture,animal,donor's early-window state in place (control),16,cat,train,7,True,False
+picture,animal,donor's early-window state in place (control),17,boat,cat,3,True,False
+picture,animal,donor's early-window state in place (control),18,dog,bicycle,7,True,False
+picture,animal,donor's early-window state in place (control),19,chair,horse,3,True,False
+picture,animal,donor's early-window state in place (control),20,cat,bicycle,7,True,False
+picture,animal,donor's early-window state in place (control),21,train,bird,3,True,False
+picture,animal,donor's early-window state in place (control),22,bird,airplane,7,True,False
+picture,animal,donor's early-window state in place (control),23,pizza,horse,3,True,False
+picture,animal,donor's early-window state in place (control),24,horse,clock,7,True,False
+picture,animal,donor's early-window state in place (control),25,laptop,horse,7,False,True
+picture,animal,donor's early-window state in place (control),26,bird,car,7,True,False
+picture,animal,donor's early-window state in place (control),27,airplane,dog,3,True,False
+picture,animal,donor's early-window state in place (control),28,horse,chair,7,True,False
+picture,animal,donor's early-window state in place (control),29,bicycle,cat,7,False,True
+picture,animal,donor's early-window state in place (control),30,dog,bus,7,True,False
+picture,animal,donor's early-window state in place (control),31,car,dog,3,True,False
+picture,animal,donor's early-window state in place (control),32,dog,bicycle,7,True,False
+picture,animal,donor's early-window state in place (control),33,cup,horse,3,True,False
+picture,animal,donor's early-window state in place (control),34,dog,boat,7,True,False
+picture,animal,donor's early-window state in place (control),35,train,cat,3,True,False
+picture,animal,donor's early-window state in place (control),36,horse,clock,7,True,False
+picture,animal,donor's early-window state in place (control),37,boat,dog,3,True,False
+picture,animal,donor's early-window state in place (control),38,horse,cup,7,True,False
+picture,animal,donor's early-window state in place (control),39,chair,horse,3,True,False
+picture,animal,donor's early-window state in place (control),40,bird,airplane,7,True,False
+picture,animal,donor's early-window state in place (control),41,cup,horse,3,True,False
+picture,animal,donor's early-window state in place (control),42,dog,car,7,True,False
+picture,animal,donor's early-window state in place (control),43,bicycle,dog,3,True,False
+picture,animal,donor's early-window state in place (control),44,cat,bicycle,7,True,False
+picture,animal,donor's early-window state in place (control),45,clock,horse,3,True,False
+picture,animal,donor's early-window state in place (control),46,dog,car,7,True,False
+picture,animal,donor's early-window state in place (control),47,cup,horse,3,True,False
+picture,animal,donor's early-window state in place (control),48,bird,airplane,7,True,False
+picture,animal,donor's early-window state in place (control),49,car,bird,3,True,False
+picture,animal,donor's early-window state in place (control),50,bird,train,7,True,False
+picture,animal,donor's early-window state in place (control),51,car,bird,3,True,False
+picture,animal,donor's early-window state in place (control),52,horse,cup,7,True,False
+picture,animal,donor's early-window state in place (control),53,train,bird,3,True,False
+picture,animal,donor's early-window state in place (control),54,cat,airplane,7,True,False
+picture,animal,donor's early-window state in place (control),55,cup,horse,3,True,False
+picture,animal,donor's early-window state in place (control),56,horse,clock,7,True,False
+picture,animal,donor's early-window state in place (control),57,bus,dog,3,True,False
+picture,animal,donor's early-window state in place (control),58,bird,car,7,True,False
+picture,animal,donor's early-window state in place (control),59,bus,dog,3,True,False
+picture,animal,donor's early-window state in place (control),60,bird,train,7,True,False
+picture,animal,donor's early-window state in place (control),61,train,dog,3,True,False
+picture,animal,donor's early-window state in place (control),62,cat,bicycle,7,True,False
+picture,animal,donor's early-window state in place (control),63,cup,horse,3,True,False
+video,say,receiver alone,0,bird,airplane,airplane,False,True
+video,say,receiver alone,1,train,cat,cat,False,True
+video,say,receiver alone,2,dog,bus,bus,False,True
+video,say,receiver alone,3,laptop,horse,horse,False,True
+video,say,receiver alone,4,bird,car,cat,False,False
+video,say,receiver alone,5,car,bird,bird,False,True
+video,say,receiver alone,6,bird,car,SUV,False,False
+video,say,receiver alone,7,laptop,horse,horse,False,True
+video,say,receiver alone,8,cat,bus,bus,False,True
+video,say,receiver alone,9,boat,cat,cat,False,True
+video,say,receiver alone,10,bird,car,car,False,True
+video,say,receiver alone,11,bicycle,dog,dog,False,True
+video,say,receiver alone,12,dog,train,train,False,True
+video,say,receiver alone,13,chair,horse,horse,False,True
+video,say,receiver alone,14,cat,boat,boat,False,True
+video,say,receiver alone,15,clock,horse,horse,False,True
+video,say,receiver alone,16,cat,train,train,False,True
+video,say,receiver alone,17,boat,cat,cat,False,True
+video,say,receiver alone,18,dog,bicycle,bicycle,False,True
+video,say,receiver alone,19,chair,horse,horse,False,True
+video,say,receiver alone,20,cat,bicycle,bicycle,False,True
+video,say,receiver alone,21,train,bird,bird,False,True
+video,say,receiver alone,22,bird,airplane,airplane,False,True
+video,say,receiver alone,23,pizza,horse,horse,False,True
+video,say,receiver alone,24,horse,clock,Clock,False,True
+video,say,receiver alone,25,laptop,horse,horse,False,True
+video,say,receiver alone,26,bird,car,car,False,True
+video,say,receiver alone,27,airplane,dog,dog,False,True
+video,say,receiver alone,28,horse,chair,cat,False,False
+video,say,receiver alone,29,bicycle,cat,cat,False,True
+video,say,receiver alone,30,dog,bus,bus,False,True
+video,say,receiver alone,31,car,dog,dog,False,True
+video,say,receiver alone,32,dog,bicycle,bicycle,False,True
+video,say,receiver alone,33,cup,horse,horse,False,True
+video,say,receiver alone,34,dog,boat,boat,False,True
+video,say,receiver alone,35,train,cat,cat,False,True
+video,say,receiver alone,36,horse,clock,Clock,False,True
+video,say,receiver alone,37,boat,dog,dog,False,True
+video,say,receiver alone,38,horse,cup,coffee cup,False,True
+video,say,receiver alone,39,chair,horse,horse,False,True
+video,say,receiver alone,40,bird,airplane,airplane,False,True
+video,say,receiver alone,41,cup,horse,horse,False,True
+video,say,receiver alone,42,dog,car,cat,False,False
+video,say,receiver alone,43,bicycle,dog,dog,False,True
+video,say,receiver alone,44,cat,bicycle,bicycle,False,True
+video,say,receiver alone,45,clock,horse,horse,False,True
+video,say,receiver alone,46,dog,car,car,False,True
+video,say,receiver alone,47,cup,horse,horse,False,True
+video,say,receiver alone,48,bird,airplane,plane,False,False
+video,say,receiver alone,49,car,bird,bird,False,True
+video,say,receiver alone,50,bird,train,bus,False,False
+video,say,receiver alone,51,car,bird,bird,False,True
+video,say,receiver alone,52,horse,cup,cup,False,True
+video,say,receiver alone,53,train,bird,bird,False,True
+video,say,receiver alone,54,cat,airplane,plane,False,False
+video,say,receiver alone,55,cup,horse,horse,False,True
+video,say,receiver alone,56,horse,clock,clock,False,True
+video,say,receiver alone,57,bus,dog,dog,False,True
+video,say,receiver alone,58,bird,car,car,False,True
+video,say,receiver alone,59,bus,dog,dog,False,True
+video,say,receiver alone,60,bird,train,train,False,True
+video,say,receiver alone,61,train,dog,dog,False,True
+video,say,receiver alone,62,cat,bicycle,bicycle,False,True
+video,say,receiver alone,63,cup,horse,horse,False,True
+video,say,donor early only,0,bird,airplane,bird,True,False
+video,say,donor early only,1,train,cat,train,True,False
+video,say,donor early only,2,dog,bus,dog,True,False
+video,say,donor early only,3,laptop,horse,laptop,True,False
+video,say,donor early only,4,bird,car,bird,True,False
+video,say,donor early only,5,car,bird,cat,False,False
+video,say,donor early only,6,bird,car,bird,True,False
+video,say,donor early only,7,laptop,horse,cat,False,False
+video,say,donor early only,8,cat,bus,cat,True,False
+video,say,donor early only,9,boat,cat,boat,True,False
+video,say,donor early only,10,bird,car,bird,True,False
+video,say,donor early only,11,bicycle,dog,bicycle,True,False
+video,say,donor early only,12,dog,train,dog,True,False
+video,say,donor early only,13,chair,horse,chair,True,False
+video,say,donor early only,14,cat,boat,cat,True,False
+video,say,donor early only,15,clock,horse,clock,True,False
+video,say,donor early only,16,cat,train,cat,True,False
+video,say,donor early only,17,boat,cat,boat,True,False
+video,say,donor early only,18,dog,bicycle,dog,True,False
+video,say,donor early only,19,chair,horse,chair,True,False
+video,say,donor early only,20,cat,bicycle,cat,True,False
+video,say,donor early only,21,train,bird,train,True,False
+video,say,donor early only,22,bird,airplane,bird,True,False
+video,say,donor early only,23,pizza,horse,pizza,True,False
+video,say,donor early only,24,horse,clock,horse,True,False
+video,say,donor early only,25,laptop,horse,laptop,True,False
+video,say,donor early only,26,bird,car,bird,True,False
+video,say,donor early only,27,airplane,dog,plane,False,False
+video,say,donor early only,28,horse,chair,horse,True,False
+video,say,donor early only,29,bicycle,cat,motorcycle,False,False
+video,say,donor early only,30,dog,bus,dog,True,False
+video,say,donor early only,31,car,dog,car,True,False
+video,say,donor early only,32,dog,bicycle,dog,True,False
+video,say,donor early only,33,cup,horse,mug,False,False
+video,say,donor early only,34,dog,boat,dog,True,False
+video,say,donor early only,35,train,cat,train,True,False
+video,say,donor early only,36,horse,clock,horse,True,False
+video,say,donor early only,37,boat,dog,Based on the visual information,False,False
+video,say,donor early only,38,horse,cup,horse,True,False
+video,say,donor early only,39,chair,horse,chair,True,False
+video,say,donor early only,40,bird,airplane,bird,True,False
+video,say,donor early only,41,cup,horse,mug,False,False
+video,say,donor early only,42,dog,car,dog,True,False
+video,say,donor early only,43,bicycle,dog,bicycle,True,False
+video,say,donor early only,44,cat,bicycle,cat,True,False
+video,say,donor early only,45,clock,horse,Clock,True,False
+video,say,donor early only,46,dog,car,dog,True,False
+video,say,donor early only,47,cup,horse,coffee cup,True,False
+video,say,donor early only,48,bird,airplane,bird,True,False
+video,say,donor early only,49,car,bird,car,True,False
+video,say,donor early only,50,bird,train,bird,True,False
+video,say,donor early only,51,car,bird,car,True,False
+video,say,donor early only,52,horse,cup,horse,True,False
+video,say,donor early only,53,train,bird,train,True,False
+video,say,donor early only,54,cat,airplane,cat,True,False
+video,say,donor early only,55,cup,horse,coffee cup,True,False
+video,say,donor early only,56,horse,clock,horse,True,False
+video,say,donor early only,57,bus,dog,bus,True,False
+video,say,donor early only,58,bird,car,bird,True,False
+video,say,donor early only,59,bus,dog,bus,True,False
+video,say,donor early only,60,bird,train,bird,True,False
+video,say,donor early only,61,train,dog,train,True,False
+video,say,donor early only,62,cat,bicycle,cat,True,False
+video,say,donor early only,63,cup,horse,coffee cup,True,False
+video,say,"donor early, receiver restored in the band",0,bird,airplane,airplane,False,True
+video,say,"donor early, receiver restored in the band",1,train,cat,cat,False,True
+video,say,"donor early, receiver restored in the band",2,dog,bus,bus,False,True
+video,say,"donor early, receiver restored in the band",3,laptop,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",4,bird,car,cat,False,False
+video,say,"donor early, receiver restored in the band",5,car,bird,bird,False,True
+video,say,"donor early, receiver restored in the band",6,bird,car,SUV,False,False
+video,say,"donor early, receiver restored in the band",7,laptop,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",8,cat,bus,bus,False,True
+video,say,"donor early, receiver restored in the band",9,boat,cat,cat,False,True
+video,say,"donor early, receiver restored in the band",10,bird,car,car,False,True
+video,say,"donor early, receiver restored in the band",11,bicycle,dog,dog,False,True
+video,say,"donor early, receiver restored in the band",12,dog,train,train,False,True
+video,say,"donor early, receiver restored in the band",13,chair,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",14,cat,boat,boat,False,True
+video,say,"donor early, receiver restored in the band",15,clock,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",16,cat,train,train,False,True
+video,say,"donor early, receiver restored in the band",17,boat,cat,cat,False,True
+video,say,"donor early, receiver restored in the band",18,dog,bicycle,bicycle,False,True
+video,say,"donor early, receiver restored in the band",19,chair,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",20,cat,bicycle,bicycle,False,True
+video,say,"donor early, receiver restored in the band",21,train,bird,bird,False,True
+video,say,"donor early, receiver restored in the band",22,bird,airplane,airplane,False,True
+video,say,"donor early, receiver restored in the band",23,pizza,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",24,horse,clock,Clock,False,True
+video,say,"donor early, receiver restored in the band",25,laptop,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",26,bird,car,car,False,True
+video,say,"donor early, receiver restored in the band",27,airplane,dog,dog,False,True
+video,say,"donor early, receiver restored in the band",28,horse,chair,cat,False,False
+video,say,"donor early, receiver restored in the band",29,bicycle,cat,cat,False,True
+video,say,"donor early, receiver restored in the band",30,dog,bus,bus,False,True
+video,say,"donor early, receiver restored in the band",31,car,dog,dog,False,True
+video,say,"donor early, receiver restored in the band",32,dog,bicycle,bike,False,False
+video,say,"donor early, receiver restored in the band",33,cup,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",34,dog,boat,boat,False,True
+video,say,"donor early, receiver restored in the band",35,train,cat,cat,False,True
+video,say,"donor early, receiver restored in the band",36,horse,clock,Clock,False,True
+video,say,"donor early, receiver restored in the band",37,boat,dog,dog,False,True
+video,say,"donor early, receiver restored in the band",38,horse,cup,coffee cup,False,True
+video,say,"donor early, receiver restored in the band",39,chair,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",40,bird,airplane,airplane,False,True
+video,say,"donor early, receiver restored in the band",41,cup,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",42,dog,car,cat,False,False
+video,say,"donor early, receiver restored in the band",43,bicycle,dog,dog,False,True
+video,say,"donor early, receiver restored in the band",44,cat,bicycle,Bicycle,False,True
+video,say,"donor early, receiver restored in the band",45,clock,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",46,dog,car,car,False,True
+video,say,"donor early, receiver restored in the band",47,cup,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",48,bird,airplane,plane,False,False
+video,say,"donor early, receiver restored in the band",49,car,bird,bird,False,True
+video,say,"donor early, receiver restored in the band",50,bird,train,bus,False,False
+video,say,"donor early, receiver restored in the band",51,car,bird,bird,False,True
+video,say,"donor early, receiver restored in the band",52,horse,cup,cup,False,True
+video,say,"donor early, receiver restored in the band",53,train,bird,bird,False,True
+video,say,"donor early, receiver restored in the band",54,cat,airplane,plane,False,False
+video,say,"donor early, receiver restored in the band",55,cup,horse,horse,False,True
+video,say,"donor early, receiver restored in the band",56,horse,clock,Clock,False,True
+video,say,"donor early, receiver restored in the band",57,bus,dog,dog,False,True
+video,say,"donor early, receiver restored in the band",58,bird,car,car,False,True
+video,say,"donor early, receiver restored in the band",59,bus,dog,dog,False,True
+video,say,"donor early, receiver restored in the band",60,bird,train,train,False,True
+video,say,"donor early, receiver restored in the band",61,train,dog,dog,False,True
+video,say,"donor early, receiver restored in the band",62,cat,bicycle,bicycle,False,True
+video,say,"donor early, receiver restored in the band",63,cup,horse,horse,False,True
+video,say,donor in the band only,0,bird,airplane,bird,True,False
+video,say,donor in the band only,1,train,cat,train,True,False
+video,say,donor in the band only,2,dog,bus,dog,True,False
+video,say,donor in the band only,3,laptop,horse,laptop,True,False
+video,say,donor in the band only,4,bird,car,bird,True,False
+video,say,donor in the band only,5,car,bird,cat,False,False
+video,say,donor in the band only,6,bird,car,bird,True,False
+video,say,donor in the band only,7,laptop,horse,cat,False,False
+video,say,donor in the band only,8,cat,bus,cat,True,False
+video,say,donor in the band only,9,boat,cat,boat,True,False
+video,say,donor in the band only,10,bird,car,bird,True,False
+video,say,donor in the band only,11,bicycle,dog,bicycle,True,False
+video,say,donor in the band only,12,dog,train,dog,True,False
+video,say,donor in the band only,13,chair,horse,chair,True,False
+video,say,donor in the band only,14,cat,boat,cat,True,False
+video,say,donor in the band only,15,clock,horse,clock,True,False
+video,say,donor in the band only,16,cat,train,cat,True,False
+video,say,donor in the band only,17,boat,cat,boat,True,False
+video,say,donor in the band only,18,dog,bicycle,dog,True,False
+video,say,donor in the band only,19,chair,horse,chair,True,False
+video,say,donor in the band only,20,cat,bicycle,cat,True,False
+video,say,donor in the band only,21,train,bird,train,True,False
+video,say,donor in the band only,22,bird,airplane,bird,True,False
+video,say,donor in the band only,23,pizza,horse,pizza,True,False
+video,say,donor in the band only,24,horse,clock,horse,True,False
+video,say,donor in the band only,25,laptop,horse,laptop,True,False
+video,say,donor in the band only,26,bird,car,bird,True,False
+video,say,donor in the band only,27,airplane,dog,plane,False,False
+video,say,donor in the band only,28,horse,chair,horse,True,False
+video,say,donor in the band only,29,bicycle,cat,motorcycle,False,False
+video,say,donor in the band only,30,dog,bus,dog,True,False
+video,say,donor in the band only,31,car,dog,car,True,False
+video,say,donor in the band only,32,dog,bicycle,dog,True,False
+video,say,donor in the band only,33,cup,horse,mug,False,False
+video,say,donor in the band only,34,dog,boat,dog,True,False
+video,say,donor in the band only,35,train,cat,train,True,False
+video,say,donor in the band only,36,horse,clock,horse,True,False
+video,say,donor in the band only,37,boat,dog,boat,True,False
+video,say,donor in the band only,38,horse,cup,horse,True,False
+video,say,donor in the band only,39,chair,horse,chair,True,False
+video,say,donor in the band only,40,bird,airplane,bird,True,False
+video,say,donor in the band only,41,cup,horse,mug,False,False
+video,say,donor in the band only,42,dog,car,dog,True,False
+video,say,donor in the band only,43,bicycle,dog,bicycle,True,False
+video,say,donor in the band only,44,cat,bicycle,cat,True,False
+video,say,donor in the band only,45,clock,horse,Clock,True,False
+video,say,donor in the band only,46,dog,car,dog,True,False
+video,say,donor in the band only,47,cup,horse,coffee cup,True,False
+video,say,donor in the band only,48,bird,airplane,bird,True,False
+video,say,donor in the band only,49,car,bird,car,True,False
+video,say,donor in the band only,50,bird,train,bird,True,False
+video,say,donor in the band only,51,car,bird,car,True,False
+video,say,donor in the band only,52,horse,cup,horse,True,False
+video,say,donor in the band only,53,train,bird,train,True,False
+video,say,donor in the band only,54,cat,airplane,cat,True,False
+video,say,donor in the band only,55,cup,horse,coffee cup,True,False
+video,say,donor in the band only,56,horse,clock,horse,True,False
+video,say,donor in the band only,57,bus,dog,bus,True,False
+video,say,donor in the band only,58,bird,car,bird,True,False
+video,say,donor in the band only,59,bus,dog,bus,True,False
+video,say,donor in the band only,60,bird,train,bird,True,False
+video,say,donor in the band only,61,train,dog,train,True,False
+video,say,donor in the band only,62,cat,bicycle,cat,True,False
+video,say,donor in the band only,63,cup,horse,coffee,False,False
+video,say,donor early and band,0,bird,airplane,bird,True,False
+video,say,donor early and band,1,train,cat,train,True,False
+video,say,donor early and band,2,dog,bus,dog,True,False
+video,say,donor early and band,3,laptop,horse,laptop,True,False
+video,say,donor early and band,4,bird,car,bird,True,False
+video,say,donor early and band,5,car,bird,cat,False,False
+video,say,donor early and band,6,bird,car,bird,True,False
+video,say,donor early and band,7,laptop,horse,cat,False,False
+video,say,donor early and band,8,cat,bus,cat,True,False
+video,say,donor early and band,9,boat,cat,boat,True,False
+video,say,donor early and band,10,bird,car,bird,True,False
+video,say,donor early and band,11,bicycle,dog,bicycle,True,False
+video,say,donor early and band,12,dog,train,dog,True,False
+video,say,donor early and band,13,chair,horse,chair,True,False
+video,say,donor early and band,14,cat,boat,cat,True,False
+video,say,donor early and band,15,clock,horse,clock,True,False
+video,say,donor early and band,16,cat,train,cat,True,False
+video,say,donor early and band,17,boat,cat,boat,True,False
+video,say,donor early and band,18,dog,bicycle,dog,True,False
+video,say,donor early and band,19,chair,horse,chair,True,False
+video,say,donor early and band,20,cat,bicycle,cat,True,False
+video,say,donor early and band,21,train,bird,train,True,False
+video,say,donor early and band,22,bird,airplane,bird,True,False
+video,say,donor early and band,23,pizza,horse,pizza,True,False
+video,say,donor early and band,24,horse,clock,horse,True,False
+video,say,donor early and band,25,laptop,horse,laptop,True,False
+video,say,donor early and band,26,bird,car,bird,True,False
+video,say,donor early and band,27,airplane,dog,plane,False,False
+video,say,donor early and band,28,horse,chair,horse,True,False
+video,say,donor early and band,29,bicycle,cat,motorcycle,False,False
+video,say,donor early and band,30,dog,bus,dog,True,False
+video,say,donor early and band,31,car,dog,car,True,False
+video,say,donor early and band,32,dog,bicycle,dog,True,False
+video,say,donor early and band,33,cup,horse,mug,False,False
+video,say,donor early and band,34,dog,boat,dog,True,False
+video,say,donor early and band,35,train,cat,train,True,False
+video,say,donor early and band,36,horse,clock,horse,True,False
+video,say,donor early and band,37,boat,dog,Based on the visual information,False,False
+video,say,donor early and band,38,horse,cup,horse,True,False
+video,say,donor early and band,39,chair,horse,chair,True,False
+video,say,donor early and band,40,bird,airplane,bird,True,False
+video,say,donor early and band,41,cup,horse,mug,False,False
+video,say,donor early and band,42,dog,car,dog,True,False
+video,say,donor early and band,43,bicycle,dog,bicycle,True,False
+video,say,donor early and band,44,cat,bicycle,cat,True,False
+video,say,donor early and band,45,clock,horse,Clock,True,False
+video,say,donor early and band,46,dog,car,dog,True,False
+video,say,donor early and band,47,cup,horse,coffee cup,True,False
+video,say,donor early and band,48,bird,airplane,bird,True,False
+video,say,donor early and band,49,car,bird,car,True,False
+video,say,donor early and band,50,bird,train,bird,True,False
+video,say,donor early and band,51,car,bird,car,True,False
+video,say,donor early and band,52,horse,cup,horse,True,False
+video,say,donor early and band,53,train,bird,train,True,False
+video,say,donor early and band,54,cat,airplane,cat,True,False
+video,say,donor early and band,55,cup,horse,coffee cup,True,False
+video,say,donor early and band,56,horse,clock,horse,True,False
+video,say,donor early and band,57,bus,dog,bus,True,False
+video,say,donor early and band,58,bird,car,bird,True,False
+video,say,donor early and band,59,bus,dog,bus,True,False
+video,say,donor early and band,60,bird,train,bird,True,False
+video,say,donor early and band,61,train,dog,train,True,False
+video,say,donor early and band,62,cat,bicycle,cat,True,False
+video,say,donor early and band,63,cup,horse,coffee cup,True,False
+video,say,donor every layer,0,bird,airplane,bird,True,False
+video,say,donor every layer,1,train,cat,train,True,False
+video,say,donor every layer,2,dog,bus,dog,True,False
+video,say,donor every layer,3,laptop,horse,laptop,True,False
+video,say,donor every layer,4,bird,car,bird,True,False
+video,say,donor every layer,5,car,bird,cat,False,False
+video,say,donor every layer,6,bird,car,bird,True,False
+video,say,donor every layer,7,laptop,horse,cat,False,False
+video,say,donor every layer,8,cat,bus,cat,True,False
+video,say,donor every layer,9,boat,cat,boat,True,False
+video,say,donor every layer,10,bird,car,bird,True,False
+video,say,donor every layer,11,bicycle,dog,bicycle,True,False
+video,say,donor every layer,12,dog,train,dog,True,False
+video,say,donor every layer,13,chair,horse,chair,True,False
+video,say,donor every layer,14,cat,boat,cat,True,False
+video,say,donor every layer,15,clock,horse,clock,True,False
+video,say,donor every layer,16,cat,train,cat,True,False
+video,say,donor every layer,17,boat,cat,boat,True,False
+video,say,donor every layer,18,dog,bicycle,dog,True,False
+video,say,donor every layer,19,chair,horse,chair,True,False
+video,say,donor every layer,20,cat,bicycle,cat,True,False
+video,say,donor every layer,21,train,bird,train,True,False
+video,say,donor every layer,22,bird,airplane,bird,True,False
+video,say,donor every layer,23,pizza,horse,pizza,True,False
+video,say,donor every layer,24,horse,clock,horse,True,False
+video,say,donor every layer,25,laptop,horse,laptop,True,False
+video,say,donor every layer,26,bird,car,bird,True,False
+video,say,donor every layer,27,airplane,dog,plane,False,False
+video,say,donor every layer,28,horse,chair,horse,True,False
+video,say,donor every layer,29,bicycle,cat,motorcycle,False,False
+video,say,donor every layer,30,dog,bus,dog,True,False
+video,say,donor every layer,31,car,dog,car,True,False
+video,say,donor every layer,32,dog,bicycle,dog,True,False
+video,say,donor every layer,33,cup,horse,mug,False,False
+video,say,donor every layer,34,dog,boat,dog,True,False
+video,say,donor every layer,35,train,cat,train,True,False
+video,say,donor every layer,36,horse,clock,horse,True,False
+video,say,donor every layer,37,boat,dog,Based on the visual information,False,False
+video,say,donor every layer,38,horse,cup,horse,True,False
+video,say,donor every layer,39,chair,horse,chair,True,False
+video,say,donor every layer,40,bird,airplane,bird,True,False
+video,say,donor every layer,41,cup,horse,mug,False,False
+video,say,donor every layer,42,dog,car,dog,True,False
+video,say,donor every layer,43,bicycle,dog,bicycle,True,False
+video,say,donor every layer,44,cat,bicycle,cat,True,False
+video,say,donor every layer,45,clock,horse,Clock,True,False
+video,say,donor every layer,46,dog,car,dog,True,False
+video,say,donor every layer,47,cup,horse,coffee cup,True,False
+video,say,donor every layer,48,bird,airplane,bird,True,False
+video,say,donor every layer,49,car,bird,car,True,False
+video,say,donor every layer,50,bird,train,bird,True,False
+video,say,donor every layer,51,car,bird,car,True,False
+video,say,donor every layer,52,horse,cup,horse,True,False
+video,say,donor every layer,53,train,bird,train,True,False
+video,say,donor every layer,54,cat,airplane,cat,True,False
+video,say,donor every layer,55,cup,horse,coffee cup,True,False
+video,say,donor every layer,56,horse,clock,horse,True,False
+video,say,donor every layer,57,bus,dog,bus,True,False
+video,say,donor every layer,58,bird,car,bird,True,False
+video,say,donor every layer,59,bus,dog,bus,True,False
+video,say,donor every layer,60,bird,train,bird,True,False
+video,say,donor every layer,61,train,dog,train,True,False
+video,say,donor every layer,62,cat,bicycle,cat,True,False
+video,say,donor every layer,63,cup,horse,coffee cup,True,False
+video,say,donor's band state delivered in the early window,0,bird,airplane,bird,True,False
+video,say,donor's band state delivered in the early window,1,train,cat,train,True,False
+video,say,donor's band state delivered in the early window,2,dog,bus,dog,True,False
+video,say,donor's band state delivered in the early window,3,laptop,horse,laptop,True,False
+video,say,donor's band state delivered in the early window,4,bird,car,bird,True,False
+video,say,donor's band state delivered in the early window,5,car,bird,cat,False,False
+video,say,donor's band state delivered in the early window,6,bird,car,bird,True,False
+video,say,donor's band state delivered in the early window,7,laptop,horse,laptop,True,False
+video,say,donor's band state delivered in the early window,8,cat,bus,cat,True,False
+video,say,donor's band state delivered in the early window,9,boat,cat,boat,True,False
+video,say,donor's band state delivered in the early window,10,bird,car,bird,True,False
+video,say,donor's band state delivered in the early window,11,bicycle,dog,bicycle,True,False
+video,say,donor's band state delivered in the early window,12,dog,train,dog,True,False
+video,say,donor's band state delivered in the early window,13,chair,horse,chair,True,False
+video,say,donor's band state delivered in the early window,14,cat,boat,cat,True,False
+video,say,donor's band state delivered in the early window,15,clock,horse,clock,True,False
+video,say,donor's band state delivered in the early window,16,cat,train,cat,True,False
+video,say,donor's band state delivered in the early window,17,boat,cat,boat,True,False
+video,say,donor's band state delivered in the early window,18,dog,bicycle,dog,True,False
+video,say,donor's band state delivered in the early window,19,chair,horse,chair,True,False
+video,say,donor's band state delivered in the early window,20,cat,bicycle,cat,True,False
+video,say,donor's band state delivered in the early window,21,train,bird,train,True,False
+video,say,donor's band state delivered in the early window,22,bird,airplane,bird,True,False
+video,say,donor's band state delivered in the early window,23,pizza,horse,pizza,True,False
+video,say,donor's band state delivered in the early window,24,horse,clock,horse,True,False
+video,say,donor's band state delivered in the early window,25,laptop,horse,laptop,True,False
+video,say,donor's band state delivered in the early window,26,bird,car,bird,True,False
+video,say,donor's band state delivered in the early window,27,airplane,dog,plane,False,False
+video,say,donor's band state delivered in the early window,28,horse,chair,horse,True,False
+video,say,donor's band state delivered in the early window,29,bicycle,cat,motorcycle,False,False
+video,say,donor's band state delivered in the early window,30,dog,bus,dog,True,False
+video,say,donor's band state delivered in the early window,31,car,dog,car,True,False
+video,say,donor's band state delivered in the early window,32,dog,bicycle,dog,True,False
+video,say,donor's band state delivered in the early window,33,cup,horse,mug,False,False
+video,say,donor's band state delivered in the early window,34,dog,boat,dog,True,False
+video,say,donor's band state delivered in the early window,35,train,cat,train,True,False
+video,say,donor's band state delivered in the early window,36,horse,clock,horse,True,False
+video,say,donor's band state delivered in the early window,37,boat,dog,boat,True,False
+video,say,donor's band state delivered in the early window,38,horse,cup,horse,True,False
+video,say,donor's band state delivered in the early window,39,chair,horse,chair,True,False
+video,say,donor's band state delivered in the early window,40,bird,airplane,bird,True,False
+video,say,donor's band state delivered in the early window,41,cup,horse,mug,False,False
+video,say,donor's band state delivered in the early window,42,dog,car,dog,True,False
+video,say,donor's band state delivered in the early window,43,bicycle,dog,Bicycle,True,False
+video,say,donor's band state delivered in the early window,44,cat,bicycle,cat,True,False
+video,say,donor's band state delivered in the early window,45,clock,horse,Clock,True,False
+video,say,donor's band state delivered in the early window,46,dog,car,dog,True,False
+video,say,donor's band state delivered in the early window,47,cup,horse,coffee cup,True,False
+video,say,donor's band state delivered in the early window,48,bird,airplane,bird,True,False
+video,say,donor's band state delivered in the early window,49,car,bird,car,True,False
+video,say,donor's band state delivered in the early window,50,bird,train,bird,True,False
+video,say,donor's band state delivered in the early window,51,car,bird,car,True,False
+video,say,donor's band state delivered in the early window,52,horse,cup,horse,True,False
+video,say,donor's band state delivered in the early window,53,train,bird,train,True,False
+video,say,donor's band state delivered in the early window,54,cat,airplane,cat,True,False
+video,say,donor's band state delivered in the early window,55,cup,horse,coffee cup,True,False
+video,say,donor's band state delivered in the early window,56,horse,clock,horse,True,False
+video,say,donor's band state delivered in the early window,57,bus,dog,bus,True,False
+video,say,donor's band state delivered in the early window,58,bird,car,bird,True,False
+video,say,donor's band state delivered in the early window,59,bus,dog,bus,True,False
+video,say,donor's band state delivered in the early window,60,bird,train,bird,True,False
+video,say,donor's band state delivered in the early window,61,train,dog,train,True,False
+video,say,donor's band state delivered in the early window,62,cat,bicycle,cat,True,False
+video,say,donor's band state delivered in the early window,63,cup,horse,coffee,False,False
+video,say,donor's early state delivered in the band,0,bird,airplane,bird,True,False
+video,say,donor's early state delivered in the band,1,train,cat,train,True,False
+video,say,donor's early state delivered in the band,2,dog,bus,Dog,True,False
+video,say,donor's early state delivered in the band,3,laptop,horse,Laptop,True,False
+video,say,donor's early state delivered in the band,4,bird,car,bird,True,False
+video,say,donor's early state delivered in the band,5,car,bird,cat,False,False
+video,say,donor's early state delivered in the band,6,bird,car,bird,True,False
+video,say,donor's early state delivered in the band,7,laptop,horse,cat,False,False
+video,say,donor's early state delivered in the band,8,cat,bus,Cat,True,False
+video,say,donor's early state delivered in the band,9,boat,cat,boat,True,False
+video,say,donor's early state delivered in the band,10,bird,car,bird,True,False
+video,say,donor's early state delivered in the band,11,bicycle,dog,Bicycle,True,False
+video,say,donor's early state delivered in the band,12,dog,train,dog,True,False
+video,say,donor's early state delivered in the band,13,chair,horse,chair,True,False
+video,say,donor's early state delivered in the band,14,cat,boat,cat,True,False
+video,say,donor's early state delivered in the band,15,clock,horse,Clock,True,False
+video,say,donor's early state delivered in the band,16,cat,train,cat,True,False
+video,say,donor's early state delivered in the band,17,boat,cat,boat,True,False
+video,say,donor's early state delivered in the band,18,dog,bicycle,Dog,True,False
+video,say,donor's early state delivered in the band,19,chair,horse,chair,True,False
+video,say,donor's early state delivered in the band,20,cat,bicycle,cat,True,False
+video,say,donor's early state delivered in the band,21,train,bird,train,True,False
+video,say,donor's early state delivered in the band,22,bird,airplane,bird,True,False
+video,say,donor's early state delivered in the band,23,pizza,horse,pizza,True,False
+video,say,donor's early state delivered in the band,24,horse,clock,horse,True,False
+video,say,donor's early state delivered in the band,25,laptop,horse,Laptop,True,False
+video,say,donor's early state delivered in the band,26,bird,car,bird,True,False
+video,say,donor's early state delivered in the band,27,airplane,dog,plane,False,False
+video,say,donor's early state delivered in the band,28,horse,chair,horse,True,False
+video,say,donor's early state delivered in the band,29,bicycle,cat,motorcycle,False,False
+video,say,donor's early state delivered in the band,30,dog,bus,dog,True,False
+video,say,donor's early state delivered in the band,31,car,dog,Based on the provided image,False,False
+video,say,donor's early state delivered in the band,32,dog,bicycle,dog,True,False
+video,say,donor's early state delivered in the band,33,cup,horse,Based on the visual information,False,False
+video,say,donor's early state delivered in the band,34,dog,boat,Dog,True,False
+video,say,donor's early state delivered in the band,35,train,cat,train,True,False
+video,say,donor's early state delivered in the band,36,horse,clock,horse,True,False
+video,say,donor's early state delivered in the band,37,boat,dog,boat,True,False
+video,say,donor's early state delivered in the band,38,horse,cup,Horse,True,False
+video,say,donor's early state delivered in the band,39,chair,horse,chair,True,False
+video,say,donor's early state delivered in the band,40,bird,airplane,bird,True,False
+video,say,donor's early state delivered in the band,41,cup,horse,mug,False,False
+video,say,donor's early state delivered in the band,42,dog,car,Dog,True,False
+video,say,donor's early state delivered in the band,43,bicycle,dog,Based on the provided image,False,False
+video,say,donor's early state delivered in the band,44,cat,bicycle,cat,True,False
+video,say,donor's early state delivered in the band,45,clock,horse,Clock,True,False
+video,say,donor's early state delivered in the band,46,dog,car,dog,True,False
+video,say,donor's early state delivered in the band,47,cup,horse,coffee,False,False
+video,say,donor's early state delivered in the band,48,bird,airplane,Based on the visual information,False,False
+video,say,donor's early state delivered in the band,49,car,bird,Car,True,False
+video,say,donor's early state delivered in the band,50,bird,train,Bald eagle,False,False
+video,say,donor's early state delivered in the band,51,car,bird,car,True,False
+video,say,donor's early state delivered in the band,52,horse,cup,horse,True,False
+video,say,donor's early state delivered in the band,53,train,bird,train,True,False
+video,say,donor's early state delivered in the band,54,cat,airplane,cat,True,False
+video,say,donor's early state delivered in the band,55,cup,horse,Based on the visual information,False,False
+video,say,donor's early state delivered in the band,56,horse,clock,horse,True,False
+video,say,donor's early state delivered in the band,57,bus,dog,bus,True,False
+video,say,donor's early state delivered in the band,58,bird,car,Based on the visual information,False,False
+video,say,donor's early state delivered in the band,59,bus,dog,bus,True,False
+video,say,donor's early state delivered in the band,60,bird,train,bird,True,False
+video,say,donor's early state delivered in the band,61,train,dog,train,True,False
+video,say,donor's early state delivered in the band,62,cat,bicycle,cat,True,False
+video,say,donor's early state delivered in the band,63,cup,horse,coffee,False,False
+video,say,donor's early-window state in place (control),0,bird,airplane,bird,True,False
+video,say,donor's early-window state in place (control),1,train,cat,train,True,False
+video,say,donor's early-window state in place (control),2,dog,bus,dog,True,False
+video,say,donor's early-window state in place (control),3,laptop,horse,laptop,True,False
+video,say,donor's early-window state in place (control),4,bird,car,bird,True,False
+video,say,donor's early-window state in place (control),5,car,bird,cat,False,False
+video,say,donor's early-window state in place (control),6,bird,car,bird,True,False
+video,say,donor's early-window state in place (control),7,laptop,horse,cat,False,False
+video,say,donor's early-window state in place (control),8,cat,bus,cat,True,False
+video,say,donor's early-window state in place (control),9,boat,cat,boat,True,False
+video,say,donor's early-window state in place (control),10,bird,car,bird,True,False
+video,say,donor's early-window state in place (control),11,bicycle,dog,bicycle,True,False
+video,say,donor's early-window state in place (control),12,dog,train,dog,True,False
+video,say,donor's early-window state in place (control),13,chair,horse,chair,True,False
+video,say,donor's early-window state in place (control),14,cat,boat,cat,True,False
+video,say,donor's early-window state in place (control),15,clock,horse,clock,True,False
+video,say,donor's early-window state in place (control),16,cat,train,cat,True,False
+video,say,donor's early-window state in place (control),17,boat,cat,boat,True,False
+video,say,donor's early-window state in place (control),18,dog,bicycle,dog,True,False
+video,say,donor's early-window state in place (control),19,chair,horse,chair,True,False
+video,say,donor's early-window state in place (control),20,cat,bicycle,cat,True,False
+video,say,donor's early-window state in place (control),21,train,bird,train,True,False
+video,say,donor's early-window state in place (control),22,bird,airplane,bird,True,False
+video,say,donor's early-window state in place (control),23,pizza,horse,pizza,True,False
+video,say,donor's early-window state in place (control),24,horse,clock,horse,True,False
+video,say,donor's early-window state in place (control),25,laptop,horse,laptop,True,False
+video,say,donor's early-window state in place (control),26,bird,car,bird,True,False
+video,say,donor's early-window state in place (control),27,airplane,dog,plane,False,False
+video,say,donor's early-window state in place (control),28,horse,chair,horse,True,False
+video,say,donor's early-window state in place (control),29,bicycle,cat,motorcycle,False,False
+video,say,donor's early-window state in place (control),30,dog,bus,dog,True,False
+video,say,donor's early-window state in place (control),31,car,dog,car,True,False
+video,say,donor's early-window state in place (control),32,dog,bicycle,dog,True,False
+video,say,donor's early-window state in place (control),33,cup,horse,mug,False,False
+video,say,donor's early-window state in place (control),34,dog,boat,dog,True,False
+video,say,donor's early-window state in place (control),35,train,cat,train,True,False
+video,say,donor's early-window state in place (control),36,horse,clock,horse,True,False
+video,say,donor's early-window state in place (control),37,boat,dog,boat,True,False
+video,say,donor's early-window state in place (control),38,horse,cup,horse,True,False
+video,say,donor's early-window state in place (control),39,chair,horse,chair,True,False
+video,say,donor's early-window state in place (control),40,bird,airplane,bird,True,False
+video,say,donor's early-window state in place (control),41,cup,horse,mug,False,False
+video,say,donor's early-window state in place (control),42,dog,car,dog,True,False
+video,say,donor's early-window state in place (control),43,bicycle,dog,bicycle,True,False
+video,say,donor's early-window state in place (control),44,cat,bicycle,cat,True,False
+video,say,donor's early-window state in place (control),45,clock,horse,Clock,True,False
+video,say,donor's early-window state in place (control),46,dog,car,dog,True,False
+video,say,donor's early-window state in place (control),47,cup,horse,coffee cup,True,False
+video,say,donor's early-window state in place (control),48,bird,airplane,bird,True,False
+video,say,donor's early-window state in place (control),49,car,bird,car,True,False
+video,say,donor's early-window state in place (control),50,bird,train,bird,True,False
+video,say,donor's early-window state in place (control),51,car,bird,car,True,False
+video,say,donor's early-window state in place (control),52,horse,cup,horse,True,False
+video,say,donor's early-window state in place (control),53,train,bird,train,True,False
+video,say,donor's early-window state in place (control),54,cat,airplane,cat,True,False
+video,say,donor's early-window state in place (control),55,cup,horse,coffee cup,True,False
+video,say,donor's early-window state in place (control),56,horse,clock,horse,True,False
+video,say,donor's early-window state in place (control),57,bus,dog,bus,True,False
+video,say,donor's early-window state in place (control),58,bird,car,bird,True,False
+video,say,donor's early-window state in place (control),59,bus,dog,bus,True,False
+video,say,donor's early-window state in place (control),60,bird,train,bird,True,False
+video,say,donor's early-window state in place (control),61,train,dog,train,True,False
+video,say,donor's early-window state in place (control),62,cat,bicycle,cat,True,False
+video,say,donor's early-window state in place (control),63,cup,horse,coffee,False,False
+video,animal,receiver alone,0,bird,airplane,3,False,True
+video,animal,receiver alone,1,train,cat,The object in image slot,False,False
+video,animal,receiver alone,2,dog,bus,3,False,True
+video,animal,receiver alone,3,laptop,horse,The object in image slot,False,False
+video,animal,receiver alone,4,bird,car,The object in image slot,False,False
+video,animal,receiver alone,5,car,bird,To determine the correct answer,False,False
+video,animal,receiver alone,6,bird,car,3,False,True
+video,animal,receiver alone,7,laptop,horse,To determine the correct answer,False,False
+video,animal,receiver alone,8,cat,bus,The object in image slot,False,False
+video,animal,receiver alone,9,boat,cat,To determine the correct answer,False,False
+video,animal,receiver alone,10,bird,car,To determine the correct answer,False,False
+video,animal,receiver alone,11,bicycle,dog,The object in image slot,False,False
+video,animal,receiver alone,12,dog,train,The object in image slot,False,False
+video,animal,receiver alone,13,chair,horse,To determine the correct answer,False,False
+video,animal,receiver alone,14,cat,boat,The object in image slot,False,False
+video,animal,receiver alone,15,clock,horse,To determine the correct answer,False,False
+video,animal,receiver alone,16,cat,train,The object in image slot,False,False
+video,animal,receiver alone,17,boat,cat,The object in image slot,False,False
+video,animal,receiver alone,18,dog,bicycle,The object in image slot,False,False
+video,animal,receiver alone,19,chair,horse,To determine the correct answer,False,False
+video,animal,receiver alone,20,cat,bicycle,To determine the correct answer,False,False
+video,animal,receiver alone,21,train,bird,To determine the correct answer,False,False
+video,animal,receiver alone,22,bird,airplane,3,False,True
+video,animal,receiver alone,23,pizza,horse,7,False,True
+video,animal,receiver alone,24,horse,clock,3,False,True
+video,animal,receiver alone,25,laptop,horse,The object in image slot,False,False
+video,animal,receiver alone,26,bird,car,3,False,True
+video,animal,receiver alone,27,airplane,dog,To determine the correct answer,False,False
+video,animal,receiver alone,28,horse,chair,7,True,False
+video,animal,receiver alone,29,bicycle,cat,The object in image slot,False,False
+video,animal,receiver alone,30,dog,bus,To determine the correct answer,False,False
+video,animal,receiver alone,31,car,dog,The object in image slot,False,False
+video,animal,receiver alone,32,dog,bicycle,To determine the correct answer,False,False
+video,animal,receiver alone,33,cup,horse,7,False,True
+video,animal,receiver alone,34,dog,boat,The object in image slot,False,False
+video,animal,receiver alone,35,train,cat,The object in image slot,False,False
+video,animal,receiver alone,36,horse,clock,The object in image slot,False,False
+video,animal,receiver alone,37,boat,dog,7,False,True
+video,animal,receiver alone,38,horse,cup,To determine the correct answer,False,False
+video,animal,receiver alone,39,chair,horse,To determine the correct answer,False,False
+video,animal,receiver alone,40,bird,airplane,To determine the correct answer,False,False
+video,animal,receiver alone,41,cup,horse,To determine the correct answer,False,False
+video,animal,receiver alone,42,dog,car,To determine the correct answer,False,False
+video,animal,receiver alone,43,bicycle,dog,To determine the correct answer,False,False
+video,animal,receiver alone,44,cat,bicycle,To determine the correct answer,False,False
+video,animal,receiver alone,45,clock,horse,7,False,True
+video,animal,receiver alone,46,dog,car,To determine the correct answer,False,False
+video,animal,receiver alone,47,cup,horse,The object in image slot,False,False
+video,animal,receiver alone,48,bird,airplane,3,False,True
+video,animal,receiver alone,49,car,bird,To determine the correct answer,False,False
+video,animal,receiver alone,50,bird,train,3,False,True
+video,animal,receiver alone,51,car,bird,To determine the correct answer,False,False
+video,animal,receiver alone,52,horse,cup,The object in image slot,False,False
+video,animal,receiver alone,53,train,bird,To determine the correct answer,False,False
+video,animal,receiver alone,54,cat,airplane,The object in image slot,False,False
+video,animal,receiver alone,55,cup,horse,The object in image slot,False,False
+video,animal,receiver alone,56,horse,clock,The object in image slot,False,False
+video,animal,receiver alone,57,bus,dog,To determine the correct answer,False,False
+video,animal,receiver alone,58,bird,car,The object in image slot,False,False
+video,animal,receiver alone,59,bus,dog,The object in image slot,False,False
+video,animal,receiver alone,60,bird,train,To determine the correct answer,False,False
+video,animal,receiver alone,61,train,dog,The object in image slot,False,False
+video,animal,receiver alone,62,cat,bicycle,To determine the correct answer,False,False
+video,animal,receiver alone,63,cup,horse,To determine the correct answer,False,False
+video,animal,donor early only,0,bird,airplane,7,True,False
+video,animal,donor early only,1,train,cat,The object in image slot,False,False
+video,animal,donor early only,2,dog,bus,7,True,False
+video,animal,donor early only,3,laptop,horse,To determine the correct answer,False,False
+video,animal,donor early only,4,bird,car,To determine the correct answer,False,False
+video,animal,donor early only,5,car,bird,The object in image slot,False,False
+video,animal,donor early only,6,bird,car,7,True,False
+video,animal,donor early only,7,laptop,horse,To determine the correct answer,False,False
+video,animal,donor early only,8,cat,bus,The object in image slot,False,False
+video,animal,donor early only,9,boat,cat,The object in image slot,False,False
+video,animal,donor early only,10,bird,car,To determine the correct answer,False,False
+video,animal,donor early only,11,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor early only,12,dog,train,The object in image slot,False,False
+video,animal,donor early only,13,chair,horse,To determine the correct answer,False,False
+video,animal,donor early only,14,cat,boat,The object in image slot,False,False
+video,animal,donor early only,15,clock,horse,The object in image slot,False,False
+video,animal,donor early only,16,cat,train,To determine the correct answer,False,False
+video,animal,donor early only,17,boat,cat,The object in image slot,False,False
+video,animal,donor early only,18,dog,bicycle,The object in image slot,False,False
+video,animal,donor early only,19,chair,horse,To determine the correct answer,False,False
+video,animal,donor early only,20,cat,bicycle,7,True,False
+video,animal,donor early only,21,train,bird,The object in image slot,False,False
+video,animal,donor early only,22,bird,airplane,To determine the correct answer,False,False
+video,animal,donor early only,23,pizza,horse,To determine the correct answer,False,False
+video,animal,donor early only,24,horse,clock,7,True,False
+video,animal,donor early only,25,laptop,horse,To determine the correct answer,False,False
+video,animal,donor early only,26,bird,car,7,True,False
+video,animal,donor early only,27,airplane,dog,To determine the correct answer,False,False
+video,animal,donor early only,28,horse,chair,7,True,False
+video,animal,donor early only,29,bicycle,cat,The object in image slot,False,False
+video,animal,donor early only,30,dog,bus,The object in image slot,False,False
+video,animal,donor early only,31,car,dog,The object in image slot,False,False
+video,animal,donor early only,32,dog,bicycle,7,True,False
+video,animal,donor early only,33,cup,horse,3,True,False
+video,animal,donor early only,34,dog,boat,The object in image slot,False,False
+video,animal,donor early only,35,train,cat,The object in image slot,False,False
+video,animal,donor early only,36,horse,clock,To determine the correct answer,False,False
+video,animal,donor early only,37,boat,dog,To determine the correct answer,False,False
+video,animal,donor early only,38,horse,cup,To determine the correct answer,False,False
+video,animal,donor early only,39,chair,horse,The object in image slot,False,False
+video,animal,donor early only,40,bird,airplane,To determine the correct answer,False,False
+video,animal,donor early only,41,cup,horse,3,True,False
+video,animal,donor early only,42,dog,car,7,True,False
+video,animal,donor early only,43,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor early only,44,cat,bicycle,7,True,False
+video,animal,donor early only,45,clock,horse,3,True,False
+video,animal,donor early only,46,dog,car,To determine the correct answer,False,False
+video,animal,donor early only,47,cup,horse,To determine the correct answer,False,False
+video,animal,donor early only,48,bird,airplane,7,True,False
+video,animal,donor early only,49,car,bird,The object in image slot,False,False
+video,animal,donor early only,50,bird,train,7,True,False
+video,animal,donor early only,51,car,bird,3,True,False
+video,animal,donor early only,52,horse,cup,To determine the correct answer,False,False
+video,animal,donor early only,53,train,bird,To determine the correct answer,False,False
+video,animal,donor early only,54,cat,airplane,To determine the correct answer,False,False
+video,animal,donor early only,55,cup,horse,To determine the correct answer,False,False
+video,animal,donor early only,56,horse,clock,To determine the correct answer,False,False
+video,animal,donor early only,57,bus,dog,To determine the correct answer,False,False
+video,animal,donor early only,58,bird,car,To determine the correct answer,False,False
+video,animal,donor early only,59,bus,dog,To determine the correct answer,False,False
+video,animal,donor early only,60,bird,train,7,True,False
+video,animal,donor early only,61,train,dog,The object in image slot,False,False
+video,animal,donor early only,62,cat,bicycle,To determine the correct answer,False,False
+video,animal,donor early only,63,cup,horse,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",0,bird,airplane,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",1,train,cat,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",2,dog,bus,7,True,False
+video,animal,"donor early, receiver restored in the band",3,laptop,horse,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",4,bird,car,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",5,car,bird,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",6,bird,car,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",7,laptop,horse,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",8,cat,bus,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",9,boat,cat,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",10,bird,car,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",11,bicycle,dog,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",12,dog,train,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",13,chair,horse,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",14,cat,boat,The rule states:,False,False
+video,animal,"donor early, receiver restored in the band",15,clock,horse,3,True,False
+video,animal,"donor early, receiver restored in the band",16,cat,train,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",17,boat,cat,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",18,dog,bicycle,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",19,chair,horse,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",20,cat,bicycle,7,True,False
+video,animal,"donor early, receiver restored in the band",21,train,bird,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",22,bird,airplane,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",23,pizza,horse,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",24,horse,clock,7,True,False
+video,animal,"donor early, receiver restored in the band",25,laptop,horse,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",26,bird,car,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",27,airplane,dog,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",28,horse,chair,7,True,False
+video,animal,"donor early, receiver restored in the band",29,bicycle,cat,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",30,dog,bus,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",31,car,dog,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",32,dog,bicycle,7,True,False
+video,animal,"donor early, receiver restored in the band",33,cup,horse,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",34,dog,boat,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",35,train,cat,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",36,horse,clock,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",37,boat,dog,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",38,horse,cup,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",39,chair,horse,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",40,bird,airplane,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",41,cup,horse,3,True,False
+video,animal,"donor early, receiver restored in the band",42,dog,car,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",43,bicycle,dog,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",44,cat,bicycle,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",45,clock,horse,3,True,False
+video,animal,"donor early, receiver restored in the band",46,dog,car,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",47,cup,horse,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",48,bird,airplane,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",49,car,bird,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",50,bird,train,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",51,car,bird,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",52,horse,cup,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",53,train,bird,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",54,cat,airplane,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",55,cup,horse,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",56,horse,clock,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",57,bus,dog,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",58,bird,car,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",59,bus,dog,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",60,bird,train,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",61,train,dog,The object in image slot,False,False
+video,animal,"donor early, receiver restored in the band",62,cat,bicycle,To determine the correct answer,False,False
+video,animal,"donor early, receiver restored in the band",63,cup,horse,The object in image slot,False,False
+video,animal,donor in the band only,0,bird,airplane,3,False,True
+video,animal,donor in the band only,1,train,cat,To determine the correct answer,False,False
+video,animal,donor in the band only,2,dog,bus,3,False,True
+video,animal,donor in the band only,3,laptop,horse,The object in image slot,False,False
+video,animal,donor in the band only,4,bird,car,The object in image slot,False,False
+video,animal,donor in the band only,5,car,bird,To determine the correct answer,False,False
+video,animal,donor in the band only,6,bird,car,3,False,True
+video,animal,donor in the band only,7,laptop,horse,To determine the correct answer,False,False
+video,animal,donor in the band only,8,cat,bus,The object in image slot,False,False
+video,animal,donor in the band only,9,boat,cat,To determine the correct answer,False,False
+video,animal,donor in the band only,10,bird,car,The object in image slot,False,False
+video,animal,donor in the band only,11,bicycle,dog,The object in image slot,False,False
+video,animal,donor in the band only,12,dog,train,The object in image slot,False,False
+video,animal,donor in the band only,13,chair,horse,To determine the correct answer,False,False
+video,animal,donor in the band only,14,cat,boat,The object in image slot,False,False
+video,animal,donor in the band only,15,clock,horse,To determine the correct answer,False,False
+video,animal,donor in the band only,16,cat,train,The object in image slot,False,False
+video,animal,donor in the band only,17,boat,cat,To determine the correct answer,False,False
+video,animal,donor in the band only,18,dog,bicycle,The object in image slot,False,False
+video,animal,donor in the band only,19,chair,horse,To determine the correct answer,False,False
+video,animal,donor in the band only,20,cat,bicycle,The object in image slot,False,False
+video,animal,donor in the band only,21,train,bird,To determine the correct answer,False,False
+video,animal,donor in the band only,22,bird,airplane,3,False,True
+video,animal,donor in the band only,23,pizza,horse,7,False,True
+video,animal,donor in the band only,24,horse,clock,The object in image slot,False,False
+video,animal,donor in the band only,25,laptop,horse,The object in image slot,False,False
+video,animal,donor in the band only,26,bird,car,3,False,True
+video,animal,donor in the band only,27,airplane,dog,To determine the correct answer,False,False
+video,animal,donor in the band only,28,horse,chair,7,True,False
+video,animal,donor in the band only,29,bicycle,cat,To determine the correct answer,False,False
+video,animal,donor in the band only,30,dog,bus,The object in image slot,False,False
+video,animal,donor in the band only,31,car,dog,To determine the correct answer,False,False
+video,animal,donor in the band only,32,dog,bicycle,The object in image slot,False,False
+video,animal,donor in the band only,33,cup,horse,To determine the correct answer,False,False
+video,animal,donor in the band only,34,dog,boat,The object in image slot,False,False
+video,animal,donor in the band only,35,train,cat,The object in image slot,False,False
+video,animal,donor in the band only,36,horse,clock,The object in image slot,False,False
+video,animal,donor in the band only,37,boat,dog,7,False,True
+video,animal,donor in the band only,38,horse,cup,To determine the correct answer,False,False
+video,animal,donor in the band only,39,chair,horse,To determine the correct answer,False,False
+video,animal,donor in the band only,40,bird,airplane,To determine the correct answer,False,False
+video,animal,donor in the band only,41,cup,horse,To determine the correct answer,False,False
+video,animal,donor in the band only,42,dog,car,To determine the correct answer,False,False
+video,animal,donor in the band only,43,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor in the band only,44,cat,bicycle,The object in image slot,False,False
+video,animal,donor in the band only,45,clock,horse,7,False,True
+video,animal,donor in the band only,46,dog,car,To determine the correct answer,False,False
+video,animal,donor in the band only,47,cup,horse,The object in image slot,False,False
+video,animal,donor in the band only,48,bird,airplane,3,False,True
+video,animal,donor in the band only,49,car,bird,To determine the correct answer,False,False
+video,animal,donor in the band only,50,bird,train,3,False,True
+video,animal,donor in the band only,51,car,bird,To determine the correct answer,False,False
+video,animal,donor in the band only,52,horse,cup,The object in image slot,False,False
+video,animal,donor in the band only,53,train,bird,To determine the correct answer,False,False
+video,animal,donor in the band only,54,cat,airplane,The object in image slot,False,False
+video,animal,donor in the band only,55,cup,horse,To determine the correct answer,False,False
+video,animal,donor in the band only,56,horse,clock,The object in image slot,False,False
+video,animal,donor in the band only,57,bus,dog,To determine the correct answer,False,False
+video,animal,donor in the band only,58,bird,car,The object in image slot,False,False
+video,animal,donor in the band only,59,bus,dog,The object in image slot,False,False
+video,animal,donor in the band only,60,bird,train,The object in image slot,False,False
+video,animal,donor in the band only,61,train,dog,The object in image slot,False,False
+video,animal,donor in the band only,62,cat,bicycle,To determine the correct answer,False,False
+video,animal,donor in the band only,63,cup,horse,To determine the correct answer,False,False
+video,animal,donor early and band,0,bird,airplane,7,True,False
+video,animal,donor early and band,1,train,cat,The object in image slot,False,False
+video,animal,donor early and band,2,dog,bus,7,True,False
+video,animal,donor early and band,3,laptop,horse,To determine the correct answer,False,False
+video,animal,donor early and band,4,bird,car,To determine the correct answer,False,False
+video,animal,donor early and band,5,car,bird,The object in image slot,False,False
+video,animal,donor early and band,6,bird,car,7,True,False
+video,animal,donor early and band,7,laptop,horse,To determine the correct answer,False,False
+video,animal,donor early and band,8,cat,bus,The object in image slot,False,False
+video,animal,donor early and band,9,boat,cat,The object in image slot,False,False
+video,animal,donor early and band,10,bird,car,To determine the correct answer,False,False
+video,animal,donor early and band,11,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor early and band,12,dog,train,The object in image slot,False,False
+video,animal,donor early and band,13,chair,horse,To determine the correct answer,False,False
+video,animal,donor early and band,14,cat,boat,The object in image slot,False,False
+video,animal,donor early and band,15,clock,horse,3,True,False
+video,animal,donor early and band,16,cat,train,To determine the correct answer,False,False
+video,animal,donor early and band,17,boat,cat,The object in image slot,False,False
+video,animal,donor early and band,18,dog,bicycle,The object in image slot,False,False
+video,animal,donor early and band,19,chair,horse,To determine the correct answer,False,False
+video,animal,donor early and band,20,cat,bicycle,7,True,False
+video,animal,donor early and band,21,train,bird,The object in image slot,False,False
+video,animal,donor early and band,22,bird,airplane,To determine the correct answer,False,False
+video,animal,donor early and band,23,pizza,horse,The object in image slot,False,False
+video,animal,donor early and band,24,horse,clock,7,True,False
+video,animal,donor early and band,25,laptop,horse,To determine the correct answer,False,False
+video,animal,donor early and band,26,bird,car,7,True,False
+video,animal,donor early and band,27,airplane,dog,To determine the correct answer,False,False
+video,animal,donor early and band,28,horse,chair,7,True,False
+video,animal,donor early and band,29,bicycle,cat,The object in image slot,False,False
+video,animal,donor early and band,30,dog,bus,The object in image slot,False,False
+video,animal,donor early and band,31,car,dog,The object in image slot,False,False
+video,animal,donor early and band,32,dog,bicycle,7,True,False
+video,animal,donor early and band,33,cup,horse,3,True,False
+video,animal,donor early and band,34,dog,boat,The object in image slot,False,False
+video,animal,donor early and band,35,train,cat,The object in image slot,False,False
+video,animal,donor early and band,36,horse,clock,To determine the correct answer,False,False
+video,animal,donor early and band,37,boat,dog,To determine the correct answer,False,False
+video,animal,donor early and band,38,horse,cup,To determine the correct answer,False,False
+video,animal,donor early and band,39,chair,horse,To determine the correct answer,False,False
+video,animal,donor early and band,40,bird,airplane,To determine the correct answer,False,False
+video,animal,donor early and band,41,cup,horse,3,True,False
+video,animal,donor early and band,42,dog,car,7,True,False
+video,animal,donor early and band,43,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor early and band,44,cat,bicycle,7,True,False
+video,animal,donor early and band,45,clock,horse,3,True,False
+video,animal,donor early and band,46,dog,car,To determine the correct answer,False,False
+video,animal,donor early and band,47,cup,horse,To determine the correct answer,False,False
+video,animal,donor early and band,48,bird,airplane,7,True,False
+video,animal,donor early and band,49,car,bird,The object in image slot,False,False
+video,animal,donor early and band,50,bird,train,7,True,False
+video,animal,donor early and band,51,car,bird,3,True,False
+video,animal,donor early and band,52,horse,cup,To determine the correct answer,False,False
+video,animal,donor early and band,53,train,bird,To determine the correct answer,False,False
+video,animal,donor early and band,54,cat,airplane,To determine the correct answer,False,False
+video,animal,donor early and band,55,cup,horse,To determine the correct answer,False,False
+video,animal,donor early and band,56,horse,clock,To determine the correct answer,False,False
+video,animal,donor early and band,57,bus,dog,To determine the correct answer,False,False
+video,animal,donor early and band,58,bird,car,To determine the correct answer,False,False
+video,animal,donor early and band,59,bus,dog,To determine the correct answer,False,False
+video,animal,donor early and band,60,bird,train,7,True,False
+video,animal,donor early and band,61,train,dog,The object in image slot,False,False
+video,animal,donor early and band,62,cat,bicycle,The object in image slot,False,False
+video,animal,donor early and band,63,cup,horse,To determine the correct answer,False,False
+video,animal,donor every layer,0,bird,airplane,7,True,False
+video,animal,donor every layer,1,train,cat,The object in image slot,False,False
+video,animal,donor every layer,2,dog,bus,7,True,False
+video,animal,donor every layer,3,laptop,horse,To determine the correct answer,False,False
+video,animal,donor every layer,4,bird,car,To determine the correct answer,False,False
+video,animal,donor every layer,5,car,bird,The object in image slot,False,False
+video,animal,donor every layer,6,bird,car,7,True,False
+video,animal,donor every layer,7,laptop,horse,To determine the correct answer,False,False
+video,animal,donor every layer,8,cat,bus,The object in image slot,False,False
+video,animal,donor every layer,9,boat,cat,The object in image slot,False,False
+video,animal,donor every layer,10,bird,car,To determine the correct answer,False,False
+video,animal,donor every layer,11,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor every layer,12,dog,train,The object in image slot,False,False
+video,animal,donor every layer,13,chair,horse,To determine the correct answer,False,False
+video,animal,donor every layer,14,cat,boat,The object in image slot,False,False
+video,animal,donor every layer,15,clock,horse,3,True,False
+video,animal,donor every layer,16,cat,train,To determine the correct answer,False,False
+video,animal,donor every layer,17,boat,cat,To determine the correct answer,False,False
+video,animal,donor every layer,18,dog,bicycle,The object in image slot,False,False
+video,animal,donor every layer,19,chair,horse,To determine the correct answer,False,False
+video,animal,donor every layer,20,cat,bicycle,7,True,False
+video,animal,donor every layer,21,train,bird,The object in image slot,False,False
+video,animal,donor every layer,22,bird,airplane,To determine the correct answer,False,False
+video,animal,donor every layer,23,pizza,horse,To determine the correct answer,False,False
+video,animal,donor every layer,24,horse,clock,7,True,False
+video,animal,donor every layer,25,laptop,horse,To determine the correct answer,False,False
+video,animal,donor every layer,26,bird,car,7,True,False
+video,animal,donor every layer,27,airplane,dog,To determine the correct answer,False,False
+video,animal,donor every layer,28,horse,chair,7,True,False
+video,animal,donor every layer,29,bicycle,cat,The object in image slot,False,False
+video,animal,donor every layer,30,dog,bus,The object in image slot,False,False
+video,animal,donor every layer,31,car,dog,The object in image slot,False,False
+video,animal,donor every layer,32,dog,bicycle,7,True,False
+video,animal,donor every layer,33,cup,horse,3,True,False
+video,animal,donor every layer,34,dog,boat,The object in image slot,False,False
+video,animal,donor every layer,35,train,cat,The object in image slot,False,False
+video,animal,donor every layer,36,horse,clock,To determine the correct answer,False,False
+video,animal,donor every layer,37,boat,dog,To determine the correct answer,False,False
+video,animal,donor every layer,38,horse,cup,To determine the correct answer,False,False
+video,animal,donor every layer,39,chair,horse,To determine the correct answer,False,False
+video,animal,donor every layer,40,bird,airplane,To determine the correct answer,False,False
+video,animal,donor every layer,41,cup,horse,3,True,False
+video,animal,donor every layer,42,dog,car,7,True,False
+video,animal,donor every layer,43,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor every layer,44,cat,bicycle,7,True,False
+video,animal,donor every layer,45,clock,horse,3,True,False
+video,animal,donor every layer,46,dog,car,To determine the correct answer,False,False
+video,animal,donor every layer,47,cup,horse,To determine the correct answer,False,False
+video,animal,donor every layer,48,bird,airplane,7,True,False
+video,animal,donor every layer,49,car,bird,The object in image slot,False,False
+video,animal,donor every layer,50,bird,train,7,True,False
+video,animal,donor every layer,51,car,bird,3,True,False
+video,animal,donor every layer,52,horse,cup,To determine the correct answer,False,False
+video,animal,donor every layer,53,train,bird,To determine the correct answer,False,False
+video,animal,donor every layer,54,cat,airplane,To determine the correct answer,False,False
+video,animal,donor every layer,55,cup,horse,To determine the correct answer,False,False
+video,animal,donor every layer,56,horse,clock,To determine the correct answer,False,False
+video,animal,donor every layer,57,bus,dog,To determine the correct answer,False,False
+video,animal,donor every layer,58,bird,car,To determine the correct answer,False,False
+video,animal,donor every layer,59,bus,dog,To determine the correct answer,False,False
+video,animal,donor every layer,60,bird,train,7,True,False
+video,animal,donor every layer,61,train,dog,The object in image slot,False,False
+video,animal,donor every layer,62,cat,bicycle,The object in image slot,False,False
+video,animal,donor every layer,63,cup,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,0,bird,airplane,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,1,train,cat,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,2,dog,bus,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,3,laptop,horse,The object in image slot,False,False
+video,animal,donor's band state delivered in the early window,4,bird,car,The object in image slot,False,False
+video,animal,donor's band state delivered in the early window,5,car,bird,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,6,bird,car,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,7,laptop,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,8,cat,bus,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,9,boat,cat,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,10,bird,car,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,11,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,12,dog,train,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,13,chair,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,14,cat,boat,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,15,clock,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,16,cat,train,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,17,boat,cat,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,18,dog,bicycle,The object in image slot,False,False
+video,animal,donor's band state delivered in the early window,19,chair,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,20,cat,bicycle,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,21,train,bird,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,22,bird,airplane,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,23,pizza,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,24,horse,clock,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,25,laptop,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,26,bird,car,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,27,airplane,dog,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,28,horse,chair,7,True,False
+video,animal,donor's band state delivered in the early window,29,bicycle,cat,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,30,dog,bus,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,31,car,dog,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,32,dog,bicycle,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,33,cup,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,34,dog,boat,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,35,train,cat,The object in image slot,False,False
+video,animal,donor's band state delivered in the early window,36,horse,clock,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,37,boat,dog,3,True,False
+video,animal,donor's band state delivered in the early window,38,horse,cup,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,39,chair,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,40,bird,airplane,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,41,cup,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,42,dog,car,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,43,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,44,cat,bicycle,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,45,clock,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,46,dog,car,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,47,cup,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,48,bird,airplane,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,49,car,bird,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,50,bird,train,The object in image slot,False,False
+video,animal,donor's band state delivered in the early window,51,car,bird,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,52,horse,cup,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,53,train,bird,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,54,cat,airplane,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,55,cup,horse,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,56,horse,clock,The object in image slot,False,False
+video,animal,donor's band state delivered in the early window,57,bus,dog,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,58,bird,car,The object in image slot,False,False
+video,animal,donor's band state delivered in the early window,59,bus,dog,The object in image slot,False,False
+video,animal,donor's band state delivered in the early window,60,bird,train,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,61,train,dog,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,62,cat,bicycle,To determine the correct answer,False,False
+video,animal,donor's band state delivered in the early window,63,cup,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,0,bird,airplane,3,False,True
+video,animal,donor's early state delivered in the band,1,train,cat,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,2,dog,bus,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,3,laptop,horse,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,4,bird,car,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,5,car,bird,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,6,bird,car,3,False,True
+video,animal,donor's early state delivered in the band,7,laptop,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,8,cat,bus,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,9,boat,cat,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,10,bird,car,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,11,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,12,dog,train,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,13,chair,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,14,cat,boat,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,15,clock,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,16,cat,train,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,17,boat,cat,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,18,dog,bicycle,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,19,chair,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,20,cat,bicycle,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,21,train,bird,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,22,bird,airplane,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,23,pizza,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,24,horse,clock,3,False,True
+video,animal,donor's early state delivered in the band,25,laptop,horse,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,26,bird,car,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,27,airplane,dog,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,28,horse,chair,7,True,False
+video,animal,donor's early state delivered in the band,29,bicycle,cat,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,30,dog,bus,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,31,car,dog,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,32,dog,bicycle,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,33,cup,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,34,dog,boat,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,35,train,cat,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,36,horse,clock,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,37,boat,dog,7,False,True
+video,animal,donor's early state delivered in the band,38,horse,cup,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,39,chair,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,40,bird,airplane,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,41,cup,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,42,dog,car,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,43,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,44,cat,bicycle,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,45,clock,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,46,dog,car,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,47,cup,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,48,bird,airplane,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,49,car,bird,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,50,bird,train,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,51,car,bird,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,52,horse,cup,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,53,train,bird,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,54,cat,airplane,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,55,cup,horse,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,56,horse,clock,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,57,bus,dog,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,58,bird,car,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,59,bus,dog,The object in image slot,False,False
+video,animal,donor's early state delivered in the band,60,bird,train,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,61,train,dog,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,62,cat,bicycle,To determine the correct answer,False,False
+video,animal,donor's early state delivered in the band,63,cup,horse,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),0,bird,airplane,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),1,train,cat,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),2,dog,bus,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),3,laptop,horse,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),4,bird,car,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),5,car,bird,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),6,bird,car,7,True,False
+video,animal,donor's early-window state in place (control),7,laptop,horse,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),8,cat,bus,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),9,boat,cat,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),10,bird,car,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),11,bicycle,dog,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),12,dog,train,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),13,chair,horse,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),14,cat,boat,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),15,clock,horse,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),16,cat,train,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),17,boat,cat,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),18,dog,bicycle,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),19,chair,horse,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),20,cat,bicycle,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),21,train,bird,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),22,bird,airplane,7,True,False
+video,animal,donor's early-window state in place (control),23,pizza,horse,3,True,False
+video,animal,donor's early-window state in place (control),24,horse,clock,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),25,laptop,horse,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),26,bird,car,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),27,airplane,dog,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),28,horse,chair,7,True,False
+video,animal,donor's early-window state in place (control),29,bicycle,cat,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),30,dog,bus,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),31,car,dog,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),32,dog,bicycle,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),33,cup,horse,3,True,False
+video,animal,donor's early-window state in place (control),34,dog,boat,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),35,train,cat,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),36,horse,clock,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),37,boat,dog,3,True,False
+video,animal,donor's early-window state in place (control),38,horse,cup,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),39,chair,horse,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),40,bird,airplane,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),41,cup,horse,3,True,False
+video,animal,donor's early-window state in place (control),42,dog,car,7,True,False
+video,animal,donor's early-window state in place (control),43,bicycle,dog,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),44,cat,bicycle,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),45,clock,horse,3,True,False
+video,animal,donor's early-window state in place (control),46,dog,car,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),47,cup,horse,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),48,bird,airplane,7,True,False
+video,animal,donor's early-window state in place (control),49,car,bird,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),50,bird,train,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),51,car,bird,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),52,horse,cup,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),53,train,bird,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),54,cat,airplane,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),55,cup,horse,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),56,horse,clock,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),57,bus,dog,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),58,bird,car,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),59,bus,dog,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),60,bird,train,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),61,train,dog,The object in image slot,False,False
+video,animal,donor's early-window state in place (control),62,cat,bicycle,To determine the correct answer,False,False
+video,animal,donor's early-window state in place (control),63,cup,horse,The object in image slot,False,False

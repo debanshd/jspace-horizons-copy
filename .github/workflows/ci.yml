@@ -1,0 +1,23 @@
+name: ci
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Free disk space (the CUDA build of torch makes a ~9 GB environment)
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: "0.9.0"
+          enable-cache: false
+      - name: DejaVu fonts (the stimuli are drawn in them; the pixel tests check this)
+        run: sudo apt-get install -y --no-install-recommends fonts-dejavu-core
+      - run: uv sync --locked
+      - run: uv run ruff format --check src experiments scripts tests
+      - run: uv run ruff check src experiments scripts tests
+      - run: uv run pytest -q

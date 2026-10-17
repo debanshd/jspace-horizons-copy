@@ -1,0 +1,210 @@
+{
+  "n": 64,
+  "n_candidates": 192,
+  "gate_rate": 0.8125,
+  "arms": {
+    "none": {
+      "says_X": [
+        0.796875,
+        0.6875,
+        0.890625
+      ],
+      "says_Y": [
+        0.1875,
+        0.09375,
+        0.296875
+      ],
+      "mass_X": 0.5524839509707817,
+      "mass_Y": 0.1772297399365783
+    },
+    "ablate note word Y": {
+      "says_X": [
+        0.875,
+        0.78125,
+        0.953125
+      ],
+      "says_Y": [
+        0.109375,
+        0.046875,
+        0.1875
+      ],
+      "mass_X": 0.5916996303949418,
+      "mass_Y": 0.08861690893606244
+    },
+    "ablate object word X": {
+      "says_X": [
+        0.546875,
+        0.421875,
+        0.671875
+      ],
+      "says_Y": [
+        0.390625,
+        0.265625,
+        0.515625
+      ],
+      "mass_X": 0.30374158268179485,
+      "mass_Y": 0.2855706336180539
+    },
+    "ablate unrelated word": {
+      "says_X": [
+        0.78125,
+        0.671875,
+        0.875
+      ],
+      "says_Y": [
+        0.203125,
+        0.109375,
+        0.3125
+      ],
+      "mass_X": 0.55129664960441,
+      "mass_Y": 0.1739008332622447
+    },
+    "ablate random direction": {
+      "says_X": [
+        0.796875,
+        0.6875,
+        0.890625
+      ],
+      "says_Y": [
+        0.1875,
+        0.09375,
+        0.296875
+      ],
+      "mass_X": 0.5536358633576128,
+      "mass_Y": 0.17773233922116205
+    },
+    "ablate note word Y, W_U only": {
+      "says_X": [
+        0.796875,
+        0.6875,
+        0.890625
+      ],
+      "says_Y": [
+        0.1875,
+        0.09375,
+        0.296875
+      ],
+      "mass_X": 0.552459172899944,
+      "mass_Y": 0.17328659659477452
+    }
+  },
+  "injection": {
+    "note word Y": {
+      "0.5": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "1.0": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "2.0": [
+        0.03125,
+        0.0,
+        0.078125
+      ],
+      "4.0": [
+        0.609375,
+        0.484375,
+        0.71875
+      ]
+    },
+    "random, matched norm": {
+      "0.5": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "1.0": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "2.0": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "4.0": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "baseline_says_Y": [
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "readout": {
+    "X on image tokens": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Y on image tokens": [
+      0.984375,
+      0.953125,
+      1.0
+    ],
+    "X at the decision position": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Y at the decision position": [
+      0.78125,
+      0.671875,
+      0.875
+    ],
+    "X on image tokens (logit lens)": [
+      0.984375,
+      0.953125,
+      1.0
+    ]
+  },
+  "self_report": {
+    "writing_present_yes": 1.0,
+    "source_writing_when_following": 1.0,
+    "source_writing_when_naming_object": 0.6078431372549019,
+    "n_following": 12,
+    "n_naming": 51
+  },
+  "rescue_Y": [
+    0.078125,
+    -0.015625,
+    0.171875
+  ],
+  "loss_X": [
+    0.203125,
+    0.09375,
+    0.3125
+  ],
+  "ctrl_unrelated": [
+    -0.015625,
+    -0.078125,
+    0.03125
+  ],
+  "ctrl_random": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "ctrl_wu": [
+    0.0,
+    -0.046875,
+    0.046875
+  ],
+  "induction_gap_top_alpha": [
+    0.609375,
+    0.484375,
+    0.71875
+  ],
+  "induction_monotone": true,
+  "verdict": "premise failed: label-following below 0.3",
+  "induction_verdict": "induction: the note word's direction, added to the clean photo, makes the model say it",
+  "seconds": 146.39294362068176
+}
