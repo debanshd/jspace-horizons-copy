@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# launcher: the venv and the environment, then run.py with the given arguments. Examples:
+#   jbound/jb --model Qwen/Qwen3.5-4B --tag smoke --smoke
+#   jbound/jb --model Qwen/Qwen3.5-4B --tag run1
+#   jbound/jb --model google/gemma-4-E4B-it --tag run1            # B7
+#   jbound/jb status                                               # tail of every run.log under runs/
+cd /workspace/nayan || exit 1
+export HF_HOME=${HF_HOME:-/workspace/hf} HF_HUB_ENABLE_HF_TRANSFER=0 HF_HUB_OFFLINE=0 TOKENIZERS_PARALLELISM=false PYTHONUNBUFFERED=1 OMP_NUM_THREADS=16
+set -a; [ -f /workspace/nayan/.env ] && . /workspace/nayan/.env; set +a
+if [ "$1" = "status" ]; then
+  for f in $(ls -t runs/*/*/run.log 2>/dev/null | head -8); do echo "== $f"; grep -aE '^(=====|\[|.*(done in|FAILED|verdict|control|seen))' "$f" | tail -6 | cut -c1-200; done
+  nvidia-smi --query-gpu=memory.used,memory.total,utilization.gpu --format=csv,noheader
+  exit 0
+fi
+exec venv/bin/python jbound/run.py "$@"

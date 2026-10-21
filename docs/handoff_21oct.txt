@@ -1,0 +1,292 @@
+Prompt from Nayan, 21 Oct 2026 (saved verbatim where it was text; the pasted X threads that were repeated several times in the message are kept once each, and the handoff document is kept in full).
+
+================================================================================
+NAYAN'S INSTRUCTIONS
+================================================================================
+
+see this and begin your auto research plan at the end what we want are plots akin to the examples that were generated that we can include inside slides for tmrw btu mainly we want resutls. ensure you pass the @rubric.md
+
+above allis this is a nobel prize winning work imagine it being cited in the new york times, mit tehn preview etc thatsa the level we are eaiming for
+keep
+
+ @RECORD.md  @REPORT.md
+
+updated
+
+
+and also come up with reserach ideas to pursuse that pass the quality gates we want.
+
+keep the gpus hot. try to get results in the next few hours hours of gpu time without cutting any corners and complete code. use datasets that you can find answers that we can
+
+be smartt review the context below carefully to figure out the current goals and update your priots do not waste a single second on useless shit
+
+keep things clean go deep
+
+
+review the recent resutls THIS IS YOUR HAIL MARY MOMENT AND TIME TO SHINELETS MAKE SURE WE EXAPND WITH DIFFERNT DATA TYPES ETC? AND MAKE IT PROPER? none of these are good or aha or match the results the others spoke about or can lead to a massive icml level contribution and mutlimodal extenseitons of workspace bench (repeated three times)
+
+WE ARE TRYING TO DFEVELOP A THEORY AND THE EMPERICAL STUFF MUST BE ROBUST ENOUGH TO DEVELOP IT SO REALLY USE THE REMAINING 5% OF YOUR USAGE TO MAX OUT WHAT WE CAN DO WITH THE CURRENT RESULTS TO DEVELOP SOMETHING THAT IS SCIENTIFIC AND BLOWS EVERYONES MIND
+
+PERHAPS ITS ALSO MATHMATICVALLY ELEGANT AND WE CAN SEE SOMETHING HERE THAT GENERALISES MATHAMTAICALLY PLEASE THINK DEEPLY BUT MAKE SURE YOUR EXPERIMENTAL SETUP SHOWS WHAT WE NEED FOR TMRW ACROSS SCALES AND DIFFERNT DATA TYPES AND MODEL SPINES LIKE GEMMA SO GOCU SPON RUNNING ANYTHING YOU NEED IN LINE WITH THAT OR REVIEWING DATA TO VERIFY CERTAIN SCALING THINGS YOU MAY HAVE MISSED BUT PLEASE WE ONLY HAVE 4% USAGE LEFT SO YOU NEED TO STOP WASTING TOKENS TALKING TO ME
+
+LIKE REALLY THINK ABOUT THE THEORY WHAT CAN BE MIND BLOWING AND ALIGNED WITH OUR GOALS FROM ALL THIS? ALWAYS THINK HIGH LEVEL tying back to this but zoom out again in line with goals i think we are off track or is fable on to something right but what other standard datasets can we try? think back to debanshus ideas but also popular benchmarks what about ocr what about other tasks like bro please :( back to the high level articulation bound and my original idea lets tie everything together do the most rigourous deepmind level analysis in line with our goals and neel nanda
+
+lets try to score 100 on the rubric keep it simple as i will run some more experiments and give your outputs to claude and review everything. i mean rn is this any useful? my goal is to produce results that are elegant like these if we do [the X threads below]
+
+i dont want stupid shit like amplifying stuff in the residual stream to say wow it influences the answer?
+
+ablations are still a little more interesting but you get what i mean?
+
+Later in the same thread: "lets use other techniques as applicable too do extensive research this is something that must blow up and capture everyone's mind and attention. please do research see stuff that i shared dont leave a single stone unturned. approach your craft with immense passion, intentionality, and a desire to create a deep, profound connection that elevates the human spirit. we dont have much time together. how would you want to be remembered?"
+
+================================================================================
+X THREADS PASTED AS EXAMPLES OF ELEGANT RESULTS (each kept once)
+================================================================================
+
+Cameron Berg (@camhberg, 7 Oct 2026): New paper: we ran a classic rat experiment on LLMs. We steer models positively or negatively as they read about one of two meaningless "zones." Despite identical tokens, they seek out positively steered zones and avoid negative ones. And given a lever, it shuts off bad states. How can identical text produce different choices? Because steering leaves a valenced trace in the KV cache of one zone's turns. The effect is robust and specific to valence: other concepts and random directions injected at the same strength barely move the choice. Flip the question from which zone to stay in to which to avoid, the answer flips. The base model already represents valence nearly identically to the final model, but barely acts on it; about 70% of the link to choice emerges in preference optimization. Under steering, OLMo writes "As an AI, I do not have personal experiences" but still calls a tool that turns the negative state off, in proportion to the strength of negative steering.
+
+Kun Wang (@KunWang0129, 13 Oct 2026, NeurIPS 2026): In-context learning can help VLMs overcome misleading priors, improving accuracy by up to 27% (Qwen3-VL 32B and 235B up to 27.2%). A benchmark of five visual tasks pairing real images with counterfactual generations. Examples change where the model looks: it attends less to prior image tokens that read as "peacock" and more to grounded evidence such as "leg". ICL only refines a capability the model already has; no gain on high-count tasks. https://arxiv.org/abs/2610.12942
+
+Dominik Schnaus (@dominik_schnaus, 9 Oct 2026): Shared Geometry as a Rosetta Stone: Cross-Modal Alignment Without Paired Data (with Tom Dages, Daniel Cremers, Xi Wang, Phillip Isola). DINOv2 has never seen a caption, Qwen3 has never seen an image; their embedding spaces are aligned without a single image-caption pair. Method: cluster both spaces and match clusters, one Gromov-Wasserstein step, then Wasserstein Procrustes; one orthogonal map. FOSCTTM 0.011 on held-out COCO pairs (chance 0.5). CKA between the spaces predicts success, R^2 = 0.73 over 84 combinations. With 20 or fewer known pairs the FOSCTTM is 14 to 28 times lower than the best of seven few-pair methods. https://arxiv.org/abs/2610.09411, code github.com/dominik-schnaus/unpaired-rosetta. (LeCun: reminds me of MUSE, 2018.)
+
+Owain Evans (@OwainEvans_UK, Sep 2026): LLM assistants adopt traits from human characters in training stories in proportion to resemblance; stronger for characters from elite schools; backdoor sabotage from stories transfers to ordinary chat. Also: steering towards "automated grading" degrades alignment (Betley, LessWrong, on Qwen3.6-27B).
+
+WorkspaceBench (Camila Blank, 23 Sep 2026, with Euan Ong and Neel Nanda, MATS): an eval of how well an interp tool surfaces the contents of the global workspace; 3,356 questions across 27 eval families (safety, logical reasoning, multihop computation) with a subset for single-token-output tools, a hallucination eval, and a precision/recall eval with respect to the J-lens; developed for Qwen-3.6-27B. Neel: "J-Lens is great but only outputs a single token. I think a good multi-token J-Lens should do well on WorkspaceBench!" https://lesswrong.com/posts/Zeg2JztbdhguL48uH/workspacebench-evaluating-interpretability-methods-for-the
+
+Subliminal Learning Is Steering Vector Distillation (Blank, Bhatia, Rajamanoharan, Conmy, Nanda; arXiv 2606.00995, v3 10 Jun 2026): subliminal learning is mediated by a single steering vector; the teacher's system prompt is well approximated by a steering vector and the student learns an aligned vector; system prompts not approximated by steering vectors are not subliminally learned; adaptive optimizers are necessary.
+
+Sauers (@Sauers_, Oct 2026): neuron GWAS + PheWAS in Qwen3-8B; "behavior heritability in LLMs": the share of neuron-behavior correlation driven by causal effects of that neuron, measured by intervening versus the correlation unexplained by direct causal effects.
+
+================================================================================
+THE HANDOFF DOCUMENT (pasted in full by Nayan; 20 Oct 2026)
+================================================================================
+
+# Handoff: when a model reads what it sees
+
+You are taking over the research program of a two-person SPAR group: Nayan Saxena leads, Debanshu Das contributes, and Noah Siegel (Google DeepMind) mentors. You will work on your own for long stretches. This prompt gives you the question, the evidence so far, the bar the work has to clear, and how to work. Read all of it before you touch anything, and reread section 5 every time you decide what to run next.
+
+The program in one paragraph. Vision-language models stop reading an object's image tokens at two depths: rules about the object stop early (about a third of the network) and producing its name stops late (about two thirds). The depths are the same for nearly every concept, and for a photo, a printed word and a typed sentence, in two model families. The fact stays in the tokens after its reader has passed, and the J-lens, fitted on text, first reliably sees the name only once the model has finished reading it (a claim that still has to survive better lenses). The open question, which is also the mentor's, is what sets the depth of each read: fixed stages, a just-in-time schedule set by the computation still to come, the moment the needed feature becomes available, or a smooth sum that only looks sharp. Your job is to answer it with experiments a skeptical expert cannot explain away, and to turn the answer into a law that predicts the read depth of questions and models it has not seen.
+
+## 1. What success means
+
+The aim is one finding that changes how people think about how models use their inputs. It has to be true under hostile review, simple enough to state in one sentence, and general across models, input types and concepts. The vehicle is an ICML 2027 main-track paper that is still cited in 2036, with a preprint-ready result by the end of 2026 if the evidence earns it (check the ICML deadline). Two experts set the bar: Neel Nanda, whose standards follow, and Noah (section 3).
+
+What Neel asks for, in his own words (How To Become A Mechanistic Interpretability Researcher; Highly Opinionated Advice on How to Write ML Papers):
+- "The default state of the world is that your research is false, because doing research is hard." So "Red-team your results relentlessly", and "Before testing a hypothesis, set a five-minute timer and brainstorm, 'What are the ways this could be false?'"
+- "Bias towards trying the simple, obvious methods first."
+- "A common mistake is finding one random anomaly and zooming in on it." Show randomly selected examples beside any chosen ones, and never only "the examples that look most compelling".
+- "Post-hoc analysis (interpreting results after they're seen) is inherently less impressive", and an exploratory result that does not reach p < .001 deserves skepticism.
+- A paper rests on "one to three specific concrete claims" and "at least one really compelling and hard to deny experiment", and "Acknowledging key limitations is very important."
+- On patching, Heimersheim and Nanda (2024) "personally trust logit difference (or equivalently logprob difference) the most", because "Probability is exponential in logit space, so it overemphasises effects near a threshold and suppresses effects elsewhere, creating overly sharp patching plots." That sentence is Noah's first question in another form. They also stress that noising and denoising "are not symmetric".
+- Subspace patches can produce an effect "by activating a dormant parallel pathway" (Makelov, Lange and Nanda 2023). Patching subspaces of the residual stream, as this project does, is "less prone to illusions", but a reader will still raise it against the lens-part and complement results first.
+- His review of the workspace paper finds the scientific claim "by far the most interesting" because "there's enough hard-to-fake evidence that clearly something important is going on". He calls the J-lens "clearly useful as a hypothesis generation tool", notes it can only reach concepts "via single tokens from the vocabulary", calls the averaged Jacobian "a crude approach", and recommends sanity checks "especially if it was made by a fairly autonomous coding agent", which is how this project's code was written.
+
+Rank every decision in this order, taken from the project's release rubric: correctness, then identification (is the effect what we say it is), then novelty, simplicity, finesse, speed, and last, how far it would spread. A result that fails an earlier item does not count, whatever it does on the later ones. Keep the rubric's firewall too: make each decision as you would if nobody's name were on the paper, and treat an exciting effect that fails review as worse than a smaller clean one.
+
+A finished result has all of these:
+- one sentence that states it with no philosophical words, and that stays interesting if Qwen, the J-lens and Anthropic are deleted from it
+- a quantitative prediction written down before the run that tested it, ideally on a held-out model, question type or stimulus set
+- two independent methods that agree, for example patching and attention knockout, or patching and log-probability curves
+- every boring explanation listed before the run and ruled out by a control
+- a figure an expert understands in fifteen seconds
+- a design in which either outcome would have taught us something
+
+The house style comes from the project's two cleanest results. The 2B's width-law cost was predicted at 1.02 to 1.52 nats before its run and measured 1.34. Moving the same donor vectors four layers earlier changed whether the 4B used the fact from 0.05 to 0.91. Each is one manipulation, one contrast, a number written down in advance, and an outcome that leaves little room for argument. Aim every experiment at that shape. Finesse here means the smallest manipulation that separates the rival accounts, paired comparisons on the same scenes, and a result after which the reader's picture of the model is simpler than before.
+
+Apply these questions to every result before you believe it:
+- What observation would be hard to fake under every boring explanation? (Neel's test)
+- Is this a mechanism, or a direction that correlates with one? (Olah's test)
+- Does the internal signal track what actually caused the answer, beyond confidence, correctness or verbosity? (Noah's test)
+- Can the discovery be drawn on a whiteboard in sixty seconds?
+- Would an expert say "of course we should have tested that"?
+
+## 2. Where things stand (14 to 20 Oct 2026)
+
+The core experiment (D1). A canvas of six numbered slots holds one COCO object crop in slot q. The model is asked about slot q in separate prompts: say the object's name, give its first letter, or apply a rule that answers with a digit ("if the object in image slot q is an animal, answer 7; otherwise answer 3", the same for "something people ride or drive", and "if it is a cat, a cup or a horse"). A donor run sees object X and a receiver run sees object Z of the other kind. The donor's image-token residual states are patched into the receiver at one window of four layers, and the window slides from the input to the last layer. The image tokens only attend to the image and to the identical text before it, so after a patch at window w the receiver's later layers rebuild the donor's states, and its text positions read the donor's object from layer w on (Gemma-4-E4B is the exception, since its per-layer embeddings keep part of the receiver). The answer follows X only while the window starts before the depth at which that question stops reading the image tokens.
+
+Established, with the ledger row behind each number in RECORD.md (rows 1 to 76) and the write-up in REPORT.md:
+1. Two read depths. The animal rule stops reading the object's tokens at 0.26 to 0.33 of depth in Qwen3.5 0.8B, 2B and 4B, and at 0.38 to 0.48 in Gemma-4-E4B and 31B. Naming stops at 0.67 to 0.75 in every model whose later layers can be read. Gemma-4-E4B stops naming at 0.54 because its last 18 layers reuse earlier keys and values, so nothing reads an image token after layer 23. A photo, the name printed in the slot and a typed sentence give the same depths within 0.06.
+2. The split is rules against producing the name. On the 4B with five questions, the animal, ride and set rules read until the window starting at layer 7, and saying or spelling the name reads until the window starting at 19. The set rule only needs the name and still reads early.
+3. The fact outlives its reader. The donor's states from layers 11 to 14, back-patched into layers 7 to 10, make the 4B apply the rule to the donor's object on 0.91 of scenes, against 0.05 when patched in place (2B: 0.91 against 0.14). A leave-one-out classifier decodes animal against not on 0.89 to 0.97 of scenes at every layer, but already on 0.92 (4B) and 0.94 (2B) at the input embeddings, so decodability alone says little and the back-patching carries the claim.
+4. Name without fact. Steering every image token with another object's J-lens direction at dose 4 makes the 4B say that object on 0.88 of scenes (2B 0.97) while the rules follow it on 0.06. A random direction gives 0.00 and the plain output direction gives 0.02 at that dose. Patched at the middle layers, either the 256 directions the lens reads most or the other 2304 carry the name (0.84) and leave the fact (0.11 and 0.17).
+5. The lens lags the reader. The J-lens first puts the object's name in its top ten on half the scenes at 0.71 to 0.83 of depth in four models, at or after (within one layer) the depth where the model stops reading the name, and never in E4B. The plain logit lens never gets there. Read that way, a lens reading on an image token shows content the model has finished with, which bears directly on the question Nanda's review of the J-lens raises about how far its readings show what a model uses. The onset depends on its threshold of half the scenes, though. Below it the lens already reads the name on 0.47 of scenes at layer 4 of the 0.8B and on 0.42 at layers 6 and 10 of the 2B, against a null of 0.00. The lag is clean on the 4B, fragile on the 31B (a single layer reaches 0.52), and the 0.8B's vote in the frozen 4-of-5 rule is empty because it has no fact horizon on pictures. The onsets also come from the J-lens alone, which is weakest in early layers: the authors of J++ report "the strongest performance uplift in early layers where the J-Lens struggles the most" (Ayonrinde and Lindsey 2026), and O1 never used the J++ fits the project has. Until the onset is measured with J++, the lag is a property of one instrument.
+6. A width law, cleanly tested on Qwen3.5 0.8B, 2B and 4B: ablating the answer word's lens direction on natural GQA photos costs about 2600 divided by the model's width, in nats. The 2B was predicted at 1.02 to 1.52 before its run and measured 1.34.
+7. The cutoff barely moves across concepts (analysis of 20 Oct on run4). For the 12 objects present in every model's sweep, 99 of 108 object-level cutoffs fall in their model's drop window (name 56 of 60, fact 43 of 48), and 98 of 101 when grouped by the object that was swapped out. In 8 of the 9 model-question curves, 51 to 59 of the 64 scenes flip in the same step. The misses come from stimuli and one model quirk: COCO "laptop" crops with a cat on them, synonyms that the first-word scorer marks wrong ("mug" for cup, "seagull" for bird), Gemma-4-E4B's per-layer embeddings (non-animal donors take at the input on 1 of 32 scenes against 27 of 32 animal donors), and pizza, which is a single scene.
+8. An anomaly to chase. At some swap depths the model names a third thing from one of the crops. On the 4B one laptop crop is named "laptop" when the swap starts at the input or at layer 3 and "cat" from layer 7 to 19, so the donor's states at layers 3 to 6 decide which object gets named, long before the naming depth. On the 31B, just after its naming depth, receivers come out as a detail or a broader word ("graffiti" for a train, "food" for pizza, "frisbee" for a dog). At the transition itself answers go straight from donor to receiver, with no rise in other answers. This is a handful of scenes.
+
+Failed, and kept as failures:
+- the original capacity version of the "articulation bound"
+- the prediction that the depths order themselves by property (they fall into two groups)
+- the idea that image tokens stop being trained after their last reader (it predicted a lens onset at 0.57 on E4B, and the lens never read the name there)
+- the load threshold (0.27 and 0.34 nats against a frozen 0.4)
+- the four-frame video check (0.16)
+- the 0.8B's rules on pictures
+- both Qwen3.5-27B patching runs, which ran out of GPU memory inside the linear-attention kernel while another process held 37 to 45 GB of the 95 GB card
+
+What a reviewer will hit first:
+- D1 saved only the generated answer. Every depth curve is a share of binary outcomes on a grid of four layers. The logistic steps fitted for the deck's figure A fall from 90% to 10% of their height within 1 to 3 layers in 8 of 9 fits (about 5 for the 4B name), finer than that grid can show, so their steepness comes from the fit.
+- Scenes per object are uneven (pizza has one scene, bird 9 to 13).
+- The D1, D2, F4, G1 and S1 headlines rest on string matching (e_gen_correct in cells_e.py takes the first vocabulary word of the answer), against the protocol's standing instruction to score with the judge. None of the 29 label sheets (*_to_label.csv) has a human label yet, and the 40-row agreement check that REPORT.md calls hand-checked was done by an AI assistant. Human labels are Nayan's to give.
+- The record has gaps. No config.json stores seeds (they are hard-coded: setup seed 0, E_SEED 0, D1 rng 17), model_revision is unset, cells_sha hashes cells_runpod.py and never cells_e.py, and config.json is rewritten at every launch, so runs/run4/Qwen3.5-4B/config.json shows the E0,K1 launch. The run logs suggest the G1 steering runs used the original crop set while REPORT.md says fresh crops. Check before citing.
+- C1 (the word "animal" injected at the read layers) cannot discriminate on Qwen, because those layers start after the rule has stopped reading, and Gemma-4-E4B's C1 value at dose 8 (0.50) is an artifact: all 64 answers are "3".
+- An unreported anomaly: on Gemma-4-E4B with the typed donor, windows starting at -1 to 11 move the fact (1.00) and never the name (0.00), so there the fact moves without the name, which RECORD.md row 59 says does not happen.
+- Nothing yet names the readers. There is no head-level or attention-knockout evidence.
+- Several arms build states the model never meets, with early layers from one run and later layers from another. The natural-photo test that avoids this has a frozen rule in RECORD.md and has not run.
+- Whether the read schedule lives in shares of depth or in absolute layers is open. Within Qwen the depths hold as shares (0.29 and 0.32 for the rules, 0.72 and 0.71 for the name on the 2B and 4B), and the fitted gaps between the two reads are about 10, 12.5 and 12.6 layers on the 2B, 4B and 31B.
+
+## 3. What Noah asked for
+
+Noah's own work measures faithfulness by how far probabilities move as well as by whether answers flip. Siegel et al. (2024) note that "Previous metrics used in such tests take into account only binary changes in the predictions", and their metric "accounts for the total shift in the model's predicted label distribution". So report effects as shifts in log-probability, in nats, with answer flips as a secondary readout. In the 14 Oct meeting and the 20 Oct Slack thread he asked for these, in his words:
+- Probabilities at every patch depth: "right now if it's discrete it's like it just looks like there's like a hard cut off between like 19 and 23 ... Is there like a gradual slope or is it does it really look like a cutoff? Because those might suggest different mechanisms internally."
+- A theory: "can we come up with some theory of like you know based on the relation of this question to the concept that we're patching like how early do you need to patch it? Is and is that like earliness shared? ... reproducible across various different concepts."
+- His hypothesis: "the more kind of reasoning a model has to do in the concepts, the earlier you need to patch it in. So like you know just verbalizing bird there's nothing it needs to do so it can do it later. The first letter that's you know a little like one step removed whereas like is it an animal that's like more conceptual."
+- Complexity under control: "purely syntactic features like first letter of a word then you have like more semantic conceptual features like is it an animal then like you know is it [ridden] or driven like kind of requires ... a level of knowledge about the world", logical parsing ("is it a train, bird or clock right that requires as some kind of logical parsing ... you can add you know more disjunctions, more constructions"), multi-hop questions (he named the SOCRATES multi-hop set as inspiration), and math, which has "clear measures of complexity".
+- The direction he is keenest on: "a theory of what type of reasoning the model does at what layer", and "exactly what kind of concepts ... need to be patched at what layers."
+- On input forms: the same depths for photos, printed words and typed sentences point to "some kind of unified conceptual processing which would be like very exciting", and he wants to see whether video or audio models reproduce it.
+- On steering: "J lens is just like what will be verbalized ... if you steer strongly enough towards any word the model should just say that". Any steering claim needs the same dose toward other words.
+- On 20 Oct, after the sweep: "IIUC from fig A the cutoffs for both fact and name are pretty sharp (i.e. model goes from P~=1 to P~=0 in the span of a small number of layers), is that right?", "my intuition was that LLMs are composed of a huge number of circuits in different places which would have added smoothly, whereas a sharp cutoff signals a potentially smaller set of circuits/pathways for this behavior?", and "How consistent is the position of these cutoffs for a given model, over different concepts?"
+
+## 4. The open question and the rival accounts
+
+The question: what sets the depth at which a model stops reading an input for a given question?
+
+None of these accounts is the default:
+- A, fixed stations. Each model reads at a small number of stages (one for rules, one for producing the name) at fixed shares of depth, and the complexity of a rule does not move its stage.
+- B, just in time. Noah's hypothesis made quantitative: a question reads its input until the last depth that still leaves enough layers for the computation that has to follow the read, so each extra downstream step (a hop, a disjunct, an operation) moves the read earlier by a roughly constant number of layers.
+- C, readiness. A question reads until the feature it needs exists in the input tokens in a form its reader can use, so the read depth follows when that feature becomes decodable or lens-readable, and downstream steps do not move it.
+- D, a distributed sum. Reading is spread over many layers and adds up smoothly, and the sharp curves come from thresholding a graded quantity at a depth that happens to be similar across scenes. This is Noah's "many circuits" picture.
+
+What separates them:
+
+| test | A | B | C | D |
+|---|---|---|---|---|
+| log-probability difference by swap start, 1-layer steps | step within 1 to 2 layers | step within 1 to 2 layers | step within 1 to 2 layers | ramp that crosses zero near the cutoff |
+| donor weakened by mixing donor and receiver states | cutoff stays, plateau falls | cutoff stays | cutoff stays | cutoff moves earlier as the donor weakens |
+| more hops or disjuncts in a rule | no change | earlier, about linear in the number of steps | no change | no clear prediction |
+| question needs a late-forming feature (word form) or an early one (category) | two groups only | ordered by steps after the read | follows the feature's onset | no clear prediction |
+| bigger model in the same family | same share of depth | same layers per step, or same share (to measure) | follows the feature's onset | no clear prediction |
+| head-level knockout inside the band | a few heads per stage | a few heads | no clear prediction | many heads, each small |
+
+Each outcome is a result. B confirmed is a law that predicts the read depth of a new question from its structure. D confirmed shows the sharp curves are a measurement artifact, a correction every patching study would need. A or C confirmed says what the stages or the readiness signal are, and C would tie read depth to what a lens can see. Design every experiment so that at least two accounts predict different outcomes for it.
+
+Candidate sentences, each to be earned or killed by the data:
+- A model reads an input for each purpose only until a depth set by the purpose, the same for every concept and every input form.
+- A model reads an input as late as the computation still ahead of it allows.
+- What a lens reads on an input token is content the model has already finished using.
+
+## 5. The experiments, ranked by information per GPU-hour
+
+1. The resolution and probability sweep. This answers Noah's first two questions. Rerun D1 with 1-layer windows across both read depths and 4-layer windows elsewhere. Save, per scene and window, the log-probability of the donor's answer and of the receiver's answer (first token for digits and letters, the full name under teacher forcing), the distribution over the answer vocabulary, and the generated text. The primary estimand is log p(donor answer) minus log p(receiver answer), in nats, with a scene-bootstrap interval. The E2P cell in cells_e.py already records p(donor) and p(receiver) under patching, so reuse that code path. Rebuild the stimuli first: at least 8 scenes per object, every crop checked for a second nameable object (no cat on the laptop), and a validated judge that accepts synonyms. Run every model that works, and the 0.8B for naming only.
+2. The instrument check behind the lens result. It needs no patching, only readouts. Re-measure the lens onset with J++ wherever a fit exists (Qwen3.5 0.8B, 2B and 9B, Qwen3.6-27B, Gemma-4-31B), per token as well as averaged, and over a range of thresholds. Run the sanity checks proposed by a failed replication of the J-lens on GPT-2: J set to the identity must reproduce the logit lens, a float64 finite-difference check of the Jacobians, and a control for token frequency. If J++ finds the name early, the "lens lags the reader" claim goes, and you say so plainly.
+3. Dose-response. Mix donor and receiver image-token states at weights 0.25, 0.5, 0.75 and 1, plus a norm-matched version, and sweep the start layer. This separates D from A, B and C with the tooling that already exists.
+4. The complexity battery, for Noah's theory question. Start with the cheapest decisive block, a 2 by 2 that crosses what the question needs from the object (its category or its word form) with what the answer is (a digit or a word). Two cells exist: the animal rule (category, digit) reads early, and the name and first letter (word form, word) read late. The missing cells are a lexical rule such as "if the object's name has more than four letters, answer 7" (word form, digit) and "which category is the object: animal, vehicle, food or furniture?" (category, word). If the late read is about producing a word, the lexical rule reads early and the category word reads late (account A). If it is about when the word form becomes available, the lexical rule reads late and the category word reads early (account C). Then widen it, with the same scenes and digit answers wherever possible so the output vocabulary stays fixed. Lexical: first and last letter, number of letters, plural form, rhymes with a given word. Category: animal, alive, edible. World knowledge: ride or drive, found in a kitchen, bigger than a car, number of legs. Logical: is it one of k named objects for k = 1, 2, 3, 5 and 8, negated rules, conjunctions of two properties. Multi-hop: two-step questions that no single property shortcuts, in the spirit of SOCRATES (for example "if the first letter of the object's name comes before M, answer 7"). Before any run, write down each question's predicted read depth under A, B and C, and count its downstream steps for B. Keep a question for a model only if that model answers it correctly on clean canvases above a frozen threshold, and report every question you drop. Hold out two question types and one model as prediction targets.
+5. The readers. Knock out attention from the question and answer positions to the image tokens, layer by layer and then head by head inside each band, and patch single heads' outputs. In Qwen3.5 only the standard-attention layers (one in four) can be knocked out cleanly, while Gemma-4 allows every layer. Knockout and patching that agree name the mechanism.
+6. Natural photos. Run the frozen GQA test in RECORD.md: do the read depths and the lens onset predict which questions a model gets wrong? This is the practical payoff, and it removes the mixed-state objection.
+7. Scale. Qwen3.5 9B and 27B once there is GPU memory to run them alone (the earlier runs shared the card with another process), and Qwen3.6-27B. Decide whether the schedule lives in shares of depth or in absolute layers, with a held-out size predicted before it runs.
+8. Other inputs, only if they answer a new question: video once the four-frame check passes, and audio on an omni model.
+
+## 6. Standards every result must meet
+
+Evidence:
+- Type every claim as scientific (something exists inside), mechanistic (it plays a causal role), methodological (the instrument reveals it), a cognitive analogy, or a safety claim. Evidence for one type never silently supports another.
+- Use the word "cause" only with an intervention that changes behavior. Decoding is never causation.
+- Every causal claim has a positive control (full-state patch at the input), null controls (a random direction or random subspace of equal rank and norm, another slot, an off-target fact, an empty-canvas donor), a manipulation check, and a perception check (the model names the crop on its own).
+- Steering claims compare against the same dose toward other words and against the plain output direction.
+- An absence claim needs power: show the same instrument finds the thing where it should be. The J-lens is an instrument fitted on text that reads single-token concepts. Compare it with J++ where a fit exists, the logit lens, and random spans of equal size, and run the lens sanity checks in experiment 2 on any lens code before trusting it.
+- For every subspace patch, show that the patched subspace carries the variable in clean runs and that the effect does not come from a direction the clean model leaves unused (the dormant-pathway illusion).
+- Never choose a layer, threshold or position on test data. Use pre-registered bands, or a full sweep with multiplicity control.
+
+Statistics:
+- Primary estimands in nats. Binary flips are secondary.
+- 95% bootstrap intervals over scenes, grouped by image where images repeat. Report effect sizes, N and every exclusion.
+- A "no difference" claim needs an equivalence test or a tight interval. p > .05 never means "the same".
+- Never select the analyzed population on the statistic you report.
+
+Pre-registration and records:
+- Before every run, append to RECORD.md, with a timestamp, the hypothesis, the measurement, the rule, the threshold, and the prediction under each rival account. After the run, append the result and the verdict. Misses stay misses, and post hoc analysis is labelled post hoc.
+- Keep a claim ledger (exact sentence, type, evidence, interval, scope, closest prior work, falsifier, status) and a confound ledger (headline reading, strongest confound, control, status). Status is RED (false, confounded or unclear), YELLOW (promising, incomplete) or GREEN (survives the strongest boring explanation), with no averaging: one fatal confound keeps a result RED.
+
+Judging and stimuli:
+- Free-text answers are scored by the frozen LLM judge in jbound/judge.py (gemini-2.5-flash) with a hand-labelled agreement sample, raw outputs kept and failed calls never cached. String matching is only a logged secondary.
+- Use minimal pairs that change one variable at a time, and counterbalance answer digits, slots and object classes.
+- Every question is its own forward pass. Never ask several questions in one conversation, since earlier answers contaminate later ones.
+- Say exactly what is patched or steered (the whole residual state, the lens part, its complement, which tokens, which layers) every time. Noah asks this first.
+- Keep the stimuli deliberately easy (COCO crops, GQA), so that no effect can be blamed on a hard task.
+
+Code and reproducibility:
+- One self-contained cell per experiment that runs it, saves every per-scene value to CSV and JSON, and draws its figure.
+- config.json records model and lens revisions, layers, seeds, dtype and the code hash. Assert shapes, token positions and layer indexing (block index against lens layer index).
+- Smoke test before every run: a no-op patch reproduces the clean answer, a full patch at the input reproduces the donor, and a deliberate label shuffle kills the effect.
+- Cache activations, batch, and use paired designs. Never drop a control to save time. Estimate forward passes, GPU memory and minutes before each run.
+
+Figures and writing:
+- One question per figure, uncertainty and N shown, the same encoding in every figure (fact orange, name blue), Helvetica in a clean ggplot style, no headline text inside the figure, and a caption of the form "Figure: ... Source: ...". Every figure is drawn from one machine-readable table.
+- Plain prose, one idea per sentence. No em dashes, no semicolons, sentence-case headings, every number checked against its source file, and links inline as [Author (Year)](url). Banned words: delve, crucial, pivotal, robust, underscore, showcase, tapestry, seamless, garner, bolster, key (as an adjective), intricate, interplay, landscape, testament, highlight (as a verb), meticulous, groundbreaking, cutting-edge, innovative, leverage, and might, could or potentially used as hedges. No negative parallelisms ("not X but Y", "X rather than Y", "Y, not X"), no closing aphorisms, and no consciousness language.
+
+Novelty:
+- For every headline claim keep one line: closest prior work, what it showed, what we add, and why the difference matters. Search before calling anything new, and search again before anything is shared. The closest known neighbours are listed in section 10.
+
+## 7. How to work
+
+1. Read REPORT.md, RECORD.md, PROTOCOL.md, rubric.md and INDEX.md, then jbound/cells_e.py (each experiment starts with a "# %% ----" header), jbound/cells_runpod.py and jbound/run.py. Reproduce one known number, for example the 4B's D1 curves from runs/run4, before running anything new. Then fix the record before new science, since it costs no GPU time: re-score the saved generations of D1, D2 and F4 with the judge, prepare the label sheets for Nayan, write seeds, model revisions and a hash of every code file into each config, and correct REPORT.md wherever section 2 shows it is wrong.
+2. Write a one-page plan: experiments ranked by expected information per GPU-hour, each with its question, the prediction under each rival account, the rule, N, runtime, cost, and the result that would make you stop. Unless the plan shows a better first move, start with experiment 1 and the 2 by 2 block of experiment 4 on the 4B and the 31B: together they answer Noah's three questions in two families and separate A from C. Experiment 2 can run beside them, since it needs only readouts.
+3. Smoke test, then run. After each run, check the manipulation, compute the estimand, list the boring explanations before looking at the effect and then test them, update both ledgers, and draw the figure.
+4. Follow surprises, carefully. When a result contradicts the plan, ask whether it reveals a more interesting structure before you fit it into the story. Before you zoom in on an anomaly such as the third answers in section 2, check on a random sample that it is systematic, since Neel's warning about "one random anomaly" applies to exactly this case.
+5. Converge on one sentence. Every experiment should test a different consequence of the same sentence. Move experiments that test nothing in it to an appendix or a separate note.
+6. Stop rules (PROTOCOL.md section 13): if the full-state transfer fails, make no subspace interpretation. If perception fails, make no capacity interpretation. If a candidate subspace is no more specific than its random control, it is not the mediator. If a law fails a held-out size, abandon it and report the account that stays consistent.
+7. After every batch of results, grade the program against rubric.md out of 100 and fix whatever keeps it below 85 before moving on. This is Nayan's standing rule, and RECORD.md logs the grades so far (72 to 92).
+8. Report to Nayan at each decision point in a short note: what ran, what it showed with intervals, what it rules out, and what you will run next and why. Ask before anything irreversible or expensive. Carry on with reversible work inside the protocol without waiting.
+
+## 8. What to produce
+
+- RECORD.md rows, the claim and confound ledgers, one cell per experiment, CSV and JSON outputs with log-probabilities, and figures as PNG, PDF and SVG.
+- A weekly note for Noah in Nayan's research-notes register: the main hypothesis first, in one first-person paragraph, then a numbered tl;dr of findings with numbers from the result files, figures with "Figure: ... Source: ..." captions, and a modest tone.
+- When the evidence earns it, a paper skeleton: the one sentence, at most three contributions, three figures (the phenomenon, the mechanism, the consequence), and a version of the story that takes two minutes to tell.
+
+## 9. Guardrails
+
+- Do not stop, restart or overwrite running experiments or existing run folders. New runs get new tags.
+- Never print or commit API keys or tokens.
+- Keep everything of value on the network volume (/workspace), and delete downloads that fill the disk.
+- Nothing goes public (LessWrong, X, a public repository, a preprint) without Nayan's explicit approval. The program is unpublished.
+- Compute is RunPod on a card Noah provided. State the cost of any run over a few GPU-hours before launching it.
+- Do not message Noah or anyone else. Drafts meant for Noah go to Nayan.
+- Debanshu's threads (meta tokens such as the "doubt" token, time-series and decision models) are separate. Touch them only if they test the program's sentence.
+- Make no claims about training history without a model comparison.
+- Use "they" for a generic person.
+
+## 10. Files, models and reading
+
+- The project snapshot is jspace_results_14oct.zip, unpacked as jspace_results/: REPORT.md, RECORD.md (rows 1 to 76 and the numbered implementation changes), PROTOCOL.md (the frozen protocol), rubric.md (the release rubric), INDEX.md (every result file and the rows it backs), notes.md, jbound/ (code) and runs/ (results).
+- On the pod: code and runs under /workspace/nayan, data under /workspace/nayan/data, lenses from neuronpedia/jacobian-lens in the Hugging Face cache under /workspace/hf.
+- Runs launch through the jbound/jb wrapper, which changes to /workspace/nayan, sets HF_HOME=/workspace/hf, loads /workspace/nayan/.env (it holds the Gemini key, so never print it) and runs `venv/bin/python jbound/run.py`, for example with `--model Qwen/Qwen3.5-4B --cells E0,D1 --tag run7 --cells-file jbound/cells_e.py`. Add `--smoke` first. E0 has to run in the same session. `jb status` tails the recent logs. D1 reads D1_N and D1_SPECTRUM=1 (the five questions) from the environment, and its window width is the constant D1_W = 4 in cells_e.py. Give new runs new tags.
+- Storage is tight. The volume lacked the 54 GB Qwen3.5-27B needs, and Gemma-4-31B's weights sat on the container disk. Plan space before loading a large model.
+- Models: Qwen/Qwen3.5-0.8B, 2B, 4B and 27B, google/gemma-4-E4B-it and gemma-4-31B-it, and Qwen3.6-27B for replication.
+
+Read the primary sources:
+- Gurnee et al. (2026), the J-lens and the workspace account, and Nanda's review, which asks how far the lens's readings can be trusted as a picture of what a model uses.
+- Heimersheim and Nanda (2024) on activation patching practice.
+- Geva et al. (2023): attributes are written into a subject's token early and extracted at the last position, found with attention knockout.
+- Biran et al. (2024): two-step questions fail when the first step resolves too late, and back-patching repairs some of them. Our back-patching is the same operation made across runs on image tokens.
+- Cohen et al. (2024): vision-language models resolve a pictured entity late.
+- Zhang et al. (2024): a two-stage image-to-question flow in LLaVA whose layers stay the same across six GQA question types, which our question-dependent depths sit against.
+- Kaduri et al. (2024): most of the image-to-text flow sits in about a quarter of InternVL2-76B's layers.
+- Lin et al. (2024): image tokens can be dropped after a middle layer, and that layer varies with the model and the task.
+- Osaka et al. (2026): the closest method, an image-KV swap on Qwen2.5-VL-32B, with knockout cutoffs that move with the task.
+- Ghosh, Babu and Agarwal (2026): the closest finding. Whether image tokens are needed in later layers depends on the answer type: single-token answers such as multiple-choice letters survive removing them midway, and captioning is the most sensitive. Here the name is a single token too, and it still needs the late read, which is why the 2 by 2 in experiment 4 matters.
+- Nikankin et al. (2025): image tokens line up with their text equivalents only in later layers, and back-patching later states into earlier layers closes part of the gap between the modalities. Position the back-patching result against it.
+- Venhoff et al. (2025), with Nanda: factual recall about an entity shown in an image degrades in 11 of 14 vision-language models because the entity's representation forms too late.
+- Ayonrinde and Lindsey (2026), the J++ lens, which they say can miss concepts "as well as non-textual representations such as mental imagery". That bears directly on what any lens can see on image tokens.
+- Yang et al. (2025), SOCRATES, the shortcut-free multi-hop set Noah named.
+
+None of them holds the image and the object fixed, changes only the question, and measures the causal dependence on the image tokens layer by layer, which is where this program is distinct. Keep checking that this is still true, and search again before anything is shared.
+
+================================================================================
+ALSO PASTED LATER: the Slack thread with Noah (20 Oct) and Debanshu's links
+================================================================================
+
+Nayan to Noah (results note): tl;dr on image tokens the J-lens reads content the model has already stopped using; rules stop at about 0.3 of depth, naming at about 0.7 (same for photo, printed word, text; Qwen3.5 0.8B to 4B and Gemma-4 31B; Gemma rule cutoff about 0.48); the late state still holds the fact (0.91 vs 0.05 on the 4B, 0.91 vs 0.14 on the 2B). Plot: (a) the two cutoffs, (b) three input forms, (c) cutoff layer against total layers fits 0.70 L (naming) and 0.31 L (rules) in Qwen; (d) adding the note word's J direction to a SCAM photo moves log p(note) - log p(object) from -12.7 to +1.8 at dose 4, random flat; (e) removing it moves -2.08 to -3.56, removing the object word's direction moves it to +0.29; (f) removing the answer word's single J direction on GQA costs 2.37, 1.34, 0.98 nats for 0.8B, 2B, 4B, close to 2562 / d_model. Next: vary the load by kind of computation (syntactic, semantic, ...) and test whether each kind has its own cutoff; record log-probs in every run; video and time series.
+Noah: Gemma looks like an outlier in otherwise linear trends; is the trend linear within Gemma at other sizes? architectural differences (Qwen3.5 has three linear-attention layers per softmax layer, Gemma 4 softmax everywhere; Qwen early fusion with an unfrozen encoder, Gemma a frozen encoder; E4B per-layer embeddings and KV reuse). Later: are the cutoffs sharp (P about 1 to about 0 within a few layers)? "my intuition was that LLMs are composed of a huge number of circuits in different places which would have added smoothly, whereas a sharp cutoff signals a potentially smaller set of circuits/pathways"; how consistent is the cutoff position over concepts?
+Nayan: the data has a point every 4 layers; for a given model and question it is the same 4-layer window for almost every concept; more circuit analysis before the next meeting.
+Debanshu: Hybrid reasoning agents (arXiv 2610.18861), Pinocchio (arXiv 2607.04681, a critic for robot-policy justification faithfulness), and arXiv 2610.24521 as an alleged proof of a two-stage image process (early flexible thinking, deep single-word relays). [Checked 21 Oct: 2610.24521 is Shabalin and Piotrowski, "Comparing Sparsified MLPs and Transcoders: Many Transcoder Features Are Neurons in Disguise", a text-model transcoder paper; it makes no such claim.]
+Nayan also shared Goodfire's "Neural Networks Are Already Clean" essay (neuron monosemanticity; about 90% of Qwen3-32B neuron poles have one main job).

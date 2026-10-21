@@ -41,6 +41,16 @@ uv run experiments/depth_sweep.py --n 4 --run try_depth_sweep
 | `gqa_ablation` | ablates lens subspaces and single lens directions from GQA photos |
 | `printed_word` | ablates the lens direction of a word printed on an object |
 | `scam_notes` | the same on SCAM photos with a hand-written note, plus steering |
+| `read_battery` | the depth sweep at single-layer resolution with log-probabilities, 19 questions (18 plus a sixteen-way identification with a letter answer) crossing what is needed with the answer's form, other objects in the other slots with `--distractors`, and a dose-response mix (21 Oct) |
+| `attention_knockout` | blocks attention from the text to the image tokens at softmax layers (a subset with `--layers`), head by head with `--heads`, with other objects on the canvas with `--distractors`, or to a word in a typed sentence with `--typed` (21 Oct) |
+| `lens_onset` | at which layer the J-lens, J++ and the logit lens first read an object's name off its image tokens, pooled and per token (21 Oct) |
+| `gqa_knockout` | the knockout on GQA photos with the benchmark's own question kinds (21 Oct) |
+| `bench_knockout` | the knockout on CountBench (counts 2 to 10) and MathVision (direct-answer setting) (21 Oct) |
+| `head_patch` | writes one donor head's attention output (the input of o_proj) into the receiver at the question's tokens: which heads are sufficient readers (21 Oct) |
+| `cross_modal_patch` | the interchange: the heads' outputs recorded while the model reads a typed word, written into the run that sees a picture, and the reverse; per-head cosines across modalities (`--alignment-only`) (21 Oct) |
+| `source_report` | after an interchange, asks whether the object was seen in the picture or read in a note: does the report follow the content's channel? (21 Oct) |
+
+The 21 October scripts also take `--model Qwen/Qwen3.5-2B`, `Qwen/Qwen3.5-0.8B` and `google/gemma-4-E4B-it` (pinned in `src/jspace/config.py`); their outputs are under `runs/` and are not part of `results/`. `scripts/fig_battery.py` draws their figures and `scripts/summarize_knockout.py` rebuilds a knockout summary from its CSV.
 
 Each script writes `runs/<run>/<model>/`: a CSV of every answer, `summary.json` (estimates, 95% bootstrap intervals, verdicts), `stimuli.png`, `config.json` and `run.log`. `--help` gives each design; [RESEARCH.md](RESEARCH.md) gives the method and controls.
 
@@ -79,3 +89,19 @@ tests/          CPU tests: uv run pytest
 ## Credits
 
 The J-lens is from [Gurnee et al. (2026)](https://arxiv.org/abs/2607.15495) and [anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens) (Apache 2.0); the fitted lenses are Neuronpedia's. Models: [Qwen3.5](https://huggingface.co/Qwen/Qwen3.5-4B) and [Gemma 4](https://huggingface.co/google/gemma-4-31B-it), under their own licences. Data: [COCO](https://cocodataset.org) (annotations CC BY 4.0), [SCAM](https://huggingface.co/datasets/BLISS-e-V/SCAM) (CC BY-NC 4.0), [GQA](https://cs.stanford.edu/people/dorarad/gqa/) (CC BY 4.0).
+
+## 21 October 2026: the read-depth, cross-modal and source-report experiments
+
+The second round of experiments (RECORD.md rows 77 to 133) is in this repository in full.
+
+- `experiments/`: `read_battery.py` (single-layer patching with log-probabilities), `attention_knockout.py` (the reads of the image tokens blocked per layer, head and query token), `head_patch.py` and `cross_modal_patch.py` (head-output patching and the interchange between a typed word and a picture), `query_knockout.py`, `source_report.py`, `source_conflict.py` and `source_cause.py` (the model's report of whether it saw or read an object, with the answer held), `lens_onset.py`, `gqa_knockout.py`, `bench_knockout.py`.
+- `results/oct21/<run>/<model>/`: every run's `config.json`, per-scene CSV (gzipped, `pandas.read_csv` reads it as is), `summary.json` and stimuli; `results/oct21/chains/` the shell chains that ran them; `results/figures/` every figure, each from a summary or CSV (`scripts/fig_battery.py`).
+- `docs/`: `REPORT.md` (the write-up, with the story in four sentences at the top), `RECORD.md` (the ledger: every rule written before its run, every miss kept), `rubric.md` (the release constitution), `PROTOCOL.md`, `writing_rules.md`, `notes.md`, `handoff_21oct.txt`.
+- `share/`: the note for Noah, the slide figure list, the council pass with the full gate-by-gate scoring, and the blind judge sheets.
+- `results/tables/`: every result as flat CSVs (every summary value with its interval, the knockout costs and stations, the battery depths and curves, the access profiles), written by `scripts/export_tables.py`.
+- `results/samples/`: the inputs at the size the models received them: every tile of the 2B and 4B crop banks and every receiver canvas of the 64 scenes, the 48 GQA photos, the 400 CountBench photos and the SCAM photos, each with its questions (`scripts/fig_examples21.py`, `scripts/export_photos.py`).
+- `results/oct14_figures/`: every figure and stimulus sheet of the 13 and 14 October runs.
+- `docs/ATLAS.md`: everything that was tried, by model, dataset and method, with the ledger rows and the finding for each.
+- `jbound/`: the 13 and 14 October code, with the original notebook under `jbound/original/`; the vendored J-lens source it used is [anthropics/jacobian-lens](https://github.com/anthropics/jacobian-lens) and is not copied.
+
+The headline: a vision-language model reads a picture with the circuit it reads a word with; every read closes at an ordered depth (decisions before the name) in seven models of two families; and the 4B's and Gemma E4B's report of whether they saw or read an object records the pathway that delivered the answer, with the answer held fixed and with nothing blocked (RECORD rows 115, 129, 132, 133). Status under the rubric: not release-ready while human labels, an outside replication and a red team are missing (`share/council_full_scoring_21oct.md`).

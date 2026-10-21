@@ -1,0 +1,201 @@
+model,run,target,scene,arm
+Qwen3.5-4B,run15b,q,32,clean
+Qwen3.5-2B,run15b,p,53,all heads of 19
+Qwen3.5-4B,run15b,q,9,all heads of 19+23
+Qwen3.5-4B,run15b,q,54,donor
+Qwen3.5-4B,run15,q,20,all heads of 15+19+23
+Qwen3.5-2B,run15b,p,40,all heads of 11+15+19
+Qwen3.5-4B,run15b,p,31,clean
+Qwen3.5-2B,run15b,q,50,donor
+Qwen3.5-4B,run15,p,6,all heads of 11+15+19+23
+Qwen3.5-4B,run15,q,54,all heads of 15+19+23
+Qwen3.5-2B,run15b,p,25,donor
+Qwen3.5-2B,run15b,q,36,all heads of 15+19
+Qwen3.5-4B,run15b,q,25,all heads of 15+19+23
+Qwen3.5-4B,run15b,p,60,all heads of 19
+Qwen3.5-2B,run15b,p,31,donor
+Qwen3.5-4B,run15b,p,2,clean
+Qwen3.5-2B,run15,q,18,donor
+Qwen3.5-2B,run15b,q,40,all heads of 19
+Qwen3.5-4B,run15b,q,34,clean
+Qwen3.5-4B,run15b,q,31,donor
+Qwen3.5-2B,run15b,q,31,all heads of 15+19
+Qwen3.5-2B,run15,q,63,all heads of 7+11+15+19
+Qwen3.5-2B,run15b,q,62,clean
+Qwen3.5-4B,run15,p,62,all heads of 7+11+15+19+23
+Qwen3.5-4B,run15,p,55,all heads of 11+15+19+23
+Qwen3.5-4B,run15b,p,42,clean
+Qwen3.5-2B,run15,p,9,donor
+Qwen3.5-4B,run15b,p,61,all heads of 19+23
+Qwen3.5-2B,run15b,p,20,all heads of 15+19
+Qwen3.5-4B,run15b,q,0,all heads of 15+19+23
+Qwen3.5-2B,run15b,q,54,all heads of 11+15+19
+Qwen3.5-4B,run15,p,18,all heads of 11+15+19+23
+Qwen3.5-2B,run15b,p,54,all heads of 19
+Qwen3.5-4B,run15,p,63,all heads of 11+15+19+23
+Qwen3.5-4B,run15,p,38,donor
+Qwen3.5-4B,run15,p,62,all heads of 11+15+19+23
+Qwen3.5-2B,run15,q,45,clean
+Qwen3.5-4B,run15b,q,51,all heads of 19+23
+Qwen3.5-4B,run15,q,28,all heads of 15+19+23
+Qwen3.5-2B,run15b,q,39,all heads of 11+15+19
+Qwen3.5-4B,run15,p,6,donor
+Qwen3.5-2B,run15,q,59,all heads of 11+15+19
+Qwen3.5-4B,run15b,q,8,all heads of 19+23
+Qwen3.5-4B,run15,q,46,all heads of 7+11+15+19+23
+Qwen3.5-2B,run15b,p,34,all heads of 15+19
+Qwen3.5-4B,run15,p,0,donor
+Qwen3.5-4B,run15,p,51,all heads of 11+15+19+23
+Qwen3.5-4B,run15b,q,61,all heads of 19+23
+Qwen3.5-2B,run15,p,22,donor
+Qwen3.5-4B,run15,q,56,all heads of 11+15+19+23
+Qwen3.5-2B,run15,p,10,all heads of 7+11+15+19
+Qwen3.5-4B,run15b,q,10,all heads of 19
+Qwen3.5-4B,run15,p,5,all heads of 15+19+23
+Qwen3.5-2B,run15b,q,48,clean
+Qwen3.5-4B,run15,q,9,clean
+Qwen3.5-2B,run15,q,63,clean
+Qwen3.5-4B,run15,q,23,all heads of 11+15+19+23
+Qwen3.5-2B,run15b,p,13,clean
+Qwen3.5-2B,run15b,p,56,all heads of 11+15+19
+Qwen3.5-2B,run15b,p,28,all heads of 15+19
+Qwen3.5-2B,run15b,p,45,donor
+Qwen3.5-2B,run15b,q,28,all heads of 15+19
+Qwen3.5-2B,run15b,q,0,all heads of 11+15+19
+Qwen3.5-2B,run15b,p,55,clean
+Qwen3.5-4B,run15,p,59,donor
+Qwen3.5-4B,run15b,q,27,all heads of 15+19+23
+Qwen3.5-2B,run15b,q,63,all heads of 15+19
+Qwen3.5-4B,run15b,q,7,all heads of 19
+Qwen3.5-4B,run15b,p,37,clean
+Qwen3.5-4B,run15,p,50,all heads of 11+15+19+23
+Qwen3.5-4B,run15,p,53,all heads of 15+19+23
+Qwen3.5-2B,run15,q,48,all heads of 11+15+19
+Qwen3.5-2B,run15,q,42,clean
+Qwen3.5-4B,run15b,q,4,all heads of 19+23
+Qwen3.5-4B,run15b,p,28,all heads of 19+23
+Qwen3.5-4B,run15b,p,8,donor
+Qwen3.5-4B,run15b,q,8,donor
+Qwen3.5-2B,run15,q,38,all heads of 7+11+15+19
+Qwen3.5-4B,run15b,q,60,donor
+Qwen3.5-2B,run15,q,47,clean
+Qwen3.5-4B,run15,p,6,all heads of 7+11+15+19+23
+Qwen3.5-4B,run15,q,7,all heads of 15+19+23
+Qwen3.5-4B,run15,q,6,donor
+Qwen3.5-2B,run15,q,32,donor
+Qwen3.5-2B,run15,q,54,all heads of 7+11+15+19
+Qwen3.5-2B,run15,p,7,all heads of 7+11+15+19
+Qwen3.5-2B,run15b,p,50,clean
+Qwen3.5-4B,run15b,p,5,all heads of 19
+Qwen3.5-2B,run15b,q,20,clean
+Qwen3.5-4B,run15b,q,13,all heads of 15+19+23
+Qwen3.5-4B,run15,p,62,donor
+Qwen3.5-4B,run15,q,57,clean
+Qwen3.5-2B,run15,q,53,donor
+Qwen3.5-2B,run15b,q,51,all heads of 15+19
+Qwen3.5-4B,run15b,q,4,donor
+Qwen3.5-4B,run15,p,53,all heads of 11+15+19+23
+Qwen3.5-2B,run15b,p,47,all heads of 11+15+19
+Qwen3.5-2B,run15,p,17,clean
+Qwen3.5-2B,run15,q,30,clean
+Qwen3.5-2B,run15b,q,18,clean
+Qwen3.5-2B,run15b,q,6,all heads of 15+19
+Qwen3.5-2B,run15b,q,42,all heads of 15+19
+Qwen3.5-4B,run15,q,33,clean
+Qwen3.5-4B,run15,q,53,clean
+Qwen3.5-2B,run15b,q,13,donor
+Qwen3.5-4B,run15b,q,55,all heads of 15+19+23
+Qwen3.5-2B,run15b,p,16,all heads of 19
+Qwen3.5-4B,run15b,p,9,all heads of 19
+Qwen3.5-2B,run15b,q,63,clean
+Qwen3.5-2B,run15,q,12,all heads of 11+15+19
+Qwen3.5-2B,run15,p,38,all heads of 11+15+19
+Qwen3.5-4B,run15b,q,25,all heads of 19
+Qwen3.5-4B,run15,p,45,all heads of 11+15+19+23
+Qwen3.5-2B,run15b,q,3,all heads of 19
+Qwen3.5-2B,run15,p,55,all heads of 11+15+19
+Qwen3.5-4B,run15b,p,18,all heads of 19
+Qwen3.5-4B,run15b,p,29,clean
+Qwen3.5-2B,run15,p,51,donor
+Qwen3.5-4B,run15b,q,63,all heads of 19
+Qwen3.5-4B,run15b,q,38,all heads of 19
+Qwen3.5-4B,run15b,p,39,all heads of 15+19+23
+Qwen3.5-4B,run15,p,24,all heads of 11+15+19+23
+Qwen3.5-2B,run15,q,10,all heads of 7+11+15+19
+Qwen3.5-2B,run15b,q,35,all heads of 19
+Qwen3.5-4B,run15,p,33,all heads of 7+11+15+19+23
+Qwen3.5-4B,run15b,p,5,donor
+Qwen3.5-2B,run15,p,41,clean
+Qwen3.5-2B,run15b,p,50,all heads of 15+19
+Qwen3.5-2B,run15b,p,14,clean
+Qwen3.5-2B,run15b,q,32,clean
+Qwen3.5-2B,run15b,p,4,donor
+Qwen3.5-2B,run15b,p,14,donor
+Qwen3.5-2B,run15,p,24,clean
+Qwen3.5-2B,run15b,q,17,all heads of 19
+Qwen3.5-4B,run15b,q,30,clean
+Qwen3.5-2B,run15b,q,56,all heads of 19
+Qwen3.5-2B,run15,q,35,clean
+Qwen3.5-2B,run15b,p,49,all heads of 11+15+19
+Qwen3.5-2B,run15b,q,31,all heads of 19
+Qwen3.5-2B,run15,p,8,clean
+Qwen3.5-4B,run15,q,32,all heads of 11+15+19+23
+Qwen3.5-4B,run15b,q,60,all heads of 19
+Qwen3.5-4B,run15,p,52,donor
+Qwen3.5-2B,run15b,q,25,all heads of 19
+Qwen3.5-2B,run15b,q,2,all heads of 15+19
+Qwen3.5-4B,run15,q,5,donor
+Qwen3.5-2B,run15,q,17,donor
+Qwen3.5-2B,run15,p,10,all heads of 11+15+19
+Qwen3.5-4B,run15,q,20,all heads of 7+11+15+19+23
+Qwen3.5-4B,run15b,p,11,all heads of 19
+Qwen3.5-4B,run15,q,4,all heads of 15+19+23
+Qwen3.5-4B,run15b,p,59,all heads of 19+23
+Qwen3.5-4B,run15,q,14,clean
+Qwen3.5-4B,run15b,q,17,donor
+Qwen3.5-4B,run15b,p,50,all heads of 15+19+23
+Qwen3.5-2B,run15b,p,48,all heads of 11+15+19
+Qwen3.5-4B,run15,q,41,clean
+Qwen3.5-4B,run15b,q,58,all heads of 19+23
+Qwen3.5-4B,run15b,q,44,all heads of 19
+Qwen3.5-2B,run15b,p,24,clean
+Qwen3.5-2B,run15,q,47,all heads of 7+11+15+19
+Qwen3.5-4B,run15,p,21,donor
+Qwen3.5-4B,run15,p,43,all heads of 7+11+15+19+23
+Qwen3.5-4B,run15b,q,27,clean
+Qwen3.5-2B,run15,q,4,all heads of 11+15+19
+Qwen3.5-4B,run15b,q,9,all heads of 15+19+23
+Qwen3.5-4B,run15b,p,13,all heads of 19+23
+Qwen3.5-4B,run15b,p,40,clean
+Qwen3.5-4B,run15b,p,26,donor
+Qwen3.5-4B,run15b,p,26,clean
+Qwen3.5-2B,run15,q,35,donor
+Qwen3.5-2B,run15b,p,50,donor
+Qwen3.5-4B,run15b,q,26,clean
+Qwen3.5-4B,run15b,p,49,all heads of 19
+Qwen3.5-4B,run15b,p,49,clean
+Qwen3.5-4B,run15,q,0,all heads of 11+15+19+23
+Qwen3.5-2B,run15,q,15,all heads of 7+11+15+19
+Qwen3.5-2B,run15,p,42,all heads of 11+15+19
+Qwen3.5-2B,run15,q,26,all heads of 7+11+15+19
+Qwen3.5-4B,run15,q,23,clean
+Qwen3.5-4B,run15,p,4,all heads of 15+19+23
+Qwen3.5-4B,run15,q,22,clean
+Qwen3.5-4B,run15,p,7,donor
+Qwen3.5-4B,run15b,q,47,clean
+Qwen3.5-2B,run15,q,23,all heads of 7+11+15+19
+Qwen3.5-2B,run15,q,50,clean
+Qwen3.5-2B,run15,q,56,all heads of 7+11+15+19
+Qwen3.5-2B,run15b,p,50,all heads of 11+15+19
+Qwen3.5-4B,run15b,q,60,all heads of 19+23
+Qwen3.5-4B,run15,q,34,donor
+Qwen3.5-2B,run15b,p,2,donor
+Qwen3.5-2B,run15b,p,26,clean
+Qwen3.5-2B,run15,p,11,clean
+Qwen3.5-2B,run15b,p,58,all heads of 19
+Qwen3.5-2B,run15,q,56,clean
+Qwen3.5-4B,run15b,q,40,all heads of 15+19+23
+Qwen3.5-4B,run15b,p,29,all heads of 19
+Qwen3.5-4B,run15,p,59,clean
+Qwen3.5-2B,run15,p,30,donor
+Qwen3.5-2B,run15b,p,56,all heads of 15+19

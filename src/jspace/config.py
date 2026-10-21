@@ -40,6 +40,40 @@ MODELS = {
         jpp_file="gemma-4-31b/jpp/Salesforce-wikitext/gemma-4-31B_jpp_lens.pt",
         jpp_sha256="ef50bc54b04738e558b7d86847889bb5d60437e45276b1952e73da91b4e9f5fc",
     ),
+    "Qwen/Qwen3.5-2B": ModelSpec(
+        revision="15852e8c16360a2fea060d615a32b45270f8a8fc",
+        size_gb=4.5,
+        lens_file="qwen3.5-2b/jlens/Salesforce-wikitext/Qwen3.5-2B_jacobian_lens.pt",
+        lens_sha256="69e02a9794c340da7a69cfaa1638c0267192f25a64e7f4fa23f3021e72393c82",
+        jpp_file="qwen3.5-2b/jpp/Salesforce-wikitext/Qwen3.5-2B_jpp_lens.pt",
+        jpp_sha256="fbaa6ecd00a718370a658f4778c23b647a4b295ffc3f4a4836e5850784b1a649",
+    ),
+    "Qwen/Qwen3.5-0.8B": ModelSpec(
+        revision="2fc06364715b967f1860aea9cf38778875588b17",
+        size_gb=2.0,
+        lens_file="qwen3.5-0.8b/jlens/Salesforce-wikitext/Qwen3.5-0.8B_jacobian_lens.pt",
+        lens_sha256="aa26b68ed73cf903280dbd8d1806f4ed8580aad205f396a5c997ee19259c9b48",
+        jpp_file="qwen3.5-0.8b/jpp/Salesforce-wikitext/Qwen3.5-0.8B_jpp_lens.pt",
+        jpp_sha256="39bf7690b7e1d917ccff9c0fd7418abeaa02fe334691edfb7e814ee890b99c06",
+    ),
+    "Qwen/Qwen3.5-9B": ModelSpec(  # added 21 Oct for the size step; Neuronpedia fitted only a J++ lens for the instruct 9B, used as its lens
+        revision="c202236235762e1c871ad0ccb60c8ee5ba337b9a",
+        size_gb=19.3,
+        lens_file="qwen3.5-9b/jpp/Salesforce-wikitext/Qwen3.5-9B_jpp_lens.pt",
+        lens_sha256="8cda12f7ddf11e70fcfc69a47a9574f626fe084c67807a4781f4f67106e739c5",
+    ),
+    "Qwen/Qwen3.5-27B": ModelSpec(  # added 21 Oct for the size step (64 layers, 16 with softmax attention)
+        revision="fc05daec18b0a78c049392ed2e771dde82bdf654",
+        size_gb=54.0,
+        lens_file="qwen3.5-27b/jlens/Salesforce-wikitext/Qwen3.5-27B_jacobian_lens.pt",
+        lens_sha256="bb2e080ae9c9c20825adfa66c115be214ae027d867e525246a6879cb7fe6bbd6",
+    ),
+    "google/gemma-4-E4B-it": ModelSpec(
+        revision="ee0ef6023621cff504d758262d4e04895a5af4a2",
+        size_gb=16.0,
+        lens_file="gemma-4-e4b/jlens/Salesforce-wikitext/gemma-4-E4B_jacobian_lens.pt",
+        lens_sha256="119301db1ce48d8c5e1c9f1d374625bd8672c9522a7abb88834b1ca2a260165d",
+    ),
 }
 
 # The datasets, at the revisions the runs read; scripts/download.py checks the sha256 of every file
