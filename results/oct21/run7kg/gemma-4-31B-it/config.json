@@ -1,0 +1,63 @@
+{
+  "experiment": "attention_knockout",
+  "argv": [
+    "experiments/attention_knockout.py",
+    "--model",
+    "google/gemma-4-31B-it",
+    "--run",
+    "run7kg",
+    "--questions",
+    "say,category,animal,mc",
+    "--layers",
+    "5,11,17,23,29,35,41,47,53,59"
+  ],
+  "args": {
+    "model": "google/gemma-4-31B-it",
+    "run": "run7kg",
+    "runs_dir": "/workspace/nayan/jspace-horizons/runs",
+    "data_dir": "/workspace/nayan/jspace-horizons/data",
+    "n": "64",
+    "crop_set": "1",
+    "distractors": "0",
+    "questions": "say,category,animal,mc",
+    "heads": "",
+    "layers": "5,11,17,23,29,35,41,47,53,59",
+    "typed": "False"
+  },
+  "model": "google/gemma-4-31B-it",
+  "model_revision": "842da3794eaa0b77d5f08bae87a17459d91ff475",
+  "lens_repo": "neuronpedia/jacobian-lens",
+  "lens_revision": "e166deb5ad540932100ef803c8c9bcc2a5453694",
+  "lens_file": "gemma-4-31b/jlens/Salesforce-wikitext/gemma-4-31B_jacobian_lens.pt",
+  "jpp_file": "gemma-4-31b/jpp/Salesforce-wikitext/gemma-4-31B_jpp_lens.pt",
+  "read_layers": [
+    18,
+    23,
+    28,
+    33,
+    38,
+    43,
+    48,
+    53,
+    58
+  ],
+  "batch": 32,
+  "batch_tokens": 65536,
+  "batch_check": {
+    "max_dp": 0.00027619943968570926,
+    "mean_dlog10rank": 0.04004005461115307,
+    "batch": 32
+  },
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "cpu": "AMD EPYC 9335 32-Core Processor",
+  "cpu_threads": 16,
+  "python": "3.12.3",
+  "torch": "2.8.0+cu128",
+  "transformers": "5.19.0",
+  "flash_linear_attention": "0.5.2",
+  "code": "1b6a3ce4f73f591d49e3a11a06f441f16aca9d60+uncommitted",
+  "date": "2026-10-21T10:03:55",
+  "env": {
+    "HF_HOME": "/workspace/hf"
+  }
+}

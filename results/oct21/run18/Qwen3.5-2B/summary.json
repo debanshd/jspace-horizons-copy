@@ -1,0 +1,358 @@
+{
+  "n": 64,
+  "decision_station": [
+    7,
+    11
+  ],
+  "name_station": [
+    11,
+    15,
+    19
+  ],
+  "predicate": {
+    "animal": " animal",
+    "category": " animal",
+    "set": " a",
+    "say": " object",
+    "yesno": " animal"
+  },
+  "questions": {
+    "animal": {
+      "clean_correct": 0.921875,
+      "clean_ld": [
+        6.611328109416377,
+        5.6424804375096045,
+        7.445605432590305
+      ],
+      "arms": {
+        "all text tokens, decision station": {
+          "correct": [
+            0.515625,
+            0.390625,
+            0.640625
+          ],
+          "cost": [
+            4.917968720792146,
+            3.5976073978506804,
+            6.218896464313181
+          ]
+        },
+        "predicate token only, decision station": {
+          "correct": [
+            0.671875,
+            0.546875,
+            0.78125
+          ],
+          "cost": [
+            3.3144530691180307,
+            2.08203118844452,
+            4.55693358342932
+          ]
+        },
+        "answer position only, decision station": {
+          "correct": [
+            0.921875,
+            0.859375,
+            0.984375
+          ],
+          "cost": [
+            -0.058593793601517064,
+            -0.09765630624482072,
+            -0.017578165891370644
+          ]
+        },
+        "all but the predicate, decision station": {
+          "correct": [
+            0.90625,
+            0.828125,
+            0.96875
+          ],
+          "cost": [
+            1.62304686242544,
+            1.2421874826104045,
+            1.9766113508384078
+          ]
+        },
+        "all text tokens, name station": {
+          "correct": [
+            0.921875,
+            0.859375,
+            0.984375
+          ],
+          "cost": [
+            0.3691406303238409,
+            0.13085942847786783,
+            0.6054686750533534
+          ]
+        },
+        "predicate token only, name station": {
+          "correct": [
+            0.921875,
+            0.859375,
+            0.984375
+          ],
+          "cost": [
+            0.28710945533600807,
+            0.12304699825401429,
+            0.43554694590488624
+          ]
+        },
+        "answer position only, name station": {
+          "correct": [
+            0.921875,
+            0.859375,
+            0.984375
+          ],
+          "cost": [
+            -0.20312500508327958,
+            -0.2695312302837749,
+            -0.13867185561798295
+          ]
+        },
+        "all but the predicate, name station": {
+          "correct": [
+            0.921875,
+            0.859375,
+            0.984375
+          ],
+          "cost": [
+            0.04492185033336682,
+            -0.11914060438274418,
+            0.20312498895323755
+          ]
+        }
+      },
+      "share at the predicate, decision station": 0.6739475700821793,
+      "share at the answer position, decision station": -0.011914226569558022,
+      "share elsewhere, decision station": 0.3300238278384196,
+      "share at the predicate, name station": null,
+      "share at the answer position, name station": null,
+      "share elsewhere, name station": null
+    },
+    "category": {
+      "clean_correct": 0.875,
+      "clean_ld": [
+        6.650990983471274,
+        5.677242053081864,
+        7.6665988378808825
+      ],
+      "arms": {
+        "all text tokens, decision station": {
+          "correct": [
+            0.265625,
+            0.15625,
+            0.375
+          ],
+          "cost": [
+            5.083328813168919,
+            4.638683824985492,
+            5.500648911127791
+          ]
+        },
+        "predicate token only, decision station": {
+          "correct": [
+            0.890625,
+            0.8125,
+            0.953125
+          ],
+          "cost": [
+            1.0698028519982472,
+            0.6921697455240065,
+            1.4574843103262536
+          ]
+        },
+        "answer position only, decision station": {
+          "correct": [
+            0.875,
+            0.796875,
+            0.953125
+          ],
+          "cost": [
+            -0.016701469605322927,
+            -0.04721093510452192,
+            0.014886333744652801
+          ]
+        },
+        "all but the predicate, decision station": {
+          "correct": [
+            0.578125,
+            0.453125,
+            0.703125
+          ],
+          "cost": [
+            3.6963889799590106,
+            3.1021173473427552,
+            4.289071835596404
+          ]
+        },
+        "all text tokens, name station": {
+          "correct": [
+            0.90625,
+            0.828125,
+            0.96875
+          ],
+          "cost": [
+            0.7467872912384337,
+            0.4951744733065425,
+            0.9884755492694238
+          ]
+        },
+        "predicate token only, name station": {
+          "correct": [
+            0.875,
+            0.796875,
+            0.953125
+          ],
+          "cost": [
+            0.1435929085855605,
+            0.07865730472512951,
+            0.2072314682540308
+          ]
+        },
+        "answer position only, name station": {
+          "correct": [
+            0.875,
+            0.796875,
+            0.953125
+          ],
+          "cost": [
+            -0.05337683024117723,
+            -0.11537686958145059,
+            0.012109958138898931
+          ]
+        },
+        "all but the predicate, name station": {
+          "correct": [
+            0.90625,
+            0.828125,
+            0.96875
+          ],
+          "cost": [
+            0.5385385708359536,
+            0.32645255834686393,
+            0.7451551248759638
+          ]
+        }
+      },
+      "share at the predicate, decision station": 0.2104532072028876,
+      "share at the answer position, decision station": -0.003285537925867779,
+      "share elsewhere, decision station": 0.7271591344599057,
+      "share at the predicate, name station": 0.19228086801990618,
+      "share at the answer position, name station": -0.07147527932975377,
+      "share elsewhere, name station": 0.7211405137102278
+    },
+    "say": {
+      "clean_correct": 0.90625,
+      "clean_ld": [
+        9.403416254062904,
+        8.769183073785097,
+        10.066068125106538
+      ],
+      "arms": {
+        "all text tokens, decision station": {
+          "correct": [
+            0.84375,
+            0.75,
+            0.921875
+          ],
+          "cost": [
+            3.1791044189303648,
+            2.8762093319564883,
+            3.495171967240458
+          ]
+        },
+        "predicate token only, decision station": {
+          "correct": [
+            0.90625,
+            0.828125,
+            0.96875
+          ],
+          "cost": [
+            0.0598413698899094,
+            0.03324644806198194,
+            0.08658047439312211
+          ]
+        },
+        "answer position only, decision station": {
+          "correct": [
+            0.90625,
+            0.828125,
+            0.96875
+          ],
+          "cost": [
+            0.1658473442948889,
+            0.12385877758351853,
+            0.20944397989078425
+          ]
+        },
+        "all but the predicate, decision station": {
+          "correct": [
+            0.84375,
+            0.75,
+            0.921875
+          ],
+          "cost": [
+            3.0557507858320605,
+            2.7620179944053236,
+            3.363484884933859
+          ]
+        },
+        "all text tokens, name station": {
+          "correct": [
+            0.796875,
+            0.703125,
+            0.890625
+          ],
+          "cost": [
+            4.918305874307407,
+            4.553259698010516,
+            5.2842953636951275
+          ]
+        },
+        "predicate token only, name station": {
+          "correct": [
+            0.90625,
+            0.828125,
+            0.96875
+          ],
+          "cost": [
+            0.025760351156350225,
+            0.007492365998041351,
+            0.04354855480196419
+          ]
+        },
+        "answer position only, name station": {
+          "correct": [
+            0.96875,
+            0.921875,
+            1.0
+          ],
+          "cost": [
+            2.830419166450156,
+            2.629526680793788,
+            3.0340965624622185
+          ]
+        },
+        "all but the predicate, name station": {
+          "correct": [
+            0.796875,
+            0.703125,
+            0.890625
+          ],
+          "cost": [
+            4.930217385728611,
+            4.568903861422586,
+            5.300560844887514
+          ]
+        }
+      },
+      "share at the predicate, decision station": 0.01882334204991087,
+      "share at the answer position, decision station": 0.05216794494302567,
+      "share elsewhere, decision station": 0.9611986217364299,
+      "share at the predicate, name station": 0.0052376472335563685,
+      "share at the answer position, name station": 0.5754866083534778,
+      "share elsewhere, name station": 1.0024218728410992
+    }
+  },
+  "seconds": 83.38049149513245
+}

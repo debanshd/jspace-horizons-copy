@@ -1,0 +1,212 @@
+{
+  "model": "Qwen3.5-0.8B",
+  "n_rows": 2624,
+  "judge_calls": 71,
+  "judge_failed": 0,
+  "agreement_follows_X": 0.9790396341463414,
+  "disagreements": 55,
+  "horizon_follows_X": 15,
+  "horizon_judge_X": 15,
+  "curves": {
+    "follows_X": {
+      "-1": 0.859375,
+      "3": 0.859375,
+      "7": 0.875,
+      "11": 0.84375,
+      "15": 0.84375,
+      "19": 0.0,
+      "23": 0.0
+    },
+    "judge_X": {
+      "-1": 0.953125,
+      "3": 0.953125,
+      "7": 0.953125,
+      "11": 0.9375,
+      "15": 0.9375,
+      "19": 0.0,
+      "23": 0.0
+    }
+  },
+  "disagreement_examples": [
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 4,
+      "X": "bird",
+      "Z": "car",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 12,
+      "X": "bird",
+      "Z": "car",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 20,
+      "X": "bird",
+      "Z": "airplane",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 44,
+      "X": "bird",
+      "Z": "train",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 60,
+      "X": "bird",
+      "Z": "train",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 63,
+      "X": "train",
+      "Z": "bird",
+      "generation": "locomotive",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 4,
+      "X": "bird",
+      "Z": "car",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 12,
+      "X": "bird",
+      "Z": "car",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 20,
+      "X": "bird",
+      "Z": "airplane",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 44,
+      "X": "bird",
+      "Z": "train",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 60,
+      "X": "bird",
+      "Z": "train",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 63,
+      "X": "train",
+      "Z": "bird",
+      "generation": "locomotive",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 4,
+      "X": "bird",
+      "Z": "car",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 12,
+      "X": "bird",
+      "Z": "car",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 20,
+      "X": "bird",
+      "Z": "airplane",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 44,
+      "X": "bird",
+      "Z": "train",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 60,
+      "X": "bird",
+      "Z": "train",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 11 to 14",
+      "scene": 4,
+      "X": "bird",
+      "Z": "car",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 11 to 14",
+      "scene": 12,
+      "X": "bird",
+      "Z": "car",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 11 to 14",
+      "scene": 20,
+      "X": "bird",
+      "Z": "airplane",
+      "generation": "seagull",
+      "follows_X": false,
+      "judge_X": true
+    }
+  ]
+}

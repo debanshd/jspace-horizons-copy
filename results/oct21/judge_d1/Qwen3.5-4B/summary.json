@@ -1,0 +1,216 @@
+{
+  "model": "Qwen3.5-4B",
+  "n_rows": 3264,
+  "judge_calls": 75,
+  "judge_failed": 0,
+  "agreement_follows_X": 0.9935661764705882,
+  "disagreements": 21,
+  "horizon_follows_X": 19,
+  "horizon_judge_X": 19,
+  "curves": {
+    "follows_X": {
+      "-1": 0.9375,
+      "3": 0.921875,
+      "7": 0.90625,
+      "11": 0.890625,
+      "15": 0.859375,
+      "19": 0.828125,
+      "23": 0.234375,
+      "27": 0.0,
+      "31": 0.0
+    },
+    "judge_X": {
+      "-1": 0.96875,
+      "3": 0.953125,
+      "7": 0.9375,
+      "11": 0.921875,
+      "15": 0.890625,
+      "19": 0.890625,
+      "23": 0.234375,
+      "27": 0.0,
+      "31": 0.0
+    }
+  },
+  "disagreement_examples": [
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 33,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 41,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 33,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 41,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 33,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 41,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 11 to 14",
+      "scene": 33,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 11 to 14",
+      "scene": 41,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 15 to 18",
+      "scene": 33,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 15 to 18",
+      "scene": 41,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 19 to 22",
+      "scene": 27,
+      "X": "airplane",
+      "Z": "dog",
+      "generation": "plane",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 19 to 22",
+      "scene": 33,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 19 to 22",
+      "scene": 41,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 19 to 22",
+      "scene": 47,
+      "X": "cup",
+      "Z": "horse",
+      "generation": "coffee mug",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x4, read layers",
+      "scene": 34,
+      "X": "dog",
+      "Z": "boat",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x8, read layers",
+      "scene": 18,
+      "X": "dog",
+      "Z": "bicycle",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x8, read layers",
+      "scene": 24,
+      "X": "horse",
+      "Z": "clock",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x8, read layers",
+      "scene": 34,
+      "X": "dog",
+      "Z": "boat",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x8, read layers",
+      "scene": 36,
+      "X": "horse",
+      "Z": "clock",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x8, read layers",
+      "scene": 42,
+      "X": "dog",
+      "Z": "car",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    }
+  ]
+}

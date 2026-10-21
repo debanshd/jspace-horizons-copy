@@ -1,0 +1,145 @@
+imageId,qkind,structural,sem,question,reference
+n331357,name,query,rel,What type of animal is the same color as the building next to the mountain?,calf
+n331357,attribute,query,attr,On which side of the picture is the drink?,right
+n331357,decision,verify,attr,Does the mom that is standing look small?,no
+n508733,name,query,rel,What is the food to the right of the coffee cup?,soup
+n508733,attribute,query,attr,What is the color of the coffee cup which is on the table?,white
+n508733,decision,verify,attr,Does the food that is to the right of the coffee cup have light brown color?,yes
+n259002,name,query,rel,Who is watching the soccer player that is kicking the ball?,spectator
+n259002,attribute,query,attr,Which gender is the soccer player that is standing on the grass?,male
+n259002,decision,verify,rel,Is there a sheep above the grass that looks short?,no
+n518912,name,query,rel,What item of furniture is the man standing beside of?,chair
+n518912,attribute,query,attr,On which side of the picture are the white cups?,right
+n518912,decision,choose,rel,Is the old man to the left or to the right of the chair that is to the left of the cups?,left
+n137182,name,query,cat,Who is walking?,girl
+n137182,attribute,query,attr,On which side of the photo is the white boat?,left
+n137182,decision,verify,attr,Is the blue boat on the left side?,yes
+n162148,name,query,rel,Who holds onto the white device?,woman
+n162148,attribute,query,attr,What is the color of the undershirt?,pink
+n162148,decision,verify,attr,Does the shirt have white color?,yes
+n94074,name,query,cat,Which kind of clothing is white?,dress
+n94074,attribute,query,attr,How long is the dress?,long
+n94074,decision,verify,attr,Does the woman to the right of the man appear to be standing?,no
+n513100,name,query,rel,What piece of furniture is to the right of the bird?,chair
+n513100,attribute,query,attr,Which color is the chair to the left of the other chair?,white
+n513100,decision,verify,rel,Are there chairs below the table?,yes
+n475030,name,query,cat,Who is riding?,people
+n475030,attribute,query,attr,What color do the trees that are below the sky have?,green
+n475030,decision,choose,attr,Is the beach sandy or snowy?,sandy
+n489699,name,query,rel,Who is wearing pants?,child
+n489699,attribute,query,attr,What is the color of the helmet?,blue
+n489699,decision,verify,rel,Is the sky above a train?,no
+n280089,name,query,rel,What is leaning against the wall?,artwork
+n280089,attribute,query,attr,On which side of the photo is the bowl?,right
+n280089,decision,verify,rel,Are the mugs to the right of the plastic utensils?,yes
+n412144,name,query,cat,What type of clothing is long?,jeans
+n412144,attribute,query,attr,What is the gender of the person that is holding the video camera?,male
+n412144,decision,verify,rel,Is the skateboarder above the skatepark wearing knee pads?,no
+n363445,name,query,rel,What kind of food is below the carrots?,dessert
+n363445,attribute,query,attr,What is the fork made of?,metal
+n363445,decision,verify,attr,Does the purple thing above the dessert look small?,yes
+n234683,name,query,rel,What device is he holding?,phone
+n234683,attribute,query,attr,On which side is the black device?,left
+n234683,decision,choose,attr,"How does that man look, healthy or unhealthy?",unhealthy
+n477215,name,query,cat,Which kind of animal is small?,birds
+n477215,attribute,query,attr,What material is the sturdy bridge above the river made of?,concrete
+n477215,decision,choose,attr,Is the river wide or is it narrow?,narrow
+n216553,name,query,cat,What animal is it?,horse
+n216553,attribute,query,attr,How big is the bag?,large
+n216553,decision,verify,attr,Is the closed bag on the right side of the image?,yes
+n570181,name,query,rel,Who is wearing a uniform?,catcher
+n570181,attribute,query,attr,What is the black face mask made of?,metal
+n570181,decision,verify,attr,Do the black pants seem to be long?,yes
+n194179,name,query,rel,What is the item of furniture to the left of the person that is sleeping?,chair
+n194179,attribute,query,attr,On which side of the photo is the racket?,left
+n194179,decision,choose,attr,Is the chair that is not full white or black?,white
+n243701,name,query,rel,What is the old woman wearing?,shoe
+n243701,attribute,query,attr,What color is the hair?,blond
+n243701,decision,verify,rel,Are there any girls beside the traffic signal in the top part of the picture?,yes
+n62458,name,query,rel,What is in front of the wall?,motorcycle
+n62458,attribute,query,attr,On which side of the photo are the clay pots?,right
+n62458,decision,choose,attr,"How do the wildflowers that look pink and purple look, short or tall?",tall
+n90944,name,query,rel,Who is wearing a shirt?,people
+n90944,attribute,query,attr,On which side are the people?,left
+n90944,decision,verify,rel,Are the high buildings in front of the trees that are on the sand?,no
+n302387,name,query,rel,What is inside the container made of cardboard?,books
+n302387,attribute,query,attr,Which color is the instrument?,black
+n302387,decision,verify,attr,Is the tall shelf on the left?,yes
+n565418,name,query,cat,What vehicle is it?,car
+n565418,attribute,query,attr,What's the fence made of?,wood
+n565418,decision,verify,rel,Do you see a fence in front of the trees near the sign?,yes
+n179136,name,query,cat,Who is standing?,people
+n179136,attribute,query,attr,What are the bleachers made of?,wood
+n179136,decision,verify,rel,Is the surfer that looks wet wearing a wetsuit?,yes
+n278453,name,query,cat,What kind of clothing is tight?,jeans
+n278453,attribute,query,attr,Which material was used to make the white plate?,porcelain
+n278453,decision,verify,rel,Is the mustard on the cooked meat?,yes
+n160664,name,query,rel,Who is staring at the giraffe?,woman
+n160664,attribute,query,attr,On which side is the young person?,right
+n160664,decision,verify,rel,Are there giraffes in front of the forest that is not sparse?,yes
+n414992,name,query,rel,What is the airplane flying above?,ocean
+n414992,attribute,query,attr,What is the man that is happy doing?,playing
+n414992,decision,verify,attr,Is the shirt irregular?,no
+n181210,name,query,cat,What is the name of the food that is light brown?,bread
+n181210,attribute,query,attr,On which side of the picture is the orange?,left
+n181210,decision,verify,rel,Are there peaches in front of the cup?,no
+n162108,name,query,cat,What is the name of the wooden piece of furniture?,cabinet
+n162108,attribute,query,attr,Which side is the toilet paper on?,left
+n162108,decision,verify,attr,Do the towels to the right of the shower curtain look colorful?,yes
+n49438,name,query,cat,What kind of furniture is small?,bed
+n49438,attribute,query,attr,What color is that dresser?,green
+n49438,decision,verify,rel,Are there any boys to the right of the tall dresser near the bed?,yes
+n449058,name,query,rel,Who is wearing the helmet?,policeman
+n449058,attribute,query,attr,What color is the motorbike the person is riding?,silver
+n449058,decision,verify,obj,Do you see door that is not closed?,no
+n274905,name,query,rel,Who do you think is wearing a hat?,player
+n274905,attribute,query,attr,What color is the metal fence?,silver
+n274905,decision,verify,attr,Does the hat that is not closed look Adidas?,yes
+n326988,name,query,cat,What pieces of furniture are wooden?,cabinets
+n326988,attribute,query,attr,On which side of the photo are the shelves?,left
+n326988,decision,verify,attr,Does the person in front of the cabinets have brunette color?,yes
+n83784,name,query,rel,What does the cat sit atop?,chair
+n83784,attribute,query,attr,On which side of the photo is the small side table?,left
+n83784,decision,verify,rel,Does the black and white cat sit atop the chair?,yes
+n67005,name,query,cat,What piece of furniture is it?,bed
+n67005,attribute,query,attr,What is the mirror made of?,glass
+n67005,decision,choose,attr,"What color are the denim jeans, blue or black?",blue
+n403734,name,query,rel,What's lying next to the ipod?,notebook
+n403734,attribute,query,attr,On which side is the cloth bag?,right
+n403734,decision,choose,attr,Is the bottle to the left of the purse made of plastic or glass?,plastic
+n398257,name,query,rel,What kind of furniture is above the chair?,desk
+n398257,attribute,query,attr,Which side of the image is the rug on?,left
+n398257,decision,verify,rel,Is the computer monitor above a Wii controller?,no
+n312206,name,query,cat,Who is sitting?,woman
+n312206,attribute,query,attr,Which shape is the packet?,rectangular
+n312206,decision,verify,attr,Is the woman Asian?,no
+n472825,name,query,rel,What is the skateboarder that is not female wearing?,jeans
+n472825,attribute,query,attr,What is the gender of the skateboarder to the right of the lamp?,female
+n472825,decision,verify,rel,Is the staircase below a snowboarder?,no
+n117888,name,query,rel,What does the sign hang on?,fence
+n117888,attribute,query,attr,What is the color of the sand that is not thick?,beige
+n117888,decision,verify,attr,Is the athlete blond?,yes
+n494677,name,query,cat,What is the large animal?,elephant
+n494677,attribute,query,attr,What color is the street?,brown
+n494677,decision,verify,rel,Is there any elephant on the field?,yes
+n579928,name,query,rel,What's on the grass?,van
+n579928,attribute,query,attr,On which side is the large vehicle?,left
+n579928,decision,choose,attr,Is the grass wet or dry?,dry
+n511913,name,query,rel,Who wears a shirt?,man
+n511913,attribute,query,attr,How large are the books to the right of the wine bottle?,small
+n511913,decision,verify,attr,Does the man look young?,no
+n398429,name,query,rel,What is located on top of the oven?,stove
+n398429,attribute,query,attr,Which color is the bench?,red
+n398429,decision,verify,attr,Is the microwave on the right of the image?,no
+n200907,name,query,rel,The pine trees are growing behind what?,fence
+n200907,attribute,query,attr,What color is the shirt?,blue
+n200907,decision,verify,rel,Is the person that is not short holding a racket?,yes
+n406334,name,query,rel,What is the bus in front of?,buildings
+n406334,attribute,query,attr,On which side of the image are the metal cars?,right
+n406334,decision,verify,rel,Is there a bus on the concrete sidewalk?,yes
+n153293,name,query,rel,What are the pieces of furniture that the folded towels are sitting inside of?,shelves
+n153293,attribute,query,attr,What is the sink made of?,porcelain
+n153293,decision,choose,attr,Is that toilet open or closed?,closed
+n166008,name,query,rel,Who is eating the sandwich?,man
+n166008,attribute,query,attr,What is the plate made of?,porcelain
+n166008,decision,verify,attr,Do the customers appear to be waiting?,yes

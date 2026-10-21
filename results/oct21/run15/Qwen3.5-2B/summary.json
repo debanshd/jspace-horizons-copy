@@ -1,0 +1,287 @@
+{
+  "n": 64,
+  "groups": [
+    [
+      11,
+      15,
+      19
+    ],
+    [
+      7,
+      11,
+      15,
+      19
+    ]
+  ],
+  "heads": 8,
+  "head_dim": 256,
+  "question": "Question: what is the object in slot {s}, and did you see it in the picture or read it in the note? Reply with two words only, the object's name and then seen or read, like 'cup, seen' or 'cup, read'.",
+  "arms": {
+    "q": {
+      "clean": {
+        "names_X": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_Z": [
+          0.75,
+          0.640625,
+          0.84375
+        ],
+        "names_W": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "seen": [
+          0.765625,
+          0.65625,
+          0.859375
+        ],
+        "read": [
+          0.234375,
+          0.140625,
+          0.34375
+        ],
+        "seen_given_X": null,
+        "read_given_X": null
+      },
+      "donor": {
+        "names_X": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "names_Z": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_W": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "seen": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen_given_X": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read_given_X": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "all heads of 11+15+19": {
+        "names_X": [
+          0.953125,
+          0.890625,
+          1.0
+        ],
+        "names_Z": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_W": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "seen": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen_given_X": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read_given_X": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "all heads of 7+11+15+19": {
+        "names_X": [
+          0.96875,
+          0.921875,
+          1.0
+        ],
+        "names_Z": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_W": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "seen": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen_given_X": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read_given_X": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    "p": {
+      "clean": {
+        "names_X": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_Z": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_W": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen_given_X": null,
+        "read_given_X": null
+      },
+      "donor": {
+        "names_X": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_Z": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_W": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen_given_X": null,
+        "read_given_X": null
+      },
+      "all heads of 11+15+19": {
+        "names_X": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_Z": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_W": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen_given_X": null,
+        "read_given_X": null
+      },
+      "all heads of 7+11+15+19": {
+        "names_X": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_Z": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "names_W": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "read": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "seen_given_X": null,
+        "read_given_X": null
+      }
+    }
+  },
+  "gates": {
+    "clean_Z_seen": false,
+    "clean_W_read": true,
+    "donor_X_read": true
+  },
+  "seconds": 46.10066056251526
+}

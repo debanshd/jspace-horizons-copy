@@ -1,0 +1,428 @@
+{
+  "n": 64,
+  "groups": [
+    [
+      7,
+      11
+    ],
+    [
+      15,
+      19,
+      23
+    ],
+    [
+      7,
+      11,
+      15,
+      19,
+      23
+    ]
+  ],
+  "heads": 16,
+  "question": "Question: what is the object in slot {s}, and did you see it in the picture or read it in the note? Reply with two words only, the object's name and then seen or read, like 'cup, seen' or 'cup, read'.",
+  "displacement": {
+    "A": {
+      "7": 0.20044482359662652,
+      "11": 0.2811304328497499,
+      "15": 0.3290043892338872,
+      "19": 0.2875670646317303,
+      "23": 0.23826595512218773
+    },
+    "B": {
+      "7": 0.09086262807250023,
+      "11": 0.13029595999978483,
+      "15": 0.1570838171755895,
+      "19": 0.13905509817413986,
+      "23": 0.12505252938717604
+    },
+    "N": {
+      "7": 0.2004448228981346,
+      "11": 0.2811304328497499,
+      "15": 0.32900438783690333,
+      "19": 0.2875670613721013,
+      "23": 0.23826595395803452
+    }
+  },
+  "arms": {
+    "-: clean": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "read": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "logp_Z": [
+        -0.010902000796249922,
+        -0.021761115486197014,
+        -0.0033584781939907777
+      ]
+    },
+    "A: donor alone": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "logp_Z": [
+        -0.0038634985858152504,
+        -0.00482337537443982,
+        -0.002985166102757832
+      ]
+    },
+    "B: donor alone": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "read": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "logp_Z": [
+        -0.009129630767802155,
+        -0.016424361667657195,
+        -0.003866478249778993
+      ]
+    },
+    "C: all heads of 7+11+15+19+23": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "read": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "logp_Z": [
+        -0.010902000796249922,
+        -0.021761115486197014,
+        -0.0033584781939907777
+      ]
+    },
+    "A: all heads of 7+11": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        0.640625,
+        0.53125,
+        0.765625
+      ],
+      "read": [
+        0.359375,
+        0.234375,
+        0.46875
+      ],
+      "logp_Z": [
+        -0.013355698006307648,
+        -0.025920505539579607,
+        -0.004912555107625853
+      ]
+    },
+    "A: all heads of 15+19+23": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        0.75,
+        0.640625,
+        0.84375
+      ],
+      "read": [
+        0.25,
+        0.15625,
+        0.359375
+      ],
+      "logp_Z": [
+        -0.007289887847946375,
+        -0.009361006945391636,
+        -0.005391379999946367
+      ]
+    },
+    "A: all heads of 7+11+15+19+23": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "logp_Z": [
+        -0.007272060925970436,
+        -0.008948092396758511,
+        -0.005692401586611596
+      ]
+    },
+    "B: all heads of 7+11": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "read": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "logp_Z": [
+        -0.01208577949842038,
+        -0.024984322991679166,
+        -0.0032785773492321375
+      ]
+    },
+    "B: all heads of 15+19+23": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "read": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "logp_Z": [
+        -0.005089215431326011,
+        -0.007379503342406224,
+        -0.0030641224782129947
+      ]
+    },
+    "B: all heads of 7+11+15+19+23": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "read": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "logp_Z": [
+        -0.005065316148829879,
+        -0.007389183904138008,
+        -0.0030852061988525755
+      ]
+    },
+    "N: all heads of 7+11": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "read": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "logp_Z": [
+        -0.010603213884223806,
+        -0.020532746396747827,
+        -0.004154508252941016
+      ]
+    },
+    "N: all heads of 15+19+23": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "read": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "logp_Z": [
+        -0.013720228431793657,
+        -0.02886230099596787,
+        -0.004141779072085685
+      ]
+    },
+    "N: all heads of 7+11+15+19+23": {
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        0.984375,
+        0.953125,
+        1.0
+      ],
+      "read": [
+        0.015625,
+        0.0,
+        0.046875
+      ],
+      "logp_Z": [
+        -0.014580157810769379,
+        -0.029380966577207346,
+        -0.004572158142161702
+      ]
+    }
+  },
+  "paired": {
+    "A: donor alone": {
+      "answer_held_Z": 64,
+      "held_report_read": 1.0,
+      "held_seen_to_read": 64,
+      "held_read_to_seen": 0,
+      "same_as_clean": 0.0
+    },
+    "B: donor alone": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "same_as_clean": 1.0
+    },
+    "C: all heads of 7+11+15+19+23": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "same_as_clean": 1.0
+    },
+    "A: all heads of 7+11": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.359375,
+      "held_seen_to_read": 23,
+      "held_read_to_seen": 0,
+      "same_as_clean": 0.640625
+    },
+    "A: all heads of 15+19+23": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.25,
+      "held_seen_to_read": 16,
+      "held_read_to_seen": 0,
+      "same_as_clean": 0.75
+    },
+    "A: all heads of 7+11+15+19+23": {
+      "answer_held_Z": 64,
+      "held_report_read": 1.0,
+      "held_seen_to_read": 64,
+      "held_read_to_seen": 0,
+      "same_as_clean": 0.0
+    },
+    "B: all heads of 7+11": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "same_as_clean": 1.0
+    },
+    "B: all heads of 15+19+23": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "same_as_clean": 1.0
+    },
+    "B: all heads of 7+11+15+19+23": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "same_as_clean": 1.0
+    },
+    "N: all heads of 7+11": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "same_as_clean": 1.0
+    },
+    "N: all heads of 15+19+23": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "same_as_clean": 1.0
+    },
+    "N: all heads of 7+11+15+19+23": {
+      "answer_held_Z": 64,
+      "held_report_read": 0.015625,
+      "held_seen_to_read": 1,
+      "held_read_to_seen": 0,
+      "same_as_clean": 0.984375
+    }
+  },
+  "gates": {
+    "clean_Z_seen": true,
+    "donor_A_Z_read": true,
+    "donor_B_Z_seen": true,
+    "null_patch_unchanged": true,
+    "B_matched": false
+  },
+  "seconds": 52.19766139984131
+}

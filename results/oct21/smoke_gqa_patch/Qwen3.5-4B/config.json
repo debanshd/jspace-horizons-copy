@@ -1,0 +1,58 @@
+{
+  "experiment": "gqa_knockout",
+  "argv": [
+    "experiments/gqa_knockout.py",
+    "--mode",
+    "patch",
+    "--n-images",
+    "3",
+    "--run",
+    "smoke_gqa_patch"
+  ],
+  "args": {
+    "model": "Qwen/Qwen3.5-4B",
+    "run": "smoke_gqa_patch",
+    "runs_dir": "/workspace/nayan/jspace-horizons/runs",
+    "data_dir": "/workspace/nayan/jspace-horizons/data",
+    "n_images": "3",
+    "mode": "patch"
+  },
+  "model": "Qwen/Qwen3.5-4B",
+  "model_revision": "851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
+  "lens_repo": "neuronpedia/jacobian-lens",
+  "lens_revision": "e166deb5ad540932100ef803c8c9bcc2a5453694",
+  "lens_file": "qwen3.5-4b/jlens/Salesforce-wikitext/Qwen3.5-4B_jacobian_lens_n1000.pt",
+  "jpp_file": null,
+  "read_layers": [
+    9,
+    11,
+    13,
+    15,
+    17,
+    19,
+    21,
+    23,
+    25,
+    27,
+    29
+  ],
+  "batch": 96,
+  "batch_tokens": 65536,
+  "batch_check": {
+    "max_dp": 0.014031159483808356,
+    "mean_dlog10rank": 0.025907905531401394,
+    "batch": 96
+  },
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "cpu": "AMD EPYC 9335 32-Core Processor",
+  "cpu_threads": 16,
+  "python": "3.12.3",
+  "torch": "2.8.0+cu128",
+  "transformers": "5.19.0",
+  "flash_linear_attention": "0.5.2",
+  "code": "1b6a3ce4f73f591d49e3a11a06f441f16aca9d60+uncommitted",
+  "date": "2026-10-21T04:50:55",
+  "env": {
+    "HF_HOME": "/workspace/hf"
+  }
+}

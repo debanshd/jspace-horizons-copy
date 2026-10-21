@@ -1,0 +1,15 @@
+model,n_layers,cls,questions,half_depth,width,width_layers,peak_layer_share
+Qwen3.5-0.8B,24,decisions,2,0.426,0.279,6.7,0.82
+Qwen3.5-0.8B,24,copies,1,0.765,0.394,9.5,0.53
+Qwen3.5-2B,24,decisions,4,0.387,0.229,5.5,0.59
+Qwen3.5-2B,24,copies,1,0.749,0.403,9.7,0.5
+Qwen3.5-4B,32,decisions,4,0.409,0.284,9.1,0.33
+Qwen3.5-4B,32,copies,2,0.615,0.433,13.9,0.27
+Qwen3.5-9B,32,decisions,4,0.45,0.262,8.4,0.45
+Qwen3.5-9B,32,copies,1,0.588,0.35,11.2,0.23
+Qwen3.5-27B,64,decisions,4,0.561,0.243,15.5,0.09
+Qwen3.5-27B,64,copies,2,0.589,0.258,16.5,0.11
+gemma-4-E4B-it,42,decisions,3,0.413,0.12,5.0,0.37
+gemma-4-E4B-it,42,copies,1,0.501,0.304,12.8,0.45
+gemma-4-31B-it,60,decisions,1,0.419,0.118,7.1,0.01
+gemma-4-31B-it,60,copies,1,0.504,0.217,13.0,0.01

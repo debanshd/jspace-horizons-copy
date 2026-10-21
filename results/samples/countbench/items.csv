@@ -1,0 +1,801 @@
+item,prompt,reference,group,level
+0,"How many headsets are there in the image?
+Answer with a number.",10,count 7 to 10,10
+1,"How many light bulbs are there in the image?
+Answer with a number.",3,count 2 to 4,3
+2,"How many prints are there in the image?
+Answer with a number.",3,count 2 to 4,3
+3,"How many arrows are there in the image?
+Answer with a number.",8,count 7 to 10,8
+4,"How many spoons are there in the image?
+Answer with a number.",6,count 5 to 6,6
+5,"How many girls are there in the image?
+Answer with a number.",2,count 2 to 4,2
+6,"How many parrots are there in the image?
+Answer with a number.",4,count 2 to 4,4
+9,"How many birdhouse patterns are there in the image?
+Answer with a number.",9,count 7 to 10,9
+10,"How many sofas are there in the image?
+Answer with a number.",2,count 2 to 4,2
+11,"How many waterlilies are there in the image?
+Answer with a number.",3,count 2 to 4,3
+12,"How many chairs are there in the image?
+Answer with a number.",8,count 7 to 10,8
+13,"How many eggs are there in the image?
+Answer with a number.",8,count 7 to 10,8
+15,"How many people are there in the image?
+Answer with a number.",2,count 2 to 4,2
+16,"How many outfits are there in the image?
+Answer with a number.",4,count 2 to 4,4
+17,"How many pigs are there in the image?
+Answer with a number.",3,count 2 to 4,3
+18,"How many cars are there in the image?
+Answer with a number.",5,count 5 to 6,5
+19,"How many aum symbols are there in the image?
+Answer with a number.",9,count 7 to 10,9
+20,"How many men are there in the image?
+Answer with a number.",3,count 2 to 4,3
+21,"How many chairs are there in the image?
+Answer with a number.",6,count 5 to 6,6
+22,"How many buttons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+23,"How many rackets are there in the image?
+Answer with a number.",2,count 2 to 4,2
+24,"How many pots are there in the image?
+Answer with a number.",4,count 2 to 4,4
+25,"How many stars are there in the image?
+Answer with a number.",5,count 5 to 6,5
+26,"How many chairs are there in the image?
+Answer with a number.",10,count 7 to 10,10
+29,"How many kids are there in the image?
+Answer with a number.",5,count 5 to 6,5
+30,"How many moth silhouettes are there in the image?
+Answer with a number.",2,count 2 to 4,2
+31,"How many pumpkin candles are there in the image?
+Answer with a number.",3,count 2 to 4,3
+33,"How many text boxes are there in the image?
+Answer with a number.",5,count 5 to 6,5
+35,"How many photos are there in the image?
+Answer with a number.",4,count 2 to 4,4
+36,"How many forks are there in the image?
+Answer with a number.",4,count 2 to 4,4
+37,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+38,"How many bags are there in the image?
+Answer with a number.",7,count 7 to 10,7
+39,"How many couples are there in the image?
+Answer with a number.",3,count 2 to 4,3
+40,"How many weights are there in the image?
+Answer with a number.",2,count 2 to 4,2
+41,"How many women are there in the image?
+Answer with a number.",3,count 2 to 4,3
+42,"How many fish are there in the image?
+Answer with a number.",5,count 5 to 6,5
+43,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+44,"How many clocks are there in the image?
+Answer with a number.",8,count 7 to 10,8
+45,"How many banners are there in the image?
+Answer with a number.",4,count 2 to 4,4
+46,"How many chests are there in the image?
+Answer with a number.",6,count 5 to 6,6
+47,"How many stars are there in the image?
+Answer with a number.",2,count 2 to 4,2
+48,"How many globe icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+49,"How many men are there in the image?
+Answer with a number.",5,count 5 to 6,5
+50,"How many snails are there in the image?
+Answer with a number.",4,count 2 to 4,4
+51,"How many crochet potholders are there in the image?
+Answer with a number.",4,count 2 to 4,4
+52,"How many christmas cards are there in the image?
+Answer with a number.",10,count 7 to 10,10
+53,"How many double beds are there in the image?
+Answer with a number.",2,count 2 to 4,2
+54,"How many baseball players are there in the image?
+Answer with a number.",9,count 7 to 10,9
+55,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+56,"How many symbols are there in the image?
+Answer with a number.",9,count 7 to 10,9
+57,"How many cars are there in the image?
+Answer with a number.",4,count 2 to 4,4
+58,"How many trees are there in the image?
+Answer with a number.",2,count 2 to 4,2
+59,"How many people are there in the image?
+Answer with a number.",3,count 2 to 4,3
+60,"How many tree trunk cuts are there in the image?
+Answer with a number.",4,count 2 to 4,4
+61,"How many women are there in the image?
+Answer with a number.",6,count 5 to 6,6
+62,"How many chairs are there in the image?
+Answer with a number.",10,count 7 to 10,10
+63,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+64,"How many banners are there in the image?
+Answer with a number.",2,count 2 to 4,2
+65,"How many people are there in the image?
+Answer with a number.",8,count 7 to 10,8
+66,"How many individual earrings are there in the image?
+Answer with a number.",6,count 5 to 6,6
+67,"How many men are there in the image?
+Answer with a number.",10,count 7 to 10,10
+68,"How many tomatoes are there in the image?
+Answer with a number.",3,count 2 to 4,3
+70,"How many ice creams are there in the image?
+Answer with a number.",8,count 7 to 10,8
+71,"How many plates are there in the image?
+Answer with a number.",6,count 5 to 6,6
+72,"How many sumo wrestlers are there in the image?
+Answer with a number.",2,count 2 to 4,2
+73,"How many compositions are there in the image?
+Answer with a number.",4,count 2 to 4,4
+74,"How many PVC vinyls are there in the image?
+Answer with a number.",6,count 5 to 6,6
+76,"How many people are there in the image?
+Answer with a number.",8,count 7 to 10,8
+77,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+78,"How many bottles are there in the image?
+Answer with a number.",7,count 7 to 10,7
+79,"How many mirrors are there in the image?
+Answer with a number.",2,count 2 to 4,2
+80,"How many posters are there in the image?
+Answer with a number.",10,count 7 to 10,10
+82,"How many people are there in the image?
+Answer with a number.",5,count 5 to 6,5
+83,"How many kittens are there in the image?
+Answer with a number.",5,count 5 to 6,5
+84,"How many people are there in the image?
+Answer with a number.",7,count 7 to 10,7
+88,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+89,"How many cats are there in the image?
+Answer with a number.",6,count 5 to 6,6
+90,"How many wallpaper variants are there in the image?
+Answer with a number.",4,count 2 to 4,4
+91,"How many nail polishes are there in the image?
+Answer with a number.",5,count 5 to 6,5
+92,"How many bumble bees are there in the image?
+Answer with a number.",4,count 2 to 4,4
+93,"How many tickets are there in the image?
+Answer with a number.",8,count 7 to 10,8
+95,"How many wine bottles are there in the image?
+Answer with a number.",2,count 2 to 4,2
+97,"How many owls are there in the image?
+Answer with a number.",4,count 2 to 4,4
+98,"How many candles are there in the image?
+Answer with a number.",10,count 7 to 10,10
+99,"How many flower pots are there in the image?
+Answer with a number.",6,count 5 to 6,6
+101,"How many placemats are there in the image?
+Answer with a number.",2,count 2 to 4,2
+102,"How many women are there in the image?
+Answer with a number.",6,count 5 to 6,6
+103,"How many bottles are there in the image?
+Answer with a number.",7,count 7 to 10,7
+104,"How many cars are there in the image?
+Answer with a number.",8,count 7 to 10,8
+105,"How many men are there in the image?
+Answer with a number.",5,count 5 to 6,5
+106,"How many candles are there in the image?
+Answer with a number.",3,count 2 to 4,3
+109,"How many icons are there in the image?
+Answer with a number.",6,count 5 to 6,6
+111,"How many bicycles are there in the image?
+Answer with a number.",9,count 7 to 10,9
+112,"How many stickers are there in the image?
+Answer with a number.",9,count 7 to 10,9
+113,"How many symbols are there in the image?
+Answer with a number.",9,count 7 to 10,9
+114,"How many stamps are there in the image?
+Answer with a number.",6,count 5 to 6,6
+115,"How many pumpkins are there in the image?
+Answer with a number.",6,count 5 to 6,6
+117,"How many chairs are there in the image?
+Answer with a number.",6,count 5 to 6,6
+118,"How many glasses are there in the image?
+Answer with a number.",4,count 2 to 4,4
+121,"How many gears are there in the image?
+Answer with a number.",3,count 2 to 4,3
+123,"How many crip packages are there in the image?
+Answer with a number.",4,count 2 to 4,4
+124,"How many bridesmaids are there in the image?
+Answer with a number.",8,count 7 to 10,8
+125,"How many apples are there in the image?
+Answer with a number.",7,count 7 to 10,7
+126,"How many bowls are there in the image?
+Answer with a number.",4,count 2 to 4,4
+127,"How many women are there in the image?
+Answer with a number.",2,count 2 to 4,2
+129,"How many warning signs are there in the image?
+Answer with a number.",7,count 7 to 10,7
+130,"How many children are there in the image?
+Answer with a number.",3,count 2 to 4,3
+131,"How many cyclists are there in the image?
+Answer with a number.",4,count 2 to 4,4
+132,"How many women are there in the image?
+Answer with a number.",3,count 2 to 4,3
+133,"How many chairs are there in the image?
+Answer with a number.",2,count 2 to 4,2
+134,"How many giraffes are there in the image?
+Answer with a number.",10,count 7 to 10,10
+135,"How many men are there in the image?
+Answer with a number.",5,count 5 to 6,5
+136,"How many male nurses are there in the image?
+Answer with a number.",6,count 5 to 6,6
+137,"How many people are there in the image?
+Answer with a number.",10,count 7 to 10,10
+140,"How many apples are there in the image?
+Answer with a number.",7,count 7 to 10,7
+141,"How many smartphones are there in the image?
+Answer with a number.",5,count 5 to 6,5
+142,"How many roses are there in the image?
+Answer with a number.",9,count 7 to 10,9
+143,"How many people are there in the image?
+Answer with a number.",2,count 2 to 4,2
+145,"How many guitars are there in the image?
+Answer with a number.",3,count 2 to 4,3
+147,"How many people are there in the image?
+Answer with a number.",7,count 7 to 10,7
+149,"How many people are there in the image?
+Answer with a number.",5,count 5 to 6,5
+150,"How many symbols are there in the image?
+Answer with a number.",9,count 7 to 10,9
+151,"How many chairs are there in the image?
+Answer with a number.",5,count 5 to 6,5
+152,"How many pot holders are there in the image?
+Answer with a number.",3,count 2 to 4,3
+153,"How many stamps are there in the image?
+Answer with a number.",6,count 5 to 6,6
+154,"How many bookmarks are there in the image?
+Answer with a number.",4,count 2 to 4,4
+155,"How many girls are there in the image?
+Answer with a number.",3,count 2 to 4,3
+156,"How many labels are there in the image?
+Answer with a number.",9,count 7 to 10,9
+157,"How many mandalas are there in the image?
+Answer with a number.",9,count 7 to 10,9
+158,"How many silhouettes are there in the image?
+Answer with a number.",6,count 5 to 6,6
+159,"How many peacocks are there in the image?
+Answer with a number.",2,count 2 to 4,2
+161,"How many children are there in the image?
+Answer with a number.",5,count 5 to 6,5
+163,"How many symbols are there in the image?
+Answer with a number.",9,count 7 to 10,9
+164,"How many canvases are there in the image?
+Answer with a number.",4,count 2 to 4,4
+165,"How many cards are there in the image?
+Answer with a number.",4,count 2 to 4,4
+166,"How many bell pepper halves are there in the image?
+Answer with a number.",8,count 7 to 10,8
+168,"How many people are there in the image?
+Answer with a number.",3,count 2 to 4,3
+170,"How many leggings are there in the image?
+Answer with a number.",2,count 2 to 4,2
+171,"How many medals are there in the image?
+Answer with a number.",3,count 2 to 4,3
+172,"How many patterns are there in the image?
+Answer with a number.",10,count 7 to 10,10
+173,"How many women are there in the image?
+Answer with a number.",6,count 5 to 6,6
+176,"How many people are there in the image?
+Answer with a number.",7,count 7 to 10,7
+177,"How many backgrounds are there in the image?
+Answer with a number.",3,count 2 to 4,3
+178,"How many images of dogs are there in the image?
+Answer with a number.",7,count 7 to 10,7
+179,"How many broadheads are there in the image?
+Answer with a number.",3,count 2 to 4,3
+180,"How many figurines are there in the image?
+Answer with a number.",8,count 7 to 10,8
+181,"How many candles are there in the image?
+Answer with a number.",6,count 5 to 6,6
+182,"How many petals does each flower have in this image?
+Answer with a number.",5,count 5 to 6,5
+183,"How many men are there in the image?
+Answer with a number.",2,count 2 to 4,2
+184,"How many frames are there in the image?
+Answer with a number.",3,count 2 to 4,3
+185,"How many animals are there in the image?
+Answer with a number.",6,count 5 to 6,6
+186,"How many people are there in the image?
+Answer with a number.",5,count 5 to 6,5
+187,"How many cats are there in the image?
+Answer with a number.",6,count 5 to 6,6
+189,"How many spoons are there in the image?
+Answer with a number.",5,count 5 to 6,5
+190,"How many people are there in the image?
+Answer with a number.",8,count 7 to 10,8
+191,"How many people are there in the image?
+Answer with a number.",4,count 2 to 4,4
+192,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+193,"How many people are there in the image?
+Answer with a number.",7,count 7 to 10,7
+194,"How many planes are there in the image?
+Answer with a number.",5,count 5 to 6,5
+195,"How many cats are there in the image?
+Answer with a number.",2,count 2 to 4,2
+196,"How many sketches are there in the image?
+Answer with a number.",4,count 2 to 4,4
+197,"How many trees are there in the image?
+Answer with a number.",6,count 5 to 6,6
+199,"How many figurines are there in the image?
+Answer with a number.",8,count 7 to 10,8
+200,"How many napkins are there in the image?
+Answer with a number.",4,count 2 to 4,4
+201,"How many dogs are there in the image?
+Answer with a number.",3,count 2 to 4,3
+202,"How many kids are there in the image?
+Answer with a number.",2,count 2 to 4,2
+203,"How many hearts are there in the image?
+Answer with a number.",4,count 2 to 4,4
+204,"How many apples are there in the image?
+Answer with a number.",8,count 7 to 10,8
+207,"How many books are there in the image?
+Answer with a number.",10,count 7 to 10,10
+208,"How many women are there in the image?
+Answer with a number.",6,count 5 to 6,6
+209,"How many sofas are there in the image?
+Answer with a number.",6,count 5 to 6,6
+211,"How many girls are there in the image?
+Answer with a number.",4,count 2 to 4,4
+212,"How many sketches are there in the image?
+Answer with a number.",6,count 5 to 6,6
+213,"How many men are there in the image?
+Answer with a number.",6,count 5 to 6,6
+214,"How many moons are there in the image?
+Answer with a number.",7,count 7 to 10,7
+216,"How many cylinders are there in the image?
+Answer with a number.",5,count 5 to 6,5
+217,"How many silhouettes of couples are there in the image?
+Answer with a number.",9,count 7 to 10,9
+218,"How many people are there in the image?
+Answer with a number.",2,count 2 to 4,2
+219,"How many dogs are there in the image?
+Answer with a number.",4,count 2 to 4,4
+220,"How many people on stage are there in the image?
+Answer with a number.",10,count 7 to 10,10
+221,"How many lambs are there in the image?
+Answer with a number.",4,count 2 to 4,4
+222,"How many violins are there in the image?
+Answer with a number.",3,count 2 to 4,3
+223,"How many armchairs are there in the image?
+Answer with a number.",4,count 2 to 4,4
+224,"How many silhouettes are there in the image?
+Answer with a number.",10,count 7 to 10,10
+226,"How many photos are there in the image?
+Answer with a number.",9,count 7 to 10,9
+227,"How many chairs are there in the image?
+Answer with a number.",8,count 7 to 10,8
+228,"How many figurines are there in the image?
+Answer with a number.",5,count 5 to 6,5
+230,"How many symbols are there in the image?
+Answer with a number.",9,count 7 to 10,9
+231,"How many glasses are there in the image?
+Answer with a number.",3,count 2 to 4,3
+232,"How many sinks are there in the image?
+Answer with a number.",2,count 2 to 4,2
+233,"How many women are there in the image?
+Answer with a number.",5,count 5 to 6,5
+234,"How many buildings are there in the image?
+Answer with a number.",7,count 7 to 10,7
+235,"How many flyers are there in the image?
+Answer with a number.",8,count 7 to 10,8
+238,"How many stickers are there in the image?
+Answer with a number.",6,count 5 to 6,6
+240,"How many bowls are there in the image?
+Answer with a number.",5,count 5 to 6,5
+242,"How many posters are there in the image?
+Answer with a number.",6,count 5 to 6,6
+243,"How many cards are there in the image?
+Answer with a number.",10,count 7 to 10,10
+244,"How many portraits are there in the image?
+Answer with a number.",5,count 5 to 6,5
+246,"How many glass windows are there in the image?
+Answer with a number.",8,count 7 to 10,8
+247,"How many people are there in the image?
+Answer with a number.",3,count 2 to 4,3
+248,"How many baskets are there in the image?
+Answer with a number.",8,count 7 to 10,8
+249,"How many tulips are there in the image?
+Answer with a number.",7,count 7 to 10,7
+250,"How many bottles are there in the image?
+Answer with a number.",5,count 5 to 6,5
+251,"How many stuffed animals are there in the image?
+Answer with a number.",3,count 2 to 4,3
+252,"How many keychains are there in the image?
+Answer with a number.",8,count 7 to 10,8
+253,"How many photos are there in the image?
+Answer with a number.",9,count 7 to 10,9
+255,"How many adults are there in the image?
+Answer with a number.",2,count 2 to 4,2
+256,"How many tulips are there in the image?
+Answer with a number.",3,count 2 to 4,3
+257,"How many frames are there in the image?
+Answer with a number.",9,count 7 to 10,9
+258,"How many strawberries are there in the image?
+Answer with a number.",5,count 5 to 6,5
+259,"How many cocktails are there in the image?
+Answer with a number.",3,count 2 to 4,3
+260,"How many men are there in the image?
+Answer with a number.",6,count 5 to 6,6
+261,"How many wineglasses are there in the image?
+Answer with a number.",2,count 2 to 4,2
+264,"How many zebras are there in the image?
+Answer with a number.",2,count 2 to 4,2
+265,"How many paint brushes are there in the image?
+Answer with a number.",7,count 7 to 10,7
+266,"How many prints are there in the image?
+Answer with a number.",9,count 7 to 10,9
+267,"How many glasses are there in the image?
+Answer with a number.",8,count 7 to 10,8
+268,"How many sunglasses are there in the image?
+Answer with a number.",8,count 7 to 10,8
+269,"How many banners are there in the image?
+Answer with a number.",3,count 2 to 4,3
+270,"How many bottle caps are there in the image?
+Answer with a number.",7,count 7 to 10,7
+271,"How many prints are there in the image?
+Answer with a number.",4,count 2 to 4,4
+272,"How many eggs are there in the image?
+Answer with a number.",3,count 2 to 4,3
+273,"How many people are there in the image?
+Answer with a number.",8,count 7 to 10,8
+274,"How many books are there in the image?
+Answer with a number.",5,count 5 to 6,5
+275,"How many animals are there in the image?
+Answer with a number.",8,count 7 to 10,8
+276,"How many eyeshadows are there in the image?
+Answer with a number.",9,count 7 to 10,9
+277,"How many keychains are there in the image?
+Answer with a number.",8,count 7 to 10,8
+278,"How many canisters are there in the image?
+Answer with a number.",8,count 7 to 10,8
+280,"How many baking trays are there in the image?
+Answer with a number.",2,count 2 to 4,2
+281,"How many diamonds are there in the image?
+Answer with a number.",6,count 5 to 6,6
+282,"How many portraits are there in the image?
+Answer with a number.",7,count 7 to 10,7
+283,"How many flags are there in the image?
+Answer with a number.",8,count 7 to 10,8
+284,"How many framed pictures are there in the image?
+Answer with a number.",6,count 5 to 6,6
+285,"How many eggs are there in the image?
+Answer with a number.",10,count 7 to 10,10
+286,"How many croissants are there in the image?
+Answer with a number.",2,count 2 to 4,2
+287,"How many Manikins are there in the image?
+Answer with a number.",3,count 2 to 4,3
+288,"How many symbols are there in the image?
+Answer with a number.",9,count 7 to 10,9
+289,"How many labels are there in the image?
+Answer with a number.",7,count 7 to 10,7
+290,"How many people in the foreground are there in the image?
+Answer with a number.",3,count 2 to 4,3
+291,"How many armchairs are there in the image?
+Answer with a number.",4,count 2 to 4,4
+292,"How many cups are there in the image?
+Answer with a number.",6,count 5 to 6,6
+294,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+295,"How many children are there in the image?
+Answer with a number.",2,count 2 to 4,2
+296,"How many people are there in the image?
+Answer with a number.",3,count 2 to 4,3
+297,"How many buttons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+298,"How many people are there in the image?
+Answer with a number.",4,count 2 to 4,4
+301,"How many school uniforms are there in the image?
+Answer with a number.",4,count 2 to 4,4
+302,"How many sculptures are there in the image?
+Answer with a number.",2,count 2 to 4,2
+303,"How many eggs are there in the image?
+Answer with a number.",6,count 5 to 6,6
+304,"How many packages are there in the image?
+Answer with a number.",4,count 2 to 4,4
+305,"How many bottles are there in the image?
+Answer with a number.",7,count 7 to 10,7
+306,"How many stories does this cottage have?
+Answer with a number.",2,count 2 to 4,2
+307,"How many gift cards are there in the image?
+Answer with a number.",2,count 2 to 4,2
+308,"How many eggs are there in the image?
+Answer with a number.",5,count 5 to 6,5
+309,"How many beers are there in the image?
+Answer with a number.",10,count 7 to 10,10
+311,"How many planes are there in the image?
+Answer with a number.",4,count 2 to 4,4
+312,"How many cactus pots are there in the image?
+Answer with a number.",4,count 2 to 4,4
+314,"How many elephants are there in the image?
+Answer with a number.",9,count 7 to 10,9
+315,"How many guitars are there in the image?
+Answer with a number.",5,count 5 to 6,5
+316,"How many samurai are there in the image?
+Answer with a number.",2,count 2 to 4,2
+317,"How many ghosts are there in the image?
+Answer with a number.",9,count 7 to 10,9
+318,"How many bottles are there in the image?
+Answer with a number.",7,count 7 to 10,7
+319,"How many candles are there in the image?
+Answer with a number.",9,count 7 to 10,9
+320,"How many vases are there in the image?
+Answer with a number.",3,count 2 to 4,3
+321,"How many sets of headphones are there in the image?
+Answer with a number.",10,count 7 to 10,10
+322,"How many pandas are there in the image?
+Answer with a number.",3,count 2 to 4,3
+323,"How many books are there in the image?
+Answer with a number.",2,count 2 to 4,2
+324,"How many stickers are there in the image?
+Answer with a number.",7,count 7 to 10,7
+325,"How many rings are there in the image?
+Answer with a number.",3,count 2 to 4,3
+327,"How many dragon balls are there in the image?
+Answer with a number.",7,count 7 to 10,7
+328,"How many tanks are there in the image?
+Answer with a number.",3,count 2 to 4,3
+329,"How many cups are there in the image?
+Answer with a number.",7,count 7 to 10,7
+330,"How many people are there in the image?
+Answer with a number.",10,count 7 to 10,10
+331,"How many cushions are there in the image?
+Answer with a number.",7,count 7 to 10,7
+332,"How many shoes are there in the image?
+Answer with a number.",10,count 7 to 10,10
+333,"How many wine glasses are there in the image?
+Answer with a number.",4,count 2 to 4,4
+334,"How many cards are there in the image?
+Answer with a number.",4,count 2 to 4,4
+335,"How many boots are there in the image?
+Answer with a number.",10,count 7 to 10,10
+336,"How many stickers are there in the image?
+Answer with a number.",9,count 7 to 10,9
+340,"How many chairs are there in the image?
+Answer with a number.",8,count 7 to 10,8
+341,"How many hexagons are there in the image?
+Answer with a number.",7,count 7 to 10,7
+342,"How many chairs are there in the image?
+Answer with a number.",8,count 7 to 10,8
+343,"How many football players are there in the image?
+Answer with a number.",8,count 7 to 10,8
+344,"How many gifts are there in the image?
+Answer with a number.",6,count 5 to 6,6
+348,"How many people are there in the image?
+Answer with a number.",5,count 5 to 6,5
+349,"How many candles are there in the image?
+Answer with a number.",7,count 7 to 10,7
+350,"How many people are there in the image?
+Answer with a number.",3,count 2 to 4,3
+351,"How many silhouettes are there in the image?
+Answer with a number.",4,count 2 to 4,4
+352,"How many pots are there in the image?
+Answer with a number.",4,count 2 to 4,4
+353,"How many pumpkins are there in the image?
+Answer with a number.",9,count 7 to 10,9
+354,"How many owls are there in the image?
+Answer with a number.",9,count 7 to 10,9
+355,"How many doctors are there in the image?
+Answer with a number.",6,count 5 to 6,6
+357,"How many symbols are there in the image?
+Answer with a number.",9,count 7 to 10,9
+358,"How many pumpkins are there in the image?
+Answer with a number.",9,count 7 to 10,9
+361,"How many roses are there in the image?
+Answer with a number.",8,count 7 to 10,8
+362,"How many people are there in the image?
+Answer with a number.",8,count 7 to 10,8
+363,"How many bottles are there in the image?
+Answer with a number.",3,count 2 to 4,3
+364,"How many illustrations are there in the image?
+Answer with a number.",3,count 2 to 4,3
+366,"How many spoons are there in the image?
+Answer with a number.",6,count 5 to 6,6
+367,"How many potato spreads are there in the image?
+Answer with a number.",3,count 2 to 4,3
+368,"How many women are there in the image?
+Answer with a number.",4,count 2 to 4,4
+369,"How many people are there in the image?
+Answer with a number.",2,count 2 to 4,2
+371,"How many soldiers are there in the image?
+Answer with a number.",2,count 2 to 4,2
+373,"How many chairs are there in the image?
+Answer with a number.",8,count 7 to 10,8
+375,"How many dogs are there in the image?
+Answer with a number.",2,count 2 to 4,2
+376,"How many pennies are there in the image?
+Answer with a number.",2,count 2 to 4,2
+377,"How many windows are there in the image?
+Answer with a number.",8,count 7 to 10,8
+378,"How many eggs are there in the image?
+Answer with a number.",8,count 7 to 10,8
+380,"How many figurines are there in the image?
+Answer with a number.",8,count 7 to 10,8
+381,"How many cases are there in the image?
+Answer with a number.",4,count 2 to 4,4
+382,"How many people are in the foreground of this image?
+Answer with a number.",7,count 7 to 10,7
+383,"How many glasses are there in the image?
+Answer with a number.",2,count 2 to 4,2
+384,"How many people are there in the image?
+Answer with a number.",8,count 7 to 10,8
+385,"How many cups are there in the image?
+Answer with a number.",2,count 2 to 4,2
+387,"How many kittens are there in the image?
+Answer with a number.",2,count 2 to 4,2
+388,"How many scones are there in the image?
+Answer with a number.",8,count 7 to 10,8
+389,"How many schoolgirls are there in the image?
+Answer with a number.",8,count 7 to 10,8
+390,"How many padlocks are there in the image?
+Answer with a number.",9,count 7 to 10,9
+391,"How many people are there in the image?
+Answer with a number.",7,count 7 to 10,7
+392,"How many windows are there in the image?
+Answer with a number.",2,count 2 to 4,2
+396,"How many groomsmen are there in the image?
+Answer with a number.",7,count 7 to 10,7
+397,"How many children are there in the image?
+Answer with a number.",2,count 2 to 4,2
+398,"How many glasses are there in the image?
+Answer with a number.",3,count 2 to 4,3
+399,"How many icons are there in the image?
+Answer with a number.",8,count 7 to 10,8
+400,"How many coins are there in the image?
+Answer with a number.",10,count 7 to 10,10
+401,"How many trees are there in the image?
+Answer with a number.",6,count 5 to 6,6
+402,"How many people are there in the image?
+Answer with a number.",8,count 7 to 10,8
+403,"How many frames are there in the image?
+Answer with a number.",9,count 7 to 10,9
+404,"How many firescreens are there in the image?
+Answer with a number.",10,count 7 to 10,10
+405,"How many bowls are there in the image?
+Answer with a number.",7,count 7 to 10,7
+406,"How many stickers are there in the image?
+Answer with a number.",5,count 5 to 6,5
+407,"How many archaic mirrors are there in the image?
+Answer with a number.",7,count 7 to 10,7
+408,"How many dogs are there in the image?
+Answer with a number.",3,count 2 to 4,3
+411,"How many forks are there in the image?
+Answer with a number.",6,count 5 to 6,6
+412,"How many figurines are there in the image?
+Answer with a number.",3,count 2 to 4,3
+413,"How many owls are there in the image?
+Answer with a number.",9,count 7 to 10,9
+414,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+416,"How many fried eggs are there in the image?
+Answer with a number.",6,count 5 to 6,6
+417,"How many guitars are there in the image?
+Answer with a number.",7,count 7 to 10,7
+418,"How many signs are there in the image?
+Answer with a number.",7,count 7 to 10,7
+419,"How many women are there in the image?
+Answer with a number.",9,count 7 to 10,9
+421,"How many kittens are there in the image?
+Answer with a number.",8,count 7 to 10,8
+422,"How many kids are there in the image?
+Answer with a number.",2,count 2 to 4,2
+423,"How many kittens are there in the image?
+Answer with a number.",6,count 5 to 6,6
+424,"How many toys are there in the image?
+Answer with a number.",8,count 7 to 10,8
+426,"How many pairs of socks are there in the image?
+Answer with a number.",3,count 2 to 4,3
+427,"How many men are there in the image?
+Answer with a number.",3,count 2 to 4,3
+428,"How many stars are there in the image?
+Answer with a number.",5,count 5 to 6,5
+430,"How many diamonds are there in the image?
+Answer with a number.",10,count 7 to 10,10
+432,"How many banners are there in the image?
+Answer with a number.",2,count 2 to 4,2
+435,"How many people are there in the image?
+Answer with a number.",5,count 5 to 6,5
+436,"How many banners are there in the image?
+Answer with a number.",3,count 2 to 4,3
+437,"How many people are there in the image?
+Answer with a number.",4,count 2 to 4,4
+438,"How many flags are there in the image?
+Answer with a number.",5,count 5 to 6,5
+440,"How many contestants are there in the image?
+Answer with a number.",4,count 2 to 4,4
+441,"How many people are there in the image?
+Answer with a number.",6,count 5 to 6,6
+442,"How many globes are there in the image?
+Answer with a number.",6,count 5 to 6,6
+443,"How many animals are there in the image?
+Answer with a number.",8,count 7 to 10,8
+444,"How many buttons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+445,"How many icons are there in the image?
+Answer with a number.",8,count 7 to 10,8
+447,"How many pictures are there in the image?
+Answer with a number.",4,count 2 to 4,4
+450,"How many oranges are there in the image?
+Answer with a number.",9,count 7 to 10,9
+451,"How many puppies are there in the image?
+Answer with a number.",7,count 7 to 10,7
+452,"How many buffalos are there in the image?
+Answer with a number.",2,count 2 to 4,2
+453,"How many bottles are there in the image?
+Answer with a number.",6,count 5 to 6,6
+454,"How many people are there in the image?
+Answer with a number.",3,count 2 to 4,3
+455,"How many icons are there in the image?
+Answer with a number.",8,count 7 to 10,8
+456,"How many christmas balls are there in the image?
+Answer with a number.",5,count 5 to 6,5
+457,"How many people are there in the image?
+Answer with a number.",3,count 2 to 4,3
+458,"How many frames are there in the image?
+Answer with a number.",4,count 2 to 4,4
+459,"How many people are there in the image?
+Answer with a number.",6,count 5 to 6,6
+460,"How many soldiers are there in the image?
+Answer with a number.",2,count 2 to 4,2
+462,"How many chairs are there in the image?
+Answer with a number.",8,count 7 to 10,8
+463,"How many cards are there in the image?
+Answer with a number.",5,count 5 to 6,5
+464,"How many colored tiles are there in the image?
+Answer with a number.",10,count 7 to 10,10
+465,"How many trapezoids are there in the image?
+Answer with a number.",3,count 2 to 4,3
+466,"How many plants are there in the image?
+Answer with a number.",10,count 7 to 10,10
+467,"How many place mats are there in the image?
+Answer with a number.",6,count 5 to 6,6
+468,"How many symbols are there in the image?
+Answer with a number.",9,count 7 to 10,9
+469,"How many mazes are there in the image?
+Answer with a number.",10,count 7 to 10,10
+470,"How many tea bags are there in the image?
+Answer with a number.",8,count 7 to 10,8
+471,"How many photos are there in the image?
+Answer with a number.",4,count 2 to 4,4
+472,"How many children are there in the image?
+Answer with a number.",2,count 2 to 4,2
+473,"How many starfish are there in the image?
+Answer with a number.",8,count 7 to 10,8
+474,"How many mugs are there in the image?
+Answer with a number.",6,count 5 to 6,6
+475,"How many bottles are there in the image?
+Answer with a number.",5,count 5 to 6,5
+476,"How many eggs are there in the image?
+Answer with a number.",10,count 7 to 10,10
+477,"How many icons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+478,"How many balls are there in the image?
+Answer with a number.",3,count 2 to 4,3
+479,"How many paper bags are there in the image?
+Answer with a number.",7,count 7 to 10,7
+480,"How many silhouettes are there in the image?
+Answer with a number.",8,count 7 to 10,8
+481,"How many couples are there in the image?
+Answer with a number.",10,count 7 to 10,10
+482,"How many dice are there in the image?
+Answer with a number.",6,count 5 to 6,6
+483,"How many women are there in the image?
+Answer with a number.",2,count 2 to 4,2
+484,"How many icons are there in the image?
+Answer with a number.",6,count 5 to 6,6
+485,"How many wooden spoons are there in the image?
+Answer with a number.",9,count 7 to 10,9
+486,"How many people are there in the image?
+Answer with a number.",7,count 7 to 10,7
+487,"How many chairs are there in the image?
+Answer with a number.",6,count 5 to 6,6
+488,"How many chairs are there in the image?
+Answer with a number.",8,count 7 to 10,8
+490,"How many chairs are there in the image?
+Answer with a number.",10,count 7 to 10,10

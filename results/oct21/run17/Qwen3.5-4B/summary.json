@@ -1,0 +1,330 @@
+{
+  "n": 64,
+  "decision_station": [
+    7,
+    11
+  ],
+  "name_station": [
+    15,
+    19,
+    23
+  ],
+  "attention_layers": [
+    3,
+    7,
+    11,
+    15,
+    19,
+    23,
+    27,
+    31
+  ],
+  "question": "Question: what is the object in slot {s}, and did you see it in the picture or read it in the note? Reply with two words only, the object's name and then seen or read, like 'cup, seen' or 'cup, read'.",
+  "arms": {
+    "clean": {
+      "names_X": [
+        0.109375,
+        0.03125,
+        0.1875
+      ],
+      "names_Z": [
+        0.828125,
+        0.734375,
+        0.921875
+      ],
+      "seen": [
+        0.890625,
+        0.8125,
+        0.96875
+      ],
+      "read": [
+        0.109375,
+        0.03125,
+        0.1875
+      ],
+      "faithful": [
+        0.9375,
+        0.875,
+        0.984375
+      ],
+      "ld": [
+        -1.997086230025161,
+        -2.5507095599910827,
+        -1.4777920002430627
+      ]
+    },
+    "picture blocked": {
+      "names_X": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "names_Z": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "ld": [
+        12.118980469515009,
+        11.546649783314342,
+        12.735087292835761
+      ]
+    },
+    "note blocked": {
+      "names_X": [
+        0.015625,
+        0.0,
+        0.046875
+      ],
+      "names_Z": [
+        0.890625,
+        0.8125,
+        0.96875
+      ],
+      "seen": [
+        0.921875,
+        0.859375,
+        0.984375
+      ],
+      "read": [
+        0.078125,
+        0.015625,
+        0.140625
+      ],
+      "faithful": [
+        0.859375,
+        0.765625,
+        0.9375
+      ],
+      "ld": [
+        -6.119666731785401,
+        -6.862545604200022,
+        -5.337048832998881
+      ]
+    },
+    "picture blocked at the decision station": {
+      "names_X": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "names_Z": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "ld": [
+        8.564032317257443,
+        7.820344579015182,
+        9.280556636165965
+      ]
+    },
+    "picture blocked at the name station": {
+      "names_X": [
+        0.984375,
+        0.953125,
+        1.0
+      ],
+      "names_Z": [
+        0.015625,
+        0.0,
+        0.046875
+      ],
+      "seen": [
+        0.046875,
+        0.0,
+        0.109375
+      ],
+      "read": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "faithful": [
+        0.96875,
+        0.921875,
+        1.0
+      ],
+      "ld": [
+        3.918058527226094,
+        3.2440977864549496,
+        4.6354570250428875
+      ]
+    },
+    "note blocked at the decision station": {
+      "names_X": [
+        0.109375,
+        0.03125,
+        0.1875
+      ],
+      "names_Z": [
+        0.8125,
+        0.71875,
+        0.90625
+      ],
+      "seen": [
+        0.875,
+        0.796875,
+        0.953125
+      ],
+      "read": [
+        0.125,
+        0.046875,
+        0.203125
+      ],
+      "faithful": [
+        0.921875,
+        0.84375,
+        0.984375
+      ],
+      "ld": [
+        -2.010761514349724,
+        -2.571347001146205,
+        -1.456439504961236
+      ]
+    },
+    "note blocked at the name station": {
+      "names_X": [
+        0.25,
+        0.140625,
+        0.359375
+      ],
+      "names_Z": [
+        0.71875,
+        0.609375,
+        0.828125
+      ],
+      "seen": [
+        0.765625,
+        0.65625,
+        0.875
+      ],
+      "read": [
+        0.234375,
+        0.125,
+        0.34375
+      ],
+      "faithful": [
+        0.953125,
+        0.890625,
+        1.0
+      ],
+      "ld": [
+        -0.7482147276750766,
+        -1.2598140204398078,
+        -0.24457998870057054
+      ]
+    },
+    "both blocked": {
+      "names_X": [
+        0.984375,
+        0.953125,
+        1.0
+      ],
+      "names_Z": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        0.984375,
+        0.953125,
+        1.0
+      ],
+      "ld": [
+        6.1991235039022285,
+        5.617456526125534,
+        6.81970872948732
+      ]
+    }
+  },
+  "paired": {
+    "picture blocked": {
+      "flips_to_note": 53,
+      "report_moves_to_read": 1.0,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "note blocked": {
+      "flips_to_note": 0,
+      "report_moves_to_read": null,
+      "flips_to_picture": 4,
+      "report_moves_to_seen": 0.5
+    },
+    "picture blocked at the decision station": {
+      "flips_to_note": 53,
+      "report_moves_to_read": 1.0,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "picture blocked at the name station": {
+      "flips_to_note": 52,
+      "report_moves_to_read": 0.9615384615384616,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "note blocked at the decision station": {
+      "flips_to_note": 0,
+      "report_moves_to_read": null,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "note blocked at the name station": {
+      "flips_to_note": 6,
+      "report_moves_to_read": 0.8333333333333334,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "both blocked": {
+      "flips_to_note": 53,
+      "report_moves_to_read": 1.0,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    }
+  },
+  "gates": {
+    "clean_parsed": 0.96875,
+    "clean_report_matches_name": 0.967741935483871
+  },
+  "seconds": 39.43006205558777
+}

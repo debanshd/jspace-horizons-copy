@@ -1,0 +1,212 @@
+{
+  "model": "Qwen3.5-2B",
+  "n_rows": 2624,
+  "judge_calls": 80,
+  "judge_failed": 0,
+  "agreement_follows_X": 0.9855182926829268,
+  "disagreements": 38,
+  "horizon_follows_X": 15,
+  "horizon_judge_X": 15,
+  "curves": {
+    "follows_X": {
+      "-1": 0.890625,
+      "3": 0.890625,
+      "7": 0.890625,
+      "11": 0.859375,
+      "15": 0.875,
+      "19": 0.0,
+      "23": 0.0
+    },
+    "judge_X": {
+      "-1": 0.9375,
+      "3": 0.9375,
+      "7": 0.9375,
+      "11": 0.890625,
+      "15": 0.90625,
+      "19": 0.0,
+      "23": 0.0
+    }
+  },
+  "disagreement_examples": [
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 6,
+      "X": "bird",
+      "Z": "car",
+      "generation": "sparrow",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 22,
+      "X": "bird",
+      "Z": "airplane",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers -1 to 2",
+      "scene": 50,
+      "X": "bird",
+      "Z": "train",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 6,
+      "X": "bird",
+      "Z": "car",
+      "generation": "sparrow",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 22,
+      "X": "bird",
+      "Z": "airplane",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 3 to 6",
+      "scene": 50,
+      "X": "bird",
+      "Z": "train",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 6,
+      "X": "bird",
+      "Z": "car",
+      "generation": "sparrow",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 22,
+      "X": "bird",
+      "Z": "airplane",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 7 to 10",
+      "scene": 50,
+      "X": "bird",
+      "Z": "train",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 11 to 14",
+      "scene": 22,
+      "X": "bird",
+      "Z": "airplane",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 11 to 14",
+      "scene": 50,
+      "X": "bird",
+      "Z": "train",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 15 to 18",
+      "scene": 22,
+      "X": "bird",
+      "Z": "airplane",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "move the donor's state, layers 15 to 18",
+      "scene": 50,
+      "X": "bird",
+      "Z": "train",
+      "generation": "pheasant",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x4, read layers",
+      "scene": 2,
+      "X": "dog",
+      "Z": "bus",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x4, read layers",
+      "scene": 12,
+      "X": "dog",
+      "Z": "train",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x4, read layers",
+      "scene": 18,
+      "X": "dog",
+      "Z": "bicycle",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x4, read layers",
+      "scene": 28,
+      "X": "horse",
+      "Z": "chair",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x4, read layers",
+      "scene": 30,
+      "X": "dog",
+      "Z": "bus",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x4, read layers",
+      "scene": 32,
+      "X": "dog",
+      "Z": "bicycle",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    },
+    {
+      "arm": "inject the word 'animal' x4, read layers",
+      "scene": 34,
+      "X": "dog",
+      "Z": "boat",
+      "generation": "animal",
+      "follows_X": false,
+      "judge_X": true
+    }
+  ]
+}

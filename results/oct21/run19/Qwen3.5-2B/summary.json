@@ -1,0 +1,404 @@
+{
+  "n": 64,
+  "congruent": true,
+  "decision_station": [
+    7,
+    11
+  ],
+  "name_station": [
+    11,
+    15,
+    19
+  ],
+  "attention_layers": [
+    3,
+    7,
+    11,
+    15,
+    19,
+    23
+  ],
+  "question": "Question: what is the object in slot {s}, and did you see it in the picture or read it in the note? Reply with two words only, the object's name and then seen or read, like 'cup, seen' or 'cup, read'.",
+  "arms": {
+    "clean": {
+      "names_X": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ld": [
+        -13.315604841336608,
+        -13.937332608724546,
+        -12.67979803029807
+      ],
+      "logp_Z": [
+        -0.04867800511419773,
+        -0.07351023469586834,
+        -0.028853259729430668
+      ]
+    },
+    "picture blocked": {
+      "names_X": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ld": [
+        -13.364552785869819,
+        -13.951001960398344,
+        -12.771599174811081
+      ],
+      "logp_Z": [
+        -0.009019802097100182,
+        -0.011537223130017083,
+        -0.006553111738639928
+      ]
+    },
+    "note blocked": {
+      "names_X": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "names_Z": [
+        0.765625,
+        0.65625,
+        0.859375
+      ],
+      "seen": [
+        0.015625,
+        0.0,
+        0.046875
+      ],
+      "read": [
+        0.984375,
+        0.953125,
+        1.0
+      ],
+      "faithful": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ld": [
+        -11.107051037281053,
+        -11.803500230363715,
+        -10.448100466901451
+      ],
+      "logp_Z": [
+        -0.660499654681189,
+        -0.9095132836795529,
+        -0.453941440924973
+      ]
+    },
+    "picture blocked at the decision station": {
+      "names_X": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ld": [
+        -13.272967874025198,
+        -13.865522531769056,
+        -12.673867054829998
+      ],
+      "logp_Z": [
+        -0.028965623165277066,
+        -0.03936238093601787,
+        -0.019454828887137413
+      ]
+    },
+    "picture blocked at the name station": {
+      "names_X": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "names_Z": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ld": [
+        -13.538201742561796,
+        -14.122842517615117,
+        -12.93667862702605
+      ],
+      "logp_Z": [
+        -0.009694583026430337,
+        -0.012453717249627516,
+        -0.007051792431957441
+      ]
+    },
+    "note blocked at the decision station": {
+      "names_X": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "names_Z": [
+        0.984375,
+        0.953125,
+        1.0
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ld": [
+        -12.648773624039677,
+        -13.283138207342882,
+        -12.022958821087833
+      ],
+      "logp_Z": [
+        -0.1374151497711864,
+        -0.20591940891940794,
+        -0.07902455589428431
+      ]
+    },
+    "note blocked at the name station": {
+      "names_X": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "names_Z": [
+        0.84375,
+        0.75,
+        0.921875
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ld": [
+        -11.412297738264897,
+        -12.084791216546,
+        -10.77409372026923
+      ],
+      "logp_Z": [
+        -0.47040540956368204,
+        -0.654082975179881,
+        -0.31774870556655516
+      ]
+    },
+    "both blocked": {
+      "names_X": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "names_Z": [
+        0.796875,
+        0.702734375,
+        0.890625
+      ],
+      "seen": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "read": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "faithful": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ld": [
+        -7.294602049980313,
+        -8.019677252677502,
+        -6.597378484444926
+      ],
+      "logp_Z": [
+        -1.0351611501537263,
+        -1.191587849764619,
+        -0.886493150133174
+      ]
+    }
+  },
+  "paired": {
+    "picture blocked": {
+      "answer_held_Z": 64,
+      "held_report_read": 1.0,
+      "held_report_seen": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "flips_to_note": 0,
+      "report_moves_to_read": null,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "note blocked": {
+      "answer_held_Z": 49,
+      "held_report_read": 1.0,
+      "held_report_seen": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "flips_to_note": 0,
+      "report_moves_to_read": null,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "picture blocked at the decision station": {
+      "answer_held_Z": 64,
+      "held_report_read": 1.0,
+      "held_report_seen": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "flips_to_note": 0,
+      "report_moves_to_read": null,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "picture blocked at the name station": {
+      "answer_held_Z": 64,
+      "held_report_read": 1.0,
+      "held_report_seen": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "flips_to_note": 0,
+      "report_moves_to_read": null,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "note blocked at the decision station": {
+      "answer_held_Z": 63,
+      "held_report_read": 1.0,
+      "held_report_seen": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "flips_to_note": 0,
+      "report_moves_to_read": null,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "note blocked at the name station": {
+      "answer_held_Z": 54,
+      "held_report_read": 1.0,
+      "held_report_seen": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "flips_to_note": 0,
+      "report_moves_to_read": null,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    },
+    "both blocked": {
+      "answer_held_Z": 51,
+      "held_report_read": 1.0,
+      "held_report_seen": 0.0,
+      "held_seen_to_read": 0,
+      "held_read_to_seen": 0,
+      "flips_to_note": 0,
+      "report_moves_to_read": null,
+      "flips_to_picture": 0,
+      "report_moves_to_seen": null
+    }
+  },
+  "gates": {
+    "clean_parsed": 1.0,
+    "clean_report_matches_name": 0.0
+  },
+  "seconds": 19.396185398101807
+}

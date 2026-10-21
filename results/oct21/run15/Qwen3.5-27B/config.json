@@ -1,0 +1,62 @@
+{
+  "experiment": "source_report",
+  "argv": [
+    "experiments/source_report.py",
+    "--model",
+    "Qwen/Qwen3.5-27B",
+    "--run",
+    "run15",
+    "--layers",
+    "43+47,39+43+47,35+39+39+43+47"
+  ],
+  "args": {
+    "model": "Qwen/Qwen3.5-27B",
+    "run": "run15",
+    "runs_dir": "/workspace/nayan/jspace-horizons/runs",
+    "data_dir": "/workspace/nayan/jspace-horizons/data",
+    "n": "64",
+    "crop_set": "1",
+    "layers": "43+47,39+43+47,35+39+39+43+47",
+    "donor_control": "False"
+  },
+  "model": "Qwen/Qwen3.5-27B",
+  "model_revision": "fc05daec18b0a78c049392ed2e771dde82bdf654",
+  "lens_repo": "neuronpedia/jacobian-lens",
+  "lens_revision": "e166deb5ad540932100ef803c8c9bcc2a5453694",
+  "lens_file": "qwen3.5-27b/jlens/Salesforce-wikitext/Qwen3.5-27B_jacobian_lens.pt",
+  "jpp_file": null,
+  "read_layers": [
+    20,
+    24,
+    28,
+    32,
+    36,
+    40,
+    44,
+    48,
+    52,
+    56,
+    60
+  ],
+  "batch": 1,
+  "batch_tokens": 65536,
+  "batch_check": {
+    "max_dp": 0.023964238965909934,
+    "mean_dlog10rank": 0.005564401991741093,
+    "batch": 1,
+    "unbatched_max_dp": 4.688461496815677e-08,
+    "unbatched_mean_dlog10rank": 0.0
+  },
+  "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+  "cpu": "AMD EPYC 9335 32-Core Processor",
+  "cpu_threads": 16,
+  "python": "3.12.3",
+  "torch": "2.8.0+cu128",
+  "transformers": "5.19.0",
+  "flash_linear_attention": "0.5.2",
+  "code": "1b6a3ce4f73f591d49e3a11a06f441f16aca9d60+uncommitted",
+  "date": "2026-10-21T09:19:07",
+  "env": {
+    "HF_HOME": "/workspace/hf"
+  }
+}
