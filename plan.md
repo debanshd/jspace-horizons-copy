@@ -137,6 +137,27 @@ Prediction 5 is the one most likely to fail, and the most informative if it does
 
 Cost: about 2,000 short generations per model. Minutes per model; the downloads dominate.
 
+## RunPod: time and cost
+
+Estimates made on 15 Nov 2026, before any run. The prices are from RunPod's pricing page and third-party trackers, which disagree by tier and date; check the live page before renting.
+
+| card | models that fit | pod time | price per hour | compute cost |
+|---|---|---|---|---|
+| RTX 6000 Ada, 48 GB | Qwen 0.8B and 4B, Gemma E2B and E4B | 3 to 5 hours | about $1 ($0.84 to $1.09 listed) | $3 to $5 |
+| RTX PRO 6000, 96 GB | all six | 5 to 7 hours | about $2.49 ($1.69 to $2.49 listed) | $12 to $17 |
+
+- The 48 GB card cannot hold Qwen3.5-27B (54 GB of weights) or Gemma-4-31B (up to 88 GB in the original runs). The original runs used the 96 GB card.
+- Storage is extra: about 55 GB for four models and one VGGSound shard, about 170 GB for all six. A few dollars for a month of network volume.
+- Where the time goes: downloads (20 to 60 minutes), then writing and debugging the video and audio encoding on the pod (most of it). The steering itself is a few minutes per model: about 2,000 short generations, against the 21,000 forwards in 15 minutes the notes record for the 4B on this card type.
+- Because compute is the small part, 64 clips cost nearly the same as 5: about ten times the generations, still under an hour per model.
+
+## Does running it raise the score?
+
+- **Not the proposal score.** The 25.5 judges the design. It rises with a prior-art audit (item 02), an accepted thesis (01), a figure design (29) and an outside reviewer (G10), none of which needs a GPU.
+- **Running starts the evidence score (DE)**, which is separate and currently not assessed.
+- **Five clips earn almost nothing there.** Item 20 scores a run without intervals at zero, and the rivals cannot be separated on the rule question.
+- **Recommendation: run 64 clips, not 5.** Same pod, nearly the same cost. That is what can lift statistics (20), rival discrimination (07), frozen prediction (22) and, if the predictions hold, genuine audio and video (24). The 5-clip toy then becomes step 5 and step 6's first look, not the result.
+
 ## Known risks
 
 - **Sound may fail its gate.** The one earlier audio attempt (RECORD row 6, Gemma E4B, ESC-50) did not perceive the sounds (hits 0.88, false alarms 0.41), and Gemma-4's card lists audio for speech recognition and translation only. Fallback: the object's name spoken aloud, which tests a spoken word, not a sound, and must be labelled so.
