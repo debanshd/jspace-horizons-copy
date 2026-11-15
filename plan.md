@@ -2,7 +2,7 @@
 
 A toy check, 5 videos and 5 sounds, before any real experiment. Nothing has been run.
 
-- **Version 1**, 15 Nov 2026: the first plan (commit `2ee0b2b` holds it as written).
+- **Version 1**, 15 Nov 2026: the first plan (commit `504e7bb` holds it as written).
 - **Version 2**, 15 Nov 2026: this file. The council pass at the bottom found a fatal flaw in version 1 and six gaps; the design and the rule below are the corrected ones.
 
 Built on two commits: `88b0b98` (the Karpathy guidelines: state assumptions, simplest thing, surgical changes, a check per step) and `bb38cc3` (the master rubric, applied in full in the council pass).
