@@ -417,7 +417,8 @@ class Engine:
                         fn = getattr(lm.hf.model, f"get_{ENCODER[med]}_features")
                         ekw = encoder_kwargs(fn, kw)
                         out = fn(**ekw, return_dict=True)
-                        kw = {k: v for k, v in kw.items() if k not in ekw}
+                        # only the pixels go: the forward still needs the rest (Qwen's video_grid_thw sets its rotary positions)
+                        kw = {k: v for k, v in kw.items() if k != PIXEL_KEY[med]}
                         kw["mm_encoder_outputs"] = {ENCODER[med]: out}
                     else:
                         kw.update(self._mm(batch))
