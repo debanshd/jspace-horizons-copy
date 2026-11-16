@@ -159,6 +159,49 @@ One grid per model. Columns: static video, clip, sound. Rows: early, middle and 
 7. Only if step 6 passes: the small and large models.
 8. One row per model and modality in `docs/RECORD.md`, with each prediction marked kept or missed.
 
+## The code, and how to run it on RunPod
+
+Written 16 Nov 2026; step 4 is done, nothing has run on a GPU. It was checked on a CPU only: 12 new tests (`tests/test_media.py`: the label rules, the scoring, the clip assignment, the layer blocks, the row-wise hooks, the knockout mask, and the whole summary on made-up answers), ruff, PyAV decoding of a synthetic 10-second clip, and the Qwen3.5 and Gemma-4 video and audio processors of transformers 5.19 on a test clip (196 video tokens on Qwen, 8 x 70 on Gemma, the true frame times, 250 audio tokens for 10 s).
+
+| file | what it does |
+|---|---|
+| `scripts/pin_media.py` | resolves the commits of the two VGGSound repositories and of Gemma-4-E2B with its lens sha256, and writes them into `config.py` (they could not be resolved from the session that wrote the code) |
+| `scripts/prepare_media.py` | downloads 16 candidate clips per class from the first VGGSound shard and decodes each once: 8 frames at 224 x 224 and 10 s of mono 16 kHz sound, with a manifest of hashes |
+| `src/jspace/media.py` | the classes, the label rule, the prompts, the scoring, the clip-to-word assignment, the layer blocks |
+| `src/jspace/batched.py` | the engine: row-wise steering, ablation and knockout in shared batches |
+| `experiments/media_steer.py` | the experiment, in three stages: `gate`, `smoke`, `main` |
+| `scripts/media_steer.sh` | steps 2 to 8 in order, skipping what is done |
+
+On a fresh pod, from the repository:
+
+```bash
+uv sync
+uv run scripts/pin_media.py                     # once; then commit src/jspace/config.py
+STAGE=smoke scripts/media_steer.sh              # steps 5 and 6: the 5-clip smoke check on the 4B and E4B
+scripts/media_steer.sh                          # step 7: gate for both models, then the 64-clip run
+MODELS="Qwen/Qwen3.5-0.8B Qwen/Qwen3.5-4B Qwen/Qwen3.5-27B google/gemma-4-E2B-it google/gemma-4-E4B-it google/gemma-4-31B-it" RUN=media_steer_all scripts/media_steer.sh   # step 8, 96 GB card
+```
+
+How it keeps the GPU busy. No code can promise 100% utilization; this code removes the usual causes of idle time and measures what is left:
+- **No padding.** Every clip has the same frame times and the same sound length, so every prompt of one input and question has the same length. Session's padding check had found that left padding moved Gemma-4-E4B's and Qwen3.5-27B's numbers and ran them one prompt at a time (October configs: `batch 1`); with no padding they batch fully.
+- **Many arms per batch.** The 54,000 rows on the 4B (105 arms in phase A and 36 sweep arms in phase B, for 2 questions, 3 inputs and 64 clips) and about 80,000 on Gemma-4-E4B (more knockout and sweep starts, and the sound) are mixed in batches of up to 512 prompts; each layer's hook edits only its own rows.
+- **The encoder once per clip.** Vision-encoder outputs are cached and passed as `mm_encoder_outputs`. The cache is switched on only if a start-up check gives identical answers and first-token log-probabilities within 0.05 nats; otherwise the encoder runs in every batch. Gemma's audio tower takes no cached outputs and runs in every batch.
+- **The processor once per prompt**, and the next batches assembled and pinned on a CPU thread while the GPU runs.
+- **Batch size from free memory**, halved on out-of-memory and kept.
+- **Measured.** `gpu.csv` holds nvidia-smi's utilization every 2 s; `summary.json` gives its mean and median and the share of wall time spent in generation.
+
+Changes outside the new files: `config.py` gains the VGGSound constants (`None` until pinned) and a `vggsound` entry in `DATA_FILES`; `download.py` gains `--models` and `--skip-data`. No existing experiment reads either, so their outputs cannot change; per AGENTS.md they should still be run at `--n 4` before and after on the pod to confirm it.
+
+What can still go wrong on the GPU, with the guard for each:
+
+| risk | guard |
+|---|---|
+| a processor or model call that the CPU checks could not reach | the smoke stage runs every arm on 5 clips first |
+| the cached encoder outputs differ from the encoder's | the start-up comparison; the cache turns itself off |
+| hooks landing on the wrong tokens | equal-layout assertion per batch; step 5 must reproduce row 93 |
+| the 27B's linear-attention kernel crashing under hooks, as in RECORD row 67 | none in code: run it last, and fall back to the 9B |
+| a class with fewer than 8 clips every model names | the run stops and says so; rerun `prepare_media.py --candidates 32` |
+
 ## RunPod: time and cost
 
 Estimates made on 15 Nov 2026, before any run. The prices are from RunPod's pricing page and third-party trackers, which disagree by tier and date; check the live page before renting.

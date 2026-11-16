@@ -79,10 +79,16 @@ MODELS = {
 # The datasets, at the revisions the runs read; scripts/download.py checks the sha256 of every file
 GQA_REPO, GQA_REVISION = "lmms-lab-encoder/GQA", "a6e72d6e1b912da88af8b2f9eba05d5ea8ec2dd8"
 SCAM_REPO, SCAM_REVISION = "BLISS-e-V/SCAM", "8c674f50dfa83e1d2a0a1c95653c39c347069d72"
+# VGGSound for experiments/media_steer.py (plan.md): the clips of the first shard as single mp4 files, and the label list. Both
+# revisions are None until `uv run scripts/pin_media.py` resolves them on the first machine with Hugging Face access and writes
+# them here; scripts/prepare_media.py stops while they are None, so no run reads an unpinned dataset.
+VGG_CLIPS_REPO, VGG_CLIPS_REVISION = "harpreetsahota/VGGSound", None
+VGG_CSV_REPO, VGG_CSV_REVISION = "Loie/VGGSound", None
 DATA_FILES = {
     "coco": ["coco2017/val2017.zip", "coco2017/annotations/instances_val2017.json"],
     "scam": ["scam/images/train/metadata.jsonl"],
     "gqa": ["gqa/testdev_balanced_images/testdev-00000-of-00001.parquet", "gqa/testdev_balanced_instructions/testdev-00000-of-00001.parquet"],
+    "vggsound": ["vggsound/manifest.json"],
 }
 
 
