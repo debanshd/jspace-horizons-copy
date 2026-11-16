@@ -49,6 +49,7 @@ uv run experiments/depth_sweep.py --n 4 --run try_depth_sweep
 | `head_patch` | writes one donor head's attention output (the input of o_proj) into the receiver at the question's tokens: which heads are sufficient readers (21 Oct) |
 | `cross_modal_patch` | the interchange: the heads' outputs recorded while the model reads a typed word, written into the run that sees a picture, and the reverse; per-head cosines across modalities (`--alignment-only`) (21 Oct) |
 | `source_report` | after an interchange, asks whether the object was seen in the picture or read in a note: does the report follow the content's channel? (21 Oct) |
+| `media_steer` | the steering, knockout and ablation assays on video clips and sounds (VGGSound): from which layers a word's lens direction on the media tokens is said; design and rule in `plan.md` (not yet run) |
 
 The 21 October scripts also take `--model Qwen/Qwen3.5-2B`, `Qwen/Qwen3.5-0.8B` and `google/gemma-4-E4B-it` (pinned in `src/jspace/config.py`); their outputs are under `runs/` and are not part of `results/`. `scripts/fig_battery.py` draws their figures and `scripts/summarize_knockout.py` rebuilds a knockout summary from its CSV.
 

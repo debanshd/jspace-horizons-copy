@@ -109,13 +109,21 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--gemma", action="store_true", help="also Gemma-4-31B and its lenses (69 GB; only its two runs need them)")
     ap.add_argument("--data-only", action="store_true", help="only the data")
+    ap.add_argument("--models", default="", help="comma list: only these models and their lenses (media_steer's chain uses this)")
+    ap.add_argument("--skip-data", action="store_true", help="not the COCO, SCAM and GQA data (media_steer reads none of them)")
     args = ap.parse_args()
     load_env()  # HF_TOKEN from .env, if there is one
     names = [] if args.data_only else [n for n in MODELS if args.gemma or "gemma" not in n]
+    if args.models:
+        unknown = [m for m in args.models.split(",") if m not in MODELS]
+        if unknown:
+            raise SystemExit(f"not in src/jspace/config.py: {unknown} (Gemma-4-E2B is added by scripts/pin_media.py)")
+        names = args.models.split(",")
     cache = Path(constants.HF_HUB_CACHE)
     cache.mkdir(parents=True, exist_ok=True)
     print(f"data -> {DATA_DIR}; models and lenses -> {cache} ({shutil.disk_usage(cache).free / 1e9:.0f} GB free; the models need {sum(MODELS[n].size_gb for n in names):.0f} GB)")
-    data()
+    if not args.skip_data:
+        data()
     models(names)
     print("everything the experiments read is here and matches the original runs")
 
