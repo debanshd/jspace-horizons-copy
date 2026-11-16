@@ -22,6 +22,7 @@ What keeps the GPU busy, and why each choice does not change an answer:
 `GpuMonitor` samples nvidia-smi every 2 seconds into the run folder, so the utilization is measured, not assumed.
 """
 
+import inspect
 import subprocess
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -49,6 +50,12 @@ def collate(encs):
             assert all(v == vs[0] for v in vs), k
             out[k] = vs[0]
     return out
+
+
+def encoder_kwargs(fn, enc):
+    """the arguments of an encoder (get_video_features, get_image_features) taken from a batch by its signature, as generate()
+    takes them: Gemma-4's video encoder needs num_frames_per_video, which transformers 5.19's plain forward does not pass on"""
+    return {k: enc[k] for k in inspect.signature(fn).parameters if k != "kwargs" and k in enc}
 
 
 def assert_unpadded(enc, token_id):
@@ -264,9 +271,7 @@ class Engine:
         try:
             for s in scenes:
                 enc = self._to_gpu(self.encs[(inp, task, s)])
-                second = next((enc[k] for k in (f"{mod}_grid_thw", f"{mod}_position_ids") if k in enc), None)
-                args = (enc[PIXEL_KEY[med]],) if second is None else (enc[PIXEL_KEY[med]], second)
-                out = fn(*args, return_dict=True)
+                out = fn(**encoder_kwargs(fn, enc), return_dict=True)
                 self.features[(inp, s)] = tuple(p.detach() for p in out.pooler_output)
         except Exception as e:  # noqa: BLE001 - an encoder API this code does not know: the encoder runs in every batch instead
             print(f"{inp}: encoder cache not built ({type(e).__name__}: {str(e)[:160]}); the encoder runs in every batch")
@@ -406,7 +411,16 @@ class Engine:
                 handles = [lm.register(L, hook(L)) for L in layers]
                 try:
                     kw = {k: v for k, v in enc.items() if k != "token_type_ids"}
-                    kw.update(self._mm(batch))
+                    med = self.medium[inp]
+                    if med in ENCODER and not self.cache_on.get(inp, False):
+                        # the encoder first, as generate() runs it: the plain Gemma-4 forward drops num_frames_per_video
+                        fn = getattr(lm.hf.model, f"get_{ENCODER[med]}_features")
+                        ekw = encoder_kwargs(fn, kw)
+                        out = fn(**ekw, return_dict=True)
+                        kw = {k: v for k, v in kw.items() if k not in ekw}
+                        kw["mm_encoder_outputs"] = {ENCODER[med]: out}
+                    else:
+                        kw.update(self._mm(batch))
                     if lm.vision_path == "base":
                         lm.hf.model(**kw, use_cache=False)
                     else:

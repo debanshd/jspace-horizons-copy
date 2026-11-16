@@ -257,3 +257,19 @@ def test_no_dataframe_method_shadows_a_column():
             ):
                 bad.append(f"{f.name}:{node.lineno} {node.value.id}.{node.attr}")
     assert not bad, bad
+
+
+def test_encoder_kwargs_follow_the_signature():
+    """Gemma-4's get_video_features needs num_frames_per_video; the arguments come from the batch by the encoder's signature, as
+    generate() takes them, and keys the encoder does not take stay out"""
+
+    def get_video_features(pixel_values_videos, video_position_ids=None, num_frames_per_video=None, **kwargs):
+        return pixel_values_videos, num_frames_per_video
+
+    enc = dict(input_ids=1, attention_mask=2, pixel_values_videos=3, video_position_ids=4, num_frames_per_video=5)
+    assert batched.encoder_kwargs(get_video_features, enc) == dict(pixel_values_videos=3, video_position_ids=4, num_frames_per_video=5)
+
+    def get_qwen_video_features(pixel_values_videos, video_grid_thw=None, **kwargs):
+        return pixel_values_videos
+
+    assert batched.encoder_kwargs(get_qwen_video_features, dict(pixel_values_videos=3, video_grid_thw=6, input_ids=1)) == dict(pixel_values_videos=3, video_grid_thw=6)
