@@ -2,7 +2,7 @@
 
 Plan steps 6 and 7 of `plan.md` 3.2, run on 16 November 2026. The rule and the predictions were written before the runs; the code is `experiments/media_steer.py` at commit `ffb9d13`.
 
-The pod is a RunPod RTX PRO 6000 Blackwell (96 GB) with a 300 GB network volume. Every number below comes from a run's `summary.json`. Rates are given as rate [95% bootstrap interval over the 48 held-out clips]. Outputs are in `runs/` on the pod and are not committed.
+The pod is a RunPod RTX PRO 6000 Blackwell (96 GB) with a 300 GB network volume. Every number below comes from a run's `summary.json`. Rates are given as rate [95% bootstrap interval over the 48 held-out clips]. The run folders are packed in `docs/media_steer_runs.tar.gz` (below).
 
 **Smoke check (plan step 5).** Both models ran twice, and the two runs are identical answer by answer (Qwen3.5-4B 2,840 rows, Gemma-4-E4B 4,680). Qwen3.5-0.8B, Qwen3.5-27B, Gemma-4-E2B and Gemma-4-31B also passed the same check in step 7.
 
@@ -54,7 +54,7 @@ Across the six models:
 
 Draft `docs/RECORD.md` rows are written but **not committed**; they wait for review.
 
-The run outputs (`runs/`, 39 MB packed) are not committed, following AGENTS.md. They are on the pod's network volume and in an archive handed over outside git (sha256 `b2a1e4bd899a7e68a56e125a4ac13737fc39cc2e5e91ed10349f1beefe0a7075`).
+The run outputs are in `docs/media_steer_runs.tar.gz` (39 MB, sha256 `b2a1e4bd899a7e68a56e125a4ac13737fc39cc2e5e91ed10349f1beefe0a7075`): every run folder under `runs/` (step 6, step 7, the smoke runs and the earlier attempts) and the pod's chain logs, without model weights. Unpack with `tar -xzf docs/media_steer_runs.tar.gz`.
 
 ## Run
 
