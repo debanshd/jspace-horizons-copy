@@ -11,8 +11,9 @@ other kind and Z of the same kind (media.assign). Three arms, mixed in the same 
              the last layer) for L = -1, 3, 7, ..., with Y and the random direction.
   knockout   attention from every text token to the media tokens blocked at every attention layer from L on, and up to L
              (Qwen3.5: its one-in-four softmax layers; Gemma-4: every fourth layer as L), on clean prompts.
-  ablation   at the read layers, mean-ablated on the media tokens: the clip's own name's J-lens direction, a random direction,
-             the lens part (top r = 0.1 d right singular directions of W_U J_L; 256 on the 4B), a random part of rank r.
+  ablation   at the read layers, mean-ablated on the media tokens: the clip's own name's J-lens direction, Y's J-lens direction
+             (name_steering's control), a random direction, the lens part (top r = 0.1 d right singular directions of W_U J_L;
+             256 on the 4B), a random part of rank r.
 sigma_L is the mean size of a media token's own-name component at layer L on the clean clips, per input kind. The J-lens map of
 layer -1 is layer 0's and of the last layer the one before it (the nearest fitted map, as in depth_sweep).
 
@@ -20,7 +21,10 @@ Clips. scripts/prepare_media.py draws 16 candidates per class and decodes them. 
 is the object in the video?" and writes gate.csv; `--stage main` keeps, per class, the first 8 candidates that every model named
 in --gate-models named correctly (plan.md: every model in the run), and stops if a class has fewer. Scenes are ordered round-robin
 over the classes; the first 16 (two per class) are the calibration split, the other 48 carry the verdicts. `--stage smoke` runs
-every arm on the first clip of five classes that this model names, and reports counts only.
+every arm on the first clip of five classes that this model names, and reports counts only. `--stage reference` is the smoke
+check on the middle frame alone (plan.md step 5): it must reproduce RECORD row 93 on the 4B, and exits with status 1 if it does
+not: at 4 sigma, say follows Y on at least 4 of the 5 clips from the early and from the middle block, and the random direction
+on at most 1 of 5 in each.
 
 Controls. The random, unembedding and principal directions and Z for the steering; the last-prompt-token site for an output
 push; the static video and the frame for motion; the random direction and random part for the ablation; clean prompts for all.
@@ -28,7 +32,7 @@ push; the static video and the frame for motion; the random direction and random
 Predictions (written before the run, plan.md): 1 naming follows Y from the early and middle blocks on >= 0.8 of held-out clips;
 2 not from the late block (<= 0.1); 3 the random, unembedding and principal directions on the media tokens move <= 0.1; 4 the
 rule follows Y more from the early block than the middle, and below 0.5; 5 the knockout's last naming read is at 0.67 to 0.75
-of depth and the latest suffix start that steers naming is at or before it plus 4 layers; 6 removing the own name's direction or
+of depth, and the latest suffix start that steers naming is at or before that read and at most one step (4 layers) before it; 6 removing the own name's direction or
 the lens part costs naming <= 0.10; 7 the clip, the static video and the frame agree in every block; 8 the sound agrees with the
 frame.
 
@@ -47,6 +51,10 @@ The rule (written before the run; thresholds as in name_steering R0 and R4 and R
 - Same as the picture: per block, the held-out difference in say-follows-Y against the frame input (paired by clip, at the frame's
   calibrated dose) has its interval inside +-0.15; otherwise "differs by input". Nothing temporal tested: the clip and the static
   video are the same by this test in every block.
+- Ablation (name_steering R1, per question): D = accuracy with Y's direction removed minus with the own name's removed;
+  "necessary" when D >= 0.25 with the interval above 0, "not needed" when D <= 0.10 with the interval inside (-0.15, 0.15),
+  otherwise undetermined. R1_nats: log p of the correct first token with the own name removed minus with Y's removed;
+  "necessary" at <= -0.5 with the interval below 0, "not needed" at >= -0.2 with the interval inside (-0.3, 0.3).
 - Knockout: a cost is clean minus knocked-out log p(X's answer) - log p(Y's answer); the last reader is the largest L whose
   from-L-on knockout costs >= 1 nat with the interval above 0 (attention_knockout.py's rule).
 - Intervals: 95% bootstrap over clips, 2000 resamples, seed 0.
@@ -56,6 +64,7 @@ first-token log-probabilities), summary.json (setup, gates, doses, steering tabl
 readout, predictions), clips.json, stimuli.png, gpu.csv (nvidia-smi every 2 s), config.json, run.log; gate.csv for --stage gate.
 """
 
+import hashlib
 import json
 import time
 
@@ -73,7 +82,7 @@ from jspace.runs import Run, parser
 DOSES = [1.0, 2.0, 4.0, 8.0]
 STEER_KEYS = ["Y", "Z", "random", "WU_Y", "PC"]
 LAST_KEYS = ["Y", "WU_Y"]
-ABLATIONS = ["own name", "random direction", "lens part", "random part"]
+ABLATIONS = ["own name", "other name", "random direction", "lens part", "random part"]
 N_NEW = 4
 GATE = {"say": 0.90, "animal": 0.85}
 
@@ -301,6 +310,14 @@ def summarize(R, S, inputs, BL, starts, AL, KO_STARTS, n_layers, n_cal, smoke):
         for task in media.TASKS:
             c = pick(Ri, held, "correct", task=task, family="clean")
             ab[task] = {a: dict(cost=boot(c - pick(Ri, held, "correct", task=task, family="ablate", ablate=a), held)) for a in ABLATIONS}
+            if out["gate"][inp][task]["passes"]:
+                acc = {a: pick(Ri, held, "correct", task=task, family="ablate", ablate=a) for a in ("own name", "other name")}
+                lp = {a: pick(Ri, held, "lp_X", task=task, family="ablate", ablate=a) for a in ("own name", "other name")}
+                D, DN = boot(acc["other name"] - acc["own name"], held), boot(lp["own name"] - lp["other name"], held)
+                ab[task]["D"], ab[task]["D_nats"] = D, DN
+                ab[task]["R1"], ab[task]["R1_nats"] = r1(D), r1_nats(DN)
+            else:
+                ab[task]["R1"] = ab[task]["R1_nats"] = "not perceived, untestable"
         out["ablation"][inp] = ab
     # comparisons against the frame, at the frame's dose
     if "frame" in inputs:
@@ -333,6 +350,33 @@ def summarize(R, S, inputs, BL, starts, AL, KO_STARTS, n_layers, n_cal, smoke):
     return out
 
 
+def r1(D):
+    """name_steering's R1 on accuracies: D = other name removed minus own name removed"""
+    m, lo, hi = D
+    return "necessary" if m >= 0.25 and lo > 0 else "not needed" if m <= 0.10 and lo > -0.15 and hi < 0.15 else "undetermined"
+
+
+def r1_nats(DN):
+    """name_steering's R1_nats: log p with the own name removed minus with the other name removed"""
+    m, lo, hi = DN
+    return "necessary" if m <= -0.5 and hi < 0 else "not needed" if m >= -0.2 and lo > -0.3 and hi < 0.3 else "undetermined"
+
+
+def suffix_edge_ok(edge, last_reader):
+    """prediction 5's second half: the latest suffix start that steers naming is at or before the last naming read, within one
+    step (4 layers) of it"""
+    return edge is not None and last_reader - 4 <= edge <= last_reader
+
+
+def reference_check(R):
+    """plan.md step 5 on the middle frame: RECORD row 93 at 4 sigma, counts out of 5"""
+    d = R[(R.input == "frame") & (R.task == "say") & (R.family == "steer") & (R.site == "media") & (R.dose == 4.0)]
+    counts = {f"{key} {bn}": int(d[(d.key == key) & (d.set == bn)].follows_Y.sum()) for key in ("Y", "random") for bn in ("early", "middle")}
+    n = int(R[(R.input == "frame") & (R.task == "say") & (R.family == "clean")].scene.nunique())
+    ok = all(counts[f"Y {bn}"] >= n - 1 for bn in ("early", "middle")) and all(counts[f"random {bn}"] <= 1 for bn in ("early", "middle"))
+    return dict(n=n, counts=counts, passes=bool(ok), rule="say follows Y on >= n - 1 clips from the early and the middle block at 4 sigma, random on <= 1")
+
+
 def predictions(out, R, inputs, BL, held, n_layers):
     P = {}
     for inp in inputs:
@@ -357,8 +401,7 @@ def predictions(out, R, inputs, BL, held, n_layers):
         edge = out["sweeps"][inp].get("suffix edge")
         if isinstance(ko, dict) and ko["last_reader"] is not None:
             share_ok = 0.67 <= ko["last_reader_share"] <= 0.75
-            edge_ok = edge is not None and edge <= ko["last_reader"] + 4
-            p["5"] = "kept" if share_ok and edge_ok else "missed"
+            p["5"] = "kept" if share_ok and suffix_edge_ok(edge, ko["last_reader"]) else "missed"
         else:
             p["5"] = "missed" if isinstance(ko, dict) else "untestable"
         ab = out["ablation"][inp]["say"]
@@ -376,7 +419,7 @@ def predictions(out, R, inputs, BL, held, n_layers):
 
 def main():
     ap = parser(__doc__, "media_steer")
-    ap.add_argument("--stage", choices=["gate", "main", "smoke"], default="main")
+    ap.add_argument("--stage", choices=["gate", "reference", "smoke", "main"], default="main")
     ap.add_argument("--n-per-class", type=int, default=8)
     ap.add_argument("--n-cal", type=int, default=16, help="calibration scenes (two per class): the dose is picked on them")
     ap.add_argument("--gate-models", default="", help="comma list of models whose gate.csv in this run must all name a clip (default: this model)")
@@ -384,8 +427,10 @@ def main():
     ap.add_argument("--max-rows", type=int, default=512, help="largest batch, in prompts")
     ap.add_argument("--no-encoder-cache", action="store_true", help="run the vision encoder in every batch")
     args = ap.parse_args()
-    if args.stage == "smoke" and args.run == "media_steer":
-        args.run = "smoke_media_steer"
+    if args.stage in ("smoke", "reference") and args.run == "media_steer":
+        args.run = f"{args.stage}_media_steer"
+    if args.stage == "reference":
+        args.inputs = "frame"
     require_data(args.data_dir, "vggsound")
     man = media.manifest(args.data_dir)
     run = Run(args, f"media_steer {args.stage}")
@@ -426,7 +471,7 @@ def main():
         return
 
     # ---- the clips
-    smoke = args.stage == "smoke"
+    smoke = args.stage in ("smoke", "reference")
     if smoke:
         G = gate_clips(media.SMOKE_CLASSES)
         ok = {w: [c for c in cand[w] if bool(G[(G.clip == c)].correct.iloc[0])] for w in media.SMOKE_CLASSES}
@@ -450,7 +495,14 @@ def main():
             raise SystemExit(f"fewer than {args.n_per_class} clips named by every gate model in {short}: draw more candidates (prepare_media.py --candidates)")
         S = media.assign(ok, args.n_per_class)
     run.save_json(
-        dict(scenes=S, gate_models=None if smoke else models, manifest_revisions=man["revisions"], clips={c["id"]: c for c in man["clips"] if c["id"] in {r["clip"] for r in S}}), "clips.json"
+        dict(
+            scenes=S,
+            gate_models=None if smoke else models,
+            manifest_revisions=man["revisions"],
+            manifest_sha256=hashlib.sha256((args.data_dir / "vggsound/manifest.json").read_bytes()).hexdigest(),
+            clips={c["id"]: c for c in man["clips"] if c["id"] in {r["clip"] for r in S}},
+        ),
+        "clips.json",
     )
     sheet = []
     for r in S[:2]:
@@ -494,6 +546,7 @@ def main():
     T.dirs["random"] = {L: torch.as_tensor(np.tile(lens.unit_rows(1, d, 700 + L)[:, :, 0], (sc_n, 1)), device=dev) for L in LF}  # one random direction per layer, seed 700 + L
     r_sub = int(round(0.1 * d))
     T.abl["own name"] = ("scene", {L: T.dirs["X"][L] for L in lm.layers})
+    T.abl["other name"] = ("scene", {L: T.dirs["Y"][L] for L in lm.layers})
     T.abl["random direction"] = ("scene", {L: torch.as_tensor(np.tile(lens.unit_rows(1, d, 200 + L)[:, :, 0], (sc_n, 1)), device=dev) for L in lm.layers})
     T.abl["lens part"] = ("shared", {L: torch.as_tensor(lens.lens_subspace(lm, L, r_sub), device=dev) for L in lm.layers})
     T.abl["random part"] = ("shared", {L: torch.as_tensor(lens.random_subspace(d, r_sub, 100 + L), device=dev) for L in lm.layers})
@@ -592,6 +645,8 @@ def main():
         seconds=time.time() - t0,
     )
     out["readout"], out["norms"] = readout, norms
+    if args.stage == "reference":
+        out["reference"] = reference_check(R)
     run.save_json(out, "summary.json")
     for inp in inputs:
         print(
@@ -602,6 +657,11 @@ def main():
         print("predictions: " + json.dumps(out["predictions"]))
     if gpu:
         print(f"GPU utilization: mean {gpu['mean_utilization']}%, median {gpu['median_utilization']}% over {gpu['samples']} samples")
+    if args.stage == "reference":
+        ref = out["reference"]
+        print(f"reference (plan.md step 5, RECORD row 93): {'reproduced' if ref['passes'] else 'NOT reproduced'}: {ref['counts']} of {ref['n']}")
+        if not ref["passes"]:
+            raise SystemExit("the middle frame does not reproduce row 93: stop and find the error before any other run (plan.md step 5)")
 
 
 def to_frame(rows, res, phase):

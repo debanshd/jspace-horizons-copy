@@ -7,6 +7,7 @@ import sys
 import types
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import pytest
 import torch
@@ -203,6 +204,54 @@ def test_summary_rules_on_made_up_answers():
     P = out["predictions"]["clip"]
     assert P["1"] == "kept" and P["2"] == "kept" and P["3"] == "kept" and P["5"] == "kept" and P["6"] == "kept" and P["7"] == "kept"
     assert P["4"] == "missed"  # the made-up rule follows Y on every early scene, which prediction 4 says it will not
+    ab = out["ablation"]["clip"]["say"]
+    assert ab["R1"] == "not needed" and ab["R1_nats"] == "not needed"  # removing either name changes nothing in the made-up model
     json.dumps(out, default=_json_default)  # the summary can be saved
     smoke = ms.summarize(R, S, inputs, BL, starts, AL, AL, n_layers, n_cal=8, smoke=True)
     assert "verdict" not in smoke and smoke["counts"]
+
+
+def test_prediction_5_wants_the_edge_at_or_just_before_the_last_read():
+    ms = load_experiment()
+    assert ms.suffix_edge_ok(19, 23) and ms.suffix_edge_ok(23, 23)
+    assert not ms.suffix_edge_ok(27, 23)  # after the last read: the looser version 3 code passed this
+    assert not ms.suffix_edge_ok(15, 23) and not ms.suffix_edge_ok(None, 23)
+
+
+def test_name_steering_r1():
+    ms = load_experiment()
+    assert ms.r1((0.30, 0.10, 0.50)) == "necessary" and ms.r1((0.05, -0.05, 0.12)) == "not needed" and ms.r1((0.20, 0.0, 0.4)) == "undetermined"
+    assert ms.r1_nats((-0.8, -1.2, -0.3)) == "necessary" and ms.r1_nats((0.0, -0.1, 0.1)) == "not needed" and ms.r1_nats((-0.4, -0.9, 0.1)) == "undetermined"
+
+
+def test_reference_check_is_row_93():
+    ms = load_experiment()
+
+    def frame_rows(follow):
+        recs = [dict(input="frame", task="say", family="clean", scene=i, site="", key="", set="", dose=0.0, follows_Y=False) for i in range(5)]
+        for key in ("Y", "random"):
+            for bn in ("early", "middle", "late"):
+                for i in range(5):
+                    recs.append(dict(input="frame", task="say", family="steer", scene=i, site="media", key=key, set=bn, dose=4.0, follows_Y=follow(key, bn, i)))
+        return pd.DataFrame(recs)
+
+    good = ms.reference_check(frame_rows(lambda key, bn, i: key == "Y" and bn != "late" and i < 4))
+    assert good["passes"] and good["counts"]["Y early"] == 4
+    bad = ms.reference_check(frame_rows(lambda key, bn, i: key == "Y" and bn == "early"))  # the middle block does not steer
+    assert not bad["passes"]
+    noisy = ms.reference_check(frame_rows(lambda key, bn, i: bn != "late" and (key == "Y" or i < 2)))  # the random direction steers too
+    assert not noisy["passes"]
+
+
+def test_decoded_clips_are_checked_by_their_arrays(tmp_path):
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+    try:
+        prep = importlib.import_module("prepare_media")
+    finally:
+        sys.path.pop(0)
+    frames, audio = np.zeros((8, 224, 224, 3), np.uint8), np.ones(160000, np.float32)
+    np.savez(tmp_path / "c1.npz", frames=frames, audio=audio)
+    man = dict(clips=[dict(id="c1", frames_sha256=prep.array_sha256(frames), audio_sha256=prep.array_sha256(audio)), dict(id="c2", frames_sha256="", audio_sha256="")])
+    assert prep.check_decoded(man, tmp_path) == [("c2", "missing")]
+    np.savez(tmp_path / "c1.npz", frames=frames, audio=audio * 2)
+    assert prep.check_decoded(man, tmp_path)[0] == ("c1", "decoded arrays differ")

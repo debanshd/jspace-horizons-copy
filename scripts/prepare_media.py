@@ -16,9 +16,14 @@ What it does, in order:
 4. Per candidate: the mp4 (its sha256 recorded), 8 frames at media.FRAME_TIMES (the first frame at or after each time),
    centre-cropped to a square and resized to 224 x 224 (bicubic), and the sound in mono at 16 kHz, padded with silence or
    cut to exactly 10 s, into data/vggsound/clips/<id>.npz.
-5. data/vggsound/manifest.json: the revisions, the label-to-class table, the counts per class in the shard, every candidate
-   with its hashes and durations, and every skipped clip with the reason.
-A second run with the same arguments checks every file against the manifest instead of decoding again.
+5. The manifest: the revisions, the label-to-class table, the counts per class in the shard, every candidate with its hashes
+   (the mp4 file, and the decoded frames and sound as raw arrays: an .npz file carries a timestamp, so its own hash would
+   change on every write) and durations, and every skipped clip with the reason. It is written twice: to
+   data/vggsound/manifest.json, which the experiment reads, and to scripts/vggsound_manifest.json, which is committed.
+
+Once scripts/vggsound_manifest.json is committed it is the reference: a later run on any machine downloads the clips it
+lists, at its revisions, and stops if an mp4 or a decoded clip has a different hash. A run whose data folder already holds
+every clip only checks the decoded arrays. To draw a new set (another --candidates), delete the committed manifest on purpose.
 """
 
 import argparse
@@ -32,7 +37,7 @@ from huggingface_hub import HfApi, hf_hub_download
 from PIL import Image
 
 from jspace import media
-from jspace.config import DATA_DIR, VGG_CLIPS_REPO, VGG_CLIPS_REVISION, VGG_CSV_REPO, VGG_CSV_REVISION
+from jspace.config import DATA_DIR, ROOT, VGG_CLIPS_REPO, VGG_CLIPS_REVISION, VGG_CSV_REPO, VGG_CSV_REVISION
 from jspace.runs import load_env
 
 
@@ -41,6 +46,17 @@ def sha256(path):
     with open(path, "rb") as f:
         for chunk in iter(lambda: f.read(1 << 24), b""):
             h.update(chunk)
+    return h.hexdigest()
+
+
+TRACKED = ROOT / "scripts/vggsound_manifest.json"
+
+
+def array_sha256(*arrays):
+    """the hash of the decoded clip: the raw bytes of its arrays, in order"""
+    h = hashlib.sha256()
+    for a in arrays:
+        h.update(np.ascontiguousarray(a).tobytes())
     return h.hexdigest()
 
 
@@ -97,6 +113,27 @@ def decode(path):
     return frames, audio, facts
 
 
+def fetch_and_decode(cid, root):
+    mp4 = Path(hf_hub_download(VGG_CLIPS_REPO, f"data/{cid}.mp4", repo_type="dataset", revision=VGG_CLIPS_REVISION, local_dir=root / "mp4"))
+    frames, audio, facts = decode(mp4)
+    np.savez(root / "clips" / f"{cid}.npz", frames=frames, audio=audio)
+    return dict(mp4_sha256=sha256(mp4), frames_sha256=array_sha256(frames), audio_sha256=array_sha256(audio), **facts)
+
+
+def check_decoded(man, clips_dir):
+    """every clip of a manifest present and identical to it, as decoded arrays: [(id, problem)]"""
+    bad = []
+    for c in man["clips"]:
+        path = clips_dir / f"{c['id']}.npz"
+        if not path.exists():
+            bad.append((c["id"], "missing"))
+            continue
+        z = np.load(path)
+        if array_sha256(z["frames"]) != c["frames_sha256"] or array_sha256(z["audio"]) != c["audio_sha256"]:
+            bad.append((c["id"], "decoded arrays differ"))
+    return bad
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--candidates", type=int, default=16, help="candidate clips per class")
@@ -111,15 +148,27 @@ def main():
     clips_dir = root / "clips"
     clips_dir.mkdir(parents=True, exist_ok=True)
     man_path = root / "manifest.json"
-    if man_path.exists():
-        man = json.loads(man_path.read_text())
-        same = man["revisions"] == dict(clips=VGG_CLIPS_REVISION, csv=VGG_CSV_REVISION) and man["candidates_per_class"] == args.candidates
-        if same and all((clips_dir / f"{c['id']}.npz").exists() for c in man["clips"]):
-            bad = [c["id"] for c in man["clips"] if sha256(clips_dir / f"{c['id']}.npz") != c["npz_sha256"]]
-            if bad:
-                raise SystemExit(f"{len(bad)} decoded clips differ from the manifest (e.g. {bad[:3]}): delete data/vggsound and run again")
-            print(f"ok  {len(man['clips'])} clips match {man_path}")
-            return
+    revisions = dict(clips=VGG_CLIPS_REVISION, csv=VGG_CSV_REVISION)
+
+    if TRACKED.exists():  # the committed reference: the same clips, the same bytes
+        ref = json.loads(TRACKED.read_text())
+        if ref["revisions"] != revisions or ref["candidates_per_class"] != args.candidates:
+            raise SystemExit(
+                f"{TRACKED.name} was drawn at {ref['revisions']} with {ref['candidates_per_class']} candidates per class, not {revisions} with {args.candidates}: "
+                "delete it on purpose to draw a new set"
+            )
+        todo = [c for c in ref["clips"] if check_decoded(dict(clips=[c]), clips_dir)]  # missing here, or not the reference's arrays
+        bad = []
+        for c in todo:
+            got = fetch_and_decode(c["id"], root)
+            for k in ("mp4_sha256", "frames_sha256", "audio_sha256"):
+                if got[k] != c[k]:
+                    bad.append((c["id"], k))
+        if bad:
+            raise SystemExit(f"{len(bad)} hashes differ from {TRACKED.name} (e.g. {bad[:3]}): the clips or the decoder are not the ones the manifest was made with")
+        man_path.write_text(TRACKED.read_text())
+        print(f"ok  {len(ref['clips'])} clips match {TRACKED.name} ({len(todo)} downloaded and decoded now)")
+        return
 
     csv_path = Path(hf_hub_download(VGG_CSV_REPO, "vggsound.csv", repo_type="dataset", revision=VGG_CSV_REVISION, local_dir=root))
     labels = {}
@@ -142,23 +191,18 @@ def main():
         for cid in order[w]:
             if n == args.candidates:
                 break
-            mp4 = Path(hf_hub_download(VGG_CLIPS_REPO, f"data/{cid}.mp4", repo_type="dataset", revision=VGG_CLIPS_REVISION, local_dir=root / "mp4"))
             try:
-                frames, audio, facts = decode(mp4)
+                facts = fetch_and_decode(cid, root)
             except (ValueError, av.error.FFmpegError) as e:
-                skipped.append(dict(id=cid, cls=w, reason=str(e)[:200]))
+                skipped.append({"id": cid, "class": w, "reason": str(e)[:200]})
                 print(f"skip {cid} ({w}): {e}")
                 continue
-            npz = clips_dir / f"{cid}.npz"
-            np.savez(npz, frames=frames, audio=audio)
-            kept.append(dict(id=cid, cls=w, label=labels[cid][0], split=labels[cid][1], mp4_sha256=sha256(mp4), npz_sha256=sha256(npz), **facts))
+            kept.append({"id": cid, "class": w, "label": labels[cid][0], "split": labels[cid][1], **facts})
             n += 1
         if n < args.candidates:
             print(f"warning: only {n} decodable clips of {w} in the shard")
-    for c in kept:
-        c["class"] = c.pop("cls")
     man = dict(
-        revisions=dict(clips=VGG_CLIPS_REVISION, csv=VGG_CSV_REVISION),
+        revisions=revisions,
         repos=dict(clips=VGG_CLIPS_REPO, csv=VGG_CSV_REPO),
         candidates_per_class=args.candidates,
         seed=0,
@@ -171,8 +215,11 @@ def main():
         clips=kept,
         skipped=skipped,
     )
-    man_path.write_text(json.dumps(man, indent=2))
+    text = json.dumps(man, indent=2) + "\n"
+    man_path.write_text(text)
+    TRACKED.write_text(text)
     print(f"saved {man_path}: {len(kept)} clips, {len(skipped)} skipped")
+    print(f"saved {TRACKED}: commit it, so every later download is checked against these hashes")
 
 
 if __name__ == "__main__":

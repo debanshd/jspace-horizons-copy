@@ -161,30 +161,32 @@ One grid per model. Columns: static video, clip, sound. Rows: early, middle and 
 
 ## The code, and how to run it on RunPod
 
-Written 16 Nov 2026; step 4 is done, nothing has run on a GPU. It was checked on a CPU only: 12 new tests (`tests/test_media.py`: the label rules, the scoring, the clip assignment, the layer blocks, the row-wise hooks, the knockout mask, and the whole summary on made-up answers), ruff, PyAV decoding of a synthetic 10-second clip, and the Qwen3.5 and Gemma-4 video and audio processors of transformers 5.19 on a test clip (196 video tokens on Qwen, 8 x 70 on Gemma, the true frame times, 250 audio tokens for 10 s).
+Written 16 Nov 2026; step 4 is done, nothing has run on a GPU. It was checked on a CPU only: 16 new tests (`tests/test_media.py`: the label rules, the scoring, the clip assignment, the layer blocks, the row-wise hooks, the knockout mask, the whole summary on made-up answers, prediction 5, the ablation rule, the reference check, and the manifest check), ruff, PyAV decoding of a synthetic 10-second clip, and the Qwen3.5 and Gemma-4 video and audio processors of transformers 5.19 on a test clip (196 video tokens on Qwen, 8 x 70 on Gemma, the true frame times, 250 audio tokens for 10 s).
 
 | file | what it does |
 |---|---|
 | `scripts/pin_media.py` | resolves the commits of the two VGGSound repositories and of Gemma-4-E2B with its lens sha256, and writes them into `config.py` (they could not be resolved from the session that wrote the code) |
-| `scripts/prepare_media.py` | downloads 16 candidate clips per class from the first VGGSound shard and decodes each once: 8 frames at 224 x 224 and 10 s of mono 16 kHz sound, with a manifest of hashes |
+| `scripts/prepare_media.py` | downloads 16 candidate clips per class from the first VGGSound shard and decodes each once: 8 frames at 224 x 224 and 10 s of mono 16 kHz sound. The first run writes `scripts/vggsound_manifest.json` (commit it); every later run checks the mp4s and the decoded arrays against it |
 | `src/jspace/media.py` | the classes, the label rule, the prompts, the scoring, the clip-to-word assignment, the layer blocks |
 | `src/jspace/batched.py` | the engine: row-wise steering, ablation and knockout in shared batches |
-| `experiments/media_steer.py` | the experiment, in three stages: `gate`, `smoke`, `main` |
-| `scripts/media_steer.sh` | steps 2 to 8 in order, skipping what is done |
+| `experiments/media_steer.py` | the experiment, in four stages: `reference` (step 5: the 4B on the middle frame must reproduce RECORD row 93, or it exits with status 1), `smoke`, `gate`, `main` |
+| `scripts/compare_media.py` | step 6: two smoke runs compared answer by answer |
+| `scripts/media_steer.sh` | steps 2 to 8 in order, skipping what is done: the reference check (it stops the chain if it fails), the smoke check twice with the comparison, the gate, the 64-clip run |
 
 On a fresh pod, from the repository:
 
 ```bash
 uv sync
 uv run scripts/pin_media.py                     # once; then commit src/jspace/config.py
-STAGE=smoke scripts/media_steer.sh              # steps 5 and 6: the 5-clip smoke check on the 4B and E4B
+STAGE=smoke scripts/media_steer.sh              # steps 5 and 6: the reference check, then the smoke check twice on the 4B and E4B
+git add scripts/vggsound_manifest.json && git commit -m "VGGSound clips and their hashes"   # once, after the first download
 scripts/media_steer.sh                          # step 7: gate for both models, then the 64-clip run
 MODELS="Qwen/Qwen3.5-0.8B Qwen/Qwen3.5-4B Qwen/Qwen3.5-27B google/gemma-4-E2B-it google/gemma-4-E4B-it google/gemma-4-31B-it" RUN=media_steer_all scripts/media_steer.sh   # step 8, 96 GB card
 ```
 
 How it keeps the GPU busy. No code can promise 100% utilization; this code removes the usual causes of idle time and measures what is left:
 - **No padding.** Every clip has the same frame times and the same sound length, so every prompt of one input and question has the same length. Session's padding check had found that left padding moved Gemma-4-E4B's and Qwen3.5-27B's numbers and ran them one prompt at a time (October configs: `batch 1`); with no padding they batch fully.
-- **Many arms per batch.** The 54,000 rows on the 4B (105 arms in phase A and 36 sweep arms in phase B, for 2 questions, 3 inputs and 64 clips) and about 80,000 on Gemma-4-E4B (more knockout and sweep starts, and the sound) are mixed in batches of up to 512 prompts; each layer's hook edits only its own rows.
+- **Many arms per batch.** The 54,000 rows on the 4B (106 arms in phase A and 36 sweep arms in phase B, for 2 questions, 3 inputs and 64 clips) and about 80,000 on Gemma-4-E4B (more knockout and sweep starts, and the sound) are mixed in batches of up to 512 prompts; each layer's hook edits only its own rows.
 - **The encoder once per clip.** Vision-encoder outputs are cached and passed as `mm_encoder_outputs`. The cache is switched on only if a start-up check gives identical answers and first-token log-probabilities within 0.05 nats; otherwise the encoder runs in every batch. Gemma's audio tower takes no cached outputs and runs in every batch.
 - **The processor once per prompt**, and the next batches assembled and pinned on a CPU thread while the GPU runs.
 - **Batch size from free memory**, halved on out-of-memory and kept.
