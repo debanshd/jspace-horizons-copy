@@ -7,7 +7,8 @@ A pilot on video clips and sounds: a 5-clip smoke check, then a 64-clip run. Not
 | 1 | 15 Nov 2026 | the first plan, 5 clips (commit `504e7bb`) | 13 / 100 |
 | 2 | 15 Nov 2026 | the council pass found a fatal flaw; steering moved from single windows to layer blocks; controls added | 25.5 / 100 |
 | 3 | 15 Nov 2026 | 64 clips with intervals, a knockout arm, an ablation arm, a figure design, a partial prior-art audit | 37 / 100 |
-| 3.1 | 16 Nov 2026 | this file: details the code fixed where version 3 left them open (data source, word assignment, calibration block, knockout queries, lens rank, the ablation rule); written before any run, no prediction or threshold changed | 37 / 100 |
+| 3.1 | 16 Nov 2026 | details the code fixed where version 3 left them open (data source, word assignment, calibration block, knockout queries, lens rank, the ablation rule); written before any run, no prediction or threshold changed | 37 / 100 |
+| 3.2 | 16 Nov 2026 | this file: video and sound only. The middle frame as a picture and the step that reproduced RECORD row 93 are dropped; the image runs' numbers still set the predictions but are not rerun. Predictions 7 and 8 and the comparison rule are restated without the picture; written before any run | 37 / 100 |
 
 Built on two commits: `88b0b98` (the Karpathy guidelines: state assumptions, simplest thing, surgical changes, a check per step) and `bb38cc3` (the master rubric, applied in full in the council pass at the bottom).
 
@@ -17,7 +18,7 @@ On an image, adding the J-lens direction of the word "bird" to an airplane's ima
 
 ## What the image runs already say
 
-These numbers set the design and the predictions.
+These numbers set the design and the predictions. They are not rerun: this plan runs only video and sound.
 
 | image result (Qwen3.5-4B, 64 scenes) | number | source |
 |---|---|---|
@@ -82,13 +83,12 @@ ImageNet VID (92 GB, boxes, no sound) stays the choice for a run with several ob
 
 One new script, `experiments/media_steer.py`. Run names: `smoke_media_steer` (5 clips), `media_steer` (64 clips).
 
-**Inputs**, four per clip:
+**Inputs**, three per clip:
 
 | input | why |
 |---|---|
 | the clip, 8 frames at 224 x 224 | the question |
 | a static video: the middle frame 8 times | same token format, no motion |
-| the middle frame as an image | ties the run to the image numbers above |
 | the audio track (Gemma E2B and E4B only) | the question |
 
 **Questions**, in separate prompts: say ("What is the object in the video? Reply with the noun only.") and the animal rule ("if the object in the video is an animal, answer 7; otherwise answer 3"). Sound: "What is making this sound?", placed before the audio, as Gemma's card asks.
@@ -123,8 +123,8 @@ From the image numbers, for every model and modality that passes its gate:
 4. The animal rule follows Y more from the early block than from the middle block (image: 0.23 against 0.03), and never reaches 0.5.
 5. The knockout puts the last naming read at 0.67 to 0.75 of depth, and the latest suffix start that still steers naming falls at or before it, within one step.
 6. Ablating the own name's direction or the lens part costs naming at most 0.10, as on images.
-7. The clip, the static video and the middle frame agree in every block.
-8. Sound agrees with the middle frame on the same model.
+7. The clip and the static video agree in every block.
+8. Sound agrees with the clip on the same model.
 
 Prediction 5 links two independent arms: the knockout runs on clean clips and forecasts where steering stops working. Prediction 8 is the most likely to fail and the most informative if it does.
 
@@ -137,8 +137,8 @@ Thresholds are those of the frozen image rules (`name_steering` R0 and R4, row 9
 - **Seen, or only said.** "Seen" when the rule follows Y by at least 0.30 more than the random direction, with the interval above 0 and Z flipping the rule on at most 0.10. "Only said" when the rule follows Y by at most 0.10 more than random.
 - **J-specific** when the unembedding direction on the media tokens gives Y on at most 0.10.
 - **Not told apart from an output push** when the media-token steer passes only where the same steer at the last prompt token passes and the unembedding direction passes too.
-- **Same as the image** when the difference between a modality's rate and the middle frame's has its interval inside plus or minus 0.15, per block. Outside it on any block: "differs by modality".
-- **Nothing temporal tested** when the clip and the static video are the same by that test in every block.
+- **Same as the clip** when the difference between the sound's rate and the clip's (paired by clip, at the clip's calibrated dose) has its interval inside plus or minus 0.15, per block. Outside it on any block: "differs by modality".
+- **Nothing temporal tested** when the clip and the static video are the same by that test (at the static video's calibrated dose) in every block.
 - **Knockout** is read by `attention_knockout.py`'s rule: a cost is clean minus knocked-out log p(X's answer) − log p(Y's answer); the last reader is the largest L whose from-L-on knockout costs at least 1 nat with the interval above 0.
 - **Ablation** is read by `name_steering.py`'s R1, per question: D = accuracy with Y's direction removed minus accuracy with the own name's removed. "Necessary" when D ≥ 0.25 with the interval above 0; "not needed" when D ≤ 0.10 with the interval inside (−0.15, 0.15); otherwise undetermined. The same in nats (R1_nats): log p of the correct first token with the own name removed minus with Y's removed; "necessary" at ≤ −0.5 with the interval below 0, "not needed" at ≥ −0.2 with the interval inside (−0.3, 0.3).
 - **Intervals**: 95% bootstrap over clips, 2000 resamples, seed 0 (`analysis.boot_scene`). With 48 clips a rate's interval is about plus or minus 0.14 at worst, enough for 1.00 against 0.00 and for 0.23 against 0.03 as a paired difference, not for effects under 0.15.
@@ -146,7 +146,7 @@ Thresholds are those of the frozen image rules (`name_steering` R0 and R4, row 9
 
 ## Figure 1, designed before the run
 
-One grid per model. Columns: photo, static video, clip, sound. Rows: early, middle and late block. Each cell holds two bars with intervals, "says the steered name" and "applies the rule to it", and a dashed line for the random direction. A strip under the grid shows the knockout's last naming read and last rule read as two ticks on a depth axis from 0 to 1. A reader should see in one look whether the columns match and where the ticks fall against the blocks.
+One grid per model. Columns: static video, clip, sound. Rows: early, middle and late block. Each cell holds two bars with intervals, "says the steered name" and "applies the rule to it", and a dashed line for the random direction. A strip under the grid shows the knockout's last naming read and last rule read as two ticks on a depth axis from 0 to 1. A reader should see in one look whether the columns match and where the ticks fall against the blocks.
 
 ## Steps
 
@@ -154,11 +154,10 @@ One grid per model. Columns: photo, static video, clip, sound. Rows: early, midd
 2. Pin Gemma E2B in `config.py`; add the clips to `scripts/download.py` with sha256. Verify: `download.py` passes its hash checks.
 3. Input smoke, no steering: each model encodes one clip and one sound; print the token counts, the answer and the lens ranks. Verify: the counts above, asserted media-token positions, the 27B loads.
 4. Write `media_steer.py` with the docstring carrying this design, the predictions and the rule, and a CPU test in `tests/` for the media-token position helper on made-up token ids. Video and audio encoding live in the script, so `Session` is untouched. If `Session.encode` must change, run `depth_sweep --n 4` before and after and compare with `check.py`. Verify: `ruff`, tests, matching folders.
-5. The 4B, middle frame only, 5 clips. Verify: it reproduces row 93 (early and middle blocks say Y, random does not). If it does not, stop: the script is wrong.
-6. The smoke check, 5 clips, 4B and E4B, all inputs. Verify: gates, token counts, read the CSV row by row. Run it twice and compare the two folders with `check.py`.
-7. The 64-clip run on the 4B and E4B: clip, static video, frame. Then sound on E4B and E2B; stop sound if its gate fails.
-8. Only if step 7 passes: the small and large models.
-9. One row per model and modality in `docs/RECORD.md`, with each prediction marked kept or missed.
+5. The smoke check, 5 clips, 4B and E4B, all inputs. Verify: gates, token counts, read the CSV row by row. Run it twice and compare the two runs. If the token counts differ between clips or the two runs differ, stop: the script is wrong.
+6. The 64-clip run on the 4B and E4B: clip and static video. Then sound on E4B and E2B; stop sound if its gate fails.
+7. Only if step 6 passes: the small and large models.
+8. One row per model and modality in `docs/RECORD.md`, with each prediction marked kept or missed.
 
 ## RunPod: time and cost
 
@@ -214,7 +213,7 @@ Scored 15 Nov 2026, three times: version 1, version 2, version 3. Stage: proposa
 
 Version 1 had a question and no thesis, so it failed Stage 0 admission. This pass proposes one, to be accepted or replaced by the authors:
 
-> A word's lens direction written on an input's tokens is said when it is written anywhere before the model stops reading those tokens for the name, and this window sits at the same share of depth for a photo, a clip and a sound.
+> A word's lens direction written on an input's tokens is said when it is written anywhere before the model stops reading those tokens for the name, and this window sits at the same share of depth for a clip and a sound as the image runs found for a photo.
 
 - Scope: Qwen3.5 and Gemma-4, single-object inputs, one-token names.
 - What kills it: a perceived modality where naming does not follow from the early or middle block, or follows from the late block, or where the knockout's last naming read and the steering edge disagree by more than one step.
@@ -254,7 +253,7 @@ Each item gets 0, half or all of its weight. The last two columns describe versi
 | 24 genuine audio and video | 2 | 1 | 1 | 1 | real motion and real sound with a gate and a static-video arm; no question that needs motion | clip and static video identical in every cell |
 | 25 learning origin | 1 | 0 | 0 | 0 | not addressed | none |
 | 26 natural ecology | 1 | 0 | 0 | 0.5 | 64 clips in the wild; one object each, known class words | none |
-| 27 implementation | 3 | 1.5 | 1.5 | 1.5 | position and count assertions, a CPU test, the reference check in step 5, a repeated run; all planned, none written | step 5 does not reproduce row 93 |
+| 27 implementation | 3 | 1.5 | 1.5 | 1.5 | position and count assertions, a CPU test, the smoke check run twice; all planned, none written | the smoke check's two runs differ |
 | 28 provenance | 2 | 1 | 1 | 1 | sha256, seeds, the candidate list, `runs.Run` configs, the clips kept with the run; no outside rerun planned | a clip's hash changes |
 | 29 Figure 1 | 4 | 0 | 0 | 2 | a figure is designed; no blind reader has seen it | a reader cannot say what was changed |
 | 30 prose, signature | 6 | 0 | 0 | 0 | a plan, not a paper | none |
@@ -319,7 +318,7 @@ Honest reading of the novelty: a known assay carried to two new token types. Tha
 | C, an output push | the direction only raises the next word's score | the answer-position steer and the unembedding direction match the media-token steer; the rule never moves in any block | the push rule; prediction 4 |
 | D, a photo in disguise (video only) | the frames are read as pictures | clip and static video are the same in every block | prediction 7, read as a limit on what was tested |
 
-Stop rule: if step 5 does not reproduce row 93, nothing after it is read.
+Stop rule: if the smoke check's token counts differ between clips or its two runs differ, nothing after it is read.
 
 ## 8. Experiment spec
 
@@ -343,7 +342,7 @@ Each lens gives its strongest objection and one revision.
 | statistics auditor | five clips give no interval | 64 clips, 48 held out, a clip bootstrap, equivalence margins | in v3 |
 | baselines (Belinkov) | a direction may work through its energy | the principal-direction control and the norm report; readout and steering kept as separate columns | in v3 |
 | figures (Siegel, Olah) | nothing shows what was changed | Figure 1, designed before the run | in v3, unread by anyone |
-| code auditor | new media encoding is where hooks land on the wrong tokens | step 5, count and position assertions, a CPU test, a repeated run | in v3 |
+| code auditor | new media encoding is where hooks land on the wrong tokens | the smoke check run twice, count and position assertions, a CPU test | in v3 |
 | replication auditor | YouTube clips disappear | hash the files and keep them with the run | in v2 |
 | circuits (Olah, Lindsey, Ameisen) | "which layers" is a position, not an algorithm | head-level reads at the layers the run finds | open: the next experiment |
 | multimodal pipeline (Agrawal, Krishna) | eight frames of one object need no motion to name | a question only motion can answer | open: needs labels |
@@ -361,7 +360,7 @@ Left open, not settled by argument: whether sound should be dropped if the gate 
 ```text
 CANDIDATE: A word's lens direction written on an input's tokens is said when it is written
   before the model stops reading those tokens for the name, at the same share of depth for
-  a photo, a clip and a sound. (Proposed in this pass; not yet the authors' claim.)
+  a clip and a sound as the image runs found for a photo. (Proposed in this pass; not yet the authors' claim.)
 VERSION / DATE: plan.md version 3 / 15 Nov 2026
 PQ: 37/100 (version 1: 13; version 2: 25.5)       DE: not yet assessed
 GATES: G1 [RED]; G2 [RED]; G3 [RED]; G4 [YELLOW]; G5 [YELLOW]; G6 [YELLOW]; G7 [RED]; G8 [RED]; G9 [RED]; G10 [RED]
@@ -373,9 +372,9 @@ FATAL FLAW: none found in version 3. Version 1's was the single-window steer.
 MOST IMPORTANT PRIOR ART: Are Audio-Language Models Listening? (arXiv 2603.06854), read at
   abstract and introduction only.
 STRONGEST RIVAL EXPLANATION: an output push (rival C); for sound, entry by modality (rival B).
-ONE DECISIVE / CHEAPEST KILL EXPERIMENT: step 5, then the knockout against the steering edge
+ONE DECISIVE / CHEAPEST KILL EXPERIMENT: the smoke check, then the knockout against the steering edge
   on Gemma E4B.
-WHAT WOULD SURPRISE AN INFORMED EXPERT: sound steering from the same blocks as a photo,
+WHAT WOULD SURPRISE AN INFORMED EXPERT: sound steering from the same blocks as a clip,
   through a lens fitted on text only.
 ONE-LINE REVELATION THAT MAKES AN EXPERT SAY WOW: none yet.
 THREE NEW RESEARCH PROGRAMS UNLOCKED: none yet.
@@ -388,4 +387,4 @@ WHAT THE DATA CURRENTLY ALLOW US TO SAY: nothing about video or sound.
 RELEASE: NO
 ```
 
-**Ruling.** Not a release candidate. As a pilot under the rubric's Stage 2, version 3 may run: its gates, controls, predictions and intervals are written, and step 5 stops it early if the script is wrong. The 63 points still missing sit mostly where a plan cannot reach: 25.5 in revelation and field consequence, 8 in figures and prose, and the rest in work that needs other people (a skeptic's forecasts, blind readers, an outside review) or a labelled motion question.
+**Ruling.** Not a release candidate. As a pilot under the rubric's Stage 2, version 3 may run: its gates, controls, predictions and intervals are written, and the smoke check stops it early if the script is wrong. The 63 points still missing sit mostly where a plan cannot reach: 25.5 in revelation and field consequence, 8 in figures and prose, and the rest in work that needs other people (a skeptic's forecasts, blind readers, an outside review) or a labelled motion question.
