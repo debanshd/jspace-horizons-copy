@@ -6,7 +6,8 @@ A pilot on video clips and sounds: a 5-clip smoke check, then a 64-clip run. Not
 |---|---|---|---|
 | 1 | 15 Nov 2026 | the first plan, 5 clips (commit `504e7bb`) | 13 / 100 |
 | 2 | 15 Nov 2026 | the council pass found a fatal flaw; steering moved from single windows to layer blocks; controls added | 25.5 / 100 |
-| 3 | 15 Nov 2026 | this file: 64 clips with intervals, a knockout arm, an ablation arm, a figure design, a partial prior-art audit | 37 / 100 |
+| 3 | 15 Nov 2026 | 64 clips with intervals, a knockout arm, an ablation arm, a figure design, a partial prior-art audit | 37 / 100 |
+| 3.1 | 16 Nov 2026 | this file: details the code fixed where version 3 left them open (data source, word assignment, calibration block, knockout queries, lens rank, the ablation rule); written before any run, no prediction or threshold changed | 37 / 100 |
 
 Built on two commits: `88b0b98` (the Karpathy guidelines: state assumptions, simplest thing, surgical changes, a check per step) and `bb38cc3` (the master rubric, applied in full in the council pass at the bottom).
 
@@ -66,11 +67,13 @@ One source for both modalities: **VGGSound** (CC BY 4.0, 10-second YouTube clips
 
 - **64 clips: 8 classes by 8 clips.** Four animals (dog, cat, bird, horse) and four vehicles (car, bus, train, airplane), so the animal rule is balanced. The class labels are to be confirmed against `vggsound.csv` before the draw.
 - **The smoke check** uses the first clip of five classes (airplane, bird, dog, car, train).
-- Y is a name of the other kind, Z a name of the same kind, both drawn per clip with a fixed seed, as `name_steering` draws them.
+- Y is a name of the other kind, Z a name of the same kind. They are assigned in a fixed rotation over the 8 clips of a class rather than drawn at random, so that every ordered pair appears and each pair runs both ways (each Y twice per class, each Z two or three times).
 - Each name must be one token in every model's tokenizer (asserted, as `stimuli.load_crops` does).
-- Draw 16 candidates per class with a fixed seed; keep the first 8 that every model in the run names correctly when clean. Save the candidates and which were dropped.
+- A label belongs to a class when it names exactly one class word ("dog barking" is dog; "railroad car, train wagon" names two and is not used).
+- Draw 16 candidates per class with a fixed seed; keep the first 8 that every model in the run names correctly when clean (the clip, asked "What is the object in the video?"). Save the candidates and which were dropped.
 - The first 16 kept clips are the calibration split; the other 48 carry the verdicts.
-- Source: `Loie/VGGSound` on Hugging Face, 20 shards of about 16 GB; one shard should hold enough clips per class, to be checked. Hash the 64 files and keep them with the run, since YouTube clips disappear.
+- Source: the first shard of VGGSound (about 10,000 clips) as single mp4 files from `harpreetsahota/VGGSound`, with the labels from `Loie/VGGSound`'s `vggsound.csv`, both at pinned commits. This avoids downloading a 16 GB archive for 128 clips.
+- Hashes: the mp4 of every candidate and its decoded frames and sound are hashed, and the list is committed with the code (`scripts/vggsound_manifest.json`), since YouTube clips disappear. A later download is checked against it; each run's `clips.json` records the hashes of its own clips.
 - Sound fallback: ESC-50 (5-second clean clips; CC BY-NC).
 
 ImageNet VID (92 GB, boxes, no sound) stays the choice for a run with several objects per clip.
@@ -100,11 +103,11 @@ One new script, `experiments/media_steer.py`. Run names: `smoke_media_steer` (5 
 | prefix sweep | -1 to L, L in steps of 4 | the smallest stretch from the input that steers |
 | suffix sweep | L to the last layer, L in steps of 4 | the latest start that still steers |
 
-**Arm 1, steering** (can a written name be said, and used?). Sites: every media token, and the last prompt token as the control for an output push. Directions, each of unit length: Y's J-lens direction; Z's (the rule must not flip); a random direction; Y's plain unembedding direction; the top principal direction of the clip's media tokens (the energy control). The dose is picked on the 16 calibration clips as the smallest of 1, 2, 4, 8 sigma_L at which Y is said on half of them; all four doses are reported. The pairs run both ways (airplane to bird and bird to airplane), so each direction has its reverse.
+**Arm 1, steering** (can a written name be said, and used?). Sites: every media token, and the last prompt token as the control for an output push. Directions, each of unit length: Y's J-lens direction; Z's (the rule must not flip); a random direction; Y's plain unembedding direction; the top principal direction of the clip's media tokens (the energy control). The dose is picked on the 16 calibration clips as the smallest of 1, 2, 4, 8 sigma_L at which Y is said on half of them, with Y on the media tokens in the middle block (row 93's late steer, which said Y on every scene); all four doses are reported. If no dose passes, the sweeps run at 8 and the input is marked as having no calibrated dose. The pairs run both ways (airplane to bird and bird to airplane), so each direction has its reverse.
 
-**Arm 2, attention knockout** (where does the unmodified model read the media tokens?). Attention from the question and answer positions to the media tokens is blocked, as `attention_knockout.py` does: all layers from L on, and all layers up to L, in steps of 4, on clean clips with no steering. In Qwen3.5 only the one layer in four with standard attention can be blocked; in Gemma-4 every layer can.
+**Arm 2, attention knockout** (where does the unmodified model read the media tokens?). Attention from every text token to the media tokens is blocked (the question, the answer position, and the timestamp text between frames, so that no text token carries a frame forward), as `attention_knockout.py` does: all layers from L on, and all layers up to L, in steps of 4, on clean clips with no steering. In Qwen3.5 only the one layer in four with standard attention can be blocked; in Gemma-4 every layer can.
 
-**Arm 3, ablation** (is the name direction needed?). The own name's J-lens direction, a random direction, the 256-direction lens part and a random 256-direction part, mean-ablated on every media token at the read layers.
+**Arm 3, ablation** (is the name direction needed?). The own name's J-lens direction, another name's (Y's) J-lens direction, a random direction, the lens part of rank r = 0.1 d (256 directions on the 4B, 512 on the 27B, as AGENTS.md fixes the rank) and a random part of the same rank, mean-ablated on every media token at the read layers. Y's direction is the control `name_steering`'s rule compares against.
 
 **Checks printed before any arm**: per layer, the J-lens and logit-lens rank of the clip's own name on its media tokens, with another object's name as the null; and the norm of the steered state against the clean range.
 
@@ -136,7 +139,8 @@ Thresholds are those of the frozen image rules (`name_steering` R0 and R4, row 9
 - **Not told apart from an output push** when the media-token steer passes only where the same steer at the last prompt token passes and the unembedding direction passes too.
 - **Same as the image** when the difference between a modality's rate and the middle frame's has its interval inside plus or minus 0.15, per block. Outside it on any block: "differs by modality".
 - **Nothing temporal tested** when the clip and the static video are the same by that test in every block.
-- **Knockout and ablation** are read by the rules already in `attention_knockout.py` and `name_steering.py`.
+- **Knockout** is read by `attention_knockout.py`'s rule: a cost is clean minus knocked-out log p(X's answer) − log p(Y's answer); the last reader is the largest L whose from-L-on knockout costs at least 1 nat with the interval above 0.
+- **Ablation** is read by `name_steering.py`'s R1, per question: D = accuracy with Y's direction removed minus accuracy with the own name's removed. "Necessary" when D ≥ 0.25 with the interval above 0; "not needed" when D ≤ 0.10 with the interval inside (−0.15, 0.15); otherwise undetermined. The same in nats (R1_nats): log p of the correct first token with the own name removed minus with Y's removed; "necessary" at ≤ −0.5 with the interval below 0, "not needed" at ≥ −0.2 with the interval inside (−0.3, 0.3).
 - **Intervals**: 95% bootstrap over clips, 2000 resamples, seed 0 (`analysis.boot_scene`). With 48 clips a rate's interval is about plus or minus 0.14 at worst, enough for 1.00 against 0.00 and for 0.23 against 0.03 as a paired difference, not for effects under 0.15.
 - **The smoke check** carries no verdict: it reports counts out of 5.
 
