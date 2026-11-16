@@ -20,6 +20,7 @@ cd "$(dirname "$0")/.."
 MODELS=${MODELS:-"Qwen/Qwen3.5-4B google/gemma-4-E4B-it"}
 RUN=${RUN:-media_steer}
 STAGE=${STAGE:-main}
+CANDIDATES=${CANDIDATES:-16}   # 32 when a gate leaves a class short (plan.md, "What can still go wrong")
 LIST=$(echo "$MODELS" | tr ' ' ,)
 read -r -a M <<< "$MODELS"
 DL=runs/.downloads
@@ -51,7 +52,7 @@ wait_for() {  # wait_for <model>: until its background download is done; stop if
 # the first model and the clips, in parallel: this is all the GPU waits for
 download "${M[0]}" &
 FIRST=$!
-uv run --frozen --with av==15.1.0 scripts/prepare_media.py   # the clips, decoded once, checked against the committed manifest
+uv run --frozen --with av==15.1.0 scripts/prepare_media.py --candidates "$CANDIDATES"   # the clips, decoded once, checked against the committed manifest
 wait "$FIRST" || { echo "the download of ${M[0]} failed: see $DL/${M[0]#*/}.log" >&2; exit 1; }
 
 # every later model in the background, one at a time, so each finishes as early as it can
