@@ -456,7 +456,7 @@ def main():
     smoke = args.stage == "smoke"
     if smoke:
         G = gate_clips(media.SMOKE_CLASSES)
-        ok = {w: [c for c in cand[w] if bool(G[(G.clip == c)].correct.iloc[0])] for w in media.SMOKE_CLASSES}
+        ok = {w: [c for c in cand[w] if bool(G[G["clip"] == c]["correct"].iloc[0])] for w in media.SMOKE_CLASSES}
         empty = [w for w, v in ok.items() if not v]
         if empty:
             raise SystemExit(f"no candidate clip of {empty} is named by {lm.name}")
@@ -469,7 +469,7 @@ def main():
             if not path.exists():
                 raise SystemExit(f"{path} not found: run `--stage gate --model {m} --run {args.run}` first")
             g = pd.read_csv(path)
-            s = set(g[g.correct].clip)
+            s = set(g[g["correct"]]["clip"])
             passing = s if passing is None else passing & s
         ok = {w: [c for c in cand[w] if c in passing] for w in media.CLASSES}
         short = {w: len(v) for w, v in ok.items() if len(v) < args.n_per_class}

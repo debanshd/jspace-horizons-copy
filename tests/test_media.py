@@ -238,3 +238,22 @@ def test_decoded_clips_are_checked_by_their_arrays(tmp_path):
     assert prep.check_decoded(man, tmp_path) == [("c2", "missing")]
     np.savez(tmp_path / "c1.npz", frames=frames, audio=audio * 2)
     assert prep.check_decoded(man, tmp_path)[0] == ("c1", "decoded arrays differ")
+
+
+def test_no_dataframe_method_shadows_a_column():
+    """`df.clip` is DataFrame.clip(), not the clip column: `G.clip == c` is False and `G[False]` raised on the first GPU smoke
+    run. Columns whose names are DataFrame attributes must be read as df["name"]."""
+    import ast
+
+    shadowed = {a for a in ("clip", "cls", "correct", "generation", "input", "task", "scene", "arm") if hasattr(pd.DataFrame, a)}
+    root = Path(__file__).resolve().parents[1]
+    bad = []
+    for f in [root / "experiments/media_steer.py", root / "scripts/compare_media.py", root / "src/jspace/media.py", root / "src/jspace/batched.py"]:
+        for node in ast.walk(ast.parse(f.read_text())):
+            if (
+                isinstance(node, ast.Attribute)
+                and node.attr in shadowed
+                and (isinstance(node.value, ast.Subscript) or (isinstance(node.value, ast.Name) and node.value.id not in ("media", "np", "torch", "batched", "self", "args")))
+            ):
+                bad.append(f"{f.name}:{node.lineno} {node.value.id}.{node.attr}")
+    assert not bad, bad
