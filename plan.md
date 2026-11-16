@@ -171,7 +171,7 @@ Written 16 Nov 2026; step 4 is done, nothing has run on a GPU. It was checked on
 | `src/jspace/batched.py` | the engine: row-wise steering, ablation and knockout in shared batches |
 | `experiments/media_steer.py` | the experiment, in three stages: `smoke` (5 clips, counts only), `gate`, `main`; inputs: the clip, the static video and the sound |
 | `scripts/compare_media.py` | step 5: two smoke runs compared answer by answer |
-| `scripts/media_steer.sh` | steps 2 to 7 in order, skipping what is done: the smoke check twice with the comparison (it stops the chain if the runs differ), the gate, the 64-clip run |
+| `scripts/media_steer.sh` | steps 2 to 7 in order, skipping what is done. Cold start: only the first model and the clips are downloaded (in parallel) before the GPU starts; later models download in the background while earlier ones run their smoke checks and gates. Then the comparison of the two smoke runs (it stops the chain if they differ) and the 64-clip runs, which come last because every model's gate must be in first. List the models smallest first |
 
 On a fresh pod, from the repository:
 
