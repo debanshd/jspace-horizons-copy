@@ -247,7 +247,7 @@ Each item gets 0, half or all of its weight. The last two columns describe versi
 | 18 intervention controls | 3 | 1.5 | 1.5 | 1.5 | clean, random, unembedding, principal direction, Z, reverse pairs, a dose picked on a calibration split; confidence is not matched | the random direction at dose 8 also flips the name |
 | 19 baselines, off-manifold | 2 | 1 | 1 | 1 | the norm of the steered state is now reported; no complement or full-state arm | the steered norm is far outside the clean range |
 | 20 statistics | 2 | 0 | 0 | 1 | effect, unit, clip bootstrap, equivalence margins and thresholds fixed beforehand; power is stated roughly, not computed; many layer sets, no correction | an interval that straddles its threshold |
-| 21 falsification, negatives | 1 | 0.5 | 1 | 1 | dated predictions, kill conditions, misses kept in the ledger | a rule changed after step 6 |
+| 21 falsification, negatives | 1 | 0.5 | 1 | 1 | dated predictions, kill conditions, misses kept in the ledger | a rule changed after step 5 |
 | 22 out-of-sample prediction | 4 | 0 | 2 | 2 | forecasts frozen from the image runs, now with magnitudes and a cross-arm forecast; no competing forecaster, no calibration | prediction 1, 2 or 5 fails on a perceived modality |
 | 23 transfer across models | 2 | 1 | 1 | 1 | two families, three sizes, one assay, blocks as shares of depth; no forecast per size | blocks differ by family |
 | 24 genuine audio and video | 2 | 1 | 1 | 1 | real motion and real sound with a gate and a static-video arm; no question that needs motion | clip and static video identical in every cell |
