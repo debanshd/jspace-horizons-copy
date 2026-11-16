@@ -161,7 +161,7 @@ One grid per model. Columns: static video, clip, sound. Rows: early, middle and 
 
 ## The code, and how to run it on RunPod
 
-Written 16 Nov 2026; step 4 is done, nothing has run on a GPU. It was checked on a CPU only: 16 new tests (`tests/test_media.py`: the label rules, the scoring, the clip assignment, the layer blocks, the row-wise hooks, the knockout mask, the whole summary on made-up answers, prediction 5, the ablation rule, the reference check, and the manifest check), ruff, PyAV decoding of a synthetic 10-second clip, and the Qwen3.5 and Gemma-4 video and audio processors of transformers 5.19 on a test clip (196 video tokens on Qwen, 8 x 70 on Gemma, the true frame times, 250 audio tokens for 10 s).
+Written 16 Nov 2026; step 4 is done, nothing has run on a GPU. It was checked on a CPU only: 15 new tests (`tests/test_media.py`: the label rules, the scoring, the clip assignment, the layer blocks, the row-wise hooks, the knockout mask, the whole summary on made-up answers, prediction 5, the ablation rule, and the manifest check), ruff, PyAV decoding of a synthetic 10-second clip, and the Qwen3.5 and Gemma-4 video and audio processors of transformers 5.19 on a test clip (196 video tokens on Qwen, 8 x 70 on Gemma, the true frame times, 250 audio tokens for 10 s).
 
 | file | what it does |
 |---|---|
@@ -169,19 +169,19 @@ Written 16 Nov 2026; step 4 is done, nothing has run on a GPU. It was checked on
 | `scripts/prepare_media.py` | downloads 16 candidate clips per class from the first VGGSound shard and decodes each once: 8 frames at 224 x 224 and 10 s of mono 16 kHz sound. The first run writes `scripts/vggsound_manifest.json` (commit it); every later run checks the mp4s and the decoded arrays against it |
 | `src/jspace/media.py` | the classes, the label rule, the prompts, the scoring, the clip-to-word assignment, the layer blocks |
 | `src/jspace/batched.py` | the engine: row-wise steering, ablation and knockout in shared batches |
-| `experiments/media_steer.py` | the experiment, in four stages: `reference` (step 5: the 4B on the middle frame must reproduce RECORD row 93, or it exits with status 1), `smoke`, `gate`, `main` |
-| `scripts/compare_media.py` | step 6: two smoke runs compared answer by answer |
-| `scripts/media_steer.sh` | steps 2 to 8 in order, skipping what is done: the reference check (it stops the chain if it fails), the smoke check twice with the comparison, the gate, the 64-clip run |
+| `experiments/media_steer.py` | the experiment, in three stages: `smoke` (5 clips, counts only), `gate`, `main`; inputs: the clip, the static video and the sound |
+| `scripts/compare_media.py` | step 5: two smoke runs compared answer by answer |
+| `scripts/media_steer.sh` | steps 2 to 7 in order, skipping what is done: the smoke check twice with the comparison (it stops the chain if the runs differ), the gate, the 64-clip run |
 
 On a fresh pod, from the repository:
 
 ```bash
 uv sync
 uv run scripts/pin_media.py                     # once; then commit src/jspace/config.py
-STAGE=smoke scripts/media_steer.sh              # steps 5 and 6: the reference check, then the smoke check twice on the 4B and E4B
+STAGE=smoke scripts/media_steer.sh              # step 5: the smoke check twice on the 4B and E4B (video; sound on the E4B)
 git add scripts/vggsound_manifest.json && git commit -m "VGGSound clips and their hashes"   # once, after the first download
-scripts/media_steer.sh                          # step 7: gate for both models, then the 64-clip run
-MODELS="Qwen/Qwen3.5-0.8B Qwen/Qwen3.5-4B Qwen/Qwen3.5-27B google/gemma-4-E2B-it google/gemma-4-E4B-it google/gemma-4-31B-it" RUN=media_steer_all scripts/media_steer.sh   # step 8, 96 GB card
+scripts/media_steer.sh                          # step 6: gate for both models, then the 64-clip run
+MODELS="Qwen/Qwen3.5-0.8B Qwen/Qwen3.5-4B Qwen/Qwen3.5-27B google/gemma-4-E2B-it google/gemma-4-E4B-it google/gemma-4-31B-it" RUN=media_steer_all scripts/media_steer.sh   # step 7, 96 GB card
 ```
 
 How it keeps the GPU busy. No code can promise 100% utilization; this code removes the usual causes of idle time and measures what is left:
@@ -200,7 +200,7 @@ What can still go wrong on the GPU, with the guard for each:
 |---|---|
 | a processor or model call that the CPU checks could not reach | the smoke stage runs every arm on 5 clips first |
 | the cached encoder outputs differ from the encoder's | the start-up comparison; the cache turns itself off |
-| hooks landing on the wrong tokens | equal-layout assertion per batch; step 5 must reproduce row 93 |
+| hooks landing on the wrong tokens | equal-layout assertion per batch; the hook tests; the smoke check's answers read row by row |
 | the 27B's linear-attention kernel crashing under hooks, as in RECORD row 67 | none in code: run it last, and fall back to the 9B |
 | a class with fewer than 8 clips every model names | the run stops and says so; rerun `prepare_media.py --candidates 32` |
 

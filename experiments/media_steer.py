@@ -1,8 +1,8 @@
-"""Media steering: from which layers does a word's lens direction, written on a video's or a sound's tokens, get said? (plan.md v3)
+"""Media steering: from which layers does a word's lens direction, written on a video's or a sound's tokens, get said? (plan.md v3.2: video and sound only)
 
-Design. 64 VGGSound clips (8 classes by 8: dog, cat, bird, horse, car, bus, train, airplane), each shown four ways: the clip
-(8 frames as a video), the static video (its middle frame 8 times), the middle frame as a picture, and its sound (Gemma-4 E2B
-and E4B only). Two questions in separate prompts: say (the noun) and the animal rule (7 or 3). Per clip, Y is a word of the
+Design. 64 VGGSound clips (8 classes by 8: dog, cat, bird, horse, car, bus, train, airplane), each shown three ways: the clip
+(8 frames as a video), the static video (its middle frame 8 times), and its sound (Gemma-4 E2B and E4B only). No picture input:
+nothing from the image runs is rerun, though their numbers set the predictions. Two questions in separate prompts: say (the noun) and the animal rule (7 or 3). Per clip, Y is a word of the
 other kind and Z of the same kind (media.assign). Three arms, mixed in the same batches (jspace.batched):
   steering   a direction at dose 1, 2, 4 or 8 sigma_L at every layer of a block (early up to 1/3 of depth, middle to 0.7, late
              after), on every media token: Y's J-lens direction, Z's, a random unit direction, Y's plain unembedding direction,
@@ -21,20 +21,16 @@ Clips. scripts/prepare_media.py draws 16 candidates per class and decodes them. 
 is the object in the video?" and writes gate.csv; `--stage main` keeps, per class, the first 8 candidates that every model named
 in --gate-models named correctly (plan.md: every model in the run), and stops if a class has fewer. Scenes are ordered round-robin
 over the classes; the first 16 (two per class) are the calibration split, the other 48 carry the verdicts. `--stage smoke` runs
-every arm on the first clip of five classes that this model names, and reports counts only. `--stage reference` is the smoke
-check on the middle frame alone (plan.md step 5): it must reproduce RECORD row 93 on the 4B, and exits with status 1 if it does
-not: at 4 sigma, say follows Y on at least 4 of the 5 clips from the early and from the middle block, and the random direction
-on at most 1 of 5 in each.
+every arm on the first clip of five classes that this model names, and reports counts only.
 
 Controls. The random, unembedding and principal directions and Z for the steering; the last-prompt-token site for an output
-push; the static video and the frame for motion; the random direction and random part for the ablation; clean prompts for all.
+push; the static video for motion; the random direction and random part for the ablation; clean prompts for all.
 
 Predictions (written before the run, plan.md): 1 naming follows Y from the early and middle blocks on >= 0.8 of held-out clips;
 2 not from the late block (<= 0.1); 3 the random, unembedding and principal directions on the media tokens move <= 0.1; 4 the
 rule follows Y more from the early block than the middle, and below 0.5; 5 the knockout's last naming read is at 0.67 to 0.75
 of depth, and the latest suffix start that steers naming is at or before that read and at most one step (4 layers) before it; 6 removing the own name's direction or
-the lens part costs naming <= 0.10; 7 the clip, the static video and the frame agree in every block; 8 the sound agrees with the
-frame.
+the lens part costs naming <= 0.10; 7 the clip and the static video agree in every block; 8 the sound agrees with the clip.
 
 The rule (written before the run; thresholds as in name_steering R0 and R4 and RECORD row 93):
 - Gate: a question on an input is read only if clean accuracy is >= 0.90 (say) or >= 0.85 (rule); otherwise "not perceived,
@@ -48,9 +44,9 @@ The rule (written before the run; thresholds as in name_steering R0 and R4 and R
 - J-specific: the unembedding direction on the media tokens makes say follow Y on <= 0.10.
 - Not told apart from an output push: every block that steers naming from the media tokens also does from the last prompt token,
   with the unembedding direction there following Y on >= 0.5.
-- Same as the picture: per block, the held-out difference in say-follows-Y against the frame input (paired by clip, at the frame's
-  calibrated dose) has its interval inside +-0.15; otherwise "differs by input". Nothing temporal tested: the clip and the static
-  video are the same by this test in every block.
+- Same as the clip: per block, the held-out difference in say-follows-Y between the sound and the clip (paired by clip, at the
+  clip's calibrated dose) has its interval inside +-0.15; otherwise "differs by modality". Nothing temporal tested: the clip and
+  the static video are the same by this test (at the static video's dose) in every block.
 - Ablation (name_steering R1, per question): D = accuracy with Y's direction removed minus with the own name's removed;
   "necessary" when D >= 0.25 with the interval above 0, "not needed" when D <= 0.10 with the interval inside (-0.15, 0.15),
   otherwise undetermined. R1_nats: log p of the correct first token with the own name removed minus with Y's removed;
@@ -93,7 +89,7 @@ GATE = {"say": 0.90, "animal": 0.85}
 def prompt_text(lm, inp, task):
     med = media.MEDIUM[inp]
     q = media.QUESTIONS[(med, task)]
-    part = {"video": {"type": "video"}, "picture": {"type": "image"}, "sound": {"type": "audio"}}[med]
+    part = {"video": {"type": "video"}, "sound": {"type": "audio"}}[med]
     content = [{"type": "text", "text": q}, part] if med == "sound" else [part, {"type": "text", "text": q}]  # Gemma's card: audio after text
     return lm.chat_messages([{"role": "user", "content": content}])
 
@@ -109,8 +105,6 @@ def encode(lm, inp, task, items):
         kw = dict(videos=ms, video_metadata=[VideoMetadata(**media.frame_metadata()) for _ in ms], do_sample_frames=False)
         if type(lm.processor).__name__.startswith("Qwen"):  # 224-pixel frames give 4 x 14 x 14 patches either way; False keeps 5.19's behaviour and its warning off
             kw["cap_pixels_per_frame"] = False
-    elif med == "picture":
-        kw = dict(images=[[m] for m in ms] if type(lm.processor).__name__.startswith("Gemma4") else ms)
     else:
         kw = dict(audio=ms)
     enc = lm.processor(text=text, return_tensors="pt", **kw)
@@ -120,7 +114,7 @@ def encode(lm, inp, task, items):
 def media_token(lm, inp):
     med = media.MEDIUM[inp]
     p = lm.processor
-    tid = {"video": getattr(p, "video_token_id", None), "picture": getattr(p, "image_token_id", lm.image_token_id), "sound": getattr(p, "audio_token_id", None)}[med]
+    tid = {"video": getattr(p, "video_token_id", None), "sound": getattr(p, "audio_token_id", None)}[med]
     assert tid is not None, f"{lm.name}: no token id for {med}"
     return int(tid)
 
@@ -319,18 +313,17 @@ def summarize(R, S, inputs, BL, starts, AL, KO_STARTS, n_layers, n_cal, smoke):
             else:
                 ab[task]["R1"] = ab[task]["R1_nats"] = "not perceived, untestable"
         out["ablation"][inp] = ab
-    # comparisons against the frame, at the frame's dose
-    if "frame" in inputs:
-        dref = out["dose"]["frame"]["used"]
-        for inp in [i for i in inputs if i != "frame"]:
-            cmp_ = {}
-            for bn in BL:
-                a = pick(R[R.input == inp], held, "follows_Y", task="say", family="steer", site="media", key="Y", set=bn, dose=dref)
-                b = pick(R[R.input == "frame"], held, "follows_Y", task="say", family="steer", site="media", key="Y", set=bn, dose=dref)
-                bd = boot(a - b, held)
-                cmp_[bn] = dict(diff=bd, same=bool(bd[1] >= -0.15 and bd[2] <= 0.15))
-            cmp_["verdict"] = "same as the picture" if all(cmp_[bn]["same"] for bn in BL) else "differs by input"
-            out["compare"][f"{inp} vs frame"] = cmp_
+    # the sound against the clip, at the clip's dose
+    if "sound" in inputs and "clip" in inputs:
+        dref = out["dose"]["clip"]["used"]
+        cmp_ = {}
+        for bn in BL:
+            a = pick(R[R.input == "sound"], held, "follows_Y", task="say", family="steer", site="media", key="Y", set=bn, dose=dref)
+            b = pick(R[R.input == "clip"], held, "follows_Y", task="say", family="steer", site="media", key="Y", set=bn, dose=dref)
+            bd = boot(a - b, held)
+            cmp_[bn] = dict(diff=bd, same=bool(bd[1] >= -0.15 and bd[2] <= 0.15))
+        cmp_["verdict"] = "same as the clip" if all(cmp_[bn]["same"] for bn in BL) else "differs by modality"
+        out["compare"]["sound vs clip"] = cmp_
     if "clip" in inputs and "static" in inputs:
         dref = out["dose"]["static"]["used"]
         cmp_ = {}
@@ -368,15 +361,6 @@ def suffix_edge_ok(edge, last_reader):
     return edge is not None and last_reader - 4 <= edge <= last_reader
 
 
-def reference_check(R):
-    """plan.md step 5 on the middle frame: RECORD row 93 at 4 sigma, counts out of 5"""
-    d = R[(R.input == "frame") & (R.task == "say") & (R.family == "steer") & (R.site == "media") & (R.dose == 4.0)]
-    counts = {f"{key} {bn}": int(d[(d.key == key) & (d.set == bn)].follows_Y.sum()) for key in ("Y", "random") for bn in ("early", "middle")}
-    n = int(R[(R.input == "frame") & (R.task == "say") & (R.family == "clean")].scene.nunique())
-    ok = all(counts[f"Y {bn}"] >= n - 1 for bn in ("early", "middle")) and all(counts[f"random {bn}"] <= 1 for bn in ("early", "middle"))
-    return dict(n=n, counts=counts, passes=bool(ok), rule="say follows Y on >= n - 1 clips from the early and the middle block at 4 sigma, random on <= 1")
-
-
 def predictions(out, R, inputs, BL, held, n_layers):
     P = {}
     for inp in inputs:
@@ -406,10 +390,10 @@ def predictions(out, R, inputs, BL, held, n_layers):
             p["5"] = "missed" if isinstance(ko, dict) else "untestable"
         ab = out["ablation"][inp]["say"]
         p["6"] = "kept" if ab["own name"]["cost"][0] <= 0.10 and ab["lens part"]["cost"][0] <= 0.10 else "missed"
-        if inp in ("clip", "static"):
-            p["7"] = "kept" if out["compare"].get(f"{inp} vs frame", {}).get("verdict") == "same as the picture" else "missed"
-        if inp == "sound":
-            p["8"] = "kept" if out["compare"].get("sound vs frame", {}).get("verdict") == "same as the picture" else "missed"
+        if inp in ("clip", "static") and "clip vs static" in out["compare"]:
+            p["7"] = "kept" if out["compare"]["clip vs static"]["verdict"] == "nothing temporal tested" else "missed"
+        if inp == "sound" and "sound vs clip" in out["compare"]:
+            p["8"] = "kept" if out["compare"]["sound vs clip"]["verdict"] == "same as the clip" else "missed"
         P[inp] = p
     return P
 
@@ -419,7 +403,7 @@ def predictions(out, R, inputs, BL, held, n_layers):
 
 def main():
     ap = parser(__doc__, "media_steer")
-    ap.add_argument("--stage", choices=["gate", "reference", "smoke", "main"], default="main")
+    ap.add_argument("--stage", choices=["gate", "smoke", "main"], default="main")
     ap.add_argument("--n-per-class", type=int, default=8)
     ap.add_argument("--n-cal", type=int, default=16, help="calibration scenes (two per class): the dose is picked on them")
     ap.add_argument("--gate-models", default="", help="comma list of models whose gate.csv in this run must all name a clip (default: this model)")
@@ -427,10 +411,8 @@ def main():
     ap.add_argument("--max-rows", type=int, default=512, help="largest batch, in prompts")
     ap.add_argument("--no-encoder-cache", action="store_true", help="run the vision encoder in every batch")
     args = ap.parse_args()
-    if args.stage in ("smoke", "reference") and args.run == "media_steer":
-        args.run = f"{args.stage}_media_steer"
-    if args.stage == "reference":
-        args.inputs = "frame"
+    if args.stage == "smoke" and args.run == "media_steer":
+        args.run = "smoke_media_steer"
     require_data(args.data_dir, "vggsound")
     man = media.manifest(args.data_dir)
     run = Run(args, f"media_steer {args.stage}")
@@ -471,7 +453,7 @@ def main():
         return
 
     # ---- the clips
-    smoke = args.stage in ("smoke", "reference")
+    smoke = args.stage == "smoke"
     if smoke:
         G = gate_clips(media.SMOKE_CLASSES)
         ok = {w: [c for c in cand[w] if bool(G[(G.clip == c)].correct.iloc[0])] for w in media.SMOKE_CLASSES}
@@ -645,8 +627,6 @@ def main():
         seconds=time.time() - t0,
     )
     out["readout"], out["norms"] = readout, norms
-    if args.stage == "reference":
-        out["reference"] = reference_check(R)
     run.save_json(out, "summary.json")
     for inp in inputs:
         print(
@@ -657,11 +637,6 @@ def main():
         print("predictions: " + json.dumps(out["predictions"]))
     if gpu:
         print(f"GPU utilization: mean {gpu['mean_utilization']}%, median {gpu['median_utilization']}% over {gpu['samples']} samples")
-    if args.stage == "reference":
-        ref = out["reference"]
-        print(f"reference (plan.md step 5, RECORD row 93): {'reproduced' if ref['passes'] else 'NOT reproduced'}: {ref['counts']} of {ref['n']}")
-        if not ref["passes"]:
-            raise SystemExit("the middle frame does not reproduce row 93: stop and find the error before any other run (plan.md step 5)")
 
 
 def to_frame(rows, res, phase):

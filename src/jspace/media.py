@@ -8,8 +8,8 @@ Fixed frame times and a fixed audio length give every clip the same number of me
 and question has the same length and batches need no padding (left padding moved Gemma-4's numbers; Session then ran it at
 batch 1).
 
-The four inputs per clip (plan.md, "Design"): the clip (8 frames as a video), the static video (the middle frame 8 times), the
-middle frame as a picture, and the sound (Gemma-4 E2B and E4B only).
+The three inputs per clip (plan.md, "Design"): the clip (8 frames as a video), the static video (the middle frame 8 times), and
+the sound (Gemma-4 E2B and E4B only). Only video and sound are run: no picture input, and nothing from the image runs is rerun.
 """
 
 import json
@@ -29,17 +29,15 @@ SMOKE_Z = {"airplane": "train", "bird": "dog", "dog": "cat", "car": "bus", "trai
 
 N_FRAMES, SIDE, CLIP_SECONDS, SAMPLE_RATE = 8, 224, 10.0, 16000
 FRAME_TIMES = [(i + 0.5) * CLIP_SECONDS / N_FRAMES for i in range(N_FRAMES)]  # 0.625, 1.875, ..., 9.375 s
-MIDDLE = N_FRAMES // 2  # the frame at 5.625 s: the static video and the picture
+MIDDLE = N_FRAMES // 2  # the frame at 5.625 s: the static video
 META_FPS = 1000.0  # the frame indices handed to the processor are milliseconds, so its timestamps are the true times
 
-INPUTS = ["clip", "static", "frame", "sound"]
-MEDIUM = {"clip": "video", "static": "video", "frame": "picture", "sound": "sound"}
+INPUTS = ["clip", "static", "sound"]
+MEDIUM = {"clip": "video", "static": "video", "sound": "sound"}
 TASKS = ["say", "animal"]
 QUESTIONS = {
     ("video", "say"): "What is the object in the video? Reply with the noun only.",
     ("video", "animal"): "Rule: if the object in the video is an animal, answer 7; otherwise answer 3. Reply with the number only.",
-    ("picture", "say"): "What is the object in the picture? Reply with the noun only.",
-    ("picture", "animal"): "Rule: if the object in the picture is an animal, answer 7; otherwise answer 3. Reply with the number only.",
     ("sound", "say"): "What is making this sound? Reply with the noun only.",
     ("sound", "animal"): "Rule: if the thing making this sound is an animal, answer 7; otherwise answer 3. Reply with the number only.",
 }
@@ -152,8 +150,4 @@ def media_of(input_kind, frames, audio):
         return frames
     if input_kind == "static":
         return np.repeat(frames[MIDDLE : MIDDLE + 1], N_FRAMES, axis=0)
-    if input_kind == "frame":
-        from PIL import Image
-
-        return Image.fromarray(frames[MIDDLE])
     return audio

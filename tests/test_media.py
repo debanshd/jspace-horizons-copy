@@ -187,10 +187,10 @@ def test_summary_rules_on_made_up_answers():
     n_layers = 32
     BL, AL = media.blocks(n_layers), list(range(3, 32, 4))
     starts = media.sweep_starts(n_layers)
-    inputs = ["clip", "frame"]
+    inputs = ["clip", "static", "sound"]
     rows = ms.phase_a(inputs, S, ID, BL, AL, AL)
     R = ms.to_frame(rows, [answer(r) for r in rows], "A")
-    rows_b = ms.phase_b(inputs, S, ID, starts, n_layers, {"clip": 2.0, "frame": 2.0})
+    rows_b = ms.phase_b(inputs, S, ID, starts, n_layers, {"clip": 2.0, "static": 2.0, "sound": 2.0})
     R = pd.concat([R, ms.to_frame(rows_b, [answer(r) for r in rows_b], "B")], ignore_index=True)
     out = ms.summarize(R, S, inputs, BL, starts, AL, AL, n_layers, n_cal=8, smoke=False)
     assert out["gate"]["clip"]["say"]["passes"] and out["dose"]["clip"]["calibrated"] == 2.0
@@ -200,9 +200,11 @@ def test_summary_rules_on_made_up_answers():
     assert V["output push"].startswith("media-specific")
     assert out["sweeps"]["clip"]["suffix edge"] == 19 and out["sweeps"]["clip"]["prefix edge"] == 3
     assert out["knockout"]["clip"]["say"]["last_reader"] == 23
-    assert out["compare"]["clip vs frame"]["verdict"] == "same as the picture"
+    assert out["compare"]["sound vs clip"]["verdict"] == "same as the clip"
+    assert out["compare"]["clip vs static"]["verdict"] == "nothing temporal tested"
     P = out["predictions"]["clip"]
     assert P["1"] == "kept" and P["2"] == "kept" and P["3"] == "kept" and P["5"] == "kept" and P["6"] == "kept" and P["7"] == "kept"
+    assert out["predictions"]["sound"]["8"] == "kept"
     assert P["4"] == "missed"  # the made-up rule follows Y on every early scene, which prediction 4 says it will not
     ab = out["ablation"]["clip"]["say"]
     assert ab["R1"] == "not needed" and ab["R1_nats"] == "not needed"  # removing either name changes nothing in the made-up model
@@ -222,25 +224,6 @@ def test_name_steering_r1():
     ms = load_experiment()
     assert ms.r1((0.30, 0.10, 0.50)) == "necessary" and ms.r1((0.05, -0.05, 0.12)) == "not needed" and ms.r1((0.20, 0.0, 0.4)) == "undetermined"
     assert ms.r1_nats((-0.8, -1.2, -0.3)) == "necessary" and ms.r1_nats((0.0, -0.1, 0.1)) == "not needed" and ms.r1_nats((-0.4, -0.9, 0.1)) == "undetermined"
-
-
-def test_reference_check_is_row_93():
-    ms = load_experiment()
-
-    def frame_rows(follow):
-        recs = [dict(input="frame", task="say", family="clean", scene=i, site="", key="", set="", dose=0.0, follows_Y=False) for i in range(5)]
-        for key in ("Y", "random"):
-            for bn in ("early", "middle", "late"):
-                for i in range(5):
-                    recs.append(dict(input="frame", task="say", family="steer", scene=i, site="media", key=key, set=bn, dose=4.0, follows_Y=follow(key, bn, i)))
-        return pd.DataFrame(recs)
-
-    good = ms.reference_check(frame_rows(lambda key, bn, i: key == "Y" and bn != "late" and i < 4))
-    assert good["passes"] and good["counts"]["Y early"] == 4
-    bad = ms.reference_check(frame_rows(lambda key, bn, i: key == "Y" and bn == "early"))  # the middle block does not steer
-    assert not bad["passes"]
-    noisy = ms.reference_check(frame_rows(lambda key, bn, i: bn != "late" and (key == "Y" or i < 2)))  # the random direction steers too
-    assert not noisy["passes"]
 
 
 def test_decoded_clips_are_checked_by_their_arrays(tmp_path):
