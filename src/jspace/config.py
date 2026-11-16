@@ -74,6 +74,12 @@ MODELS = {
         lens_file="gemma-4-e4b/jlens/Salesforce-wikitext/gemma-4-E4B_jacobian_lens.pt",
         lens_sha256="119301db1ce48d8c5e1c9f1d374625bd8672c9522a7abb88834b1ca2a260165d",
     ),
+    "google/gemma-4-E2B-it": ModelSpec(  # added for media_steer (plan.md): the small Gemma, the only other one that takes audio
+        revision="4adf15748de9e1a0097b6274cee9c15836c41c37",
+        size_gb=10.3,
+        lens_file="gemma-4-e2b/jlens/Salesforce-wikitext/gemma-4-E2B_jacobian_lens.pt",
+        lens_sha256="f0fbecd3de565d93fd088292b3c12b56f39a47f7ea0698a3ca5301c9690a6ab8",
+    ),
 }
 
 # The datasets, at the revisions the runs read; scripts/download.py checks the sha256 of every file
@@ -82,8 +88,8 @@ SCAM_REPO, SCAM_REVISION = "BLISS-e-V/SCAM", "8c674f50dfa83e1d2a0a1c95653c39c347
 # VGGSound for experiments/media_steer.py (plan.md): the clips of the first shard as single mp4 files, and the label list. Both
 # revisions are None until `uv run scripts/pin_media.py` resolves them on the first machine with Hugging Face access and writes
 # them here; scripts/prepare_media.py stops while they are None, so no run reads an unpinned dataset.
-VGG_CLIPS_REPO, VGG_CLIPS_REVISION = "harpreetsahota/VGGSound", None
-VGG_CSV_REPO, VGG_CSV_REVISION = "Loie/VGGSound", None
+VGG_CLIPS_REPO, VGG_CLIPS_REVISION = "harpreetsahota/VGGSound", "03f24eccd8b29562f77dc9f23e1d23ea899d8574"
+VGG_CSV_REPO, VGG_CSV_REVISION = "Loie/VGGSound", "2ca3012ef85a60143a8f97b83a45bb1a7b5c2244"
 DATA_FILES = {
     "coco": ["coco2017/val2017.zip", "coco2017/annotations/instances_val2017.json"],
     "scam": ["scam/images/train/metadata.jsonl"],
