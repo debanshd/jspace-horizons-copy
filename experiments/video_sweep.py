@@ -225,10 +225,16 @@ def patch_summary(R, inputs, n_layers, family, kv):
     return out
 
 
-def steer_compare(R, inputs, BL, dose_of):
-    """moving against frozen and against still: paired say-follows-Y difference per block at the moving video's dose"""
+def steer_compare(R, inputs, BL, dose_of, smoke):
+    """moving against frozen and against still: paired say-follows-Y difference per block at the moving video's dose, on the
+    held-out scenes. A smoke check has no held-out split (its scenes calibrate and count), so it makes no comparison, as
+    media_steer's summary makes none for a smoke check."""
+    if smoke:
+        return "smoke check: counts only, no comparison"
     out = {}
     held = np.sort(R[R["scene"] >= N_CAL]["scene"].unique())
+    if not len(held):
+        raise ValueError(f"no held-out scenes (scene >= {N_CAL}) to compare on")
     for other in ("frozen", "still"):
         if "moving" not in inputs or other not in inputs:
             continue
@@ -242,6 +248,20 @@ def steer_compare(R, inputs, BL, dose_of):
             e[bn] = dict(diff=bd, same=bool(bd[1] >= -0.15 and bd[2] <= 0.15))
         e["verdict"] = "same" if all(e[bn]["same"] for bn in BL) else "differs"
         out[f"moving vs {other}"] = e
+    return out
+
+
+def summaries(R, S, inputs, parts, n_layers, AL, family, kv, BL, starts, dose_of):
+    """the steering summary (media_steer's rule) and the patching summary, for a full run or a smoke check (fewer than 64 scenes:
+    every scene calibrates and counts, and nothing is compared on a held-out split)"""
+    smoke, out = len(S) < 64, {}
+    if "steer" in parts:
+        Rs = R[R["family"].isin(["clean", "steer", "knockout", "ablate", "sweep"])]
+        KO = [L for L in AL if (L - AL[0]) % 4 == 0] if len(AL) == n_layers else AL
+        out["interventions"] = steer_summary(Rs, S, inputs, BL, starts, AL, KO, n_layers, 0 if smoke else N_CAL, smoke)
+        out["interventions_compare"] = steer_compare(Rs, inputs, BL, dose_of, smoke)
+    if "patch" in parts:
+        out["patch"] = patch_summary(R[R["family"].isin(["pclean", "self", "full", "transplant", "inject", "random"])], inputs, n_layers, family, kv)
     return out
 
 
@@ -460,13 +480,8 @@ def main():
                 for x in rb:
                     x["ids_x"], x["ids_y"] = ID[matched.truth(x["task"], x["X"], [])], ID[matched.truth(x["task"], x["Y"], [])]
                 R = pd.concat([R, to_frame(rb, eng.generate(rb, N_NEW, f"{inp} sweeps"))], ignore_index=True)
-        Rs = R[R["family"].isin(["clean", "steer", "knockout", "ablate", "sweep"])]
-        AL = sorted(batched.attention_layers(lm))
-        KO = [L for L in AL if (L - AL[0]) % 4 == 0] if len(AL) == n_layers else AL
-        out["interventions"] = steer_summary(Rs, S, inputs, BL, starts, AL, KO, n_layers, N_CAL if len(S) >= 64 else 0, len(S) < 64)
-        out["interventions_compare"] = steer_compare(Rs, inputs, BL, dose_of)
-    if "patch" in parts:
-        out["patch"] = patch_summary(R[R["family"].isin(["pclean", "self", "full", "transplant", "inject", "random"])], inputs, n_layers, family, kv)
+    AL = sorted(batched.attention_layers(lm))
+    out.update(summaries(R, S, inputs, parts, n_layers, AL, family, kv, BL, starts if "steer" in parts else None, dose_of if "steer" in parts else None))
     run.save_csv(R, "video_sweep.csv")
     gpu = mon.stop()
     out["setup"] = dict(setup, inputs=inputs, parts=sorted(parts), sampler=type(vp).__name__, kv_limit=kv, family=family, lens_part_rank=r_sub, gpu=gpu, seconds=time.time() - t0)

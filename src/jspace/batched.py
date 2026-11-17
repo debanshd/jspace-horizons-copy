@@ -307,10 +307,10 @@ class Engine:
         """the same rows generated with the encoder in the batch and from the cache: the cache stays on only if the answers are
         identical and the first-token log-probabilities agree within 0.05"""
         self.cache_on[inp] = False
-        a = self._generate_batch(rows, n_new)
+        a = self._generate_grouped(rows, n_new)
         self.cache_on[inp] = True
         try:
-            b = self._generate_batch(rows, n_new)
+            b = self._generate_grouped(rows, n_new)
         except Exception as e:  # noqa: BLE001
             print(f"{inp}: generation from cached encoder outputs failed ({type(e).__name__}: {str(e)[:160]}); cache off")
             self.cache_on[inp] = False
@@ -331,6 +331,21 @@ class Engine:
         assert not bad and not missing, f"{inp}/{task}: collated batch differs from the processor's in {bad + missing}"
 
     # ---- running
+    def _layout_groups(self, rows):
+        """row indices grouped by prompt layout, in order of first appearance: one batch per group, so none is padded"""
+        groups = {}
+        for i, r in enumerate(rows):
+            groups.setdefault(self.layout(r), []).append(i)
+        return list(groups.values())
+
+    def _generate_grouped(self, rows, n_new):
+        """_generate_batch per layout group, the results back in row order (clips of different lengths cannot share a batch)"""
+        out = [None] * len(rows)
+        for idx in self._layout_groups(rows):
+            for i, x in zip(idx, self._generate_batch([rows[i] for i in idx], n_new)):
+                out[i] = x
+        return out
+
     def _generate_batch(self, rows, n_new):
         enc = self._to_gpu(self._batch_cpu(rows, self.cache_on.get(rows[0]["input"], False)))
         return self._generate_enc(rows, enc, n_new)

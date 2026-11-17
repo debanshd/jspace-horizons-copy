@@ -151,3 +151,59 @@ def test_decoding_with_pyav(tmp_path):
     ims = matched.decode(path, [0, 15, 15, 29])
     means = [int(np.asarray(im).mean()) for im in ims]
     assert len(ims) == 4 and means[1] == means[2] and abs(means[1] - 120) <= 4 and means[0] < means[1] < means[3]
+
+
+def test_the_cache_check_never_batches_two_layouts():
+    """the 4 clips of the check can differ in length: each layout group is generated on its own, results in row order"""
+    seen = []
+
+    def fake_batch(rows, n_new):
+        lays = {eng.layout(r) for r in rows}
+        assert len(lays) == 1, "a batch mixed prompt layouts"
+        seen.append([r["scene"] for r in rows])
+        return [(f"answer {r['scene']}", 0.0, 0.0, np.zeros(10)) for r in rows]
+
+    eng = types.SimpleNamespace(cache_on={}, layout=lambda r: r["scene"] % 2, _generate_batch=fake_batch)
+    eng._layout_groups = types.MethodType(batched.Engine._layout_groups, eng)
+    eng._generate_grouped = types.MethodType(batched.Engine._generate_grouped, eng)
+    rows = [dict(input="moving", scene=s) for s in range(4)]
+    rep = batched.Engine.check_encoder_cache(eng, "moving", rows, 4)
+    assert rep["on"] and rep["identical"] == 4 and seen[0] == [0, 2] and seen[1] == [1, 3]
+
+
+def made_up_steering(r):
+    """a model that follows Y when it is steered toward Y, and is otherwise correct"""
+    w = r["Y"] if (r["family"] in ("steer", "sweep") and r["key"] == "Y") else r["X"]
+    return matched.truth(r["task"], w, []), -0.1, -3.0
+
+
+def run_summaries(n):
+    vs, ms = load("video_sweep"), load("media_steer")
+    from jspace import media as media_rules
+
+    pairs = [("airplane", "bird", "train"), ("dog", "car", "cat"), ("pizza", "horse", "cup"), ("cat", "bus", "dog")]
+    S = [dict(scene=i, X=x, Y=y, Z=z, clip=f"c{i}", slot=1 + i % 6, set=["cat", y, "cup"]) for i, (x, y, z) in ((i, pairs[i % 4]) for i in range(n))]
+    vs.SETS.update({r["scene"]: r["set"] for r in S})
+    words = sorted({w for r in S for w in (r["X"], r["Y"], r["Z"])} | {"cat", "cup"})
+    ID = {w: [1] for w in words} | {c: [2] for c in ["7", "3", *sorted({w[0].upper() for w in words})]}
+    n_layers, AL, inputs = 32, list(range(3, 32, 4)), ["moving", "frozen"]
+    BL, starts = media_rules.blocks(n_layers), list(range(-1, n_layers, 4))
+    rows = [dict(x, donor=None) for x in ms.phase_a(inputs, S, ID, BL, AL, AL) + ms.phase_b(inputs, S, ID, starts, n_layers, {i: 2.0 for i in inputs})]
+    for inp in inputs:
+        rows += vs.patch_rows(inp, S, ID, n_layers)
+    res = [made_up_steering(r) if r["family"] not in ("full", "transplant") else (matched.truth(r["task"], r["Y"], vs.SETS[r["scene"]]), -0.1, -3.0) for r in rows]
+    R = vs.to_frame(rows, res)
+    return vs.summaries(R, S, inputs, {"patch", "steer"}, n_layers, AL, "qwen", None, BL, starts, {i: 2.0 for i in inputs})
+
+
+def test_a_five_scene_smoke_check_summarizes_without_a_held_out_split():
+    out = run_summaries(5)
+    assert out["interventions"]["note"] == "smoke check: counts only, no verdict" and out["interventions"]["counts"]
+    assert out["interventions_compare"] == "smoke check: counts only, no comparison"
+    assert out["patch"]["controls"]["moving"]["machinery_ok"]
+
+
+def test_a_full_run_compares_on_the_held_out_scenes():
+    out = run_summaries(64)
+    assert out["interventions_compare"]["moving vs frozen"]["verdict"] == "same"
+    assert out["interventions"]["verdict"]["moving"]["middle"]["steers_naming"]
