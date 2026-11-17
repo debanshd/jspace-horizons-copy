@@ -32,17 +32,19 @@ def unpinned():
         out.append(E2B)
     if config.LASOT_REVISION is None:
         out.append("LASOT_REVISION")
+    if config.MATCHED_REVISION is None:
+        out.append("MATCHED_REVISION")
     return out
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--check", nargs="?", const="all", choices=["all", "media_steer", "media_patch"], help="exit 1 if what this experiment reads is unpinned")
+    ap.add_argument("--check", nargs="?", const="all", choices=["all", "media_steer", "media_patch", "video_sweep"], help="exit 1 if what this experiment reads is unpinned")
     args = ap.parse_args()
     todo = unpinned()
     if args.check:
-        if args.check == "media_steer":  # the steering experiment reads no LaSOT
-            todo = [t for t in todo if t != "LASOT_REVISION"]
+        not_read = {"media_steer": {"LASOT_REVISION", "MATCHED_REVISION"}, "media_patch": {"MATCHED_REVISION"}, "video_sweep": {"LASOT_REVISION"}}
+        todo = [t for t in todo if t not in not_read.get(args.check, set())]  # each experiment checks only what it reads
         if todo:
             print("unpinned: " + ", ".join(todo))
             sys.exit(1)
@@ -63,6 +65,10 @@ def main():
         sha = api.dataset_info(config.VGG_CSV_REPO).sha
         src = src.replace(f'VGG_CSV_REPO, VGG_CSV_REVISION = "{config.VGG_CSV_REPO}", None', f'VGG_CSV_REPO, VGG_CSV_REVISION = "{config.VGG_CSV_REPO}", "{sha}"')
         print(f"{config.VGG_CSV_REPO} at {sha}")
+    if config.MATCHED_REVISION is None:
+        sha = api.dataset_info(config.MATCHED_REPO).sha
+        src = src.replace(f'MATCHED_REPO, MATCHED_REVISION = "{config.MATCHED_REPO}", None', f'MATCHED_REPO, MATCHED_REVISION = "{config.MATCHED_REPO}", "{sha}"')
+        print(f"{config.MATCHED_REPO} at {sha}")
     if config.LASOT_REVISION is None:
         sha = api.dataset_info(config.LASOT_REPO).sha
         src = src.replace(f'LASOT_REPO, LASOT_REVISION = "{config.LASOT_REPO}", None', f'LASOT_REPO, LASOT_REVISION = "{config.LASOT_REPO}", "{sha}"')

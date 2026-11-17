@@ -93,12 +93,16 @@ VGG_CSV_REPO, VGG_CSV_REVISION = "Loie/VGGSound", "2ca3012ef85a60143a8f97b83a45b
 # LaSOT for experiments/media_patch.py (plan.md, part 2): curated YouTube videos for object tracking, 20 per class with a box on
 # every frame. None until scripts/pin_media.py pins it, like the VGGSound revisions above.
 LASOT_REPO, LASOT_REVISION = "l-lt/LaSOT", None
+# The matched video set for experiments/video_sweep.py (plan.md, part 3): 64 donor-receiver scenes on the image experiment's
+# schedule, made by Nayan Saxena from Wikimedia Commons and uCO3D clips. None until scripts/pin_media.py pins it.
+MATCHED_REPO, MATCHED_REVISION = "saxenan3/jspace-matched-video", None
 DATA_FILES = {
     "coco": ["coco2017/val2017.zip", "coco2017/annotations/instances_val2017.json"],
     "scam": ["scam/images/train/metadata.jsonl"],
     "gqa": ["gqa/testdev_balanced_images/testdev-00000-of-00001.parquet", "gqa/testdev_balanced_instructions/testdev-00000-of-00001.parquet"],
     "vggsound": ["vggsound/manifest.json"],
     "lasot": ["lasot/manifest.json"],
+    "matched": ["matched_video/test/metadata.jsonl", "matched_video/ATTRIBUTION.tsv"],
 }
 
 

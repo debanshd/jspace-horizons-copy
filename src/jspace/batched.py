@@ -115,8 +115,10 @@ def residual_hooks(rows, P, T, read_layers):
         patch = None  # residual-stream patching: the donor clip's state replaces the row's at every media position
         pt = [i for i, r in enumerate(rows) if r["site"] == "patch" and L in r["layers"]]
         if pt:
-            don = torch.as_tensor([rows[i]["donor"] for i in pt])
-            patch = (torch.as_tensor(pt, device=dev), T.donor[inp][L][don].to(dev, non_blocking=True).float())
+            # donor[inp][L] is one [n_scene, P, d] tensor or a {scene: [P, d]} dict (clips of different lengths); the rows of a
+            # batch share one layout, so their donors have the same P
+            D = torch.stack([T.donor[inp][L][rows[i]["donor"]] for i in pt])
+            patch = (torch.as_tensor(pt, device=dev), D.to(dev, non_blocking=True).float())
         abl = []
         if L in read_layers:
             for key in sorted({r["ablate"] for r in rows if r["ablate"]}):
@@ -231,9 +233,11 @@ class Engine:
         free = torch.cuda.mem_get_info()[0] / 2**30
         # a first guess that OOM halving corrects: about 2,000 prompt tokens per free GB held up for the models here
         self.budget = budget_tokens or int(2048 * max(free - 4, 1))
-        self.cap = {}  # (input, task) -> rows per batch that ran
+        self.cap = {}  # (input, task) -> rows per batch that ran last
+        self.tok_cap = {}  # (input, task) -> prompt tokens per batch that ran
         self.features = {}  # (input, scene) -> tuple of encoder output pieces (GPU), when the cache is on for that input
         self.cache_on = {}
+        self._layouts = {}
         self.pool = ThreadPoolExecutor(max_workers=2)
         self.batches = 0
         self.rows_done = 0
@@ -241,6 +245,15 @@ class Engine:
         print(f"engine: {free:.0f} GB free after loading, first token budget {self.budget} per batch, at most {max_rows} rows")
 
     # ---- inputs
+    def layout(self, r):
+        """a prompt's layout: its length and its media positions. Prompts of one input and question share it when every clip
+        has the same number of frames (media_steer); with each model's own frame sampler (video_sweep) lengths vary by clip."""
+        key = (r["input"], r["task"], r["scene"])
+        if key not in self._layouts:
+            ids = self.encs[key]["input_ids"][0]
+            self._layouts[key] = (int(ids.shape[0]), hash(tuple(torch.nonzero(ids == self.token[r["input"]]).flatten().tolist())))
+        return self._layouts[key]
+
     def _batch_cpu(self, rows, use_cache):
         enc = collate([self.encs[(r["input"], r["task"], r["scene"])] for r in rows])
         if use_cache:
@@ -354,12 +367,14 @@ class Engine:
         """answers and first-token log-probabilities for every row, in row order: [(text, lp_x, lp_y)]"""
         out = [None] * len(rows)
         groups = {}
-        for i, r in enumerate(rows):
-            groups.setdefault((r["input"], r["task"]), []).append(i)
+        for i, r in enumerate(rows):  # a batch shares one prompt layout: same length, media tokens at the same positions
+            groups.setdefault((r["input"], r["task"], self.layout(r)), []).append(i)
         t0 = time.time()
-        for (inp, task), idx in groups.items():
+        for (inp, task, _), idx in groups.items():
             seq = int(self.encs[(inp, task, rows[idx[0]]["scene"])]["input_ids"].shape[1])
-            B = self.cap.get((inp, task)) or max(1, min(self.max_rows, self.budget // seq))
+            # the size that ran is kept in tokens, so a long prompt's batch shrinks with it; with one length per input and
+            # question (media_steer) this is the rows-per-batch rule as before
+            B = max(1, min(self.max_rows, self.tok_cap.get((inp, task), self.budget) // seq))
             pos = 0
             pending = {}
 
@@ -393,6 +408,7 @@ class Engine:
                 self.batches += 1
                 self.rows_done += len(chunk)
             self.cap[(inp, task)] = B
+            self.tok_cap[(inp, task)] = B * seq
         print(f"  {label}: {len(rows)} rows in {time.time() - t0:.0f}s ({len(rows) / max(time.time() - t0, 1e-9):.0f} rows/s)")
         return out
 
@@ -403,8 +419,8 @@ class Engine:
         lm = self.lm
         groups = {}
         for r in rows:
-            groups.setdefault((r["input"], r["task"]), []).append(r)
-        for (inp, _), rs in groups.items():
+            groups.setdefault((r["input"], r["task"], self.layout(r)), []).append(r)
+        for (inp, _, _), rs in groups.items():
             B = 8  # the hooks hold one layer's media states at a time; small batches keep the SVDs in memory
             for s in range(0, len(rs), B):
                 batch = rs[s : s + B]

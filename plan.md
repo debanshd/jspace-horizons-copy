@@ -467,3 +467,40 @@ git add scripts/lasot_manifest.json             # after the first run, the LaSOT
 ```
 
 Cost, estimated: per model and input, 3 + 2 x windows rows per clip and question, about 2,700 rows on the 4B and 4,500 on Gemma 31B, so minutes on the small models and about half an hour on the 31B. The donor states are held on the CPU, one input at a time: about 0.5 GB on the 4B, 7 GB on Gemma E4B and 21 GB on Gemma 31B. Not yet run: the LaSOT zip reading was written against the archive's documented layout and has not been tried on the real zips.
+
+---
+
+# Part 3: the matched video set, with every intervention and patching (version 5)
+
+Written 17 Nov 2026, before any run. Code: `experiments/video_sweep.py`, `src/jspace/matched.py`, `scripts/prepare_matched.py`, `scripts/video_sweep.sh`.
+
+## Why
+
+Nayan Saxena built a video set that matches the image experiment's construction exactly (`saxenan3/jspace-matched-video`): 64 scenes on the image runs' schedule, each a donor video and a receiver video of the image runs' 16 classes, the numbered canvas slot, and the three names of the set question. 73 real clips from Wikimedia Commons and uCO3D, checked by hand, each with a sha256 and a licence in `ATTRIBUTION.tsv`. Two things were still missing: activation patching, the image experiment's main result, on video; and every intervention on real moving video rather than on frames.
+
+## Inputs
+
+Each clip's frames are drawn into the slot of the six-slot canvas, as `depth_sweep` draws a crop (the dataset's `render_inputs.py` does the same). Three inputs: **moving** (the video), **frozen** (its middle sampled frame repeated as often: the same tokens without motion), **still** (that frame as a picture).
+
+**Frames come from each model's own sampler**, not from a fixed 8. Qwen3.5's samples 2 frames per second, so its count grows with the clip; Gemma-4's takes 32 spread over the clip. Patching writes the donor's tokens into the receiver one position at a time, so both clips of a scene get one count: the receiver's native count, capped at both clips' lengths (Gemma's sampler refuses to take more frames than a short clip has), with both clips sampled at that count by the same sampler. Prompts of different lengths are batched separately, so no batch is padded.
+
+## Arms
+
+- **Patching** (every question of `depth_sweep`: say, animal, letter, set, ride): clean; the receiver's own states written back at every layer (the machinery check); the donor's at every layer (the positive control); and per window of 4 layers, `depth_sweep`'s three arms: the donor's states, the receiver's own name direction at 4 sigma, a random direction at 4 sigma. The donor runs under the neutral prompt, as in `depth_sweep`.
+- **The other interventions** (say and animal): every arm of part 1 (steering by block and dose, knockouts, ablations, sweeps), with Y the donor's object and Z a same-kind word.
+
+## Rule and predictions
+
+As in the docstring of `experiments/video_sweep.py`: `depth_sweep`'s horizons and cut for patching, with the gates and controls of part 2; part 1's frozen rule for the other interventions; moving against frozen and still within one window (patching) and within ±0.15 per block (steering). Predictions: part 2's P1 to P3 on the moving video, P4 moving equals frozen, P5 moving equals still, and part 1's predictions 1 to 6.
+
+## Running it
+
+```bash
+uv run scripts/pin_media.py                    # pins the matched set (and LaSOT); commit src/jspace/config.py
+scripts/video_sweep.sh                         # Qwen 0.8B and 4B, Gemma E2B and E4B: smoke twice, compared, then 64 scenes
+MODELS="Qwen/Qwen3.5-27B google/gemma-4-31B-it" scripts/video_sweep.sh   # the large ones, on the 96 GB card
+```
+
+Estimated cost, before any run: about 430 rows per scene and input on the 4B (150 patching, 280 other), so about 83,000 rows. Qwen's prompts run from about 1,200 to 12,000 tokens with clip length; Gemma's are about 2,300 for video. That is roughly an hour per medium model and several hours per large one. Donor states are held on the CPU in chunks of scenes, at most `--donor-gb` (16 GB) at a time.
+
+Checked on a CPU: the real Qwen3.5 and Gemma-4 frame samplers of transformers 5.19 (20 frames for a 10-second clip on Qwen, 32 on Gemma, a 13-frame clip capped at 13), Qwen's processing of a 20-frame canvas video (10 x 28 x 42 patches), decoding with PyAV, canvas drawing, batching by layout, patching from per-clip donors, and the patching summary on made-up answers. Not yet run on a GPU or on the real clips.
