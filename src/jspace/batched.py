@@ -76,10 +76,12 @@ class Tables:
     dirs[(input, key)]  the same for a direction that depends on the input kind (the clip's top principal direction)
     sigma[input][L]     the dose unit at layer L
     abl[key]            ("scene", {L: [n_scene, d]}) or ("shared", {L: [d, r]}): what an ablation removes at the read layers
-    mu[input][L]        [d], the mean media-token state, whose part is put back (mean-ablation)"""
+    mu[input][L]        [d], the mean media-token state, whose part is put back (mean-ablation)
+    donor[input][L]     [n_scene, P, d] float16 on the CPU: each clip's clean media-token states, written into another clip's
+                        prompt by a patch row (experiments/media_patch.py)"""
 
     def __init__(self):
-        self.dirs, self.sigma, self.abl, self.mu = {}, {}, {}, {}
+        self.dirs, self.sigma, self.abl, self.mu, self.donor = {}, {}, {}, {}, {}
 
     def direction(self, inp, key, L):
         return self.dirs[(inp, key)][L] if (inp, key) in self.dirs else self.dirs[key][L]
@@ -110,6 +112,11 @@ def residual_hooks(rows, P, T, read_layers):
                 if add[site] is None:
                     add[site] = torch.zeros(len(rows), D.shape[1], device=dev)
                 add[site][it] = D
+        patch = None  # residual-stream patching: the donor clip's state replaces the row's at every media position
+        pt = [i for i, r in enumerate(rows) if r["site"] == "patch" and L in r["layers"]]
+        if pt:
+            don = torch.as_tensor([rows[i]["donor"] for i in pt])
+            patch = (torch.as_tensor(pt, device=dev), T.donor[inp][L][don].to(dev, non_blocking=True).float())
         abl = []
         if L in read_layers:
             for key in sorted({r["ablate"] for r in rows if r["ablate"]}):
@@ -117,7 +124,11 @@ def residual_hooks(rows, P, T, read_layers):
                 kind, B = T.abl[key]
                 abl.append((it, kind, B[L][sc[it]] if kind == "scene" else B[L], T.mu[inp][L]))
 
-        def edit(x, add=add, abl=abl):
+        def edit(x, add=add, abl=abl, patch=patch):
+            if patch is not None:
+                it, D = patch
+                assert D.shape[1] == len(P), (D.shape, len(P))
+                x[it[:, None], P[None, :]] = D
             if add["media"] is not None:
                 x[:, P] += add["media"][:, None, :]
             if add["last"] is not None:
