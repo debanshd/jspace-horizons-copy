@@ -92,7 +92,7 @@ VGG_CLIPS_REPO, VGG_CLIPS_REVISION = "harpreetsahota/VGGSound", "03f24eccd8b2956
 VGG_CSV_REPO, VGG_CSV_REVISION = "Loie/VGGSound", "2ca3012ef85a60143a8f97b83a45bb1a7b5c2244"
 # The matched video set for experiments/video_sweep.py (plan.md, part 3): 64 donor-receiver scenes on the image experiment's
 # schedule, made by Nayan Saxena from Wikimedia Commons and uCO3D clips. None until scripts/pin_media.py pins it.
-MATCHED_REPO, MATCHED_REVISION = "saxenan3/jspace-matched-video", None
+MATCHED_REPO, MATCHED_REVISION = "saxenan3/jspace-matched-video", "e33c6ae8ab234c5e0f9819d0ba7a36a63a198d1f"
 DATA_FILES = {
     "coco": ["coco2017/val2017.zip", "coco2017/annotations/instances_val2017.json"],
     "scam": ["scam/images/train/metadata.jsonl"],
