@@ -366,8 +366,15 @@ def main():
             token[inp + suffix] = int(tid)
     medium = {k: matched.MEDIUM[k.split("@")[0]] for k in token}
 
+    budget = {}
+
     def engine(encs):
-        return batched.Engine(lm, encs, token, medium, T, lm.layers, args.max_rows)
+        # one token budget for the whole run, the first engine's rounded down to 2,048 tokens: measured again per engine it
+        # moved with what the allocator held at that moment, the batch sizes with it, and so the floating-point results (two
+        # smoke runs of Qwen3.5-0.8B differed in 1 of 5,700 answers)
+        e = batched.Engine(lm, encs, token, medium, T, lm.layers, args.max_rows, budget_tokens=budget.get("tokens"))
+        e.budget = budget.setdefault("tokens", max(2048, e.budget // 2048 * 2048))
+        return e
 
     def chunks(gb_of):
         """scenes in order, cut where their donor states (both clips, every layer) would pass --donor-gb"""

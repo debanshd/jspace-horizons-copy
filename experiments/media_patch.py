@@ -250,7 +250,10 @@ def main():
             assert len(lengths) == 1, f"{inp}/{t}: prompts differ in length {lengths}"
         n_media = int((encs[(inp, "say", S[0]["scene"])]["input_ids"] == token[inp]).sum())
         setup["layout"][inp] = dict(tokens=lengths.pop(), media_tokens=n_media)
-        eng = batched.Engine(lm, encs, token, media.MEDIUM, T, lm.layers, args.max_rows)
+        # one token budget for the whole run (as video_sweep): the first engine's, rounded down to 2,048 tokens, so the batch
+        # sizes do not move with the memory the allocator holds when the next input's engine starts
+        eng = batched.Engine(lm, encs, token, media.MEDIUM, T, lm.layers, args.max_rows, budget_tokens=setup.get("budget_tokens"))
+        eng.budget = setup.setdefault("budget_tokens", max(2048, eng.budget // 2048 * 2048))
         if not args.no_encoder_cache and eng.build_encoder_cache(inp, [r["scene"] for r in S]):
             setup["cache"][inp] = eng.check_encoder_cache(inp, [make_row(inp, "say", r, ID, donor=None) for r in S[:4]], N_NEW)
         n_sc = max(r["scene"] for r in S) + 1
