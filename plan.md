@@ -433,3 +433,70 @@ RELEASE: NO
 ```
 
 **Ruling.** Not a release candidate. As a pilot under the rubric's Stage 2, version 3 may run: its gates, controls, predictions and intervals are written, and the smoke check stops it early if the script is wrong. The 63 points still missing sit mostly where a plan cannot reach: 25.5 in revelation and field consequence, 8 in figures and prose, and the rest in work that needs other people (a skeptic's forecasts, blind readers, an outside review) or a labelled motion question.
+
+---
+
+# Part 2: video patching on VGGSound (version 4.1)
+
+Written 17 Nov 2026, after the steering results of part 1 and before any patching run. Version 4.1 (18 Nov 2026, also before any run) drops the LaSOT stock clips: Nayan Saxena judged that set wrong for this task, and part 3's matched video set replaces it. The code is `experiments/media_patch.py`; its docstring carries the same design, rule and predictions.
+
+## Why
+
+The steering results showed that a name written onto a video's tokens is said from the middle layers, as on pictures. They did not test the image experiment's main result: residual-stream patching, which moves one clip's whole state into another clip, one window of layers at a time, and finds two horizons, the last layer at which the object is still used for a decision (the animal rule) and the last at which it is still named. On pictures the rule stops reading the object's tokens at about 0.3 of depth in Qwen and 0.4 to 0.48 in Gemma, and naming at 0.67 to 0.75 (`docs/REPORT.md`, `results/depth_sweep`).
+
+## Data
+
+- **VGGSound**, as in part 1: the same 64 clips as the six-model steering run (`runs/media_steer_all`), shown as the clip (8 frames over 10 seconds, real motion) and as its static version.
+
+## Design
+
+Per receiver clip of class X, the donor is the clip of class Y (the other kind) at the same position in its class, and a second donor the clip of class Z (the same kind). The donor's media-token states replace the receiver's at one window of 4 layers at a time, from the input to the last layer (depth_sweep's windows). Questions: say and the animal rule. Inputs: clip and static. Controls: the receiver's own states written back at every layer (must reproduce the clean answers), the other-kind donor at every layer (must move naming), and the same-kind donor per window (the rule must not flip).
+
+## Predictions and rule
+
+As in the docstring of `experiments/media_patch.py`: P1 two horizons, the rule's at least two windows before naming's ("too late"); P2 the rule's horizon in the family's image range, widened by one window; P3 naming's in 0.67 to 0.75, widened by one window, or at most the key-value sharing limit on Gemma-4 E2B and E4B; P4 true video and static version agree within one window. The thresholds are depth_sweep's, with the same-kind donor in place of its random steer.
+
+## Running it
+
+```bash
+scripts/media_patch.sh                          # all six models, smallest first; MODELS="..." for fewer
+```
+
+Cost, estimated: per model and input, 3 + 2 x windows rows per clip and question, about 2,700 rows on the 4B and 4,500 on Gemma 31B, so minutes on the small models and about half an hour on the 31B. The donor states are held on the CPU, one input at a time: about 0.5 GB on the 4B, 7 GB on Gemma E4B and 21 GB on Gemma 31B. Not yet run on a GPU.
+
+---
+
+# Part 3: the matched video set, with every intervention and patching (version 5)
+
+Written 17 Nov 2026, before any run. Code: `experiments/video_sweep.py`, `src/jspace/matched.py`, `scripts/prepare_matched.py`, `scripts/video_sweep.sh`.
+
+## Why
+
+Nayan Saxena built a video set that matches the image experiment's construction exactly (`saxenan3/jspace-matched-video`): 64 scenes on the image runs' schedule, each a donor video and a receiver video of the image runs' 16 classes, the numbered canvas slot, and the three names of the set question. 73 real clips from Wikimedia Commons and uCO3D, checked by hand, each with a sha256 and a licence in `ATTRIBUTION.tsv`. Two things were still missing: activation patching, the image experiment's main result, on video; and every intervention on real moving video rather than on frames.
+
+## Inputs
+
+Each clip's frames are drawn into the slot of the six-slot canvas, as `depth_sweep` draws a crop (the dataset's `render_inputs.py` does the same). Three inputs: **moving** (the video), **frozen** (its middle sampled frame repeated as often: the same tokens without motion), **still** (that frame as a picture).
+
+**Frames come from each model's own sampler**, not from a fixed 8. Qwen3.5's samples 2 frames per second, so its count grows with the clip; Gemma-4's takes 32 spread over the clip. Patching writes the donor's tokens into the receiver one position at a time, so both clips of a scene get one count: the receiver's native count, capped at both clips' lengths (Gemma's sampler refuses to take more frames than a short clip has), with both clips sampled at that count by the same sampler. Prompts of different lengths are batched separately, so no batch is padded.
+
+## Arms
+
+- **Patching** (every question of `depth_sweep`: say, animal, letter, set, ride): clean; the receiver's own states written back at every layer (the machinery check); the donor's at every layer (the positive control); and per window of 4 layers, `depth_sweep`'s three arms: the donor's states, the receiver's own name direction at 4 sigma, a random direction at 4 sigma. The donor runs under the neutral prompt, as in `depth_sweep`.
+- **The other interventions** (say and animal): every arm of part 1 (steering by block and dose, knockouts, ablations, sweeps), with Y the donor's object and Z a same-kind word.
+
+## Rule and predictions
+
+As in the docstring of `experiments/video_sweep.py`: `depth_sweep`'s horizons and cut for patching, with the gates and controls of part 2; part 1's frozen rule for the other interventions; moving against frozen and still within one window (patching) and within ±0.15 per block (steering). Predictions: part 2's P1 to P3 on the moving video, P4 moving equals frozen, P5 moving equals still, and part 1's predictions 1 to 6.
+
+## Running it
+
+```bash
+uv run scripts/pin_media.py                    # pins the matched set; commit src/jspace/config.py
+scripts/video_sweep.sh                         # Qwen 0.8B and 4B, Gemma E2B and E4B: smoke twice, compared, then 64 scenes
+MODELS="Qwen/Qwen3.5-27B google/gemma-4-31B-it" scripts/video_sweep.sh   # the large ones, on the 96 GB card
+```
+
+Estimated cost, before any run: about 430 rows per scene and input on the 4B (150 patching, 280 other), so about 83,000 rows. Qwen's prompts run from about 1,200 to 12,000 tokens with clip length; Gemma's are about 2,300 for video. That is roughly an hour per medium model and several hours per large one. Donor states are held on the CPU in chunks of scenes, at most `--donor-gb` (16 GB) at a time.
+
+Checked on a CPU: the real Qwen3.5 and Gemma-4 frame samplers of transformers 5.19 (20 frames for a 10-second clip on Qwen, 32 on Gemma, a 13-frame clip capped at 13), Qwen's processing of a 20-frame canvas video (10 x 28 x 42 patches), decoding with PyAV, canvas drawing, batching by layout, patching from per-clip donors, and the patching summary on made-up answers. Not yet run on a GPU or on the real clips.

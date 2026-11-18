@@ -1,5 +1,6 @@
 #!/usr/bin/env python
-"""Pin what experiments/media_steer.py downloads: the two VGGSound repositories and Gemma-4-E2B with its lens.
+"""Pin what experiments/media_steer.py, media_patch.py and video_sweep.py download: the two VGGSound repositories, the matched
+video set, and Gemma-4-E2B with its lens.
 
     uv run scripts/pin_media.py           # resolve today's commits and write them into src/jspace/config.py
     uv run scripts/pin_media.py --check   # exit 1 if anything is still unpinned (scripts/media_steer.sh calls this)
@@ -30,15 +31,19 @@ def unpinned():
         out.append("VGG_CSV_REVISION")
     if E2B not in config.MODELS:
         out.append(E2B)
+    if config.MATCHED_REVISION is None:
+        out.append("MATCHED_REVISION")
     return out
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--check", action="store_true")
+    ap.add_argument("--check", nargs="?", const="all", choices=["all", "media_steer", "media_patch", "video_sweep"], help="exit 1 if what this experiment reads is unpinned")
     args = ap.parse_args()
     todo = unpinned()
     if args.check:
+        not_read = {"media_steer": {"MATCHED_REVISION"}, "media_patch": {"MATCHED_REVISION"}}
+        todo = [t for t in todo if t not in not_read.get(args.check, set())]  # each experiment checks only what it reads
         if todo:
             print("unpinned: " + ", ".join(todo))
             sys.exit(1)
@@ -59,6 +64,10 @@ def main():
         sha = api.dataset_info(config.VGG_CSV_REPO).sha
         src = src.replace(f'VGG_CSV_REPO, VGG_CSV_REVISION = "{config.VGG_CSV_REPO}", None', f'VGG_CSV_REPO, VGG_CSV_REVISION = "{config.VGG_CSV_REPO}", "{sha}"')
         print(f"{config.VGG_CSV_REPO} at {sha}")
+    if config.MATCHED_REVISION is None:
+        sha = api.dataset_info(config.MATCHED_REPO).sha
+        src = src.replace(f'MATCHED_REPO, MATCHED_REVISION = "{config.MATCHED_REPO}", None', f'MATCHED_REPO, MATCHED_REVISION = "{config.MATCHED_REPO}", "{sha}"')
+        print(f"{config.MATCHED_REPO} at {sha}")
     if E2B not in config.MODELS:
         info = api.model_info(E2B, files_metadata=True)
         size_gb = sum((s.size or 0) for s in info.siblings) / 1e9

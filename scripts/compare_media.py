@@ -20,18 +20,19 @@ def main():
     ap.add_argument("a", type=Path)
     ap.add_argument("b", type=Path)
     ap.add_argument("--tol", type=float, default=1e-3, help="tolerance for numeric columns")
+    ap.add_argument("--file", default="media_steer.csv", help="the CSV each model folder holds (video_sweep.csv for video_sweep)")
     args = ap.parse_args()
-    folders = sorted(p.parent.name for p in args.a.glob("*/media_steer.csv"))
+    folders = sorted(p.parent.name for p in args.a.glob(f"*/{args.file}"))
     if not folders:
-        raise SystemExit(f"no media_steer.csv under {args.a}")
+        raise SystemExit(f"no {args.file} under {args.a}")
     bad = 0
     for m in folders:
-        other = args.b / m / "media_steer.csv"
+        other = args.b / m / args.file
         if not other.exists():
             print(f"missing  {other}")
             bad += 1
             continue
-        ok, note = compare_csv(args.a / m / "media_steer.csv", other, args.tol)
+        ok, note = compare_csv(args.a / m / args.file, other, args.tol)
         print(f"{'same' if ok else 'DIFFERS'}  {m}: {note}")
         bad += not ok
     sys.exit(1 if bad else 0)

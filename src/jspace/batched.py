@@ -76,10 +76,12 @@ class Tables:
     dirs[(input, key)]  the same for a direction that depends on the input kind (the clip's top principal direction)
     sigma[input][L]     the dose unit at layer L
     abl[key]            ("scene", {L: [n_scene, d]}) or ("shared", {L: [d, r]}): what an ablation removes at the read layers
-    mu[input][L]        [d], the mean media-token state, whose part is put back (mean-ablation)"""
+    mu[input][L]        [d], the mean media-token state, whose part is put back (mean-ablation)
+    donor[input][L]     [n_scene, P, d] float16 on the CPU: each clip's clean media-token states, written into another clip's
+                        prompt by a patch row (experiments/media_patch.py)"""
 
     def __init__(self):
-        self.dirs, self.sigma, self.abl, self.mu = {}, {}, {}, {}
+        self.dirs, self.sigma, self.abl, self.mu, self.donor = {}, {}, {}, {}, {}
 
     def direction(self, inp, key, L):
         return self.dirs[(inp, key)][L] if (inp, key) in self.dirs else self.dirs[key][L]
@@ -110,6 +112,13 @@ def residual_hooks(rows, P, T, read_layers):
                 if add[site] is None:
                     add[site] = torch.zeros(len(rows), D.shape[1], device=dev)
                 add[site][it] = D
+        patch = None  # residual-stream patching: the donor clip's state replaces the row's at every media position
+        pt = [i for i, r in enumerate(rows) if r["site"] == "patch" and L in r["layers"]]
+        if pt:
+            # donor[inp][L] is one [n_scene, P, d] tensor or a {scene: [P, d]} dict (clips of different lengths); the rows of a
+            # batch share one layout, so their donors have the same P
+            D = torch.stack([T.donor[inp][L][rows[i]["donor"]] for i in pt])
+            patch = (torch.as_tensor(pt, device=dev), D.to(dev, non_blocking=True).float())
         abl = []
         if L in read_layers:
             for key in sorted({r["ablate"] for r in rows if r["ablate"]}):
@@ -117,7 +126,11 @@ def residual_hooks(rows, P, T, read_layers):
                 kind, B = T.abl[key]
                 abl.append((it, kind, B[L][sc[it]] if kind == "scene" else B[L], T.mu[inp][L]))
 
-        def edit(x, add=add, abl=abl):
+        def edit(x, add=add, abl=abl, patch=patch):
+            if patch is not None:
+                it, D = patch
+                assert D.shape[1] == len(P), (D.shape, len(P))
+                x[it[:, None], P[None, :]] = D
             if add["media"] is not None:
                 x[:, P] += add["media"][:, None, :]
             if add["last"] is not None:
@@ -220,9 +233,11 @@ class Engine:
         free = torch.cuda.mem_get_info()[0] / 2**30
         # a first guess that OOM halving corrects: about 2,000 prompt tokens per free GB held up for the models here
         self.budget = budget_tokens or int(2048 * max(free - 4, 1))
-        self.cap = {}  # (input, task) -> rows per batch that ran
+        self.cap = {}  # (input, task) -> rows per batch that ran last
+        self.tok_cap = {}  # (input, task) -> prompt tokens per batch that ran
         self.features = {}  # (input, scene) -> tuple of encoder output pieces (GPU), when the cache is on for that input
         self.cache_on = {}
+        self._layouts = {}
         self.pool = ThreadPoolExecutor(max_workers=2)
         self.batches = 0
         self.rows_done = 0
@@ -230,6 +245,15 @@ class Engine:
         print(f"engine: {free:.0f} GB free after loading, first token budget {self.budget} per batch, at most {max_rows} rows")
 
     # ---- inputs
+    def layout(self, r):
+        """a prompt's layout: its length and its media positions. Prompts of one input and question share it when every clip
+        has the same number of frames (media_steer); with each model's own frame sampler (video_sweep) lengths vary by clip."""
+        key = (r["input"], r["task"], r["scene"])
+        if key not in self._layouts:
+            ids = self.encs[key]["input_ids"][0]
+            self._layouts[key] = (int(ids.shape[0]), hash(tuple(torch.nonzero(ids == self.token[r["input"]]).flatten().tolist())))
+        return self._layouts[key]
+
     def _batch_cpu(self, rows, use_cache):
         enc = collate([self.encs[(r["input"], r["task"], r["scene"])] for r in rows])
         if use_cache:
@@ -283,10 +307,10 @@ class Engine:
         """the same rows generated with the encoder in the batch and from the cache: the cache stays on only if the answers are
         identical and the first-token log-probabilities agree within 0.05"""
         self.cache_on[inp] = False
-        a = self._generate_batch(rows, n_new)
+        a = self._generate_grouped(rows, n_new)
         self.cache_on[inp] = True
         try:
-            b = self._generate_batch(rows, n_new)
+            b = self._generate_grouped(rows, n_new)
         except Exception as e:  # noqa: BLE001
             print(f"{inp}: generation from cached encoder outputs failed ({type(e).__name__}: {str(e)[:160]}); cache off")
             self.cache_on[inp] = False
@@ -307,6 +331,21 @@ class Engine:
         assert not bad and not missing, f"{inp}/{task}: collated batch differs from the processor's in {bad + missing}"
 
     # ---- running
+    def _layout_groups(self, rows):
+        """row indices grouped by prompt layout, in order of first appearance: one batch per group, so none is padded"""
+        groups = {}
+        for i, r in enumerate(rows):
+            groups.setdefault(self.layout(r), []).append(i)
+        return list(groups.values())
+
+    def _generate_grouped(self, rows, n_new):
+        """_generate_batch per layout group, the results back in row order (clips of different lengths cannot share a batch)"""
+        out = [None] * len(rows)
+        for idx in self._layout_groups(rows):
+            for i, x in zip(idx, self._generate_batch([rows[i] for i in idx], n_new)):
+                out[i] = x
+        return out
+
     def _generate_batch(self, rows, n_new):
         enc = self._to_gpu(self._batch_cpu(rows, self.cache_on.get(rows[0]["input"], False)))
         return self._generate_enc(rows, enc, n_new)
@@ -343,12 +382,14 @@ class Engine:
         """answers and first-token log-probabilities for every row, in row order: [(text, lp_x, lp_y)]"""
         out = [None] * len(rows)
         groups = {}
-        for i, r in enumerate(rows):
-            groups.setdefault((r["input"], r["task"]), []).append(i)
+        for i, r in enumerate(rows):  # a batch shares one prompt layout: same length, media tokens at the same positions
+            groups.setdefault((r["input"], r["task"], self.layout(r)), []).append(i)
         t0 = time.time()
-        for (inp, task), idx in groups.items():
+        for (inp, task, _), idx in groups.items():
             seq = int(self.encs[(inp, task, rows[idx[0]]["scene"])]["input_ids"].shape[1])
-            B = self.cap.get((inp, task)) or max(1, min(self.max_rows, self.budget // seq))
+            # the size that ran is kept in tokens, so a long prompt's batch shrinks with it; with one length per input and
+            # question (media_steer) this is the rows-per-batch rule as before
+            B = max(1, min(self.max_rows, self.tok_cap.get((inp, task), self.budget) // seq))
             pos = 0
             pending = {}
 
@@ -382,6 +423,7 @@ class Engine:
                 self.batches += 1
                 self.rows_done += len(chunk)
             self.cap[(inp, task)] = B
+            self.tok_cap[(inp, task)] = B * seq
         print(f"  {label}: {len(rows)} rows in {time.time() - t0:.0f}s ({len(rows) / max(time.time() - t0, 1e-9):.0f} rows/s)")
         return out
 
@@ -392,8 +434,8 @@ class Engine:
         lm = self.lm
         groups = {}
         for r in rows:
-            groups.setdefault((r["input"], r["task"]), []).append(r)
-        for (inp, _), rs in groups.items():
+            groups.setdefault((r["input"], r["task"], self.layout(r)), []).append(r)
+        for (inp, _, _), rs in groups.items():
             B = 8  # the hooks hold one layer's media states at a time; small batches keep the SVDs in memory
             for s in range(0, len(rs), B):
                 batch = rs[s : s + B]

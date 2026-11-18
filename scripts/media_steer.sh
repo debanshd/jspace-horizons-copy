@@ -27,7 +27,7 @@ DL=runs/.downloads
 mkdir -p "$DL"
 
 uv sync --frozen   # once, so the parallel uv runs below do not each check the environment
-if ! uv run --frozen scripts/pin_media.py --check; then
+if ! uv run --frozen scripts/pin_media.py --check media_steer; then
     echo "pin the datasets and Gemma-4-E2B first: uv run scripts/pin_media.py, then commit src/jspace/config.py" >&2
     exit 1
 fi
