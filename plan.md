@@ -436,9 +436,9 @@ RELEASE: NO
 
 ---
 
-# Part 2: video patching, on VGGSound and on stock clips (version 4)
+# Part 2: video patching on VGGSound (version 4.1)
 
-Written 17 Nov 2026, after the steering results of part 1 and before any patching run. The code is `experiments/media_patch.py`; its docstring carries the same design, rule and predictions.
+Written 17 Nov 2026, after the steering results of part 1 and before any patching run. Version 4.1 (18 Nov 2026, also before any run) drops the LaSOT stock clips: Nayan Saxena judged that set wrong for this task, and part 3's matched video set replaces it. The code is `experiments/media_patch.py`; its docstring carries the same design, rule and predictions.
 
 ## Why
 
@@ -447,26 +447,22 @@ The steering results showed that a name written onto a video's tokens is said fr
 ## Data
 
 - **VGGSound**, as in part 1: the same 64 clips as the six-model steering run (`runs/media_steer_all`), shown as the clip (8 frames over 10 seconds, real motion) and as its static version.
-- **LaSOT**, new: curated YouTube videos made for object tracking (Fan et al., CVPR 2019), 20 per class in all 8 of our classes, with the object boxed by hand on every frame. Each clip is a 10-second window in which the object is in all 8 frames, cropped to one square around the boxes so the object is large and its motion stays in the clip (`scripts/prepare_lasot.py`). Up to 8 per class are used: those every model names.
-- **Why LaSOT and not new YouTube downloads.** The sessions that wrote this code cannot reach YouTube, and downloading from YouTube breaks its terms of service. LaSOT is YouTube video, already chosen for one visible object per clip and annotated frame by frame, on Hugging Face. It is read in place from its per-class zips (2 to 5 GB each), about 8 frames per clip, never the whole zip. Its licence is for research; it has no sound.
 
 ## Design
 
-Per receiver clip of class X, the donor is the clip of class Y (the other kind) at the same position in its class, and a second donor the clip of class Z (the same kind). The donor's media-token states replace the receiver's at one window of 4 layers at a time, from the input to the last layer (depth_sweep's windows). Questions: say and the animal rule. Inputs: clip, static, stock, stock_static. Controls: the receiver's own states written back at every layer (must reproduce the clean answers), the other-kind donor at every layer (must move naming), and the same-kind donor per window (the rule must not flip).
+Per receiver clip of class X, the donor is the clip of class Y (the other kind) at the same position in its class, and a second donor the clip of class Z (the same kind). The donor's media-token states replace the receiver's at one window of 4 layers at a time, from the input to the last layer (depth_sweep's windows). Questions: say and the animal rule. Inputs: clip and static. Controls: the receiver's own states written back at every layer (must reproduce the clean answers), the other-kind donor at every layer (must move naming), and the same-kind donor per window (the rule must not flip).
 
 ## Predictions and rule
 
-As in the docstring of `experiments/media_patch.py`: P1 two horizons, the rule's at least two windows before naming's ("too late"); P2 the rule's horizon in the family's image range, widened by one window; P3 naming's in 0.67 to 0.75, widened by one window, or at most the key-value sharing limit on Gemma-4 E2B and E4B; P4 true video and static version agree within one window; P5 LaSOT and VGGSound agree within one window. The thresholds are depth_sweep's, with the same-kind donor in place of its random steer.
+As in the docstring of `experiments/media_patch.py`: P1 two horizons, the rule's at least two windows before naming's ("too late"); P2 the rule's horizon in the family's image range, widened by one window; P3 naming's in 0.67 to 0.75, widened by one window, or at most the key-value sharing limit on Gemma-4 E2B and E4B; P4 true video and static version agree within one window. The thresholds are depth_sweep's, with the same-kind donor in place of its random steer.
 
 ## Running it
 
 ```bash
-uv run scripts/pin_media.py                     # pins LaSOT; commit src/jspace/config.py
 scripts/media_patch.sh                          # all six models, smallest first; MODELS="..." for fewer
-git add scripts/lasot_manifest.json             # after the first run, the LaSOT clips and their hashes
 ```
 
-Cost, estimated: per model and input, 3 + 2 x windows rows per clip and question, about 2,700 rows on the 4B and 4,500 on Gemma 31B, so minutes on the small models and about half an hour on the 31B. The donor states are held on the CPU, one input at a time: about 0.5 GB on the 4B, 7 GB on Gemma E4B and 21 GB on Gemma 31B. Not yet run: the LaSOT zip reading was written against the archive's documented layout and has not been tried on the real zips.
+Cost, estimated: per model and input, 3 + 2 x windows rows per clip and question, about 2,700 rows on the 4B and 4,500 on Gemma 31B, so minutes on the small models and about half an hour on the 31B. The donor states are held on the CPU, one input at a time: about 0.5 GB on the 4B, 7 GB on Gemma E4B and 21 GB on Gemma 31B. Not yet run on a GPU.
 
 ---
 
@@ -496,7 +492,7 @@ As in the docstring of `experiments/video_sweep.py`: `depth_sweep`'s horizons an
 ## Running it
 
 ```bash
-uv run scripts/pin_media.py                    # pins the matched set (and LaSOT); commit src/jspace/config.py
+uv run scripts/pin_media.py                    # pins the matched set; commit src/jspace/config.py
 scripts/video_sweep.sh                         # Qwen 0.8B and 4B, Gemma E2B and E4B: smoke twice, compared, then 64 scenes
 MODELS="Qwen/Qwen3.5-27B google/gemma-4-31B-it" scripts/video_sweep.sh   # the large ones, on the 96 GB card
 ```

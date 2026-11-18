@@ -1,12 +1,10 @@
-"""media_patch's pieces on the CPU: the patch hook, the windows and donors, the summary's rules on made-up answers, and the
-LaSOT window and crop rules."""
+"""media_patch's pieces on the CPU: the patch hook, the windows and donors, and the summary's rules on made-up answers."""
 
 import importlib
 import sys
 import types
 from pathlib import Path
 
-import numpy as np
 import pytest
 import torch
 
@@ -73,7 +71,7 @@ def test_summary_rules_on_made_up_answers():
     ms = load("media_patch", "experiments")
     S = media.assign({w: [f"{w}{k}" for k in range(4)] for w in media.CLASSES}, 4)
     ID = {w: [1] for w in media.CLASSES} | {"7": [2], "3": [3]}
-    inputs = ["clip", "static", "stock", "stock_static"]
+    inputs = ["clip", "static"]
     rows = ms.patch_rows(inputs, S, ID, 32)
     R = ms.to_frame(rows, [made_up(r) for r in rows])
     out = ms.summarize(R, inputs, 32, "qwen", None)
@@ -82,7 +80,6 @@ def test_summary_rules_on_made_up_answers():
         assert out["horizon"][inp]["L_say"] == 19 and out["horizon"][inp]["L_use"] == 7 and out["verdict"][inp] == "too late"
         assert out["share"][inp] == dict(say=23 / 32, use=11 / 32)
     assert out["predictions"]["clip"] == dict(P1="kept", P2="kept", P3="kept", P4="kept")
-    assert out["predictions"]["stock"]["P5"] == "kept"
     kv = ms.summarize(R, inputs, 32, "gemma", 0.57)
     # Gemma's 0.38-0.48 widened by one window (4 / 32) holds 0.34; naming at 0.72 is past the sharing limit 0.57 + 0.125
     assert kv["predictions"]["clip"]["P2"] == "kept" and kv["predictions"]["clip"]["P3"] == "missed"
@@ -96,24 +93,6 @@ def test_failed_controls_leave_the_horizons_unread():
     res = [made_up(r) if r["family"] != "self" else ("nonsense", 0.0, 0.0) for r in rows]
     out = ms.summarize(ms.to_frame(rows, res), ["clip"], 32, "qwen", None)
     assert out["verdict"]["clip"] == "patch machinery failed" and set(out["predictions"]["clip"].values()) == {"untestable"}
-
-
-def test_lasot_window_and_crop():
-    prep = load("prepare_lasot", "scripts")
-    assert prep.parse_flags("0,0,1,0\n").tolist() == [False, False, True, False]
-    assert prep.parse_boxes("1,2,3,4\n5\t6\t7\t8\n").tolist() == [[1, 2, 3, 4], [5, 6, 7, 8]]
-    n = 900
-    boxes = np.tile([100.0, 100.0, 80.0, 60.0], (n, 1))
-    occ, oov = np.zeros(n, bool), np.zeros(n, bool)
-    occ[prep.frame_offsets()[3]] = True  # the object is hidden in the first window
-    start, idx, crop, ratio = prep.choose_window(boxes, occ, oov, 640, 360)
-    assert start == prep.WINDOW_STEP and idx[0] == start + prep.frame_offsets()[0]
-    left, top, side = crop
-    assert side == pytest.approx(80 * 1.15) and 0 <= left and left + side <= 640 and 0 <= top and top + side <= 360
-    assert ratio == pytest.approx(80 / side)
-    assert prep.choose_window(boxes, np.ones(n, bool), oov, 640, 360) is None
-    big = prep.crop_square(np.array([[0.0, 0.0, 600.0, 350.0]]), 640, 360)
-    assert big[2] == 360 and big[1] == 0  # never larger than the shorter side, and inside the frame
 
 
 def test_kv_limit():

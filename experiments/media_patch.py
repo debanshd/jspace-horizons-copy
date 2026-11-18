@@ -1,21 +1,16 @@
 """Media patching: until which layer is a video's object still named, and still used? (plan.md part 2: depth_sweep for video)
 
-Design. Two clip sets, each shown as a true video and as its static version (the middle frame 8 times):
-  clip, static              the 64 VGGSound clips of a finished media_steer run (--gate-run), those every model there named
-  stock, stock_static       LaSOT clips (scripts/prepare_lasot.py): curated YouTube tracking videos, cropped around the boxed
-                            object, up to 8 per class, those every model in --gate-models named in this run's stock gate
-For each receiver clip (class X) the donor is the clip of class Y, the other kind, at the same position in its class
-(media.assign's Y), and a second donor the clip of class Z, the same kind. The donor's media-token states, recorded from its own
+Design. The 64 VGGSound clips of a finished media_steer run (--gate-run), those every model there named, each shown as a true
+video and as its static version (the middle frame 8 times): the inputs clip and static. For each receiver clip (class X) the
+donor is the clip of class Y, the other kind, at the same position in its class (media.assign's Y), and a second donor the clip
+of class Z, the same kind. The donor's media-token states, recorded from its own
 clean prompt (the video comes before the question, so these states do not depend on the question), replace the receiver's at
 one window of 4 consecutive layers at a time, from the input (layer -1) to the last layer, as depth_sweep does for pictures. Two
 questions in separate prompts: say (the noun) and the animal rule (7 or 3). Arms per receiver and question: clean; the
 receiver's own states written back at every layer (the machinery check); the other-kind donor at every layer (the positive
 control); and per window, the other-kind donor and the same-kind donor. No lens is used.
 
-Stages. `--stage gate` asks every LaSOT clip "What is the object in the video?" and writes gate_stock.csv. `--stage main` runs
-the patching. The VGGSound clips come from runs/<gate-run>/*/gate.csv by media_steer's rule; the LaSOT clips from
-runs/<run>/<model>/gate_stock.csv of every --gate-models model: per class the first named ones in manifest order, the same
-number in every class (8, or fewer if a class has fewer; under 4 and the stock inputs are left out).
+Clips. They come from runs/<gate-run>/*/gate.csv by media_steer's rule: per class the first 8 candidates every model named.
 
 The rule (written before the run; depth_sweep's rules, with the same-kind donor in the place of its random steer):
 - Gate: a question on an input is read only if clean accuracy is >= 0.90 (say) or >= 0.85 (rule); otherwise "not perceived,
@@ -35,12 +30,10 @@ P1 the verdict is "too late" (the rule stops reading the video at least two wind
 P2 the rule's horizon share is within the family's image range widened by one window (Qwen 0.26-0.33, Gemma 0.38-0.48);
 P3 naming's horizon share is within 0.67-0.75 widened by one window; on a model whose last layers reuse earlier layers' keys and
    values (Gemma-4 E2B and E4B) no later layer can read a media token, so naming's share is at most that limit plus one window;
-P4 the true video and its static version have the same horizons within one window, for both questions;
-P5 the LaSOT video has the same horizons as the VGGSound video within one window.
+P4 the true video and its static version have the same horizons within one window, for both questions.
 
 Outputs in runs/<run>/<model>/: media_patch.csv (every row), summary.json (gates, controls, curves, horizons, verdicts,
-predictions, setup), clips.json, stimuli.png (the first two LaSOT clips as the model sees them), gpu.csv, config.json, run.log;
-gate_stock.csv for --stage gate.
+predictions, setup), clips.json, stimuli.png (the first two clips as the model sees them), gpu.csv, config.json, run.log.
 """
 
 import hashlib
@@ -65,7 +58,7 @@ from jspace.runs import Run, parser  # noqa: E402
 
 WINDOW = 4
 GATE = {"say": 0.90, "animal": 0.85}
-VGG_INPUTS, STOCK_INPUTS = ["clip", "static"], ["stock", "stock_static"]
+VGG_INPUTS = ["clip", "static"]
 FAMILY_RULE_RANGE = {"qwen": (0.26, 0.33), "gemma": (0.38, 0.48)}
 NAME_RANGE = (0.67, 0.75)
 
@@ -164,7 +157,7 @@ def predictions(out, inputs, n_layers, family, kv):
     for inp in inputs:
         h = out["horizon"][inp]
         if not isinstance(h, dict):
-            P[inp] = {k: "untestable" for k in ("P1", "P2", "P3", "P4", "P5")}
+            P[inp] = {k: "untestable" for k in ("P1", "P2", "P3", "P4")}
             continue
         sh = out["share"][inp]
         p = {}
@@ -172,10 +165,8 @@ def predictions(out, inputs, n_layers, family, kv):
         p["P2"] = ("kept" if within(sh["use"], *FAMILY_RULE_RANGE[family], w) else "missed") if h["rule_read"] else "untestable"
         name_ok = (sh["say"] is not None and sh["say"] <= kv + w) if kv else within(sh["say"], *NAME_RANGE, w)
         p["P3"] = "kept" if name_ok else "missed"
-        twin = {"clip": "static", "static": "clip", "stock": "stock_static", "stock_static": "stock"}[inp]
+        twin = {"clip": "static", "static": "clip"}[inp]
         p["P4"] = ("kept" if same_horizons(h, out["horizon"].get(twin)) else "missed") if twin in inputs and isinstance(out["horizon"].get(twin), dict) else "untestable"
-        if inp == "stock":
-            p["P5"] = ("kept" if same_horizons(h, out["horizon"].get("clip")) else "missed") if isinstance(out["horizon"].get("clip"), dict) else "untestable"
         P[inp] = p
     return P
 
@@ -201,17 +192,14 @@ def to_frame(rows, res):
 
 def main():
     ap = parser(__doc__, "media_patch")
-    ap.add_argument("--stage", choices=["gate", "main"], default="main")
     ap.add_argument("--gate-run", default="media_steer_all", help="the media_steer run whose gate.csv files choose the VGGSound clips")
-    ap.add_argument("--gate-models", default="", help="comma list of models whose gate_stock.csv in this run must all name a LaSOT clip (default: every model with one)")
-    ap.add_argument("--inputs", default=",".join(VGG_INPUTS + STOCK_INPUTS))
+    ap.add_argument("--inputs", default=",".join(VGG_INPUTS))
     ap.add_argument("--max-rows", type=int, default=512)
     ap.add_argument("--no-encoder-cache", action="store_true")
     args = ap.parse_args()
     require_data(args.data_dir, "vggsound")
-    require_data(args.data_dir, "lasot")
-    vman, sman = media.manifest(args.data_dir), media.stock_manifest(args.data_dir)
-    run = Run(args, f"media_patch {args.stage}")
+    vman = media.manifest(args.data_dir)
+    run = Run(args, "media_patch")
     lm = Session(args.model)
     run.write_config(lm)
     t0 = time.time()
@@ -219,26 +207,14 @@ def main():
     ID = {w: lm.single_ids([w, " " + w, w.capitalize(), " " + w.capitalize()]) for w in media.CLASSES}
     ID.update({d: lm.single_ids([d, " " + d]) for d in ("7", "3")})
     assert all(ID.values()), f"a class word or digit has no single-token form in {lm.name}'s tokenizer"
-    token = {inp: media_token(lm, inp) for inp in VGG_INPUTS + STOCK_INPUTS}
+    inputs = args.inputs.split(",")
+    token = {inp: media_token(lm, inp) for inp in inputs}
     cache = {}
 
-    def frames_of(inp, cid):
-        if (inp in STOCK_INPUTS, cid) not in cache:
-            cache[(inp in STOCK_INPUTS, cid)] = media.load_stock(args.data_dir, cid) if inp in STOCK_INPUTS else media.load_clip(args.data_dir, cid)
-        return cache[(inp in STOCK_INPUTS, cid)]
-
-    stock_cand = {w: [c["id"] for c in sman["clips"] if c["class"] == w] for w in media.CLASSES}
-    if args.stage == "gate":
-        flat = [(w, c) for w in media.CLASSES for c in stock_cand[w]]
-        encs = {("stock", "say", i): encode(lm, "stock", "say", [frames_of("stock", c)]) for i, (_, c) in enumerate(flat)}
-        eng = batched.Engine(lm, encs, token, media.MEDIUM, batched.Tables(), lm.layers, args.max_rows)
-        rows = [dict(input="stock", task="say", scene=i, site="", ablate="", ko=(), ids_x=ID[w], ids_y=ID[w]) for i, (w, _) in enumerate(flat)]
-        res = eng.generate(rows, N_NEW, "stock gate")
-        G = pd.DataFrame([dict(clip=c, cls=w, generation=t, correct=media.answer_matches("say", t, w)) for (w, c), (t, _, _) in zip(flat, res)])
-        run.save_csv(G, "gate_stock.csv")
-        print("stock gate (named / candidates): " + ", ".join(f"{w} {int(G[G['cls'] == w]['correct'].sum())}/{int((G['cls'] == w).sum())}" for w in media.CLASSES))
-        run.save_json(dict(gpu=mon.stop(), seconds=time.time() - t0), "summary.json")
-        return
+    def frames_of(cid):
+        if cid not in cache:
+            cache[cid] = media.load_clip(args.data_dir, cid)
+        return cache[cid]
 
     # ---- the clips
     gate_files = sorted((args.runs_dir / args.gate_run).glob("*/gate.csv"))
@@ -249,45 +225,26 @@ def main():
     short = {w: len(v) for w, v in vok.items() if len(v) < 8}
     if short:
         raise SystemExit(f"the gate run leaves fewer than 8 VGGSound clips in {short}")
-    S_vgg = media.assign(vok, 8)
-    models = [m for m in args.gate_models.split(",") if m]
-    stock_files = [args.runs_dir / args.run / m.split("/")[-1] / "gate_stock.csv" for m in models] if models else sorted((args.runs_dir / args.run).glob("*/gate_stock.csv"))
-    missing = [str(p) for p in stock_files if not p.exists()]
-    if missing or not stock_files:
-        raise SystemExit(f"stock gate missing: {missing or 'none found'}; run `--stage gate` for every model first")
-    spass = set.intersection(*[set(pd.read_csv(p)["clip"][pd.read_csv(p)["correct"]]) for p in stock_files])
-    sok = {w: [c for c in stock_cand[w] if c in spass] for w in media.CLASSES}
-    n_stock = min(8, min(len(v) for v in sok.values()))
-    inputs = [i for i in args.inputs.split(",")]
-    if n_stock < 4:
-        print(f"only {n_stock} LaSOT clips in the smallest class ({ {w: len(v) for w, v in sok.items()} }): the stock inputs are left out")
-        inputs = [i for i in inputs if i not in STOCK_INPUTS]
-    S_stock = media.assign(sok, n_stock) if n_stock >= 4 else []
+    S = media.assign(vok, 8)
     run.save_json(
-        dict(
-            vgg=dict(scenes=S_vgg, gate_files=[str(p) for p in gate_files]),
-            stock=dict(scenes=S_stock, n_per_class=n_stock, gate_files=[str(p) for p in stock_files], named={w: len(v) for w, v in sok.items()}),
-            manifests={k: hashlib.sha256((args.data_dir / k / "manifest.json").read_bytes()).hexdigest() for k in ("vggsound", "lasot")},
-        ),
+        dict(scenes=S, gate_files=[str(p) for p in gate_files], manifest_sha256=hashlib.sha256((args.data_dir / "vggsound/manifest.json").read_bytes()).hexdigest()),
         "clips.json",
     )
-    if S_stock:
-        stimuli.contact_sheet(
-            [(f"{r['clip']}: {media.FRAME_TIMES[j]:.1f} s", Image.fromarray(frames_of("stock", r["clip"])[0][j])) for r in S_stock[:2] for j in range(media.N_FRAMES)],
-            media.N_FRAMES,
-            run.path("stimuli.png"),
-        )
+    stimuli.contact_sheet(
+        [(f"{r['clip']}: {media.FRAME_TIMES[j]:.1f} s", Image.fromarray(frames_of(r["clip"])[0][j])) for r in S[:2] for j in range(media.N_FRAMES)],
+        media.N_FRAMES,
+        run.path("stimuli.png"),
+    )
 
     n_layers = lm.final + 1
     LF = list(range(-1, n_layers))  # no lens is needed: every layer's state is patched as it is
     family = "gemma" if "gemma" in lm.name.lower() else "qwen"
     kv = kv_limit(lm)
-    print(f"{n_layers} layers, windows {[w[0] for w in windows(n_layers)]}; key-value sharing limit {kv}; inputs {inputs}; stock clips {n_stock} per class")
+    print(f"{n_layers} layers, windows {[w[0] for w in windows(n_layers)]}; key-value sharing limit {kv}; inputs {inputs}")
     T = batched.Tables()
     R_all, setup = [], dict(cache={}, batch_rows={}, layout={})
     for inp in inputs:  # one input at a time: its donor states (every layer, every clip) are freed before the next
-        S = S_stock if inp in STOCK_INPUTS else S_vgg
-        encs = {(inp, t, r["scene"]): encode(lm, inp, t, [frames_of(inp, r["clip"])]) for t in media.TASKS for r in S}
+        encs = {(inp, t, r["scene"]): encode(lm, inp, t, [frames_of(r["clip"])]) for t in media.TASKS for r in S}
         for t in media.TASKS:
             lengths = {int(encs[(inp, t, r["scene"])]["input_ids"].shape[1]) for r in S}
             assert len(lengths) == 1, f"{inp}/{t}: prompts differ in length {lengths}"
@@ -317,7 +274,7 @@ def main():
     run.save_csv(R, "media_patch.csv")
     gpu = mon.stop()
     out = summarize(R, inputs, n_layers, family, kv)
-    out["setup"] = dict(setup, inputs=inputs, n_stock_per_class=n_stock, kv_limit=kv, family=family, gpu=gpu, seconds=time.time() - t0)
+    out["setup"] = dict(setup, inputs=inputs, kv_limit=kv, family=family, gpu=gpu, seconds=time.time() - t0)
     run.save_json(out, "summary.json")
     for inp in inputs:
         c = out["controls"][inp]

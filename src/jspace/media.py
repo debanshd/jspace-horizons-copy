@@ -33,10 +33,7 @@ MIDDLE = N_FRAMES // 2  # the frame at 5.625 s: the static video
 META_FPS = 1000.0  # the frame indices handed to the processor are milliseconds, so its timestamps are the true times
 
 INPUTS = ["clip", "static", "sound"]
-MEDIUM = {"clip": "video", "static": "video", "sound": "sound", "stock": "video", "stock_static": "video"}
-# experiments/media_patch.py adds two inputs from LaSOT (scripts/prepare_lasot.py): "stock", a 10-second window of a curated
-# tracking video, cropped around the object's boxes, and "stock_static", its middle frame 8 times. No sound.
-STOCK_INPUTS = ["stock", "stock_static"]
+MEDIUM = {"clip": "video", "static": "video", "sound": "sound"}
 TASKS = ["say", "animal"]
 QUESTIONS = {
     ("video", "say"): "What is the object in the video? Reply with the noun only.",
@@ -147,24 +144,10 @@ def load_clip(data_dir, clip_id):
     return frames, audio
 
 
-def stock_manifest(data_dir):
-    path = Path(data_dir) / "lasot/manifest.json"
-    if not path.exists():
-        raise SystemExit(f"{path} not found: run `uv run scripts/prepare_lasot.py` first")
-    return json.loads(path.read_text())
-
-
-def load_stock(data_dir, clip_id):
-    """a LaSOT clip's 8 frames; (frames, None), as load_clip returns (frames, audio)"""
-    frames = np.load(Path(data_dir) / "lasot/clips" / f"{clip_id}.npz")["frames"]
-    assert frames.shape == (N_FRAMES, SIDE, SIDE, 3) and frames.dtype == np.uint8, (clip_id, frames.shape, frames.dtype)
-    return frames, None
-
-
 def media_of(input_kind, frames, audio):
     """what the processor receives for one input of one clip"""
-    if input_kind in ("clip", "stock"):
+    if input_kind == "clip":
         return frames
-    if input_kind in ("static", "stock_static"):
+    if input_kind == "static":
         return np.repeat(frames[MIDDLE : MIDDLE + 1], N_FRAMES, axis=0)
     return audio
