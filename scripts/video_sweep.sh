@@ -7,10 +7,13 @@
 #
 # Per model: the 5-scene smoke check twice, compared answer by answer (the chain stops if they differ), then the 64-scene run.
 # PyAV decodes the clips (`uv run --with av`), so uv.lock is untouched. Later models download while earlier ones run.
+# DONOR_GB is the host memory for donor states (--donor-gb, default 16): scenes run in chunks that fit it, and only scenes of one
+# chunk share batches, so a larger value gives fuller batches. It must stay the same for a model's smoke run and its repeat.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 MODELS=${MODELS:-"Qwen/Qwen3.5-0.8B google/gemma-4-E2B-it Qwen/Qwen3.5-4B google/gemma-4-E4B-it"}
 RUN=${RUN:-video_sweep}
+DONOR_GB=${DONOR_GB:-16}
 AV="--with av==15.1.0"
 read -r -a M <<< "$MODELS"
 DL=runs/.downloads
@@ -51,8 +54,8 @@ fi
 for m in "${M[@]}"; do
     wait_for "$m"
     for r in "${RUN}_smoke" "${RUN}_smoke_repeat"; do
-        [ -f "runs/$r/${m#*/}/video_sweep.csv" ] || uv run --frozen $AV experiments/video_sweep.py --model "$m" --run "$r" --n 5
+        [ -f "runs/$r/${m#*/}/video_sweep.csv" ] || uv run --frozen $AV experiments/video_sweep.py --model "$m" --run "$r" --n 5 --donor-gb "$DONOR_GB"
     done
     uv run --frozen scripts/compare_media.py --file video_sweep.csv "runs/${RUN}_smoke" "runs/${RUN}_smoke_repeat"
-    [ -f "runs/$RUN/${m#*/}/video_sweep.csv" ] || uv run --frozen $AV experiments/video_sweep.py --model "$m" --run "$RUN"
+    [ -f "runs/$RUN/${m#*/}/video_sweep.csv" ] || uv run --frozen $AV experiments/video_sweep.py --model "$m" --run "$RUN" --donor-gb "$DONOR_GB"
 done
