@@ -16,6 +16,8 @@ mkdir -p runs
 export MODELS=${MODELS:-"Qwen/Qwen3.5-0.8B google/gemma-4-E2B-it Qwen/Qwen3.5-4B google/gemma-4-E4B-it Qwen/Qwen3.5-27B google/gemma-4-31B-it"}
 STAGES=${STAGES-"video_sweep media_patch"}
 STOP_POD=${STOP_POD:-1}
+# the owner's choice for this chain: a smoke difference or a failed run is logged, and the chain goes on (KEEP_GOING=0 stops)
+export KEEP_GOING=${KEEP_GOING:-1}
 
 # video_sweep's donor states in host memory: about a third of what is free, because the encoded prompts of a chunk (their pixels)
 # grow with it too. A chunk shares batches, so the larger it is, the fuller the batches. Set DONOR_GB to fix it across pods.
@@ -38,6 +40,6 @@ fi
 
 for s in $STAGES; do
     echo "pod_run: $(date -u '+%F %T') ===== $s"
-    "scripts/$s.sh"
+    "scripts/$s.sh" || { [ "$KEEP_GOING" = 1 ] && echo "pod_run: $s failed; going on to the next stage" >&2; } || exit 1
 done
 echo "pod_run: $(date -u '+%F %T') all done"
