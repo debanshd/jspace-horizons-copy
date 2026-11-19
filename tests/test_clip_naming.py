@@ -36,9 +36,13 @@ def test_scoring_is_exact_after_normalizing():
     cn = load()
     assert cn.score("Airplane.", "airplane") == (True, True)
     assert cn.score("  airplane\n", "airplane") == (True, True)
-    assert cn.score("plane", "airplane") == (False, False)
+    assert cn.score("plane", "airplane") == (True, True)  # an extra name counts as its COCO category
     assert cn.score("Aeroplane, Airplane, Air", "airplane") == (False, False)  # a list of names is not the name
-    assert cn.score("Sailboat", "boat") == (False, False)
+    assert cn.score("Sailboat", "boat") == (True, True) and cn.score("kittens", "cat") == (True, True)
+    assert cn.score("sailboat", "car") == (False, True)
+    assert cn.score("animal", "horse") == (False, False) and cn.score("coffee", "cup") == (False, False)
+    assert set(cn.EXTRA_NAMES.values()) <= set(cn.COCO_NAMES) and not set(cn.EXTRA_NAMES) & set(cn.COCO_NAMES)
+    assert "you may use one of: plane, aeroplane" in cn.QUESTION
     assert cn.score("Dining table", "dining table") == (True, True)
     assert cn.score("dog", "cat") == (False, True)  # wrong, but a COCO name
     assert cn.score("cats", "cat") == (True, True) and cn.score("Cars.", "car") == (True, True)  # plurals count
@@ -47,7 +51,7 @@ def test_scoring_is_exact_after_normalizing():
     assert cn.score("Pond bird", "bird") == (False, False)  # a phrase around the name does not
     assert cn.score("dogs", "cat") == (False, True)
     assert len(cn.COCO_NAMES) == 80 and len(set(cn.COCO_NAMES)) == 80
-    assert cn.QUESTION.count(", ") >= 79 and "person, bicycle, car" in cn.QUESTION and "toothbrush. Return only" in cn.QUESTION
+    assert cn.QUESTION.count(", ") >= 79 and "person, bicycle, car" in cn.QUESTION and "toothbrush. If a more specific" in cn.QUESTION
     assert set(matched.VOCAB) <= set(cn.COCO_NAMES)  # every label of the set is a COCO name, so the question can be answered
 
 

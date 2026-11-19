@@ -16,15 +16,17 @@ model's processor then resizes as it normally does (for Qwen, cap_pixels_per_fra
   frozen    the middle sampled frame repeated as often (the same tokens, no motion)
   still     that frame as a picture
 Prompt: the media, then QUESTION (below, verbatim): the COCO-category question with the 80 COCO category names listed in
-COCO's own order, so the answer is a choice among COCO's categories without a hint toward any of the 16 labels. The list was
-added on 19 Nov 2026, before any GPU run, after the CPU pilot's answers outside COCO ("sailboat", "coffee", "animal").
+COCO's own order, then a short list of more specific names (EXTRA_NAMES: kinds and spellings such as sailboat or kitten),
+each scored as the COCO category it belongs to. The lists were added on 19 Nov 2026, before any GPU run, after the CPU pilot
+(Qwen3.5-0.8B, still frames): without a list it answered outside COCO ("sailboat", "coffee", "animal"); with the 80 names
+alone it answered "person" for bicycles with riders and "potted plant" for some cats.
 Greedy decoding, N_NEW new tokens. One prompt per forward: the clips differ in length, and a batch of one keeps the result
 independent of how prompts would be grouped.
 
 Scoring (written before the run). An answer is normalized: lowercased, every character other than a letter replaced by a
-space, spaces collapsed and stripped. It is correct when it equals the clip's label or the label's plural (the label with
-"s" or "es" added), so "Airplane.", "cats" and "buses" are correct and "plane", "aeroplane", "sailboat" or "pond bird" are
-not. The plural forms were added on 19 Nov 2026, before any GPU run, after a CPU pilot (Qwen3.5-0.8B, still frames) answered
+space, spaces collapsed and stripped. It is correct when it equals the clip's label, one of the label's EXTRA_NAMES, or the
+plural of either (with "s" or "es" added), so "Airplane.", "cats", "buses", "sailboat" and "plane" are correct and "animal",
+"vehicle", "coffee" or "pond bird" are not. The plural forms were added on 19 Nov 2026, before any GPU run, after a CPU pilot (Qwen3.5-0.8B, still frames) answered
 "cats" and "cars" for single animals and cars. Also recorded: whether the answer, or its singular, is one of the 80 COCO
 category names.
 
@@ -72,9 +74,17 @@ COCO_NAMES = [
     "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair drier",
     "toothbrush",
 ]  # fmt: skip
+# more specific names offered beside the 80, each scored as its COCO category: kinds and spellings of the category, never a
+# generic word ("animal", "vehicle") or a different object ("coffee" for a cup)
+EXTRA_NAMES = {
+    "plane": "airplane", "aeroplane": "airplane", "jet": "airplane", "sailboat": "boat", "ship": "boat", "yacht": "boat",
+    "kitten": "cat", "puppy": "dog", "pony": "horse", "mug": "cup", "bike": "bicycle", "motorbike": "motorcycle",
+    "locomotive": "train",
+}  # fmt: skip
 QUESTION = (
     "What category best describes the main object shown? Identify the main object using its standard MS COCO category name, "
-    f"one of: {', '.join(COCO_NAMES)}. Return only the category name, nothing else."
+    f"one of: {', '.join(COCO_NAMES)}. If a more specific name fits better, you may use one of: {', '.join(EXTRA_NAMES)}. "
+    "Return only the category name, nothing else."
 )
 
 
@@ -93,8 +103,10 @@ def forms(a):
 
 
 def score(text, label):
-    """(correct, a COCO name): the answer is the label or its plural; the answer or its singular is one of the 80 COCO names"""
+    """(correct, a COCO name): the answer is the label, one of its EXTRA_NAMES, or a plural of either; the answer (or its
+    singular, or the category an extra name stands for) is one of the 80 COCO names"""
     f = forms(normalize(text))
+    f |= {EXTRA_NAMES[w] for w in f if w in EXTRA_NAMES}
     return label in f, bool(f & set(COCO_NAMES))
 
 
