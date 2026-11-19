@@ -1,16 +1,16 @@
 """Video sweep 2: video_sweep's patching and interventions, rerun on the matched clips each model names reliably, shown whole.
 
 Why. video_sweep (PR #5) found every verdict untestable: no model named the matched clips well enough, drawn into one slot of
-the six-slot canvas, to pass its 0.90 naming gate. clip_naming (PR #6, results in PR #7) and clip_naming2 then showed whole
-clips with a COCO-category question, and found per model the clips it names on all three inputs (its "reliable" clips) and the
-scenes whose receiver and donor are both reliable (its "gated schedule"): Qwen3.5-0.8B 31 scenes, Qwen3.5-4B 57 (clip_naming);
-Gemma-4-E2B 43, Gemma-4-E4B 57 (clip_naming2). This run asks video_sweep's questions on that schedule only. Changing the scenes,
-the display and the questions makes it a new experiment with its own run name; video_sweep's results stand as they are.
+the six-slot canvas, to pass its 0.90 naming gate. clip_naming, clip_naming2 and clip_naming3 (PR #6, results in PR #7) then
+showed whole clips with a COCO-category question; clip_naming3 found per model the clips it names as a moving clip, without
+crediting a hedge, and the scenes whose receiver and donor it names (its "gated schedule"): Qwen3.5-0.8B 42 scenes, Gemma-4-E2B
+50, Qwen3.5-4B 59, Gemma-4-E4B 57. This run asks video_sweep's questions on that schedule only. Changing the scenes, the display
+and the questions makes it a new experiment with its own run name; video_sweep's results stand as they are.
 
 What changes from video_sweep (everything else is video_sweep's, unchanged and imported from it):
-- Scenes: the model's gated schedule, read from runs/<--gate-run>/<model>/summary.json (clip_naming for the Qwen models,
-  clip_naming2 for the Gemma models, as the pod script passes it). A missing gate file stops the run. --n N takes the first N
-  gated scenes for a smoke check (counts only, no verdicts).
+- Scenes: the model's gated schedule, read from runs/<--gate-run>/<model>/summary.json (clip_naming3 for every model, as the
+  pod script passes it: its gated_scenes, the moving input's schedule). A missing gate file stops the run. --n N takes the
+  first N gated scenes for a smoke check (counts only, no verdicts).
 - Display: each sampled frame whole, no canvas: fitted inside FRAME (672 x 378, 16:9) on the canvas's grey and centred, so the
   donor and the receiver of a scene give the same number of media tokens (patching writes states position by position, and
   clips of different sizes would not line up). Frames come from the model's own sampler as in video_sweep (the scene's count is
@@ -19,9 +19,14 @@ What changes from video_sweep (everything else is video_sweep's, unchanged and i
 - Prompts: INTRO2 ("Study the scene."), the media, then one question about "the main object shown" instead of "the object in
   image slot q". say is clip_naming2's COCO question; animal, letter, set and ride are depth_sweep's rules reworded the same
   way (QUESTIONS2). The neutral prompt for the donor's and the receiver's own states is INTRO2 and the media.
-- Scoring: say (correct, follows the donor, follows Z) with clip_naming2's scoring (the label, its head noun in a phrase, its
-  plural, or a kind or spelling of it; lists and generic words are wrong); the other questions as video_sweep scores them (the
-  first character). The first-token log-probabilities use video_sweep's single-token names, as before.
+- Scoring: say (correct, follows the donor, follows Z) with clip_naming3's scoring: an answer that names one thing is scored
+  with clip_naming2's rule (the label, its head noun in a phrase, its plural, or a kind or spelling of it; generic words are
+  wrong); an answer that names two or more different things is a hedge, and that row is run once more, with the same
+  intervention, on the same conversation continued by clip_naming3's FOLLOWUP question; only that reply is scored, and a
+  second hedge is wrong. With N_NEW = 4 new tokens every say answer may be cut off, so a last fragment that begins an earlier
+  name is dropped (clip_naming3's cut rule). The first answer is kept (first_answer). The other questions are scored as
+  video_sweep scores them (the first character). The first-token log-probabilities are the question's, before any follow-up,
+  with video_sweep's single-token names, as before.
 - Calibration and verdicts: video_sweep's split by scene number (scenes below 16 calibrate the steering dose, the rest carry
   the verdicts), applied to the gated scenes; a smoke check is set by --n, not by having fewer than 64 scenes.
 
@@ -46,7 +51,8 @@ import torch
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import clip_naming2 as naming  # noqa: E402  the say question and its scoring
+import clip_naming2 as naming  # noqa: E402  the say question
+import clip_naming3 as naming3  # noqa: E402  the say scoring, with hedges asked again
 import video_sweep as vs  # noqa: E402  everything not listed in the docstring is video_sweep's
 from media_patch import kv_limit  # noqa: E402
 from media_steer import DOSES, N_NEW, phase_a, phase_b  # noqa: E402
@@ -102,10 +108,42 @@ def prompt(lm, inp, task, r):
 
 
 def judge(task, text, word, membership):
-    """does the answer give `word`'s answer to `task`: clip_naming2's scoring for say, video_sweep's for the rules and letter"""
+    """does the answer give `word`'s answer to `task`: clip_naming3's scoring for say (a hedge gives no one's answer; with
+    N_NEW = 4 any answer may be cut off), video_sweep's for the rules and letter"""
     if task == "say":
-        return naming.score(text, word)[0]
+        return naming3.score(text, word, cut=True)[0]
     return matched.matches(task, text, matched.truth(task, word, membership))
+
+
+def followup_prompt(lm, inp, first_answer):
+    """the say conversation continued: the model's own answer, then clip_naming3's follow-up question"""
+    part = {"video": {"type": "video"}, "picture": {"type": "image"}}[matched.MEDIUM[inp.split("@")[0]]]
+    return lm.chat_messages(
+        [
+            {"role": "user", "content": [{"type": "text", "text": INTRO2}, part, {"type": "text", "text": QUESTIONS2["say"]}]},
+            {"role": "assistant", "content": [{"type": "text", "text": first_answer}]},
+            {"role": "user", "content": [{"type": "text", "text": naming3.FOLLOWUP}]},
+        ]
+    )
+
+
+def ask_again(rows, res, encode_followup, run_rows, label):
+    """each say row whose answer hedged, run once more with its own intervention on the follow-up conversation; the reply
+    replaces the answer (the first answer is kept in the row as first_answer) and the question's log-probabilities stay.
+    encode_followup(row, first_answer) gives the follow-up prompt's encoding; run_rows(encs, rows, label) generates."""
+    idx = [i for i, (r, x) in enumerate(zip(rows, res)) if r["task"] == "say" and naming3.hedged(x[0], cut=True)]
+    if not idx:
+        return res
+    encs, again = {}, []
+    for k, i in enumerate(idx):
+        r = dict(rows[i], task=f"say~{k}")  # its own prompt: the follow-up holds this row's answer
+        encs[(r["input"], r["task"], r["scene"])] = encode_followup(rows[i], res[i][0])
+        again.append(r)
+    out = list(res)
+    for i, x in zip(idx, run_rows(encs, again, f"{label}: {len(idx)} hedged answers asked again")):
+        rows[i]["first_answer"] = res[i][0]
+        out[i] = (x[0], res[i][1], res[i][2])
+    return out
 
 
 def to_frame(rows, res):
@@ -116,6 +154,7 @@ def to_frame(rows, res):
         rec.update(
             layers=f"{r['layers'][0]}..{r['layers'][-1]}" if r["layers"] else "",
             donor="" if r["donor"] is None else f"{r['donor'][0]}",
+            first_answer=r.get("first_answer", ""),
             generation=text,
             correct=judge(r["task"], text, r["X"], mem),
             follows_Y=judge(r["task"], text, r["Y"], mem),
@@ -143,7 +182,7 @@ def summaries(R, S, inputs, parts, n_layers, AL, family, kv, BL, starts, dose_of
 
 def main():
     ap = parser(__doc__, "video_sweep2")
-    ap.add_argument("--gate-run", required=True, help="the naming run whose gated schedule this model runs on (clip_naming or clip_naming2)")
+    ap.add_argument("--gate-run", required=True, help="the naming run whose gated schedule this model runs on (clip_naming3)")
     ap.add_argument("--n", type=int, default=0, help="the first N gated scenes, for a smoke check (counts only); 0 for all")
     ap.add_argument("--inputs", default=",".join(matched.INPUTS))
     ap.add_argument("--parts", default="patch,steer", help="patch, steer, or both")
@@ -267,6 +306,13 @@ def main():
             used += g
         return out + ([cur] if cur else [])
 
+    def encode_followup(r, first):
+        frames, md = media[("receiver", r["scene"])]
+        return vs.encode(lm, r["input"], followup_prompt(lm, r["input"], first), matched.input_of(frames, r["input"]), md)
+
+    def run_rows(encs, rows, label):  # the follow-ups run in an engine of their own: each has its own prompt
+        return engine(encs).generate(rows, N_NEW, label)
+
     R_parts, setup = [], dict(layout={}, cache={}, chunks={})
     BL = None
     for inp in inputs:
@@ -338,7 +384,8 @@ def main():
                 for x in ra:  # media_steer's rows, with the matched set's truth (the 16 classes)
                     x["ids_x"], x["ids_y"] = ID[matched.truth(x["task"], x["X"], [])], ID[matched.truth(x["task"], x["Y"], [])]
                 rows += ra
-            res = eng.generate(rows, N_NEW, f"{inp}: scenes {g[0]['scene']}..{g[-1]['scene']}")
+            label = f"{inp}: scenes {g[0]['scene']}..{g[-1]['scene']}"
+            res = ask_again(rows, eng.generate(rows, N_NEW, label), encode_followup, run_rows, label)  # before the donor states go
             R_parts.append(to_frame(rows, res))
             del T.donor[inp]
             torch.cuda.empty_cache()
@@ -364,7 +411,8 @@ def main():
                 rb = [dict(x, donor=None) for x in phase_b([inp], g, ID, starts, n_layers, dose_of)]
                 for x in rb:
                     x["ids_x"], x["ids_y"] = ID[matched.truth(x["task"], x["X"], [])], ID[matched.truth(x["task"], x["Y"], [])]
-                R = pd.concat([R, to_frame(rb, eng.generate(rb, N_NEW, f"{inp} sweeps"))], ignore_index=True)
+                res = ask_again(rb, eng.generate(rb, N_NEW, f"{inp} sweeps"), encode_followup, run_rows, f"{inp} sweeps")
+                R = pd.concat([R, to_frame(rb, res)], ignore_index=True)
     AL = sorted(batched.attention_layers(lm))
     out.update(summaries(R, S, inputs, parts, n_layers, AL, family, kv, BL, starts if "steer" in parts else None, dose_of if "steer" in parts else None, smoke))
     run.save_csv(R, "video_sweep2.csv")
