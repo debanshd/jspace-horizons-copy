@@ -15,8 +15,11 @@ model's processor then resizes as it normally does (for Qwen, cap_pixels_per_fra
             because Gemma's sampler refuses to take more frames than a clip has (matched.scene_frame_count)
   frozen    the middle sampled frame repeated as often (the same tokens, no motion)
   still     that frame as a picture
-Prompt: the media, then QUESTION (below, verbatim). Greedy decoding, N_NEW new tokens. One prompt per forward: the clips differ
-in length, and a batch of one keeps the result independent of how prompts would be grouped.
+Prompt: the media, then QUESTION (below, verbatim): the COCO-category question with the 80 COCO category names listed in
+COCO's own order, so the answer is a choice among COCO's categories without a hint toward any of the 16 labels. The list was
+added on 19 Nov 2026, before any GPU run, after the CPU pilot's answers outside COCO ("sailboat", "coffee", "animal").
+Greedy decoding, N_NEW new tokens. One prompt per forward: the clips differ in length, and a batch of one keeps the result
+independent of how prompts would be grouped.
 
 Scoring (written before the run). An answer is normalized: lowercased, every character other than a letter replaced by a
 space, spaces collapsed and stripped. It is correct when it equals the clip's label or the label's plural (the label with
@@ -57,7 +60,6 @@ from jspace.config import require_data  # noqa: E402
 from jspace.model import Session  # noqa: E402
 from jspace.runs import Run, parser  # noqa: E402
 
-QUESTION = "What category best describes the main object shown? Identify the main object using its standard MS COCO category name. Return only the category name, nothing else."
 N_NEW = 24  # room for a two-word COCO name and anything the model adds; the scoring still wants the bare name
 GATE = 0.90
 COCO_NAMES = [
@@ -70,6 +72,10 @@ COCO_NAMES = [
     "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair drier",
     "toothbrush",
 ]  # fmt: skip
+QUESTION = (
+    "What category best describes the main object shown? Identify the main object using its standard MS COCO category name, "
+    f"one of: {', '.join(COCO_NAMES)}. Return only the category name, nothing else."
+)
 
 
 def normalize(text):

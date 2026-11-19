@@ -47,6 +47,7 @@ def test_scoring_is_exact_after_normalizing():
     assert cn.score("Pond bird", "bird") == (False, False)  # a phrase around the name does not
     assert cn.score("dogs", "cat") == (False, True)
     assert len(cn.COCO_NAMES) == 80 and len(set(cn.COCO_NAMES)) == 80
+    assert cn.QUESTION.count(", ") >= 79 and "person, bicycle, car" in cn.QUESTION and "toothbrush. Return only" in cn.QUESTION
     assert set(matched.VOCAB) <= set(cn.COCO_NAMES)  # every label of the set is a COCO name, so the question can be answered
 
 
