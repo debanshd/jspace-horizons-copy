@@ -16,9 +16,11 @@ still: the model's own processor sampler over the full clip, its normal resizing
 model), greedy decoding with 24 new tokens, one prompt per forward, the next clip prepared on a worker thread.
 
 Scoring (written before the run). The answer's first name is scored with clip_naming2's scoring: the first line, cut at the
-first list mark (a comma, semicolon, slash or bar, or the word "or" or "and"); then clip_naming2's rule on what is left (the
-label, its head noun in a phrase, its plural, or a kind or spelling of it). So "Horse, cow, horse" counts as horse, and
-"animal", "food" or "dog" for a horse stay wrong.
+first list mark (a comma, semicolon, slash or bar, or the word "or" or "and" standing on its own, not inside a hyphenated
+word such as "black-and-white"); then clip_naming2's rule on what is left (the label, its head noun in a phrase, its plural,
+or a kind or spelling of it), with a hyphenated word holding "and" or "or" read as one word, so clip_naming2's list check does
+not take it for a list. So "Horse, cow, horse" counts as horse, "Black-and-white cat" as cat, and "animal", "food" or "dog"
+for a horse stay wrong.
 
 The rule (written before the run):
 - Per input, the share of clips named correctly with a 95% bootstrap interval over clips; the gate passes at >= 0.90.
@@ -57,7 +59,10 @@ from jspace.runs import Run, parser  # noqa: E402
 QUESTION = n2.QUESTION
 N_NEW = n2.N_NEW
 GATED_INPUT = "moving"
-LIST_SPLIT = re.compile(r"[,;/|]|\bor\b|\band\b", re.IGNORECASE)
+# "or" and "and" mark a list only as words of their own: a hyphen on either side makes them part of a word ("black-and-white")
+LIST_SPLIT = re.compile(r"[,;/|]|(?<![\w-])(?:or|and)(?![\w-])", re.IGNORECASE)
+# a hyphenated word; one with "and" or "or" among its parts is joined, since clip_naming2 would read those parts as a list
+HYPHENATED = re.compile(r"\w+(?:-\w+)+")
 
 
 def first_name(text):
@@ -67,8 +72,14 @@ def first_name(text):
 
 
 def score(text, label):
-    """(correct, a COCO name) for the answer's first name, by clip_naming2's scoring"""
-    return n2.score(first_name(text), label)
+    """(correct, a COCO name) for the answer's first name, by clip_naming2's scoring; the list is already cut off, so a
+    hyphenated "and" or "or" left in the name is joined into its word ("black-and-white cat" -> "blackandwhite cat")"""
+
+    def join(m):
+        w = m.group(0)
+        return w.replace("-", "") if {p.lower() for p in w.split("-")} & {"and", "or"} else w
+
+    return n2.score(HYPHENATED.sub(join, first_name(text)), label)
 
 
 def summarize(R, schedule):

@@ -38,6 +38,12 @@ def test_the_first_name_of_a_list_is_scored():
     assert cn.score("race car", "car")[0] and cn.score("Sailboat.", "boat")[0]  # clip_naming2's scoring on that name
     assert not cn.score("animal, horse", "horse")[0] and not cn.score("dog", "horse")[0]
     assert cn.first_name("Orange") == "Orange" and cn.first_name("Landrover") == "Landrover"  # no cut inside a word
+    # "and" or "or" inside a hyphenated word is not a list mark, and the word is scored as one word
+    assert cn.first_name("Black-and-white cat") == "Black-and-white cat" and cn.score("Black-and-white cat", "cat") == (True, True)
+    assert cn.score("black-and-white cat, dog", "cat")[0] and not cn.score("dog, black-and-white cat", "cat")[0]
+    assert cn.first_name("either-or cup") == "either-or cup" and cn.score("either-or cup", "cup")[0]
+    assert cn.score("cat and dog", "cat")[0] and not cn.score("cat and dog", "dog")[0]  # a word of its own still cuts
+    assert cn.score("off-road vehicle", "car") == (False, False) and cn.score("teddy-bear", "teddy bear")[0]  # other hyphens as before
     assert cn.first_name("") == ""
 
 
