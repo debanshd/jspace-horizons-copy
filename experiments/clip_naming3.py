@@ -19,8 +19,9 @@ model), greedy decoding with 24 new tokens, one prompt per forward, the next cli
 
 Scoring (written before the run).
 - The answer's names: its text split at line breaks and list marks (a comma, semicolon, slash or bar, or the word "or" or
-  "and"), each normalized as in clip_naming; a last fragment that begins an earlier listed name is that name cut off at the
-  token limit ("hor" in "horse, cow, hor") and is dropped.
+  "and" standing on its own, not inside a hyphenated word such as "black-and-white", which is read as one word), each
+  normalized as in clip_naming; a last fragment that begins an earlier listed name is that name cut off at the token limit
+  ("hor" in "horse, cow, hor") and is dropped.
 - One name, or the same name repeated: that name is scored with clip_naming2's scoring (the label, its head noun in a phrase,
   its plural, or a kind or spelling of it).
 - Two or more different names: a hedge. The model is asked FOLLOWUP (below, verbatim) in the same conversation, after its own
@@ -67,14 +68,24 @@ QUESTION = n2.QUESTION
 FOLLOWUP = "You named more than one category. Which single category best describes the main object shown? Return only that one category name, nothing else."
 N_NEW = n2.N_NEW
 GATED_INPUT = "moving"
-LIST_SPLIT = re.compile(r"[\n,;/|]|\bor\b|\band\b", re.IGNORECASE)
+# "or" and "and" mark a list only as words of their own: a hyphen on either side makes them part of a word ("black-and-white")
+LIST_SPLIT = re.compile(r"[\n,;/|]|(?<![\w-])(?:or|and)(?![\w-])", re.IGNORECASE)
+# a hyphenated word; one with "and" or "or" among its parts is joined, since clip_naming2 would read those parts as a list
+HYPHENATED = re.compile(r"\w+(?:-\w+)+")
+
+
+def _join(m):
+    w = m.group(0)
+    return w.replace("-", "") if {p.lower() for p in w.split("-")} & {"and", "or"} else w
+
+
 # moving-input scene pairs kept when PR #7's answers are re-scored with every hedge counted wrong (written before the run)
 FLOOR = {"Qwen3.5-0.8B": 52, "Qwen3.5-4B": 59, "gemma-4-E2B-it": 50, "gemma-4-E4B-it": 57}  # of 64; before: 31, 57, 43, 57
 
 
 def names(text):
     """the distinct names an answer gives, in order, without fragments cut off at the token limit"""
-    parts = [base.normalize(p) for p in LIST_SPLIT.split(text)]
+    parts = [base.normalize(HYPHENATED.sub(_join, p)) for p in LIST_SPLIT.split(text)]
     parts = [p for p in parts if p]
     if len(parts) > 1 and any(q != parts[-1] and q.startswith(parts[-1]) for q in parts[:-1]):
         parts = parts[:-1]  # only the last name can be cut off by the token limit
