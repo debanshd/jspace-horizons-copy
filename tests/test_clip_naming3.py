@@ -35,7 +35,9 @@ def test_one_name_is_scored_and_a_hedge_is_not():
     assert cn.score("race car", "car")[0] and cn.score("Sailboat.", "boat")[0]  # clip_naming2's scoring on a single name
     assert cn.score("Horse, horse", "horse")[0] and not cn.hedged("Horse, horse")  # the same name repeated is one name
     assert cn.hedged("cat or dog") and cn.score("cat or dog", "cat") == (False, False)  # a hedge earns nothing
-    assert cn.hedged("Horse, cow, horse, hor") and cn.names("Horse, cow, horse, hor") == ["horse", "cow"]  # "hor" is cut off
+    assert cn.hedged("Horse, cow, horse, hor", cut=True) and cn.names("Horse, cow, horse, hor", cut=True) == ["horse", "cow"]  # "hor" is cut off
+    assert cn.score("Horse, horse, horse, hor", "horse", cut=True)[0] and cn.hedged("Horse, horse, horse, hor")  # a fragment only at the limit
+    assert cn.names("carriage, car") == ["carriage", "car"] and cn.hedged("carriage, car")  # an answer that ended keeps its last name
     assert cn.hedged("laptop;computer;screen") and cn.hedged("Horse\nCow")
     assert cn.names("car, carrot") == ["car", "carrot"]  # only the last name can be a cut-off fragment
     assert not cn.hedged("Orange") and not cn.hedged("Landrover") and not cn.hedged("motorboat")  # no split inside a word

@@ -19,8 +19,9 @@ model), greedy decoding with 24 new tokens, one prompt per forward, the next cli
 
 Scoring (written before the run).
 - The answer's names: its text split at line breaks and list marks (a comma, semicolon, slash or bar, or the word "or" or
-  "and"), each normalized as in clip_naming; a last fragment that begins an earlier listed name is that name cut off at the
-  token limit ("hor" in "horse, cow, hor") and is dropped. A phrase that splits at "and" ("black-and-white cat") is therefore
+  "and"), each normalized as in clip_naming; when the answer was cut off at the token limit, a last fragment that begins an
+  earlier listed name is that name cut off ("hor" in "horse, cow, hor") and is dropped (an answer that ended on its own keeps
+  its last name: "carriage, car" is two names). A phrase that splits at "and" ("black-and-white cat") is therefore
   a hedge and is asked again, which costs a question and credits nothing.
 - One name, or the same name repeated: that name is scored with clip_naming2's scoring (the label, its head noun in a phrase,
   its plural, or a kind or spelling of it).
@@ -73,22 +74,23 @@ LIST_SPLIT = re.compile(r"[\n,;/|]|\bor\b|\band\b", re.IGNORECASE)
 FLOOR = {"Qwen3.5-0.8B": 52, "Qwen3.5-4B": 59, "gemma-4-E2B-it": 50, "gemma-4-E4B-it": 57}  # of 64; before: 31, 57, 43, 57
 
 
-def names(text):
-    """the distinct names an answer gives, in order, without fragments cut off at the token limit"""
+def names(text, cut=False):
+    """the distinct names an answer gives, in order; when the answer was cut off at the token limit (cut), without the
+    fragment that limit left of its last name"""
     parts = [base.normalize(p) for p in LIST_SPLIT.split(text)]
     parts = [p for p in parts if p]
-    if len(parts) > 1 and any(q != parts[-1] and q.startswith(parts[-1]) for q in parts[:-1]):
+    if cut and len(parts) > 1 and any(q != parts[-1] and q.startswith(parts[-1]) for q in parts[:-1]):
         parts = parts[:-1]  # only the last name can be cut off by the token limit
     return list(dict.fromkeys(parts))
 
 
-def hedged(text):
-    return len(names(text)) > 1
+def hedged(text, cut=False):
+    return len(names(text, cut)) > 1
 
 
-def score(text, label):
+def score(text, label, cut=False):
     """(correct, a COCO name) for an answer that names one thing, by clip_naming2's scoring; a hedge is (False, False)"""
-    ns = names(text)
+    ns = names(text, cut)
     return n2.score(ns[0], label) if len(ns) == 1 else (False, False)
 
 
@@ -144,11 +146,17 @@ def main():
         encs = {inp: encode(lm, inp, prompt(lm, inp), objs[inp], md) for inp in matched.INPUTS}
         return dict(n=n, idx=idx, total=total, frames=frames, encs=encs, objs=objs, md=md)
 
+    eos = lm.hf.generation_config.eos_token_id
+    eos = set(eos if isinstance(eos, (list, tuple)) else [eos])
+
     def answer(enc):
+        """(the reply, the prompt's length in tokens, whether the reply was cut off at N_NEW tokens rather than ended)"""
         kw = {k2: (v.to(lm.device) if torch.is_tensor(v) else v) for k2, v in enc.items() if k2 != "token_type_ids"}
         with torch.no_grad():
             g = lm.hf.generate(**kw, max_new_tokens=N_NEW, do_sample=False, pad_token_id=lm.tokenizer.pad_token_id)
-        return lm.tokenizer.decode(g[0, kw["input_ids"].shape[1] :], skip_special_tokens=True).strip(), int(kw["input_ids"].shape[1])
+        new = g[0, kw["input_ids"].shape[1] :]
+        cut = len(new) >= N_NEW and int(new[-1]) not in eos
+        return lm.tokenizer.decode(new, skip_special_tokens=True).strip(), int(kw["input_ids"].shape[1]), bool(cut)
 
     mon = batched.GpuMonitor(run.path("gpu.csv"))
     rows, clips, sheet = [], {}, []
@@ -162,12 +170,12 @@ def main():
             n, frames = c["n"], c["frames"]
             clips[cid] = dict(label=A[cid]["label"], frames=n, indices=c["idx"], total=c["total"])
             for inp in matched.INPUTS:
-                text, ntok = answer(c["encs"][inp])
-                hedge, reply = hedged(text), ""
+                text, ntok, cut = answer(c["encs"][inp])
+                hedge, reply, reply_cut = hedged(text, cut), "", False
                 if hedge:  # one more question in the same conversation; only the single name it gives can count
-                    reply, _ = answer(encode(lm, inp, prompt(lm, inp, text), c["objs"][inp], c["md"]))
-                scored = reply if hedge else text
-                correct, coco = score(scored, A[cid]["label"])
+                    reply, _, reply_cut = answer(encode(lm, inp, prompt(lm, inp, text), c["objs"][inp], c["md"]))
+                scored, scored_cut = (reply, reply_cut) if hedge else (text, cut)
+                correct, coco = score(scored, A[cid]["label"], scored_cut)
                 rows.append(
                     dict(
                         clip=cid,
@@ -176,9 +184,11 @@ def main():
                         frames=n,
                         tokens=ntok,
                         answer=text,
+                        cut=cut,
                         hedged=hedge,
                         followup=reply,
-                        scored=" | ".join(names(scored)),
+                        followup_cut=reply_cut,
+                        scored=" | ".join(names(scored, scored_cut)),
                         normalized=base.normalize(text),
                         correct=correct,
                         coco=coco,
