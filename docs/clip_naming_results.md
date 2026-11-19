@@ -37,3 +37,15 @@ The scoring is PR #6's and is not changed here; E4B's specific kinds stay wrong 
 
 **Qwen3.5-0.8B's still input** names 64 of 73 clips on the GPU, against 66 in PR #6's CPU pilot (plain `transformers` on a
 CPU, a different numeric path); the pilot was exploratory and is not part of the rule.
+
+## The prefetch change (`8e104ce`), checked
+
+On the run above the GPU waited between clips while one CPU core decoded and encoded the next clip. `8e104ce` prepares the
+next clip on a worker thread while the GPU answers the current one; each forward pass is unchanged. Qwen3.5-0.8B rerun with it
+(`runs/clip_naming_prefetch`, in `docs/clip_naming_prefetch_check.tar.gz`, sha256
+`e9f2f9305dc84a6d19bd69f52086664293d3db046c4230b5bbfc383eddce645b`):
+
+- `compare_media.py runs/clip_naming runs/clip_naming_prefetch --file clip_naming.csv`: identical (219 rows).
+- 130 s instead of 217 s.
+- GPU utilization: mean 33%, median 23% (nvidia-smi every 2 s). A 0.8B model answering one prompt at a time cannot fill an
+  L40S even with no wait on the CPU; the gain should be larger on the 27B and 31B models, where each forward is longer.
