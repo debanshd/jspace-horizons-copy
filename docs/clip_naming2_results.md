@@ -22,8 +22,9 @@ scoring alone, is 67 here: that gain is the question's.
 
 ## The misses (read from `clip_naming2.csv`)
 
-- **Gemma-4-E2B** (20): generic words remain despite the question ("food" ×3 and "dish" for pizza, "vehicle" ×2, "mammal" ×2,
-  "railway", "coffee", "Garden ornament"), and "dog" (or "Canine", "Canis lupus familiaris") for a horse clip on 6 answers.
+- **Gemma-4-E2B** (20): generic words remain despite the question ("food" ×2 and "dish" for pizza, "food" and "coffee" for a
+  cup, "vehicle" ×2, "mammal" ×2, "railway", "Garden ornament"); "dog" (or "Canine", "Canis lupus familiaris") for a horse
+  on 6 answers and for a cat on 2; "truck" for a bus.
 - **Gemma-4-E4B** (11): "sheep" for a horse ×3, "subway car" for a train ×3, "off-road vehicle", "SUV" and "truck" for a
   car, "raccoon" and "bear" for a cat.
 
