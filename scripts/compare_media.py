@@ -3,8 +3,8 @@
 
     uv run scripts/compare_media.py runs/smoke_media_steer runs/smoke_media_steer_repeat
 
-For every model folder in the first run: media_steer.csv row by row with check.py's rule (the same rows in the same order,
-identical answers, numbers within --tol). Exit status 1 when anything differs or a folder is missing.
+For every model folder in the first run (or only --model's): media_steer.csv row by row with check.py's rule (the same rows in
+the same order, identical answers, numbers within --tol). Exit status 1 when anything differs or a folder is missing.
 """
 
 import argparse
@@ -21,10 +21,14 @@ def main():
     ap.add_argument("b", type=Path)
     ap.add_argument("--tol", type=float, default=1e-3, help="tolerance for numeric columns")
     ap.add_argument("--file", default="media_steer.csv", help="the CSV each model folder holds (video_sweep.csv for video_sweep)")
+    # one model only: pods sharing a volume run their models at once, and another model's repeat may not have finished yet
+    ap.add_argument("--model", help="compare this model folder only (e.g. Qwen3.5-4B); default every model folder of the first run")
     args = ap.parse_args()
     folders = sorted(p.parent.name for p in args.a.glob(f"*/{args.file}"))
+    if args.model:
+        folders = [m for m in folders if m == args.model]
     if not folders:
-        raise SystemExit(f"no {args.file} under {args.a}")
+        raise SystemExit(f"no {args.file} under {args.a}" + (f" for {args.model}" if args.model else ""))
     bad = 0
     for m in folders:
         other = args.b / m / args.file

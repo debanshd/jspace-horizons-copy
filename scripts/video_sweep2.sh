@@ -75,6 +75,7 @@ for m in "${M[@]}"; do
     for r in "${RUN}_smoke" "${RUN}_smoke_repeat"; do
         [ -f "runs/$r/${m#*/}/video_sweep2.csv" ] || uv run --frozen $AV experiments/video_sweep2.py --model "$m" --run "$r" --gate-run "$g" --n 5 --donor-gb "$DONOR_GB" || keep_going "the $r run of $m failed"
     done
-    uv run --frozen scripts/compare_media.py --file video_sweep2.csv "runs/${RUN}_smoke" "runs/${RUN}_smoke_repeat" || keep_going "the two smoke runs of $m differ (listed above)"
+    # this model's pair only: on a shared volume another pod's model may still be mid-repeat
+    uv run --frozen scripts/compare_media.py --file video_sweep2.csv --model "${m#*/}" "runs/${RUN}_smoke" "runs/${RUN}_smoke_repeat" || keep_going "the two smoke runs of $m differ (listed above)"
     [ -f "runs/$RUN/${m#*/}/video_sweep2.csv" ] || uv run --frozen $AV experiments/video_sweep2.py --model "$m" --run "$RUN" --gate-run "$g" --donor-gb "$DONOR_GB" || keep_going "the $RUN run of $m failed"
 done
