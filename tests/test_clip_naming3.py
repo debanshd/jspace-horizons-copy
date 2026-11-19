@@ -41,11 +41,9 @@ def test_one_name_is_scored_and_a_hedge_is_not():
     assert not cn.hedged("Orange") and not cn.hedged("Landrover") and not cn.hedged("motorboat")  # no split inside a word
     assert not cn.score("animal", "horse")[0] and not cn.score("dog", "horse")[0]
     assert cn.names("") == [] and cn.score("", "cat") == (False, False)
-    # "and" or "or" inside a hyphenated word is not a list mark, and the word is read as one word (from 3953329)
-    assert not cn.hedged("Black-and-white cat") and cn.score("Black-and-white cat", "cat") == (True, True)
-    assert not cn.hedged("either-or cup") and cn.score("either-or cup", "cup")[0]
-    assert cn.hedged("black-and-white cat, dog") and cn.hedged("cat and dog")  # a word of its own still marks a list
-    assert cn.score("off-road vehicle", "car") == (False, False) and cn.score("teddy-bear", "teddy bear")[0]
+    # a phrase that splits at "and" is a hedge too: it is asked again, and the first answer earns nothing
+    assert cn.hedged("Black-and-white cat") and cn.score("Black-and-white cat", "cat") == (False, False)
+    assert cn.hedged("cat and dog") and cn.score("teddy-bear", "teddy bear")[0]
 
 
 def test_the_follow_up_continues_the_same_conversation():
