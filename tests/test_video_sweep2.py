@@ -126,3 +126,15 @@ def test_followup_prompt_continues_the_say_conversation():
     assert [x["role"] for x in m] == ["user", "assistant", "user"] and [p["type"] for p in m[0]["content"]] == ["text", "video", "text"]
     assert m[0]["content"][2]["text"] == vs2.QUESTIONS2["say"] and m[1]["content"][0]["text"] == "cat or dog"
     assert m[2]["content"][0]["text"] == vs2.naming3.FOLLOWUP
+
+
+def test_qwen_0_8b_is_asked_the_original_say_question():
+    vs2 = load()
+    small, other = types.SimpleNamespace(name="Qwen/Qwen3.5-0.8B"), types.SimpleNamespace(name="Qwen/Qwen3.5-4B")
+    assert vs2.question(small, "say") == vs2.naming1.QUESTION and "general word" not in vs2.question(small, "say")
+    assert vs2.question(other, "say") == vs2.naming.QUESTION and vs2.question(small, "animal") == vs2.QUESTIONS2["animal"]
+    seen = []
+    small.chat_messages = lambda msgs: seen.append(msgs) or ""
+    vs2.prompt(small, "moving", "say", dict(set=["a", "b", "c"]))
+    vs2.followup_prompt(small, "moving", "cat or dog")
+    assert seen[0][0]["content"][2]["text"] == vs2.naming1.QUESTION and seen[1][0]["content"][2]["text"] == vs2.naming1.QUESTION

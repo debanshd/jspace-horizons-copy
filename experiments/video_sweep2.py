@@ -3,22 +3,25 @@
 Why. video_sweep (PR #5) found every verdict untestable: no model named the matched clips well enough, drawn into one slot of
 the six-slot canvas, to pass its 0.90 naming gate. clip_naming, clip_naming2 and clip_naming3 (PR #6, results in PR #7) then
 showed whole clips with a COCO-category question; clip_naming3 found per model the clips it names as a moving clip, without
-crediting a hedge, and the scenes whose receiver and donor it names (its "gated schedule"): Qwen3.5-0.8B 42 scenes, Gemma-4-E2B
-50, Qwen3.5-4B 59, Gemma-4-E4B 57. This run asks video_sweep's questions on that schedule only. Changing the scenes, the display
+crediting a hedge, and the scenes whose receiver and donor it names (its "gated schedule"): Gemma-4-E2B 50 scenes, Qwen3.5-4B
+59, Gemma-4-E4B 57. Qwen3.5-0.8B's gate is clip_naming4 (the same rule with clip_naming's original question; its earlier
+answers to that question keep at least 52 scenes). This run asks video_sweep's questions on that schedule only. Changing the scenes, the display
 and the questions makes it a new experiment with its own run name; video_sweep's results stand as they are.
 
 What changes from video_sweep (everything else is video_sweep's, unchanged and imported from it):
-- Scenes: the model's gated schedule, read from runs/<--gate-run>/<model>/summary.json (clip_naming3 for every model, as the
-  pod script passes it: its gated_scenes, the moving input's schedule). A missing gate file stops the run. --n N takes the
-  first N gated scenes for a smoke check (counts only, no verdicts).
+- Scenes: the model's gated schedule, read from runs/<--gate-run>/<model>/summary.json (as the pod script passes it:
+  clip_naming4 for Qwen3.5-0.8B, clip_naming3 for the others; its gated_scenes, the moving input's schedule). A missing gate
+  file stops the run. --n N takes the first N gated scenes for a smoke check (counts only, no verdicts).
 - Display: each sampled frame whole, no canvas: fitted inside FRAME (672 x 378, 16:9) on the canvas's grey and centred, so the
   donor and the receiver of a scene give the same number of media tokens (patching writes states position by position, and
   clips of different sizes would not line up). Frames come from the model's own sampler as in video_sweep (the scene's count is
   the receiver's native count, capped at both clips' lengths). The gate measured naming at each clip's own size; the clean
   gate below measures it again at FRAME.
 - Prompts: INTRO2 ("Study the scene."), the media, then one question about "the main object shown" instead of "the object in
-  image slot q". say is clip_naming2's COCO question; animal, letter, set and ride are depth_sweep's rules reworded the same
-  way (QUESTIONS2). The neutral prompt for the donor's and the receiver's own states is INTRO2 and the media.
+  image slot q". say is the COCO question the model's naming gate asked: clip_naming2's, except clip_naming's original one for
+  Qwen3.5-0.8B (SAY_BY_MODEL; under clip_naming2's it answered "animal", "food" or "vehicle" far more often); animal, letter,
+  set and ride are depth_sweep's rules reworded the same way (QUESTIONS2). The neutral prompt for the donor's and the
+  receiver's own states is INTRO2 and the media.
 - Scoring: say (correct, follows the donor, follows Z) with clip_naming3's scoring: an answer that names one thing is scored
   with clip_naming2's rule (the label, its head noun in a phrase, its plural, or a kind or spelling of it; generic words are
   wrong); an answer that names two or more different things is a hedge, and that row is run once more, with the same
@@ -51,6 +54,7 @@ import torch
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+import clip_naming as naming1  # noqa: E402  the original say question, for Qwen3.5-0.8B
 import clip_naming2 as naming  # noqa: E402  the say question
 import clip_naming3 as naming3  # noqa: E402  the say scoring, with hedges asked again
 import video_sweep as vs  # noqa: E402  everything not listed in the docstring is video_sweep's
@@ -74,6 +78,8 @@ QUESTIONS2 = {
     "ride": "Rule: if the main object shown is something people ride or drive, answer 7; otherwise answer 3. Reply with the number only.",
 }
 assert list(QUESTIONS2) == list(vs.QUESTIONS)  # the same questions in the same order, so video_sweep's rows and summary apply
+# the say question a model is asked when it is not clip_naming2's: the one its naming gate asked (clip_naming4 for Qwen3.5-0.8B)
+SAY_BY_MODEL = {"Qwen/Qwen3.5-0.8B": naming1.QUESTION}
 SETS = {}  # scene -> the set question's three names (filled in main; to_frame reads it)
 
 
@@ -99,11 +105,16 @@ def gated_scenes(gate_summary, n=0):
     return sc[:n] if n else sc
 
 
+def question(lm, task):
+    """the question text for this model: QUESTIONS2's, except the say question of a model listed in SAY_BY_MODEL"""
+    return SAY_BY_MODEL.get(getattr(lm, "name", ""), QUESTIONS2["say"]) if task == "say" else QUESTIONS2[task]
+
+
 def prompt(lm, inp, task, r):
     part = {"video": {"type": "video"}, "picture": {"type": "image"}}[matched.MEDIUM[inp.split("@")[0]]]
     content = [{"type": "text", "text": INTRO2}, part]
     if task != "neutral":
-        content.append({"type": "text", "text": QUESTIONS2[task].format(a=r["set"][0], b=r["set"][1], c=r["set"][2])})
+        content.append({"type": "text", "text": question(lm, task).format(a=r["set"][0], b=r["set"][1], c=r["set"][2])})
     return lm.chat_messages([{"role": "user", "content": content}])
 
 
@@ -120,7 +131,7 @@ def followup_prompt(lm, inp, first_answer):
     part = {"video": {"type": "video"}, "picture": {"type": "image"}}[matched.MEDIUM[inp.split("@")[0]]]
     return lm.chat_messages(
         [
-            {"role": "user", "content": [{"type": "text", "text": INTRO2}, part, {"type": "text", "text": QUESTIONS2["say"]}]},
+            {"role": "user", "content": [{"type": "text", "text": INTRO2}, part, {"type": "text", "text": question(lm, "say")}]},
             {"role": "assistant", "content": [{"type": "text", "text": first_answer}]},
             {"role": "user", "content": [{"type": "text", "text": naming3.FOLLOWUP}]},
         ]

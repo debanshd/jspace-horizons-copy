@@ -5,9 +5,10 @@
 #   scripts/video_sweep2.sh                                  the two small and the two medium models (a 48 GB card is enough)
 #   MODELS="Qwen/Qwen3.5-27B google/gemma-4-31B-it" scripts/video_sweep2.sh    the large ones, once their naming gate has run
 #
-# The gate: every model reads runs/clip_naming3/<model>/summary.json (PR #7), whose gated_scenes is the moving input's schedule.
-# On a fresh pod those summaries come from the committed archive docs/clip_naming3_runs.tar.gz; a model with no gate file
-# stops the chain (the large models need scripts/clip_naming3.sh first).
+# The gate: Qwen3.5-0.8B reads runs/clip_naming4/<model>/summary.json and every other model runs/clip_naming3/<model>/summary.json,
+# whose gated_scenes is the moving input's schedule. On a fresh pod those summaries come from the committed archives
+# docs/clip_naming3_runs.tar.gz and docs/clip_naming4_runs.tar.gz; a model with no gate file stops the chain (run
+# scripts/clip_naming4.sh for Qwen3.5-0.8B, or scripts/clip_naming3.sh for the large models, first).
 # Per model: the 5-scene smoke check twice, compared answer by answer (the chain stops if they differ, unless KEEP_GOING=1),
 # then the full gated schedule. DONOR_GB as in video_sweep.sh: it must stay the same for a model's smoke run and its repeat.
 set -euo pipefail
@@ -20,8 +21,8 @@ KEEP_GOING=${KEEP_GOING:-0}
 keep_going() {
     if [ "$KEEP_GOING" = 1 ]; then echo "video_sweep2: $1; going on (KEEP_GOING=1)" >&2; else echo "video_sweep2: $1" >&2; exit 1; fi
 }
-gate_of() {  # gate_of <model>: the naming run whose gated schedule the model runs on
-    echo clip_naming3
+gate_of() {  # gate_of <model>: the naming run whose gated schedule the model runs on (it asked the say question the model gets)
+    case "$1" in Qwen/Qwen3.5-0.8B) echo clip_naming4 ;; *) echo clip_naming3 ;; esac
 }
 AV="--with av==15.1.0"
 read -r -a M <<< "$MODELS"
