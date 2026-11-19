@@ -15,20 +15,19 @@ model's processor then resizes as it normally does (for Qwen, cap_pixels_per_fra
             because Gemma's sampler refuses to take more frames than a clip has (matched.scene_frame_count)
   frozen    the middle sampled frame repeated as often (the same tokens, no motion)
   still     that frame as a picture
-Prompt: the media, then QUESTION (below, verbatim): the COCO-category question with the 80 COCO category names listed in
-COCO's own order, then a short list of more specific names (EXTRA_NAMES: kinds and spellings such as sailboat or kitten),
-each scored as the COCO category it belongs to. The lists were added on 19 Nov 2026, before any GPU run, after the CPU pilot
-(Qwen3.5-0.8B, still frames): without a list it answered outside COCO ("sailboat", "coffee", "animal"); with the 80 names
-alone it answered "person" for bicycles with riders and "potted plant" for some cats.
+Prompt: the media, then QUESTION (below, verbatim), which lists no names. A CPU pilot (Qwen3.5-0.8B, still frames, 19 Nov
+2026, before any GPU run) tried listing the 80 COCO names in the question, with and without the more specific EXTRA_NAMES:
+both named fewer clips (64 and 65 of 73, against 66 with no list), because the model then picked other listed objects in
+the frame ("person" for bicycles with riders, "potted plant" for cats, "scissors" for a pizza).
 Greedy decoding, N_NEW new tokens. One prompt per forward: the clips differ in length, and a batch of one keeps the result
 independent of how prompts would be grouped.
 
 Scoring (written before the run). An answer is normalized: lowercased, every character other than a letter replaced by a
 space, spaces collapsed and stripped. It is correct when it equals the clip's label, one of the label's EXTRA_NAMES, or the
 plural of either (with "s" or "es" added), so "Airplane.", "cats", "buses", "sailboat" and "plane" are correct and "animal",
-"vehicle", "coffee" or "pond bird" are not. The plural forms were added on 19 Nov 2026, before any GPU run, after a CPU pilot (Qwen3.5-0.8B, still frames) answered
-"cats" and "cars" for single animals and cars. Also recorded: whether the answer, or its singular, is one of the 80 COCO
-category names.
+"vehicle", "coffee" or "pond bird" are not. The plurals and EXTRA_NAMES were added on 19 Nov 2026, before any GPU run,
+after the CPU pilot answered "cats" and "cars" for single animals and cars, and "sailboat" for a sailboat. Also recorded:
+whether the answer (its singular, or the category an extra name stands for) is one of the 80 COCO category names.
 
 The rule (written before the run):
 - Per input, the share of clips named correctly, with a 95% bootstrap interval over clips. The gate passes for an input when
@@ -74,18 +73,14 @@ COCO_NAMES = [
     "microwave", "oven", "toaster", "sink", "refrigerator", "book", "clock", "vase", "scissors", "teddy bear", "hair drier",
     "toothbrush",
 ]  # fmt: skip
-# more specific names offered beside the 80, each scored as its COCO category: kinds and spellings of the category, never a
-# generic word ("animal", "vehicle") or a different object ("coffee" for a cup)
+# more specific names scored as their COCO category: kinds and spellings of the category, never a generic word ("animal",
+# "vehicle") or a different object ("coffee" for a cup)
 EXTRA_NAMES = {
     "plane": "airplane", "aeroplane": "airplane", "jet": "airplane", "sailboat": "boat", "ship": "boat", "yacht": "boat",
     "kitten": "cat", "puppy": "dog", "pony": "horse", "mug": "cup", "bike": "bicycle", "motorbike": "motorcycle",
     "locomotive": "train",
 }  # fmt: skip
-QUESTION = (
-    "What category best describes the main object shown? Identify the main object using its standard MS COCO category name, "
-    f"one of: {', '.join(COCO_NAMES)}. If a more specific name fits better, you may use one of: {', '.join(EXTRA_NAMES)}. "
-    "Return only the category name, nothing else."
-)
+QUESTION = "What category best describes the main object shown? Identify the main object using its standard MS COCO category name. Return only the category name, nothing else."
 
 
 def normalize(text):

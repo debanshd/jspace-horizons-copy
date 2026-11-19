@@ -42,7 +42,7 @@ def test_scoring_is_exact_after_normalizing():
     assert cn.score("sailboat", "car") == (False, True)
     assert cn.score("animal", "horse") == (False, False) and cn.score("coffee", "cup") == (False, False)
     assert set(cn.EXTRA_NAMES.values()) <= set(cn.COCO_NAMES) and not set(cn.EXTRA_NAMES) & set(cn.COCO_NAMES)
-    assert "you may use one of: plane, aeroplane" in cn.QUESTION
+    assert "person" not in cn.QUESTION and "sailboat" not in cn.QUESTION  # the question lists no names
     assert cn.score("Dining table", "dining table") == (True, True)
     assert cn.score("dog", "cat") == (False, True)  # wrong, but a COCO name
     assert cn.score("cats", "cat") == (True, True) and cn.score("Cars.", "car") == (True, True)  # plurals count
@@ -51,7 +51,7 @@ def test_scoring_is_exact_after_normalizing():
     assert cn.score("Pond bird", "bird") == (False, False)  # a phrase around the name does not
     assert cn.score("dogs", "cat") == (False, True)
     assert len(cn.COCO_NAMES) == 80 and len(set(cn.COCO_NAMES)) == 80
-    assert cn.QUESTION.count(", ") >= 79 and "person, bicycle, car" in cn.QUESTION and "toothbrush. If a more specific" in cn.QUESTION
+    assert cn.QUESTION.endswith("Return only the category name, nothing else.")
     assert set(matched.VOCAB) <= set(cn.COCO_NAMES)  # every label of the set is a COCO name, so the question can be answered
 
 
