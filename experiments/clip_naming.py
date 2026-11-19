@@ -19,9 +19,11 @@ Prompt: the media, then QUESTION (below, verbatim). Greedy decoding, N_NEW new t
 in length, and a batch of one keeps the result independent of how prompts would be grouped.
 
 Scoring (written before the run). An answer is normalized: lowercased, every character other than a letter replaced by a
-space, spaces collapsed and stripped. It is correct when it equals the clip's label exactly, so "Airplane." is correct and
-"plane", "aeroplane" or "sailboat" are not, as in video_sweep. Also recorded: whether the normalized answer is one of the 80
-COCO category names.
+space, spaces collapsed and stripped. It is correct when it equals the clip's label or the label's plural (the label with
+"s" or "es" added), so "Airplane.", "cats" and "buses" are correct and "plane", "aeroplane", "sailboat" or "pond bird" are
+not. The plural forms were added on 19 Nov 2026, before any GPU run, after a CPU pilot (Qwen3.5-0.8B, still frames) answered
+"cats" and "cars" for single animals and cars. Also recorded: whether the answer, or its singular, is one of the 80 COCO
+category names.
 
 The rule (written before the run):
 - Per input, the share of clips named correctly, with a 95% bootstrap interval over clips. The gate passes for an input when
@@ -74,10 +76,20 @@ def normalize(text):
     return " ".join(re.sub(r"[^a-z]", " ", text.lower()).split())
 
 
+def forms(a):
+    """the normalized answer and its possible singulars: "cats" -> cat, "buses" -> bus (a plural is not a different object)"""
+    out = {a}
+    if a.endswith("es"):
+        out.add(a[:-2])
+    if a.endswith("s"):
+        out.add(a[:-1])
+    return out
+
+
 def score(text, label):
-    """(correct, a COCO name): the normalized answer equals the label; the normalized answer is one of the 80 COCO names"""
-    a = normalize(text)
-    return a == label, a in COCO_NAMES
+    """(correct, a COCO name): the answer is the label or its plural; the answer or its singular is one of the 80 COCO names"""
+    f = forms(normalize(text))
+    return label in f, bool(f & set(COCO_NAMES))
 
 
 def prompt(lm, inp):

@@ -41,6 +41,11 @@ def test_scoring_is_exact_after_normalizing():
     assert cn.score("Sailboat", "boat") == (False, False)
     assert cn.score("Dining table", "dining table") == (True, True)
     assert cn.score("dog", "cat") == (False, True)  # wrong, but a COCO name
+    assert cn.score("cats", "cat") == (True, True) and cn.score("Cars.", "car") == (True, True)  # plurals count
+    assert cn.score("buses", "bus") == (True, True) and cn.score("bus", "bus") == (True, True)
+    assert cn.score("Wine glasses", "wine glass") == (True, True)
+    assert cn.score("Pond bird", "bird") == (False, False)  # a phrase around the name does not
+    assert cn.score("dogs", "cat") == (False, True)
     assert len(cn.COCO_NAMES) == 80 and len(set(cn.COCO_NAMES)) == 80
     assert set(matched.VOCAB) <= set(cn.COCO_NAMES)  # every label of the set is a COCO name, so the question can be answered
 
