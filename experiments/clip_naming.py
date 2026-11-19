@@ -20,7 +20,8 @@ Prompt: the media, then QUESTION (below, verbatim), which lists no names. A CPU 
 both named fewer clips (64 and 65 of 73, against 66 with no list), because the model then picked other listed objects in
 the frame ("person" for bicycles with riders, "potted plant" for cats, "scissors" for a pizza).
 Greedy decoding, N_NEW new tokens. One prompt per forward: the clips differ in length, and a batch of one keeps the result
-independent of how prompts would be grouped.
+independent of how prompts would be grouped. A worker thread decodes and encodes the next clip while the GPU answers the
+current one, so the GPU does not wait on the CPU; the prompts, their order and each forward are unchanged.
 
 Scoring (written before the run). An answer is normalized: lowercased, every character other than a letter replaced by a
 space, spaces collapsed and stripped. It is correct when it equals the clip's label, one of the label's EXTRA_NAMES, or the
@@ -45,6 +46,7 @@ shows the first clip's first, middle and last sampled frames.
 import re
 import sys
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import numpy as np
@@ -55,7 +57,7 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from video_sweep import encode  # noqa: E402  the media and prompt go through the processor exactly as video_sweep sends them
 
-from jspace import matched, stimuli  # noqa: E402
+from jspace import batched, matched, stimuli  # noqa: E402
 from jspace.analysis import boot_scene  # noqa: E402
 from jspace.config import require_data  # noqa: E402
 from jspace.model import Session  # noqa: E402
@@ -141,34 +143,46 @@ def main():
     schedule = [(m["scene_id"], m["receiver_clip_id"], m["donor_clip_id"]) for m in matched.scenes(args.data_dir)]
     vp = lm.processor.video_processor
 
-    rows, clips, sheet = [], {}, []
-    for cid in sorted(A):
+    def prepare(cid):
+        """the clip's frames and its three encoded prompts, on the CPU (run on the worker thread)"""
         path = root / Path(A[cid]["path"]).name
         total, fps = matched.video_info(path)
         n = matched.scene_frame_count(vp, total, total, fps)
         idx = matched.native_indices(vp, total, fps, n)
         frames = np.stack([np.asarray(f) for f in matched.decode(path, idx)])
         md = dict(total_num_frames=total, fps=fps, frames_indices=idx, duration=total / fps, width=frames.shape[2], height=frames.shape[1])
-        clips[cid] = dict(label=A[cid]["label"], frames=n, indices=idx, total=total)
-        for inp in matched.INPUTS:
-            obj = matched.input_of(frames, inp)
-            enc = encode(lm, inp, prompt(lm, inp), obj, md)
-            kw = {k: (v.to(lm.device) if torch.is_tensor(v) else v) for k, v in enc.items() if k != "token_type_ids"}
-            with torch.no_grad():
-                g = lm.hf.generate(**kw, max_new_tokens=N_NEW, do_sample=False, pad_token_id=lm.tokenizer.pad_token_id)
-            text = lm.tokenizer.decode(g[0, kw["input_ids"].shape[1] :], skip_special_tokens=True).strip()
-            correct, coco = score(text, A[cid]["label"])
-            rows.append(dict(clip=cid, label=A[cid]["label"], input=inp, frames=n, tokens=int(kw["input_ids"].shape[1]), answer=text, normalized=normalize(text), correct=correct, coco=coco))
-            if not sheet:  # the first clip's first, middle and last sampled frames, at the size the processor receives them
-                sheet = [(f"{cid} sampled frame {j}", Image.fromarray(frames[j])) for j in (0, len(frames) // 2, len(frames) - 1)]
-        print(f"{cid:34s} {A[cid]['label']:8s} " + " | ".join(f"{r['input']}: {r['answer'][:16]!r}{'' if r['correct'] else ' x'}" for r in rows[-3:]) + f"  [{time.time() - t0:.0f}s]")
+        encs = {inp: encode(lm, inp, prompt(lm, inp), matched.input_of(frames, inp), md) for inp in matched.INPUTS}
+        return dict(n=n, idx=idx, total=total, frames=frames, encs=encs)
+
+    mon = batched.GpuMonitor(run.path("gpu.csv"))
+    rows, clips, sheet = [], {}, []
+    order = sorted(A)
+    with ThreadPoolExecutor(max_workers=1) as pool:
+        nxt = pool.submit(prepare, order[0])
+        for k, cid in enumerate(order):
+            c = nxt.result()
+            if k + 1 < len(order):  # the next clip is decoded while this one runs on the GPU
+                nxt = pool.submit(prepare, order[k + 1])
+            n, frames = c["n"], c["frames"]
+            clips[cid] = dict(label=A[cid]["label"], frames=n, indices=c["idx"], total=c["total"])
+            for inp in matched.INPUTS:
+                kw = {k2: (v.to(lm.device) if torch.is_tensor(v) else v) for k2, v in c["encs"][inp].items() if k2 != "token_type_ids"}
+                with torch.no_grad():
+                    g = lm.hf.generate(**kw, max_new_tokens=N_NEW, do_sample=False, pad_token_id=lm.tokenizer.pad_token_id)
+                text = lm.tokenizer.decode(g[0, kw["input_ids"].shape[1] :], skip_special_tokens=True).strip()
+                correct, coco = score(text, A[cid]["label"])
+                rows.append(dict(clip=cid, label=A[cid]["label"], input=inp, frames=n, tokens=int(kw["input_ids"].shape[1]), answer=text, normalized=normalize(text), correct=correct, coco=coco))
+                if not sheet:  # the first clip's first, middle and last sampled frames, at the size the processor receives them
+                    sheet = [(f"{cid} sampled frame {j}", Image.fromarray(frames[j])) for j in (0, len(frames) // 2, len(frames) - 1)]
+            print(f"{cid:34s} {A[cid]['label']:8s} " + " | ".join(f"{r['input']}: {r['answer'][:16]!r}{'' if r['correct'] else ' x'}" for r in rows[-3:]) + f"  [{time.time() - t0:.0f}s]")
+    gpu = mon.stop()
 
     R = pd.DataFrame(rows)
     run.save_csv(R, "clip_naming.csv")
     run.save_json(dict(clips=clips, sampler=type(vp).__name__), "clips.json")
     stimuli.contact_sheet(sheet, 3, run.path("stimuli.png"))
     out = summarize(R, schedule)
-    out["setup"] = dict(question=QUESTION, n_new=N_NEW, sampler=type(vp).__name__, seconds=time.time() - t0)
+    out["setup"] = dict(question=QUESTION, n_new=N_NEW, sampler=type(vp).__name__, gpu=gpu, seconds=time.time() - t0)
     run.save_json(out, "summary.json")
     for inp in matched.INPUTS:
         print(f"{inp}: named {out['share'][inp][0]:.3f} [{out['share'][inp][1]:.3f}, {out['share'][inp][2]:.3f}], gate {'passes' if out['gate'][inp] else 'fails'}")
