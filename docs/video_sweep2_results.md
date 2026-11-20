@@ -111,3 +111,22 @@ Horizons (last window start following the donor on >= 0.5 of scenes), moving: sa
 Unlike Qwen3.5-4B (too late on every input) and Qwen3.5-27B's own `media_patch` on VGGSound clips (too late, L_say 47 /
 L_use 31), the moving and frozen videos give "together": the rule's use of the name (L_use 35) stops following the donor
 within two windows of the name itself (L_say 39). The still picture gives "too late" (L_use 27).
+
+## Gemma-4-31B, patching part only (`video_sweep2 --parts patch`)
+
+Run on 19–20 November 2026 (11:16 PM to 5:26 AM PST) on the same H200 (141 GB) on the US-NC-1 volume, at `26657cd`, as
+`runs/video_sweep2_patch*`. Its `clip_naming3` gate was run again on the H200 first: 64 moving-input scene pairs (1.000 /
+0.986 / 0.986), as on the RTX PRO 6000. The smoke pair is identical (3,825 rows). The full run: 64 scenes, 5.0 h, mean GPU 95%.
+Run folders: `docs/video_sweep2_patch_g31.tar.gz` (sha256 `73938587c0f976b9b4d2d2d20ab78b3892e9ee586d0996c2656f092cc32c4e61`).
+
+| input | say clean | animal clean | self-patch | every-layer patch | verdict | L_say / L_use | P1 | P2 | P3 | P4 | P5 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| moving | 0.97 | 1.00 | 1.00 | 0.98 | too late | 39 / 27 | kept | kept | kept | kept | kept |
+| frozen | 0.97 | 1.00 | 0.99 | 0.97 | too late | 39 / 27 | kept | kept | kept | | |
+| still | 0.98 | 1.00 | 1.00 | 1.00 | too late | 39 / 27 | kept | kept | kept | | |
+
+Horizons on every input: say 39, animal 27, letter 39, set 27, ride 27. The only clean `say` misses: "dog" for a cat (2 per
+video input) and "bowl" for a cup (still).
+
+Unlike the two small Gemma models (together: L_use within two windows of L_say), Gemma-4-31B gives "too late" on every input,
+the same verdict as Qwen3.5-4B, and keeps P1 to P5.
