@@ -125,6 +125,7 @@ def test_naming_rule_on_made_up_answers():
     assert out["share"]["q_audio"][0] == pytest.approx(2 / 3) and not out["gate"]["q_audio"] and out["gate"]["audio_q"]
     assert out["gated_by_input"]["q_audio"] == [0, 2] and out["gated_by_input"]["audio_q"] == [0, 1, 2]
     assert out["gated_scenes"] == [0, 2]  # named in both orders
+    assert out["named"]["q_audio"] == 2 and out["scenes_lost"]["q_audio"] == {"w2": 1} and out["scenes_lost"]["audio_q"] == {}
     assert out["share_by_scene"]["q_audio"] == pytest.approx(2 / 3) and out["controls"]["audio_q"]["silence"]["names_object"] is False
     assert "typed" not in out["gated_by_input"] and out["gate"]["typed"]
 

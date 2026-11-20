@@ -23,8 +23,9 @@ What changes:
   mismatch stops the run (no state is interpolated).
 - Scenes: the model's gated schedule from audio_naming (--gate-run), the scenes whose receiver and donor recordings it names
   in both orders. --n N takes the first N for a smoke check (counts only, no verdicts).
-- Recordings recur across scenes (15 recordings, one voice): intervals bootstrapped over scenes describe these scene
-  assignments, not independent utterances.
+- Recordings recur across scenes (15 recordings, one voice, each used in 2 to 18 of the 64 scenes): the intervals are
+  bootstrapped over scenes, so they describe these scene assignments, not independent utterances, and are narrower than
+  intervals over recordings would be. Any write-up of these results states this next to the intervals.
 
 The rule (written before the run) is video_sweep's, unchanged: the patching gate (clean say >= 0.90, the animal rule >= 0.85),
 the machinery check (self-patch >= 0.95), the positive control (every-layer donor patch, say follows the donor >= 0.9), the

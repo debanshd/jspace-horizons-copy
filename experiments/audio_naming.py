@@ -22,7 +22,10 @@ hedge is wrong; a cut-off last fragment is dropped only when the answer hit the 
 
 The rule (written before the run):
 - Per input, the share of the 15 recordings named, with a 95% bootstrap interval over recordings, and the share of the 64
-  scene receivers named (recordings recur, so this weights them by use). The gate passes at >= 0.90 of recordings.
+  scene receivers named (recordings recur, so this weights them by use). The gate passes at >= 0.90 of recordings, that is
+  14 of 15: one miss passes (0.93), two fail (0.87). The gate is coarse, so it is reported, not used: what the sweep runs on
+  is the per-recording schedule below, and the summary gives the count named and, for each missed recording, how many of the
+  64 scenes it removes (a recording is used in 2 to 18 scenes, so a single misheard word can remove up to 18).
 - A recording is reliable for an audio order when it is named in that order. gated_by_input: per order, the scenes whose
   receiver and donor recordings are both reliable. gated_scenes, the schedule audio_sweep reads: the scenes reliable in both
   orders, so the sweep compares the orders on the same scenes.
@@ -78,7 +81,8 @@ def names_object(answer, cut, labels):
 
 def summarize(R, schedule, recs):
     """the rule above on the answers R and the scene schedule [(scene, receiver audio id, donor audio id)]"""
-    out = dict(n_recordings=len(recs), share={}, share_by_scene={}, gate={}, reliable_by_input={}, gated_by_input={}, hedged={}, controls={})
+    out = dict(n_recordings=len(recs), named={}, share={}, share_by_scene={}, gate={}, reliable_by_input={}, gated_by_input={}, scenes_lost={}, hedged={}, controls={})
+    uses = {a: sum(a in (rc, dc) for _, rc, dc in schedule) for a in recs}
     for inp in INPUTS:
         d = R[(R["input"] == inp) & (R["item"].isin(recs))].set_index("item").reindex(sorted(recs))
         assert not d["correct"].isna().any(), f"missing answers for {inp}"
@@ -87,7 +91,9 @@ def summarize(R, schedule, recs):
         out["share_by_scene"][inp] = float(np.mean([d.loc[rc, "correct"] for _, rc, _ in schedule]))
         out["hedged"][inp] = float(d["hedged"].astype(float).mean())
         rel = {a for a, v in d["correct"].items() if v}
+        out["named"][inp] = len(rel)
         out["reliable_by_input"][inp] = sorted(rel)
+        out["scenes_lost"][inp] = {a: uses[a] for a in sorted(set(recs) - rel)}  # the scenes each missed recording removes
         if inp in spoken.INPUTS:
             out["gated_by_input"][inp] = [s for s, rc, dc in schedule if rc in rel and dc in rel]
             c = R[(R["input"] == inp) & (R["item"].isin(CONTROLS))].set_index("item")
@@ -167,7 +173,9 @@ def main():
     out["setup"] = dict(question=QUESTION, followup=c3.FOLLOWUP, n_new=N_NEW, labels=labels, seconds=time.time() - t0)
     run.save_json(out, "summary.json")
     for inp in INPUTS:
-        print(f"{inp}: named {out['share'][inp][0]:.3f} of recordings, {out['share_by_scene'][inp]:.3f} of scene receivers, gate {'passes' if out['gate'][inp] else 'fails'}")
+        print(
+            f"{inp}: named {out['named'][inp]} of {len(recs)} recordings ({out['share'][inp][0]:.3f}), {out['share_by_scene'][inp]:.3f} of receivers, gate {'passes' if out['gate'][inp] else 'fails'}"
+        )
     print(f"controls: {out['controls']}; gated schedule (both orders): {len(out['gated_scenes'])} of {len(schedule)}")
 
 
