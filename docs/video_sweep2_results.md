@@ -90,3 +90,24 @@ the bf16 weights filling most of the 96 GB, the engine ran out of memory and fel
 6 (Gemma), which put the full runs at an estimated $150–250. They are being run again, the patching part only
 (`video_sweep2 --parts patch`, run name `video_sweep2_patch`), on H200s (141 GB) on the US-NC-1 volume; each pod runs its
 `clip_naming3` gate again first, so that a model's scenes are set on the hardware its sweep runs on.
+
+## Qwen3.5-27B, patching part only (`video_sweep2 --parts patch`)
+
+Run on 19 November 2026 (6:45 to 11:01 PM PST) on one H200 (141 GB) on the US-NC-1 volume, at `26657cd`, as
+`runs/video_sweep2_patch*` (patching rows only: no steering, sweeps, knockouts or ablations, so no steering predictions). Its
+`clip_naming3` gate was run again on the H200 first: 63 moving-input scene pairs, the same count as on the RTX PRO 6000. The
+smoke pair is identical (4,050 rows). The full run: 63 scenes, 3.1 h, mean GPU 91%. Run folders: `docs/video_sweep2_patch_q27.tar.gz`
+(sha256 `366f15c0d612602525ccac6390b1a8d7f45e6c59433d7ff618c749d48b101004`).
+
+| input | say clean | animal clean | self-patch | every-layer patch | verdict | L_say / L_use | P1 | P2 | P3 | P4 | P5 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| moving | 0.97 | 1.00 | 1.00 | 0.97 | together | 39 / 35 | **missed** | **missed** | kept | kept | **missed** |
+| frozen | 0.97 | 1.00 | 1.00 | 0.97 | together | 39 / 35 | **missed** | **missed** | kept | | |
+| still | 0.95 | 1.00 | 1.00 | 0.97 | too late | 39 / 27 | kept | **missed** | kept | | |
+
+Horizons (last window start following the donor on >= 0.5 of scenes), moving: say 39, animal 27, letter 47, set 23, ride 31
+(frozen: animal 31; still as moving). The only clean `say` misses: "dog" for a cat (2 per input) and "bowl" for a cup (still).
+
+Unlike Qwen3.5-4B (too late on every input) and Qwen3.5-27B's own `media_patch` on VGGSound clips (too late, L_say 47 /
+L_use 31), the moving and frozen videos give "together": the rule's use of the name (L_use 35) stops following the donor
+within two windows of the name itself (L_say 39). The still picture gives "too late" (L_use 27).
