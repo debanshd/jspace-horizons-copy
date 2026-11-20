@@ -10,8 +10,7 @@ What is video_sweep2's, unchanged and imported: the 64-scene schedule of the mat
 same-kind word Z, the set question's names), the patching arms (clean; the receiver's own states written back at every layer,
 the machinery check; the donor's at every layer, the positive control; per 4-layer window from layer -1, the donor's states,
 the receiver's own name's J-lens direction at 4 sigma, a random direction at 4 sigma), media_steer's phase A and B
-interventions on say and animal, the batching, the hedge follow-up and clip_naming3's scoring of say, the rule, and the
-summaries.
+interventions on say and animal, the batching, the rule, and the summaries.
 
 What changes:
 - Inputs: the two prompt orders of spoken.py. q_audio: the question, then the audio (Gemma-4's card's order). audio_q: the
@@ -21,20 +20,29 @@ What changes:
   protocol): with the question before the audio the audio's states can depend on it. Before any patching the run checks, per
   scene, question and input, that the donor's and the self prompt's audio tokens sit at exactly the receiver's positions; a
   mismatch stops the run (no state is interpolated).
-- Scenes: the model's gated schedule from audio_naming (--gate-run), the scenes whose receiver and donor recordings it names
-  in both orders. --n N takes the first N for a smoke check (counts only, no verdicts).
+- Scoring: src/jspace/strict.py, whole answer, first answer only (no hedge follow-up): say is correct when the answer is the
+  spoken word itself; letter the one letter; set, animal, ride the one digit. An answer that used all N_NEW = 4 new tokens
+  without ending is neither correct nor valid; every row records hit_limit, synonym (say: a plural, kind or spelling) and
+  valid. audio_clean asks the same prompts with the same decoding, so its gate holds under these settings.
+- Scenes: the model's gated schedule from audio_clean (--gate-run), the scenes whose receiver and donor recordings it names in
+  both orders. The run stops unless audio_clean's summary is ready (its accuracy gates pass). --n N takes the first N for a
+  pilot (counts only, no verdicts).
+- Added rows: dclean, the donor's clean answer under the receiver's exact question (protocol.json's required baseline).
+- controls_pass in summary.json: in every input, the clean say and animal gates on the pclean rows, the self patch (>= 0.95
+  identical to clean) and the full donor patch (say follows the donor >= 0.9). The launcher runs the full sweep only after a
+  5-scene patch-only pilot (--parts patch --n 5) whose controls pass, run twice with identical answers, and inspected.
 - Recordings recur across scenes (15 recordings, one voice, each used in 2 to 18 of the 64 scenes): the intervals are
   bootstrapped over scenes, so they describe these scene assignments, not independent utterances, and are narrower than
   intervals over recordings would be. Any write-up of these results states this next to the intervals.
 
-The rule (written before the run) is video_sweep's, unchanged: the patching gate (clean say >= 0.90, the animal rule >= 0.85),
+The rule (written before the run) is video_sweep's, applied to the whole-answer scores above: the patching gate (clean say >= 0.90, the animal rule >= 0.85),
 the machinery check (self-patch >= 0.95), the positive control (every-layer donor patch, say follows the donor >= 0.9), the
 horizons (the last window start following the donor on >= 0.5 of scenes), the cut and verdicts, P1 to P3, media_steer's frozen
 rule and predictions 1 to 6 for the other interventions. P4 and P5 (moving against frozen and still) do not apply. Added: the
 two orders agree when their horizons are within one window (media_patch.same_horizons), reported as order_compare.
 
-Outputs in runs/<run>/<model>/: audio_sweep.csv (every row), summary.json (video_sweep2's, plus order_compare, the gate it
-read and the audio-token layout), scenes.json, stimuli.png (the first scene's two waveforms), gpu.csv, config.json, run.log.
+Outputs in runs/<run>/<model>/: audio_sweep.csv (every row), summary.json (video_sweep2's, plus order_compare, controls_pass,
+donor_clean, the share of answers at the token limit, the gate it read and the audio-token layout), scenes.json, stimuli.png (the first scene's two waveforms), gpu.csv, config.json, run.log.
 """
 
 import json
@@ -48,13 +56,12 @@ import torch
 from PIL import Image, ImageDraw
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import clip_naming3 as naming3  # noqa: E402  the follow-up question
 import video_sweep as vs  # noqa: E402  rows, patch summary, steering comparison
-import video_sweep2 as vs2  # noqa: E402  the say scoring, the hedge follow-up, the summaries
+import video_sweep2 as vs2  # noqa: E402  the summaries
 from media_patch import kv_limit, same_horizons, windows  # noqa: E402
 from media_steer import DOSES, N_NEW, has_audio, phase_a, phase_b  # noqa: E402
 
-from jspace import batched, lens, matched, spoken  # noqa: E402
+from jspace import batched, lens, matched, spoken, strict  # noqa: E402
 from jspace import media as media_rules  # noqa: E402
 from jspace.config import require_data  # noqa: E402
 from jspace.model import Session  # noqa: E402
@@ -67,15 +74,6 @@ assert list(QUESTIONS_A) == list(vs.QUESTIONS)  # the same questions in the same
 def prompt_messages(inp, task, r):
     base = inp.split("@")[0]
     return [{"role": "user", "content": spoken.content(base, QUESTIONS_A[task].format(a=r["set"][0], b=r["set"][1], c=r["set"][2]))}]
-
-
-def followup_messages(inp, first_answer):
-    """the say conversation continued: the model's own answer, then clip_naming3's follow-up question"""
-    return [
-        {"role": "user", "content": spoken.content(inp.split("@")[0], QUESTIONS_A["say"])},
-        {"role": "assistant", "content": [{"type": "text", "text": first_answer}]},
-        {"role": "user", "content": [{"type": "text", "text": naming3.FOLLOWUP}]},
-    ]
 
 
 def capture_input(inp, role, task):
@@ -91,6 +89,7 @@ def patch_rows(inp, S, ID, n_layers):
         for r in S:
             own, don = (f"self~{task}", r["scene"]), (f"donor~{task}", r["scene"])
             rows.append(vs.row(inp, task, r, ID, family="pclean", arm="clean"))
+            rows.append(vs.row(capture_input(inp, "donor", task), task, r, ID, family="dclean", arm="donor clean, receiver's question"))
             rows.append(vs.row(inp, task, r, ID, family="self", arm="own states, every layer", site="patch", layers=every, donor=own))
             rows.append(vs.row(inp, task, r, ID, family="full", arm="donor states, every layer", site="patch", layers=every, donor=don))
             for w in windows(n_layers):
@@ -98,6 +97,46 @@ def patch_rows(inp, S, ID, n_layers):
                 rows.append(vs.row(inp, task, r, ID, family="inject", arm=f"inject own name, layers {w[0]} to {w[-1]}", site="media", key="dsw_own", layers=tuple(w), set=str(w[0]), dose=4.0))
                 rows.append(vs.row(inp, task, r, ID, family="random", arm=f"inject random, layers {w[0]} to {w[-1]}", site="media", key="dsw_random", layers=tuple(w), set=str(w[0]), dose=4.0))
     return rows
+
+
+def to_frame(rows, res):
+    """one record per row, scored whole-answer on the first answer (strict.py), with hit_limit"""
+    recs = []
+    for r, (text, lx, ly, hit) in zip(rows, res):
+        rec = {k: v for k, v in r.items() if k not in ("ids_x", "ids_y", "ko", "layers", "donor")}
+        mem = vs2.SETS[r["scene"]]
+        sc = strict.score(r["task"], text, r["X"], mem, hit)
+        rec.update(
+            layers=f"{r['layers'][0]}..{r['layers'][-1]}" if r["layers"] else "",
+            donor="" if r["donor"] is None else f"{r['donor'][0]}",
+            generation=text,
+            hit_limit=hit,
+            correct=sc["correct"],
+            synonym=sc["synonym"],
+            valid=sc["valid"],
+            follows_Y=strict.matches(r["task"], text, r["Y"], mem, hit),
+            follows_Z=strict.matches(r["task"], text, r["Z"], mem, hit),
+            lp_X=lx,
+            lp_Y=ly,
+            ld=lx - ly,
+        )
+        recs.append(rec)
+    return pd.DataFrame(recs)
+
+
+def controls_pass(patch, inputs):
+    """every input: the clean say and animal gates, the self patch and the full donor patch"""
+    ok = lambda i: all(patch["gate"][i][t]["passes"] for t in vs.GATE) and patch["controls"][i]["machinery_ok"] and patch["controls"][i]["positive_ok"]  # noqa: E731
+    return {i: bool(ok(i)) for i in inputs} | {"all": bool(all(ok(i) for i in inputs))}
+
+
+def donor_clean(R, inputs):
+    """per input and question: the share of dclean rows giving the donor's answer"""
+    out = {}
+    for inp in inputs:
+        d = R[(R["family"] == "dclean") & (R["input"].str.startswith(f"{inp}@donor~"))]
+        out[inp] = {t: float(d[d["task"] == t]["follows_Y"].astype(float).mean()) for t in QUESTIONS_A}
+    return out
 
 
 def audio_positions(enc, token_id):
@@ -143,8 +182,8 @@ def waveform_png(wavs, labels, path, w=1200, h=160):
 
 def main():
     ap = parser(__doc__, "audio_sweep")
-    ap.add_argument("--gate-run", default="audio_naming", help="the audio_naming run whose gated schedule this model runs on")
-    ap.add_argument("--n", type=int, default=0, help="the first N gated scenes, for a smoke check (counts only); 0 for all")
+    ap.add_argument("--gate-run", default="audio_clean", help="the audio_clean run whose gated schedule this model runs on")
+    ap.add_argument("--n", type=int, default=0, help="the first N gated scenes, for a pilot (counts only); 0 for all")
     ap.add_argument("--inputs", default=",".join(spoken.INPUTS))
     ap.add_argument("--parts", default="patch,steer", help="patch, steer, or both")
     ap.add_argument("--donor-gb", type=float, default=16.0, help="host memory for donor states at a time: scenes run in chunks that fit")
@@ -153,8 +192,10 @@ def main():
     require_data(args.data_dir, "spoken")
     gate_file = args.runs_dir / args.gate_run / args.model.split("/")[-1] / "summary.json"
     if not gate_file.exists():
-        raise SystemExit(f"{gate_file} not found: run audio_naming for {args.model} first")
+        raise SystemExit(f"{gate_file} not found: run audio_clean for {args.model} first")
     gate = json.loads(gate_file.read_text())
+    if not gate.get("ready"):
+        raise SystemExit(f"{gate_file}: the clean answers do not pass audio_clean's gates (ready is false); nothing to patch")
     wanted = vs2.gated_scenes(gate, args.n)
     smoke = args.n > 0
     run = Run(args, "audio_sweep")
@@ -241,12 +282,6 @@ def main():
         e.budget = budget.setdefault("tokens", max(2048, e.budget // 2048 * 2048))
         return e
 
-    def encode_followup(r, first):
-        return encode(followup_messages(r["input"], first), media[("receiver", r["scene"])])
-
-    def run_rows(encs, rows, label):  # the follow-ups run in an engine of their own: each has its own prompt
-        return engine(encs).generate(rows, N_NEW, label)
-
     R_parts, setup = [], dict(layout={}, chunks={})
     BL = None
     for inp in inputs:
@@ -313,8 +348,7 @@ def main():
                     x["ids_x"], x["ids_y"] = ID[matched.truth(x["task"], x["X"], [])], ID[matched.truth(x["task"], x["Y"], [])]
                 rows += ra
             label = f"{inp}: scenes {g[0]['scene']}..{g[-1]['scene']}"
-            res = vs2.ask_again(rows, eng.generate(rows, N_NEW, label), encode_followup, run_rows, label)  # before the donor states go
-            R_parts.append(vs2.to_frame(rows, res))
+            R_parts.append(to_frame(rows, eng.generate(rows, N_NEW, label, hit_limit=True)))  # before the donor states go
             del T.donor[inp]
             torch.cuda.empty_cache()
         print(f"{inp}: patching and phase A done  [{time.time() - t0:.0f}s]")
@@ -340,12 +374,14 @@ def main():
                 rb = [dict(x, donor=None) for x in phase_b([inp], g, ID, starts, n_layers, dose_of)]
                 for x in rb:
                     x["ids_x"], x["ids_y"] = ID[matched.truth(x["task"], x["X"], [])], ID[matched.truth(x["task"], x["Y"], [])]
-                res = vs2.ask_again(rb, eng.generate(rb, N_NEW, f"{inp} sweeps"), encode_followup, run_rows, f"{inp} sweeps")
-                R = pd.concat([R, vs2.to_frame(rb, res)], ignore_index=True)
+                R = pd.concat([R, to_frame(rb, eng.generate(rb, N_NEW, f"{inp} sweeps", hit_limit=True))], ignore_index=True)
     AL = sorted(batched.attention_layers(lm))
     out.update(vs2.summaries(R, S, inputs, parts, n_layers, AL, family, kv, BL, starts, dose_of, smoke))
     if "patch" in out:
         out["order_compare"] = order_compare(out["patch"])
+        out["controls_pass"] = controls_pass(out["patch"], inputs)
+        out["donor_clean"] = donor_clean(R, inputs)
+    out["hit_limit"] = float(R["hit_limit"].astype(float).mean())
     run.save_csv(R, "audio_sweep.csv")
     gpu = mon.stop()
     layout = {i: {t: sorted(c) for t, c in v.items()} for i, v in setup["layout"].items()}
@@ -354,7 +390,7 @@ def main():
     if "patch" in out:
         for inp in inputs:
             print(f"patch {inp}: controls {out['patch']['controls'][inp]}, cut {out['patch']['cut'][inp]}, verdict {out['patch']['verdict'][inp]}, predictions {out['patch']['predictions'][inp]}")
-        print(f"orders: {out['order_compare']}")
+        print(f"orders: {out['order_compare']}; donor clean {out['donor_clean']}; controls pass {out['controls_pass']}")
     if gpu:
         print(f"GPU utilization: mean {gpu['mean_utilization']}%, median {gpu['median_utilization']}% over {gpu['samples']} samples")
 

@@ -1,24 +1,28 @@
 #!/usr/bin/env bash
-# The audio experiments on one GPU machine (a RunPod pod): experiments/audio_naming.py (which spoken recordings each model
-# names, in both prompt orders, with the silence, noise and typed controls), then experiments/audio_sweep.py (video_sweep2's
-# patching and interventions on the scenes whose two recordings the model names). A step whose output exists is skipped, so
-# the chain picks up where it stopped.
+# The audio experiments on one GPU machine (a RunPod pod), in steps that each must pass before the next:
+#   1. experiments/audio_clean.py: every model's clean answers to the five questions (receiver and donor recordings, both
+#      prompt orders, silence, noise and typed controls), with the sweep's decoding. Stops the model unless ready.
+#   2. a 5-scene patch-only pilot of experiments/audio_sweep.py (clean, self, full donor, per-window arms), twice, compared
+#      answer by answer; then its controls must pass (scripts/audio_gate.py pilot). Matching answers alone are not enough.
+#   3. the full sweep, only with FULL=1, after the pilot's outputs have been inspected (the CSV and summary.json).
+# A step whose output exists is skipped, so the chain picks up where it stopped.
 #
-#   scripts/audio_sweep.sh                                         Gemma-4-E2B and E4B, the audio-capable models (an L40S)
+#   scripts/audio_sweep.sh             steps 1 and 2 for Gemma-4-E2B and E4B (an L40S); then stop for inspection
+#   FULL=1 scripts/audio_sweep.sh      step 3 too, for each model whose clean and pilot gates pass
 #
-# Per model: audio_naming, then the 5-scene smoke check of audio_sweep twice, compared answer by answer (the chain stops if
-# they differ, unless KEEP_GOING=1), then the full gated schedule. DONOR_GB as in video_sweep.sh: it must stay the same for a
-# model's smoke run and its repeat.
+# A model whose gate fails is skipped; KEEP_GOING=1 goes on to the next model instead of stopping. DONOR_GB as in
+# video_sweep.sh: it must stay the same for a model's pilot and its repeat.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 MODELS=${MODELS:-"google/gemma-4-E2B-it google/gemma-4-E4B-it"}
-NAMING=${NAMING:-audio_naming}
+CLEAN=${CLEAN:-audio_clean}
 RUN=${RUN:-audio_sweep}
 DONOR_GB=${DONOR_GB:-16}
 KEEP_GOING=${KEEP_GOING:-0}
+FULL=${FULL:-0}
 
-keep_going() {
-    if [ "$KEEP_GOING" = 1 ]; then echo "audio_sweep: $1; going on (KEEP_GOING=1)" >&2; else echo "audio_sweep: $1" >&2; exit 1; fi
+stop() {  # stop <message>: the end of this model's chain; the next model only with KEEP_GOING=1
+    if [ "$KEEP_GOING" = 1 ]; then echo "audio_sweep: $1; next model (KEEP_GOING=1)" >&2; else echo "audio_sweep: $1" >&2; exit 1; fi
 }
 read -r -a M <<< "$MODELS"
 DL=runs/.downloads
@@ -52,13 +56,27 @@ if [ "${#M[@]}" -gt 1 ]; then
     BG=$!
 fi
 
-for m in "${M[@]}"; do
+model() {  # model <model>: the three steps; returns non-zero at the first step that fails
+    local m=$1 tag=${1#*/}
     wait_for "$m"
-    [ -f "runs/$NAMING/${m#*/}/audio_naming.csv" ] || uv run --frozen experiments/audio_naming.py --model "$m" --run "$NAMING" || keep_going "the $NAMING run of $m failed"
-    for r in "${RUN}_smoke" "${RUN}_smoke_repeat"; do
-        [ -f "runs/$r/${m#*/}/audio_sweep.csv" ] || uv run --frozen experiments/audio_sweep.py --model "$m" --run "$r" --gate-run "$NAMING" --n 5 --donor-gb "$DONOR_GB" || keep_going "the $r run of $m failed"
+    # 1. clean answers, then their gates
+    [ -f "runs/$CLEAN/$tag/audio_clean.csv" ] || uv run --frozen experiments/audio_clean.py --model "$m" --run "$CLEAN" || { echo "the $CLEAN run of $m failed" >&2; return 1; }
+    uv run --frozen scripts/audio_gate.py clean "runs/$CLEAN/$tag/summary.json" || { echo "$m: the clean answers fail their gates" >&2; return 1; }
+    # 2. the patch-only pilot twice, the same answers both times, and its controls
+    for r in "${RUN}_pilot" "${RUN}_pilot_repeat"; do
+        [ -f "runs/$r/$tag/audio_sweep.csv" ] || uv run --frozen experiments/audio_sweep.py --model "$m" --run "$r" --gate-run "$CLEAN" --parts patch --n 5 --donor-gb "$DONOR_GB" || { echo "the $r run of $m failed" >&2; return 1; }
     done
     # this model's pair only: on a shared volume another pod's model may still be mid-repeat
-    uv run --frozen scripts/compare_media.py --file audio_sweep.csv --model "${m#*/}" "runs/${RUN}_smoke" "runs/${RUN}_smoke_repeat" || keep_going "the two smoke runs of $m differ (listed above)"
-    [ -f "runs/$RUN/${m#*/}/audio_sweep.csv" ] || uv run --frozen experiments/audio_sweep.py --model "$m" --run "$RUN" --gate-run "$NAMING" --donor-gb "$DONOR_GB" || keep_going "the $RUN run of $m failed"
+    uv run --frozen scripts/compare_media.py --file audio_sweep.csv --model "$tag" "runs/${RUN}_pilot" "runs/${RUN}_pilot_repeat" || { echo "$m: the two pilot runs differ (listed above)" >&2; return 1; }
+    uv run --frozen scripts/audio_gate.py pilot "runs/${RUN}_pilot/$tag/summary.json" || { echo "$m: the pilot's controls fail" >&2; return 1; }
+    # 3. the full sweep, only when asked for after inspection
+    if [ "$FULL" != 1 ]; then
+        echo "$m: clean and pilot gates pass. Inspect runs/$CLEAN/$tag/audio_clean.csv and runs/${RUN}_pilot/$tag/ (audio_sweep.csv, summary.json), then run FULL=1 $0"
+        return 0
+    fi
+    [ -f "runs/$RUN/$tag/audio_sweep.csv" ] || uv run --frozen experiments/audio_sweep.py --model "$m" --run "$RUN" --gate-run "$CLEAN" --donor-gb "$DONOR_GB" || { echo "the $RUN run of $m failed" >&2; return 1; }
+}
+
+for m in "${M[@]}"; do
+    model "$m" || stop "$m stopped"
 done

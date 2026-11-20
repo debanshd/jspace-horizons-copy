@@ -1,4 +1,4 @@
-"""The matched spoken-audio set for experiments/audio_naming.py and experiments/audio_sweep.py: Nayan Saxena's
+"""The matched spoken-audio set for experiments/audio_clean.py and experiments/audio_sweep.py: Nayan Saxena's
 saxenan3/jspace-matched-spoken-audio.
 
 The 64 donor-receiver scenes of the matched video set (the same scene ids, labels and set-question names), each side a

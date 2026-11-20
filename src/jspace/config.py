@@ -93,7 +93,7 @@ VGG_CSV_REPO, VGG_CSV_REVISION = "Loie/VGGSound", "2ca3012ef85a60143a8f97b83a45b
 # The matched video set for experiments/video_sweep.py (plan.md, part 3): 64 donor-receiver scenes on the image experiment's
 # schedule, made by Nayan Saxena from Wikimedia Commons and uCO3D clips. None until scripts/pin_media.py pins it.
 MATCHED_REPO, MATCHED_REVISION = "saxenan3/jspace-matched-video", "e33c6ae8ab234c5e0f9819d0ba7a36a63a198d1f"
-# The matched spoken-audio set for experiments/audio_naming.py and audio_sweep.py: the same 64 scenes, each object's name spoken
+# The matched spoken-audio set for experiments/audio_clean.py and audio_sweep.py: the same 64 scenes, each object's name spoken
 # (15 recordings, one synthetic voice), by Nayan Saxena; pinned at the revision checked on 20 Nov 2026
 SPOKEN_REPO, SPOKEN_REVISION = "saxenan3/jspace-matched-spoken-audio", "d95fa45effb9559e73865a20348177ceb730702e"
 DATA_FILES = {

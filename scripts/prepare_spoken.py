@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Download the matched spoken-audio set (saxenan3/jspace-matched-spoken-audio) that experiments/audio_naming.py and
+"""Download the matched spoken-audio set (saxenan3/jspace-matched-spoken-audio) that experiments/audio_clean.py and
 audio_sweep.py read, and check it.
 
     uv run scripts/prepare_spoken.py
