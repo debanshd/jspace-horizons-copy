@@ -71,3 +71,22 @@ missed, 4 untestable; its moving and frozen inputs are untestable.
 About 18 L40S pod-hours in all (smoke checks and loading included), about $20. Each pod stopped itself when its chain ended.
 `torch.linalg.svd` warned once on Qwen3.5-4B and once on Gemma-4-E4B that a batch did not converge (the per-scene principal
 direction of the clean states); no summary holds a NaN.
+
+## The two large models: naming gates so far
+
+`clip_naming3` (PR #6's rule, `26657cd`) on Qwen3.5-27B and Gemma-4-31B, run on 19 November 2026 at 5:37 PM PST on an RTX PRO
+6000 (96 GB) each, from a new volume in US-MO-2. Run folders: `docs/clip_naming3_large_pro6000.tar.gz` (sha256
+`fc4f8f8410f973cf13b3dab3ad6f2f78053a1d1ee6280accf96e548851bd699e`).
+
+| model | moving | frozen | still | moving-input scene pairs | pairs, all three inputs |
+|---|---|---|---|---|---|
+| Qwen3.5-27B | 0.986 [0.96, 1.00] | 0.973 [0.93, 1.00] | 0.973 [0.93, 1.00] | 63 | 59 |
+| Gemma-4-31B | 1.000 [1.00, 1.00] | 0.986 [0.96, 1.00] | 0.986 [0.96, 1.00] | 64 | 60 |
+
+Both pass the 0.90 gate on every input; no answer hedged.
+
+The `video_sweep2` runs that followed on those cards were stopped during their first smoke run (nothing of them was kept): with
+the bf16 weights filling most of the 96 GB, the engine ran out of memory and fell back to batches of 3 to 33 prompts (Qwen) and
+6 (Gemma), which put the full runs at an estimated $150–250. They are being run again, the patching part only
+(`video_sweep2 --parts patch`, run name `video_sweep2_patch`), on H200s (141 GB) on the US-NC-1 volume; each pod runs its
+`clip_naming3` gate again first, so that a model's scenes are set on the hardware its sweep runs on.
