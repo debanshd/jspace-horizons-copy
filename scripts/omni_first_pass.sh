@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
-# The first GPU pass on the Qwen omni models (PR #14), before their lenses are extended to 1000 prompts (PR #12): a loading test.
-# Per model, on its 250-prompt lens:
-#   1. scripts/check_lens.py into runs/check_lens_n250 (beside Gemma-4-E4B's Neuronpedia lens, run there too): Session loads the
-#      thinker, its picture check must read the picture (the full thinker, model.entry_points), and the lens is read at every
-#      read layer. Its pass/fail decides nothing: the deciding lenses are the 1000-prompt ones, decided before this pass ran
-#      (config.DECIDING_LENS), and they get their own check_lens in runs/check_lens.
-#   2. experiments/audio_clean.py into runs/audio_clean: the audio path (the processor, the audio token, generation) on every
-#      recording and question. Its answers do not depend on the lens, so the chain later reads this run as its own.
-# A model that fails to load or to run stops with its error; the next model still runs.
+# What PR #14 runs for now: check_lens on the Qwen omni models, nothing else. No audio experiment runs (not audio_clean, not the
+# chain); those come later, on the 1000-prompt lenses, by a separate decision.
+# Per model, on its 250-prompt lens: scripts/check_lens.py into runs/check_lens_n250, beside Gemma-4-E4B's Neuronpedia lens (run
+# there too). Session loads the thinker, its picture check must read the picture (the full thinker, model.entry_points), and the
+# lens is read at every read layer against the model's own prediction. Its pass/fail decides nothing: the deciding lenses are
+# the 1000-prompt ones (config.DECIDING_LENS, written before this ran), which get their own check_lens in runs/check_lens.
+# A model that fails to load stops with its error; the next model still runs.
 #
 #   scripts/omni_first_pass.sh            all three on one H200 (Qwen3-Omni-30B-A3B needs it; the two 2.5s fit on an L40S)
 set -uo pipefail
@@ -17,7 +15,6 @@ REF=${REF:-google/gemma-4-E4B-it}
 RUN=check_lens_n250
 
 uv sync --frozen || exit 1
-uv run --frozen scripts/prepare_spoken.py || exit 1
 uv run --frozen scripts/download.py --skip-data --models "$REF" || exit 1
 [ -f "runs/$RUN/${REF#*/}/summary.json" ] || uv run --frozen scripts/check_lens.py --model "$REF" --run "$RUN" || exit 1
 for m in $MODELS; do
@@ -30,6 +27,4 @@ for m in $MODELS; do
         echo "$m: check_lens did not run to the end (loading or the picture check): see runs/$RUN/$tag/run.log" >&2
         continue
     fi
-    [ -f "runs/audio_clean/$tag/audio_clean.csv" ] || uv run --frozen experiments/audio_clean.py --model "$m" --run audio_clean || { echo "$m: audio_clean failed: see runs/audio_clean/$tag/run.log" >&2; continue; }
-    uv run --frozen python -c "import json, sys; s = json.load(open(sys.argv[1])); print('named', {i: r['named'] for i, r in s['recognition'].items()}, 'ready', s['ready'])" "runs/audio_clean/$tag/summary.json"
 done

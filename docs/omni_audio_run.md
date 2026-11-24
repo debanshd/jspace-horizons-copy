@@ -26,33 +26,46 @@ uv run --frozen python -c "from huggingface_hub import HfApi; from jspace.runs i
 
 This must print `4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75`.
 
-## 1. First pass: a loading test on the 250-prompt lenses (one H200, about 30 minutes)
+## 1. NOW: `check_lens` only (one H200, about 15 minutes)
 
-**If an earlier first pass ran before the end-token fix** (`omni_defaults`), its `audio_clean` answers ran to the token limit and
-are void. The chain would reuse them, so move them aside first. `check_lens_n250` generates nothing and stays as it is.
+**This is the only step to run now.** Steps 2 to 5 below come later, and only with a separate go-ahead.
+
+First, a clean-up. An earlier first pass, run before the end-token fix (`omni_defaults`), left `audio_clean` folders whose answers
+ran to the token limit. They are void, and a later chain would reuse them, so move them aside. `check_lens_n250` generates
+nothing, so its results stay valid; for Qwen3-Omni, which crashed at load, rerun it.
 
 ```bash
 mkdir -p runs/void_noeos && for m in Qwen2.5-Omni-3B Qwen2.5-Omni-7B Qwen3-Omni-30B-A3B-Instruct; do [ -d runs/audio_clean/$m ] && mv runs/audio_clean/$m runs/void_noeos/; done
 ```
 
+Then run the check:
+
 ```bash
 scripts/omni_first_pass.sh 2>&1 | tee runs/omni_first_pass.log
 ```
 
-For each model, this runs two things:
+It runs `check_lens` on each model's 250-prompt lens, into `runs/check_lens_n250`, and nothing else: no audio experiment. A model
+whose summary already exists there (the 3B, the 7B) is skipped, so this mainly runs Qwen3-Omni-30B-A3B. The check shows three
+things:
 
-- **`check_lens`, into `runs/check_lens_n250`.** It shows that `Session` loads the thinker, reads the picture through the full model, and reads the lens at every read layer. Its pass/fail decides nothing: the deciding lenses are the 1,000-prompt ones (`config.DECIDING_LENS`), decided before this pass.
-- **`audio_clean`.** It runs the audio path on every recording and question; its answers do not depend on the lens.
+- `Session` loads the thinker;
+- it reads the picture through the full model;
+- the lens is read at every read layer.
+
+Its pass/fail decides nothing; the deciding lenses are the 1,000-prompt ones (`config.DECIDING_LENS`).
 
 Report, for each model:
 
-- whether it loaded;
-- the `check_lens` numbers (`deepest`, `beats_logit_lens`, `jlens` by layer);
-- `audio_clean`'s `recognition` and `ready`.
+- whether it loaded and read the picture;
+- `deepest`, `beats_logit_lens` and `jlens` by layer from `runs/check_lens_n250/<model>/summary.json`.
 
-If a model fails to load, stop and report its `run.log`.
+If a model fails to load, report its `run.log`.
 
-## 2. Extend the lenses to 1,000 prompts (PR #12's code; one H200, about 9.4 hours, about $50)
+---
+
+**Later, not now:** steps 2 to 5 need a separate go-ahead.
+
+## 2. (Later) Extend the lenses to 1,000 prompts (PR #12's code; one H200, about 9.4 hours, about $50)
 
 Run this in the worktree that holds `runs/fit_lens` (the three 250-prompt fits), at PR #12's head:
 
@@ -65,12 +78,12 @@ Each lens is uploaded under `<model>/n1000/`. Report:
 - the repo's new commit;
 - each `runs/fit_lens_n1000/<model>/meta.json`: `n_prompts`, `lens_sha256`, and the merged parts.
 
-## 3. Pin the 1,000-prompt lenses (a commit to PR #14, not on the pod)
+## 3. (Later) Pin the 1,000-prompt lenses (a commit to PR #14, not on the pod)
 
 Each model's `lens_file` becomes `<model>/n1000/lens.pt`, with its sha256 and the new repo commit. Until then,
 `scripts/audio_sweep.sh` refuses the omni models.
 
-## 4. The audio chain on the deciding lenses
+## 4. (Later) The audio chain on the deciding lenses
 
 The two Qwen2.5-Omni models (an L40S is enough, but the H200 works too):
 
@@ -82,7 +95,7 @@ For each model, the chain runs these steps in order:
 
 1. **Download:** the checkpoint and the deciding lens, its sha256 checked.
 2. **`check_lens`, into `runs/check_lens`:** the deciding check. If it fails, the model stops.
-3. **`audio_clean`:** read from the first pass.
+3. **`audio_clean`.**
 4. **`audio_rules`.**
 5. **Pilot:** the spoken / frozen / typed pilot, run twice and compared, then its gates. Then the chain stops for inspection.
 
@@ -116,7 +129,7 @@ SWEEP=audio_sweep_static MODELS="Qwen/Qwen3-Omni-30B-A3B-Instruct" FULL=1 script
 - **`audio_clean` not ready:** the model does not name the recordings, or does not apply the say or animal rule, with the question first. Its audio is untestable by this design.
 - **The pilot's controls fail on the spoken input:** stop and report. A frozen input the model does not recognize is untestable and does not stop the chain.
 
-## 5. Compare with video, report, stop
+## 5. (Later) Compare with video, report, stop
 
 None of these models was run on video, so the audio results stand alone; this comparison lists them as missing.
 
