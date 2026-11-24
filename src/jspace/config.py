@@ -17,6 +17,12 @@ class ModelSpec:
     lens_sha256: str  # of the lens file the original runs read
     jpp_file: str | None = None  # J++ lens file, where Neuronpedia fitted one
     jpp_sha256: str | None = None
+    lens_repo: str | None = None  # a lens from another Hub repo than LENS_REPO (None: LENS_REPO at LENS_REVISION)
+    lens_revision: str | None = None  # that repo's pinned commit
+
+    def lens_source(self):
+        """(repo, revision) the lens files are read from"""
+        return (self.lens_repo, self.lens_revision) if self.lens_repo else (LENS_REPO, LENS_REVISION)
 
 
 LENS_REPO = "neuronpedia/jacobian-lens"
@@ -79,6 +85,19 @@ MODELS = {
         size_gb=10.3,
         lens_file="gemma-4-e2b/jlens/Salesforce-wikitext/gemma-4-E2B_jacobian_lens.pt",
         lens_sha256="f0fbecd3de565d93fd088292b3c12b56f39a47f7ea0698a3ca5301c9690a6ab8",
+    ),
+    # added 24 Nov for the audio experiments: the third Gemma-4 that takes audio (48 layers, d 3840; audio embedded straight into
+    # the language model). Neuronpedia has no lens for it, so the lens is hlampes/jacobian-lens's: Neuronpedia's format, every
+    # source layer 0 to 46, fitted on 250 WikiText prompts, uploaded 6 Aug 2026 with no card or licence. Every commit of the
+    # model has the same weights, so the lens fits the pinned one; 707f0a3b is the last before the 30 Oct tokenizer change.
+    # scripts/check_lens.py tests the lens against the model before any audio run uses it.
+    "google/gemma-4-12B-it": ModelSpec(
+        revision="707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7",
+        size_gb=23.9,
+        lens_file="gemma-4-12B-it/WikiText/gemma-4-12B-it-lens.pt",
+        lens_sha256="a8fa480c674be8d263e4899dc02b9c201ee8e95bba15262c73065fb9fc92a61a",
+        lens_repo="hlampes/jacobian-lens",
+        lens_revision="b23c89843f001b9cd14999f6d5a188c1c39a9146",
     ),
 }
 

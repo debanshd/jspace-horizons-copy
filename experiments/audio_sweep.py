@@ -63,6 +63,7 @@ from media_steer import DOSES, N_NEW, has_audio, phase_a, phase_b  # noqa: E402
 
 from jspace import batched, lens, matched, spoken, strict  # noqa: E402
 from jspace import media as media_rules  # noqa: E402
+from jspace.analysis import boot_scene  # noqa: E402
 from jspace.config import require_data  # noqa: E402
 from jspace.model import Session  # noqa: E402
 from jspace.runs import Run, parser  # noqa: E402
@@ -71,9 +72,39 @@ QUESTIONS_A = dict(spoken.QUESTIONS)
 assert list(QUESTIONS_A) == list(vs.QUESTIONS)  # the same questions in the same order, so video_sweep's rows and summary apply
 
 
-def prompt_messages(inp, task, r):
+# audio_sweep_static's inputs beside q_audio, the counterparts of video_sweep2's frozen video and still picture: the recording
+# with its spoken span frozen (spoken.frozen), and the word typed as a transcript; both with the question first
+STATIC = {"q_frozen": "frozen", "q_typed": "typed"}
+INPUTS_ALL = spoken.INPUTS + list(STATIC)
+TYPED = "Transcript of the audio: {word}"
+
+
+def prompt_messages(inp, task, r, word=None):
+    """the user turn of an input (or of a captured state of it: "q_typed@donor~say"); the typed input needs the word it types"""
     base = inp.split("@")[0]
-    return [{"role": "user", "content": spoken.content(base, QUESTIONS_A[task].format(a=r["set"][0], b=r["set"][1], c=r["set"][2]))}]
+    q = QUESTIONS_A[task].format(a=r["set"][0], b=r["set"][1], c=r["set"][2])
+    if base == "q_typed":
+        assert word, "the typed input types a word"
+        return [{"role": "user", "content": [{"type": "text", "text": q}, {"type": "text", "text": TYPED.format(word=word)}]}]
+    return [{"role": "user", "content": spoken.content("q_audio" if base in STATIC else base, q)}]
+
+
+def audio_for(inp, wav):
+    """what an input plays: the recording, its frozen version, or nothing (typed)"""
+    base = inp.split("@")[0]
+    return None if base == "q_typed" else spoken.frozen(wav) if base == "q_frozen" else wav
+
+
+def typed_span(enc_receiver, enc_donor):
+    """the typed word's place, from the end of the prompt: the one position where the receiver's and the donor's typed prompts
+    differ (each word one token); anything else stops the run"""
+    a, b = enc_receiver["input_ids"][0], enc_donor["input_ids"][0]
+    if a.shape != b.shape:
+        raise SystemExit(f"the typed prompts differ in length ({a.shape[0]} and {b.shape[0]}): a word is not one token")
+    d = torch.nonzero(a != b).flatten().tolist()
+    if len(d) != 1:
+        raise SystemExit(f"the typed prompts differ at {d}, not at one position")
+    return batched.Span([d[0] - a.shape[0]])
 
 
 def capture_input(inp, role, task):
@@ -140,7 +171,8 @@ def donor_clean(R, inputs):
 
 
 def audio_positions(enc, token_id):
-    return torch.nonzero(enc["input_ids"][0] == token_id).flatten().tolist()
+    """the media positions of a prompt: its audio tokens, or a Span's places"""
+    return batched.media_positions(enc["input_ids"][0].tolist(), token_id)
 
 
 def check_alignment(encs, inp, scenes, token_id):
@@ -151,9 +183,15 @@ def check_alignment(encs, inp, scenes, token_id):
         for s in scenes:
             p = audio_positions(encs[(inp, task, s)], token_id)
             for role in ("donor", "self"):
-                q = audio_positions(encs[(capture_input(inp, role, task), task, s)], token_id)
+                e = encs[(capture_input(inp, role, task), task, s)]
+                q = audio_positions(e, token_id)
                 if p != q or not p:
                     raise SystemExit(f"{inp} scene {s} {task}: the {role} prompt's audio tokens ({len(q)}) are not at the receiver's positions ({len(p)})")
+                if isinstance(token_id, batched.Span):  # a typed word: the same prompt but for the word, which sits at the span
+                    a, b = encs[(inp, task, s)]["input_ids"][0], e["input_ids"][0]
+                    d = torch.nonzero(a != b).flatten().tolist() if a.shape == b.shape else None
+                    if d is None or not set(d) <= set(p):
+                        raise SystemExit(f"{inp} scene {s} {task}: the {role} prompt differs from the receiver's outside the typed word")
             counts.setdefault(task, set()).add(len(p))
     return {t: sorted(c) for t, c in counts.items()}
 
@@ -164,6 +202,45 @@ def order_compare(patch):
     if not all(isinstance(cut.get(i), dict) for i in spoken.INPUTS):
         return "untestable"
     return dict(same=bool(same_horizons(cut["q_audio"], cut["audio_q"])), q_audio=cut["q_audio"], audio_q=cut["audio_q"])
+
+
+def static_compare(patch, inputs):
+    """video_sweep's P4 and P5 for the audio counterparts: the spoken word against its frozen version (P4) and against the typed
+    word (P5), kept when their horizons are within one window (media_patch.same_horizons); written into q_audio's predictions"""
+    out = {}
+    for key, other in (("P4", "q_frozen"), ("P5", "q_typed")):
+        if "q_audio" not in inputs or other not in inputs:
+            continue
+        a, b = patch["cut"].get("q_audio"), patch["cut"].get(other)
+        out[key] = dict(other=other, verdict=("kept" if same_horizons(a, b) else "missed") if isinstance(a, dict) and isinstance(b, dict) else "untestable")
+        if isinstance(patch["predictions"].get("q_audio"), dict):
+            patch["predictions"]["q_audio"][key] = out[key]["verdict"]
+    return out
+
+
+def steer_static_compare(R, inputs, BL, dose_of, smoke):
+    """video_sweep.steer_compare with q_audio for the moving video: the paired say-follows-Y difference per block at q_audio's
+    dose, on the held-out scenes (>= N_CAL), "same" when the 95% interval lies within +-0.15 in every block"""
+    if smoke:
+        return "smoke check: counts only, no comparison"
+    if "q_audio" not in inputs:
+        return {}
+    held = np.sort(R[R["scene"] >= vs.N_CAL]["scene"].unique())
+    if not len(held):
+        raise ValueError(f"no held-out scenes (scene >= {vs.N_CAL}) to compare on")
+    out = {}
+    for other in [i for i in STATIC if i in inputs]:
+        e = {}
+        for bn in BL:
+            v = {}
+            for inp in ("q_audio", other):
+                d = R[(R["input"] == inp) & (R["task"] == "say") & (R["family"] == "steer") & (R["site"] == "media") & (R["key"] == "Y") & (R["set"] == bn) & (R["dose"] == dose_of["q_audio"])]
+                v[inp] = d.set_index("scene")["follows_Y"].astype(float).reindex(held).to_numpy()
+            bd = boot_scene(v["q_audio"] - v[other], held)
+            e[bn] = dict(diff=bd, same=bool(bd[1] >= -0.15 and bd[2] <= 0.15))
+        e["verdict"] = "same" if all(e[bn]["same"] for bn in BL) else "differs"
+        out[f"q_audio vs {other}"] = e
+    return out
 
 
 def waveform_png(wavs, labels, path, w=1200, h=160):
@@ -180,11 +257,22 @@ def waveform_png(wavs, labels, path, w=1200, h=160):
     im.save(path)
 
 
-def main():
-    ap = parser(__doc__, "audio_sweep")
+def both_orders(args, gate, gate_dir):
+    """audio_sweep's schedule: audio_clean's ready (both orders) and its gated scenes; nothing added to the gate record"""
+    if not gate.get("ready"):
+        raise SystemExit(f"{gate_dir / 'summary.json'}: the clean answers do not pass audio_clean's gates (ready is false); nothing to patch")
+    return vs2.gated_scenes(gate, args.n), {}
+
+
+BOTH = ",".join(spoken.INPUTS)
+
+
+def main(experiment="audio_sweep", doc=__doc__, schedule=both_orders, default_inputs=BOTH):
+    """the sweep; audio_sweep_qfirst gives its own name, docstring, schedule (one order's gate) and inputs"""
+    ap = parser(doc, experiment)
     ap.add_argument("--gate-run", default="audio_clean", help="the audio_clean run whose gated schedule this model runs on")
     ap.add_argument("--n", type=int, default=0, help="the first N gated scenes, for a pilot (counts only); 0 for all")
-    ap.add_argument("--inputs", default=",".join(spoken.INPUTS))
+    ap.add_argument("--inputs", default=default_inputs)
     ap.add_argument("--parts", default="patch,steer", help="patch, steer, or both")
     ap.add_argument("--donor-gb", type=float, default=16.0, help="host memory for donor states at a time: scenes run in chunks that fit")
     ap.add_argument("--max-rows", type=int, default=512)
@@ -194,11 +282,9 @@ def main():
     if not gate_file.exists():
         raise SystemExit(f"{gate_file} not found: run audio_clean for {args.model} first")
     gate = json.loads(gate_file.read_text())
-    if not gate.get("ready"):
-        raise SystemExit(f"{gate_file}: the clean answers do not pass audio_clean's gates (ready is false); nothing to patch")
-    wanted = vs2.gated_scenes(gate, args.n)
+    wanted, gate_extra = schedule(args, gate, gate_file.parent)
     smoke = args.n > 0
-    run = Run(args, "audio_sweep")
+    run = Run(args, experiment)
     lm = Session(args.model)
     if not has_audio(lm):
         raise SystemExit(f"{lm.name} takes no audio")
@@ -206,7 +292,7 @@ def main():
     t0 = time.time()
     mon = batched.GpuMonitor(run.path("gpu.csv"))
     parts, inputs = set(args.parts.split(",")), args.inputs.split(",")
-    assert set(inputs) <= set(spoken.INPUTS), inputs
+    assert set(inputs) <= set(INPUTS_ALL), inputs
     root = args.data_dir / spoken.DIR
     by_id = {m["scene_id"]: m for m in spoken.scenes(args.data_dir)}
     meta = [by_id[s] for s in wanted]
@@ -221,8 +307,12 @@ def main():
         for role in ("donor", "receiver"):
             media[(role, sc)] = spoken.load_wav(root / m[f"{role}_audio"])
             used[m[f"{role}_audio_id"]] = m[f"{role}_sha256"]
-    run.save_json(dict(scenes=S, recordings=used, gate=dict(run=args.gate_run, file=str(gate_file), scenes=wanted)), "scenes.json")
-    waveform_png([media[("receiver", S[0]["scene"])], media[("donor", S[0]["scene"])]], [f"scene {S[0]['scene']} receiver: {S[0]['X']}", f"donor: {S[0]['Y']}"], run.path("stimuli.png"))
+    run.save_json(dict(scenes=S, recordings=used, gate=dict(run=args.gate_run, file=str(gate_file), scenes=wanted, **gate_extra)), "scenes.json")
+    shown = [media[("receiver", S[0]["scene"])], media[("donor", S[0]["scene"])]]
+    names = [f"scene {S[0]['scene']} receiver: {S[0]['X']}", f"donor: {S[0]['Y']}"]
+    if "q_frozen" in inputs:  # what the frozen input plays
+        shown, names = shown + [spoken.frozen(shown[0])], names + [f"receiver, frozen: {S[0]['X']}"]
+    waveform_png(shown, names, run.path("stimuli.png"))
     print(f"{len(S)} scenes from {args.gate_run}; {len(used)} recordings  [{time.time() - t0:.0f}s]")
 
     ID = {w: lm.single_ids([w, " " + w, w.capitalize(), " " + w.capitalize()]) for w in matched.VOCAB}
@@ -231,11 +321,13 @@ def main():
     assert not missing, f"no single-token form of {missing} in {lm.name}'s tokenizer"
 
     def encode(messages, wav):
-        enc = lm.processor(text=[lm.chat_messages(messages)], audio=[wav], return_tensors="pt")
+        text = lm.chat_messages(messages)
+        enc = lm.processor(text=[text], audio=[wav], return_tensors="pt") if wav is not None else lm.processor(text=[text], return_tensors="pt")
         return {k: (v.to(lm.dtype) if torch.is_tensor(v) and k in batched.FLOAT_KEYS else v) for k, v in enc.items()}
 
     def enc_for(inp, task, r, role="receiver"):
-        return encode(prompt_messages(inp, task, r), media[(role, r["scene"])])
+        word = r["Y"] if role == "donor" else r["X"]  # a self prompt is the receiver's own
+        return encode(prompt_messages(inp, task, r, word), audio_for(inp, media[(role, r["scene"])]))
 
     n_layers, d = lm.final + 1, lm.d_model
     LF = lm.all_layers()
@@ -266,13 +358,15 @@ def main():
         del lm.jac[L]
     torch.cuda.empty_cache()
     tid = int(lm.processor.audio_token_id)
-    token = {}
+    token, medium = {}, {}
     for inp in inputs:
-        token[inp] = tid
+        # the typed input has no audio token: its media position is the typed word's place (a batched.Span)
+        tok = typed_span(enc_for(inp, "say", S[0]), enc_for(inp, "say", S[0], "donor")) if inp == "q_typed" else tid
+        med = "text" if inp == "q_typed" else "sound"
+        token[inp], medium[inp] = tok, med
         for role in ("donor", "self"):
             for task in QUESTIONS_A:
-                token[capture_input(inp, role, task)] = tid
-    medium = {k: "sound" for k in token}
+                token[capture_input(inp, role, task)], medium[capture_input(inp, role, task)] = tok, med
 
     budget = {}
 
@@ -310,7 +404,7 @@ def main():
         print(f"{inp}: dose units ready  [{time.time() - t0:.0f}s]")
 
         # pass 2: per chunk of scenes, the donor's and self states under every question, then every patching row and phase A
-        tok0 = int((enc_for(inp, "say", S[0])["input_ids"] == tid).sum())
+        tok0 = len(audio_positions(enc_for(inp, "say", S[0]), token[inp]))
         gb = 2 * len(QUESTIONS_A) * tok0 * d * len(LF) * 2 / 2**30  # both roles, every question, every layer, fp16
 
         def chunks():
@@ -326,7 +420,7 @@ def main():
                     encs[(inp, task, r["scene"])] = enc_for(inp, task, r)
                     encs[(capture_input(inp, "donor", task), task, r["scene"])] = enc_for(capture_input(inp, "donor", task), task, r, "donor")
                     encs[(capture_input(inp, "self", task), task, r["scene"])] = enc_for(capture_input(inp, "self", task), task, r, "receiver")
-            for task, c in check_alignment(encs, inp, [r["scene"] for r in g], tid).items():
+            for task, c in check_alignment(encs, inp, [r["scene"] for r in g], token[inp]).items():
                 setup["layout"].setdefault(inp, {}).setdefault(task, set()).update(c)
             eng = engine(encs)
             T.donor[inp] = {L: {} for L in LF}
@@ -354,7 +448,7 @@ def main():
         print(f"{inp}: patching and phase A done  [{time.time() - t0:.0f}s]")
 
     R = pd.concat(R_parts, ignore_index=True)
-    out = dict(n=len(S), smoke=smoke, gate=dict(run=args.gate_run, scenes=wanted))
+    out = dict(n=len(S), smoke=smoke, gate=dict(run=args.gate_run, scenes=wanted, **gate_extra))
     family, kv = ("gemma" if "gemma" in lm.name.lower() else "qwen"), kv_limit(lm)
     starts = dose_of = None
     if "steer" in parts:
@@ -379,8 +473,11 @@ def main():
     out.update(vs2.summaries(R, S, inputs, parts, n_layers, AL, family, kv, BL, starts, dose_of, smoke))
     if "patch" in out:
         out["order_compare"] = order_compare(out["patch"])
+        out["static_compare"] = static_compare(out["patch"], inputs)
         out["controls_pass"] = controls_pass(out["patch"], inputs)
         out["donor_clean"] = donor_clean(R, inputs)
+    if "steer" in parts:
+        out["steer_static_compare"] = steer_static_compare(R[R["family"].isin(["clean", "steer", "knockout", "ablate", "sweep"])], inputs, BL, dose_of, smoke)
     out["hit_limit"] = float(R["hit_limit"].astype(float).mean())
     run.save_csv(R, "audio_sweep.csv")
     gpu = mon.stop()

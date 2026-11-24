@@ -80,7 +80,8 @@ def main():
             continue
         run = Run(argparse.Namespace(model=f.name, run=args.run, runs_dir=args.runs_dir), "rescore_strict")
         sets = {r["scene"]: r["set"] for r in json.loads((f / "clips.json").read_text())["scenes"]}
-        raw = pd.read_csv(f / "video_sweep2.csv", low_memory=False)
+        # the window start ("set") is text in the rows; a patch-only CSV has no other values there, so pandas would read numbers
+        raw = pd.read_csv(f / "video_sweep2.csv", low_memory=False, dtype={"set": str})
         R = rescore(raw, sets)
         inputs = saved["setup"]["inputs"]
         args_ps = (inputs, n_layers_of(R), saved["setup"]["family"], saved["setup"]["kv_limit"])

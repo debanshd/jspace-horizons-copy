@@ -58,15 +58,39 @@ def encoder_kwargs(fn, enc):
     return {k: enc[k] for k in inspect.signature(fn).parameters if k != "kwargs" and k in enc}
 
 
+class Span:
+    """media positions given by place, for an input with no media token of its own (audio_sweep_static's typed transcript):
+    offsets from the end of the prompt, the same in every row of the input. Everywhere a media token id is taken, a Span may be
+    given instead; an int keeps the token-id behaviour unchanged."""
+
+    def __init__(self, from_end):
+        self.from_end = tuple(sorted(int(p) for p in from_end))
+        assert self.from_end and all(p < 0 for p in self.from_end), "offsets from the end are negative"
+
+    def __repr__(self):
+        return f"Span{self.from_end}"
+
+
+def is_media(ids, token):
+    """bool mask of the media positions in ids ([s] or [b, s]): the token id's places, or a Span's"""
+    if isinstance(token, Span):
+        m = torch.zeros_like(ids, dtype=torch.bool)
+        m[..., list(token.from_end)] = True
+        return m
+    return ids == token
+
+
 def assert_unpadded(enc, token_id):
     """no padding in the batch, and the media tokens at the same positions in every row (so one position list serves all)"""
     assert bool(enc["attention_mask"].all()), "a batch has padding: its prompts differ in length"
-    m = enc["input_ids"] == token_id
+    m = is_media(enc["input_ids"], token_id)
     assert bool((m == m[:1]).all()), "the rows of a batch place their media tokens differently"
 
 
 def media_positions(ids_row, token_id):
     """positions of the media tokens in one row (a list of ids)"""
+    if isinstance(token_id, Span):
+        return [len(ids_row) + p for p in token_id.from_end]
     return [j for j, t in enumerate(ids_row) if t == token_id]
 
 
@@ -160,8 +184,8 @@ def attention_layers(lm):
 def knockout_mask(ids_row, token_id, blocked):
     """[b, 1, s, s] bool, True where attention is removed: from every non-media query to every media key, for the rows in
     `blocked` ([b] bool). Text between frames (timestamps) is a query too, so no text token carries the media forward."""
-    is_media = ids_row == token_id
-    base = (~is_media)[:, None] & is_media[None, :]
+    media = is_media(ids_row, token_id)
+    base = (~media)[:, None] & media[None, :]
     return blocked[:, None, None, None] & base[None, None]
 
 
@@ -251,7 +275,7 @@ class Engine:
         key = (r["input"], r["task"], r["scene"])
         if key not in self._layouts:
             ids = self.encs[key]["input_ids"][0]
-            self._layouts[key] = (int(ids.shape[0]), hash(tuple(torch.nonzero(ids == self.token[r["input"]]).flatten().tolist())))
+            self._layouts[key] = (int(ids.shape[0]), hash(tuple(torch.nonzero(is_media(ids, self.token[r["input"]])).flatten().tolist())))
         return self._layouts[key]
 
     def _batch_cpu(self, rows, use_cache):
