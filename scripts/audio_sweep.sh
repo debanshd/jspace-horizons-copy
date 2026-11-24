@@ -14,6 +14,7 @@
 #   scripts/audio_sweep.sh                                 steps 1 and 2 for Gemma-4-E2B, E4B and 12B (an L40S); then stop
 #   FULL=1 scripts/audio_sweep.sh                          step 3 too, for each model whose clean and pilot gates pass
 #   SWEEP=audio_sweep_qfirst scripts/audio_sweep.sh        the question-first sweep (runs as audio_sweep_qfirst*)
+#   SWEEP=audio_sweep_static scripts/audio_sweep.sh        spoken, frozen and typed words, question first (audio_sweep_static*)
 #
 # A model whose gate fails is skipped; KEEP_GOING=1 goes on to the next model instead of stopping. DONOR_GB as in
 # video_sweep.sh: it must stay the same for a model's pilot and its repeat.
@@ -24,10 +25,11 @@ LENS_REF=${LENS_REF:-google/gemma-4-E4B-it}   # the model whose Neuronpedia lens
 # Gemma-4-12B's other lens (25 of its layers, 1000 prompts), read beside its own at the layers they share: reported, not judged
 EXTRA_LENS=${EXTRA_LENS:-lamm-mit/gemma4-jacobian-lenses:gemma4-12b-it/paper/seed0.pt@c095b094c52dd7afeb1310bb97ea35dc5005e12f}
 CLEAN=${CLEAN:-audio_clean}
-SWEEP=${SWEEP:-audio_sweep}   # audio_sweep (both orders) or audio_sweep_qfirst (the question first)
+SWEEP=${SWEEP:-audio_sweep}   # audio_sweep (both orders), audio_sweep_qfirst (the question first) or audio_sweep_static (with
+                              # the frozen and typed counterparts of video_sweep2's frozen video and still picture)
 RUN=${RUN:-$SWEEP}
 RULES=${RULES:-1}
-case "$SWEEP" in audio_sweep|audio_sweep_qfirst) ;; *) echo "SWEEP must be audio_sweep or audio_sweep_qfirst" >&2; exit 1;; esac
+case "$SWEEP" in audio_sweep|audio_sweep_qfirst|audio_sweep_static) ;; *) echo "SWEEP must be audio_sweep, audio_sweep_qfirst or audio_sweep_static" >&2; exit 1;; esac
 DONOR_GB=${DONOR_GB:-16}
 KEEP_GOING=${KEEP_GOING:-0}
 FULL=${FULL:-0}
@@ -82,7 +84,7 @@ model() {  # model <model>: the three steps; returns non-zero at the first step 
     if [ "$RULES" = 1 ]; then  # a diagnosis, never a gate
         [ -f "runs/audio_rules/$tag/audio_rules.csv" ] || uv run --frozen experiments/audio_rules.py --model "$m" --run audio_rules --clean-run "$CLEAN" || { echo "the audio_rules run of $m failed" >&2; return 1; }
     fi
-    if [ "$SWEEP" = audio_sweep ]; then  # audio_sweep_qfirst checks its own one-order gates and stops before loading the model
+    if [ "$SWEEP" = audio_sweep ]; then  # the question-first sweeps check their own one-order gates before loading the model
         uv run --frozen scripts/audio_gate.py clean "runs/$CLEAN/$tag/summary.json" || { echo "$m: the clean answers fail their gates" >&2; return 1; }
     fi
     # 2. the patch-only pilot twice, the same answers both times, and its controls

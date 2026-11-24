@@ -75,6 +75,30 @@ def noise(seed=0, rms=0.02):
     return (np.random.default_rng(seed).standard_normal(N_SAMPLES) * rms).astype(np.float32)
 
 
+N_TOKENS = 75  # the audio tokens of a 3-second clip in Gemma-4's processors (40 ms each)
+
+
+def speech_span(x, n_blocks=N_TOKENS, floor=0.1):
+    """(first, last) of the 40-ms blocks whose RMS reaches `floor` of the loudest block's: where the word is spoken"""
+    b = len(x) // n_blocks
+    rms = np.sqrt((x[: b * n_blocks].reshape(n_blocks, b).astype(np.float64) ** 2).mean(1))
+    on = np.nonzero(rms >= floor * rms.max())[0]
+    return int(on[0]), int(on[-1])
+
+
+def frozen(x, n_blocks=N_TOKENS):
+    """the audio counterpart of a frozen video (its middle sampled frame repeated): every 40-ms block of the spoken span replaced
+    by the span's middle block, the silence around it kept. The length, and so the audio-token count and positions, stay; what
+    changes over time within the word goes."""
+    b = len(x) // n_blocks
+    first, last = speech_span(x, n_blocks)
+    mid = (first + last) // 2
+    y = x.copy()
+    for k in range(first, last + 1):
+        y[k * b : (k + 1) * b] = x[mid * b : (mid + 1) * b]
+    return y
+
+
 def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 

@@ -419,3 +419,81 @@ def test_check_lens_prompts_and_gate(tmp_path):
     s["passes"] = False
     (tmp_path / "s.json").write_text(json.dumps(s))
     assert subprocess.run([sys.executable, str(ROOT / "scripts/audio_gate.py"), "lens", str(tmp_path / "s.json")]).returncode == 1
+
+
+def test_span_positions_and_masks_leave_token_ids_unchanged():
+    from jspace import batched
+
+    ids = torch.tensor([[5, 9, 9, 6, 7, 8], [5, 9, 9, 6, 4, 8]])
+    assert batched.media_positions(ids[0].tolist(), 9) == [1, 2]  # a token id, as before
+    sp = batched.Span([-2])
+    assert batched.media_positions(ids[0].tolist(), sp) == [4]
+    assert batched.is_media(ids, sp).tolist() == [[False] * 4 + [True, False]] * 2
+    batched.assert_unpadded({"input_ids": ids, "attention_mask": torch.ones_like(ids)}, sp)  # the rows differ only at the span
+    m = batched.knockout_mask(ids[0], sp, torch.tensor([True]))
+    assert m.shape == (1, 1, 6, 6) and bool(m[0, 0, 5, 4]) and not bool(m[0, 0, 4, 4]) and not bool(m[0, 0, 5, 1])
+    assert batched.knockout_mask(ids[0], 9, torch.tensor([True]))[0, 0, 3, 1]  # token ids as before
+    with pytest.raises(AssertionError):
+        batched.Span([1])
+
+
+def test_frozen_audio_repeats_the_middle_block_of_the_word():
+    x = np.zeros(spoken.N_SAMPLES, np.float32)
+    b = spoken.N_SAMPLES // spoken.N_TOKENS
+    t = np.arange(b * 6) / spoken.SAMPLE_RATE
+    x[b * 7 : b * 13] = 0.5 * np.sin(2 * np.pi * (200 + 300 * t / t[-1]) * t)  # a chirp over blocks 7..12
+    assert spoken.speech_span(x) == (7, 12)
+    y = spoken.frozen(x)
+    assert y.shape == x.shape and np.array_equal(y[: 7 * b], x[: 7 * b]) and np.array_equal(y[13 * b :], x[13 * b :])
+    mid = x[9 * b : 10 * b]  # (7 + 12) // 2
+    assert all(np.array_equal(y[k * b : (k + 1) * b], mid) for k in range(7, 13)) and not np.array_equal(y, x)
+
+
+def test_static_inputs_prompts_and_the_typed_span():
+    sw = load("audio_sweep")
+    r = dict(set=["cat", "bus", "clock"])
+    t = sw.prompt_messages("q_typed@donor~animal", "animal", r, "horse")[0]["content"]
+    assert [p["type"] for p in t] == ["text", "text"] and t[0]["text"] == spoken.QUESTIONS["animal"] and t[1]["text"] == "Transcript of the audio: horse"
+    f = sw.prompt_messages("q_frozen@self~say", "say", r)[0]["content"]
+    assert [p["type"] for p in f] == ["text", "audio"]  # the question first, as q_audio
+    wav = np.zeros(spoken.N_SAMPLES, np.float32)
+    wav[5000:9000] = 0.3
+    assert sw.audio_for("q_typed", wav) is None and sw.audio_for("q_audio", wav) is wav and sw.audio_for("q_frozen@donor~say", wav).shape == wav.shape
+    enc = lambda ids: {"input_ids": torch.tensor([ids])}  # noqa: E731
+    sp = sw.typed_span(enc([1, 2, 3, 40, 7, 8]), enc([1, 2, 3, 41, 7, 8]))
+    assert sp.from_end == (-3,)
+    with pytest.raises(SystemExit):
+        sw.typed_span(enc([1, 2, 40, 7]), enc([1, 2, 41, 42, 7]))  # a word of two tokens
+    encs = {}
+    for task in sw.QUESTIONS_A:
+        encs[("q_typed", task, 0)] = enc([1, 2, 3, 40, 7, 8])
+        encs[(sw.capture_input("q_typed", "donor", task), task, 0)] = enc([1, 2, 3, 41, 7, 8])
+        encs[(sw.capture_input("q_typed", "self", task), task, 0)] = enc([1, 2, 3, 40, 7, 8])
+    assert sw.check_alignment(encs, "q_typed", [0], sp) == {t: [1] for t in sw.QUESTIONS_A}
+    encs[(sw.capture_input("q_typed", "donor", "set"), "set", 0)] = enc([1, 9, 3, 41, 7, 8])  # differs outside the word
+    with pytest.raises(SystemExit):
+        sw.check_alignment(encs, "q_typed", [0], sp)
+
+
+def test_static_compare_writes_p4_and_p5():
+    sw = load("audio_sweep")
+    a = dict(L_say=19, L_use=7, rule_read=True)
+    patch = dict(cut={"q_audio": a, "q_frozen": "not perceived, untestable", "q_typed": dict(a, L_use=11)}, predictions={"q_audio": {"P1": "kept"}})
+    out = sw.static_compare(patch, ["q_audio", "q_frozen", "q_typed"])
+    assert out["P4"]["verdict"] == "untestable" and out["P5"]["verdict"] == "kept"
+    assert patch["predictions"]["q_audio"] == {"P1": "kept", "P4": "untestable", "P5": "kept"}
+    assert sw.static_compare(dict(cut={"q_audio": a}, predictions={}), ["q_audio"]) == {}
+
+
+def test_steer_static_compare():
+    sw = load("audio_sweep")
+    rows = []
+    for inp in ("q_audio", "q_typed"):
+        for s in range(16, 26):
+            for bn in ("early", "late"):
+                y = (inp == "q_audio" or bn == "early") and s % 5 != 0
+                rows.append(dict(input=inp, task="say", family="steer", site="media", key="Y", set=bn, dose=2.0, scene=s, follows_Y=y))
+    out = sw.steer_static_compare(pd.DataFrame(rows), ["q_audio", "q_typed"], ["early", "late"], {"q_audio": 2.0}, False)
+    e = out["q_audio vs q_typed"]
+    assert e["early"]["same"] and not e["late"]["same"] and e["verdict"] == "differs"
+    assert sw.steer_static_compare(pd.DataFrame(rows), ["q_audio"], ["early"], {"q_audio": 2.0}, True).startswith("smoke")
