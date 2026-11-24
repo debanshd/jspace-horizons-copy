@@ -34,7 +34,7 @@ The rule (written before the run):
   say (>= 0.90) and animal (>= 0.85), and so do the donors under the receiver's question. audio_sweep and the launcher stop
   unless ready. The other three questions are reported, not gated, as in video_sweep.
 - Controls: per audio order, whether the say answer to silence and to noise is a valid object name (reported, not gated).
-Run on the audio-capable models (Gemma-4-E2B and E4B); a model without an audio tower stops the run.
+Run on the audio-capable models (Gemma-4-E2B, E4B and, from 24 Nov, 12B); a model that takes no audio stops the run.
 
 Outputs in runs/<run>/<model>/: audio_clean.csv (every answer), summary.json, config.json, run.log.
 """

@@ -7,9 +7,11 @@
 #   2. a 5-scene patch-only pilot of experiments/audio_sweep.py (clean, self, full donor, per-window arms), twice, compared
 #      answer by answer; then its controls must pass (scripts/audio_gate.py pilot). Matching answers alone are not enough.
 #   3. the full sweep, only with FULL=1, after the pilot's outputs have been inspected (the CSV and summary.json).
-# A step whose output exists is skipped, so the chain picks up where it stopped.
+# Before step 1, a model whose lens is not Neuronpedia's (Gemma-4-12B: hlampes/jacobian-lens) must pass scripts/check_lens.py
+# against LENS_REF's lens; otherwise the model is skipped. A step whose output exists is skipped, so the chain picks up where it
+# stopped.
 #
-#   scripts/audio_sweep.sh                                 steps 1 and 2 for Gemma-4-E2B and E4B (an L40S); then stop
+#   scripts/audio_sweep.sh                                 steps 1 and 2 for Gemma-4-E2B, E4B and 12B (an L40S); then stop
 #   FULL=1 scripts/audio_sweep.sh                          step 3 too, for each model whose clean and pilot gates pass
 #   SWEEP=audio_sweep_qfirst scripts/audio_sweep.sh        the question-first sweep (runs as audio_sweep_qfirst*)
 #
@@ -17,7 +19,10 @@
 # video_sweep.sh: it must stay the same for a model's pilot and its repeat.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-MODELS=${MODELS:-"google/gemma-4-E2B-it google/gemma-4-E4B-it"}
+MODELS=${MODELS:-"google/gemma-4-E2B-it google/gemma-4-E4B-it google/gemma-4-12B-it"}
+LENS_REF=${LENS_REF:-google/gemma-4-E4B-it}   # the model whose Neuronpedia lens sets the bar for a lens from elsewhere
+# Gemma-4-12B's other lens (25 of its layers, 1000 prompts), read beside its own at the layers they share: reported, not judged
+EXTRA_LENS=${EXTRA_LENS:-lamm-mit/gemma4-jacobian-lenses:gemma4-12b-it/paper/seed0.pt@c095b094c52dd7afeb1310bb97ea35dc5005e12f}
 CLEAN=${CLEAN:-audio_clean}
 SWEEP=${SWEEP:-audio_sweep}   # audio_sweep (both orders) or audio_sweep_qfirst (the question first)
 RUN=${RUN:-$SWEEP}
@@ -65,6 +70,13 @@ fi
 model() {  # model <model>: the three steps; returns non-zero at the first step that fails
     local m=$1 tag=${1#*/}
     wait_for "$m"
+    # 0. a lens from outside Neuronpedia: checked on the model against the reference model's lens first
+    if uv run --frozen python -c "import sys; from jspace.config import MODELS; sys.exit(0 if MODELS[sys.argv[1]].lens_repo else 1)" "$m"; then
+        download "$LENS_REF" || { echo "the download of $LENS_REF failed" >&2; return 1; }
+        [ -f "runs/check_lens/${LENS_REF#*/}/summary.json" ] || uv run --frozen scripts/check_lens.py --model "$LENS_REF" --run check_lens || { echo "check_lens of $LENS_REF failed" >&2; return 1; }
+        [ -f "runs/check_lens/$tag/summary.json" ] || uv run --frozen scripts/check_lens.py --model "$m" --run check_lens --reference "$LENS_REF" --extra-lens "$EXTRA_LENS" || { echo "check_lens of $m failed" >&2; return 1; }
+        uv run --frozen scripts/audio_gate.py lens "runs/check_lens/$tag/summary.json" || { echo "$m: its lens fails the check" >&2; return 1; }
+    fi
     # 1. clean answers, then their gates
     [ -f "runs/$CLEAN/$tag/audio_clean.csv" ] || uv run --frozen experiments/audio_clean.py --model "$m" --run "$CLEAN" || { echo "the $CLEAN run of $m failed" >&2; return 1; }
     if [ "$RULES" = 1 ]; then  # a diagnosis, never a gate

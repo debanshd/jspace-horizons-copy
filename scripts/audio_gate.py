@@ -3,10 +3,12 @@
 
     uv run scripts/audio_gate.py clean runs/audio_clean/gemma-4-E2B-it/summary.json
     uv run scripts/audio_gate.py pilot runs/audio_sweep_pilot/gemma-4-E2B-it/summary.json
+    uv run scripts/audio_gate.py lens runs/check_lens/gemma-4-12B-it/summary.json
 
 clean: audio_clean's ready (at least 5 gated scenes; on them, in both audio orders, receivers and donors pass the say >= 0.90
 and animal >= 0.85 gates). pilot: the patch-only pilot's controls_pass (in every input: the clean say and animal gates, the self
 patch, the full donor patch) and the donors' clean say and animal answers under the receiver's question at the same gates.
+lens: scripts/check_lens.py's passes (a lens from outside Neuronpedia, against the reference model's).
 Repeating the same answers twice is checked apart (scripts/compare_media.py) and is not enough on its own.
 """
 
@@ -41,12 +43,18 @@ def pilot(s):
     return ok
 
 
+def lens(s):
+    print(f"  lens {s['lens']['repo']}/{s['lens']['file']} ({s['lens']['n_prompts']} prompts): agreement with the model by layer {s['jlens']}")
+    print(f"  logit lens {s['logit']}; deepest {s['deepest']:.3f} against the reference's {s['reference']['deepest']:.3f}")
+    return bool(s["passes"])
+
+
 def main():
     step, path = sys.argv[1], Path(sys.argv[2])
     if not path.exists():
         raise SystemExit(f"{path} not found")
     s = json.loads(path.read_text())
-    ok = {"clean": clean, "pilot": pilot}[step](s)
+    ok = {"clean": clean, "pilot": pilot, "lens": lens}[step](s)
     print(f"{step}: {'passes' if ok else 'FAILS'} ({path})")
     sys.exit(0 if ok else 1)
 

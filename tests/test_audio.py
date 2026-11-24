@@ -381,3 +381,41 @@ def test_qfirst_schedule_reads_one_order(tmp_path, monkeypatch):
         qf.q_first(args, dict(ready=True), tmp_path)
     with pytest.raises(SystemExit):
         qf.sw.both_orders(args, dict(ready=False), tmp_path)
+
+
+def test_the_12b_lens_is_pinned_outside_neuronpedia():
+    from jspace import config
+
+    spec = config.MODELS["google/gemma-4-12B-it"]
+    assert spec.lens_source() == ("hlampes/jacobian-lens", "b23c89843f001b9cd14999f6d5a188c1c39a9146")
+    assert len(spec.revision) == 40 and len(spec.lens_sha256) == 64
+    assert all(s.lens_source() == (config.LENS_REPO, config.LENS_REVISION) for n, s in config.MODELS.items() if n != "google/gemma-4-12B-it")
+
+
+def test_check_lens_prompts_and_gate(tmp_path):
+    import importlib.util
+    import json
+    import subprocess
+
+    stub = types.ModuleType("jspace.model")
+    stub.Session = None
+    had = sys.modules.get("jspace.model")
+    sys.modules["jspace.model"] = stub
+    try:
+        spec = importlib.util.spec_from_file_location("check_lens", ROOT / "scripts/check_lens.py")
+        cl = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cl)
+    finally:
+        if had is None:
+            del sys.modules["jspace.model"]
+        else:
+            sys.modules["jspace.model"] = had
+    p = cl.prompts()
+    assert len(p) == 48 and len(set(p)) == 48 and all("{" not in x for x in p)
+    s = dict(lens=dict(repo="r", file="f", n_prompts=250), jlens={"14": 0.2}, logit={"14": 0.1}, deepest=0.6, reference=dict(deepest=0.65), passes=True)
+    (tmp_path / "s.json").write_text(json.dumps(s))
+    r = subprocess.run([sys.executable, str(ROOT / "scripts/audio_gate.py"), "lens", str(tmp_path / "s.json")], capture_output=True, text=True)
+    assert r.returncode == 0, r.stdout + r.stderr
+    s["passes"] = False
+    (tmp_path / "s.json").write_text(json.dumps(s))
+    assert subprocess.run([sys.executable, str(ROOT / "scripts/audio_gate.py"), "lens", str(tmp_path / "s.json")]).returncode == 1

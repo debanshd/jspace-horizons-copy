@@ -21,6 +21,8 @@ The rule is otherwise video_sweep's, as audio_sweep applies it: the patching gat
 positive control (every-layer donor patch, say follows the donor >= 0.9), the horizons, the cut and verdicts, P1 to P3, and
 media_steer's frozen rule and predictions 1 to 6 for the other interventions. Recordings recur across scenes (15 recordings, one
 voice), so intervals bootstrapped over scenes are narrower than intervals over recordings would be; any write-up says so.
+Models: Gemma-4-E2B and E4B, and Gemma-4-12B (added 24 Nov, with the lens config.py pins for it) once scripts/check_lens.py
+passes for its lens; its own audio_clean run decides its question-first schedule like the others'.
 
     uv run experiments/audio_sweep_qfirst.py --model google/gemma-4-E4B-it --parts patch --n 5 --run audio_qfirst_pilot
     uv run experiments/audio_sweep_qfirst.py --model google/gemma-4-E4B-it --run audio_qfirst

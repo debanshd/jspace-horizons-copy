@@ -45,8 +45,9 @@ class Session:
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(name, revision=self.spec.revision)
         # the chat templates supply any BOS themselves (force_bos=True gave Gemma prompts two <bos> in lens.apply)
         self.model = jlens.from_hf(self.hf, self.tokenizer, force_bos=False)
-        self.lens = JacobianLens.from_pretrained(config.LENS_REPO, filename=self.spec.lens_file, revision=config.LENS_REVISION)
-        self.lens_jpp = JacobianLens.from_pretrained(config.LENS_REPO, filename=self.spec.jpp_file, revision=config.LENS_REVISION) if self.spec.jpp_file else None
+        repo, rev = self.spec.lens_source()  # Neuronpedia's repo, unless the model's lens is pinned elsewhere
+        self.lens = JacobianLens.from_pretrained(repo, filename=self.spec.lens_file, revision=rev)
+        self.lens_jpp = JacobianLens.from_pretrained(repo, filename=self.spec.jpp_file, revision=rev) if self.spec.jpp_file else None
         torch.manual_seed(0)  # after loading, as in the original runs: the PCA control in gqa_ablation draws from this stream
 
         n = self.n_layers = self.model.n_layers
