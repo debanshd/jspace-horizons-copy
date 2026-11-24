@@ -6,6 +6,8 @@ experiments use (jlens, pinned in uv.lock), on WikiText-103, Neuronpedia's corpu
     uv run scripts/fit_lens.py --model Qwen/Qwen2.5-Omni-3B --n 250 --run fit_lens             # the lens
     uv run scripts/fit_lens.py --model Qwen/Qwen3-Omni-30B-A3B-Instruct --n 250 --shard 0/4 --run fit_lens_s0   # one of 4 GPUs
     uv run scripts/fit_lens.py --model Qwen/Qwen3-Omni-30B-A3B-Instruct --merge runs/fit_lens_s0 runs/fit_lens_s1 ... --run fit_lens
+    uv run scripts/fit_lens.py --model Qwen/Qwen2.5-Omni-3B --n 1000 --start 250 --run fit_lens_ext            # prompts 250-999
+    uv run scripts/fit_lens.py --model Qwen/Qwen2.5-Omni-3B --merge runs/fit_lens runs/fit_lens_ext --run fit_lens_n1000  # = 1000
 
 What is fitted. The model is loaded as its text-generating part (FitSpec.loader, the "thinker", at the pinned revision, bf16)
 and read by jlens at its decoder. The lens is jlens.fit's estimator with the paper's settings and jlens's defaults: the average
@@ -16,8 +18,12 @@ Neuronpedia's lenses, so the experiments read the result as they read theirs (Ja
 The prompts (fixed before any fit). WikiText-103 raw, the first training shard at the pinned revision, its sha256 checked: the
 paragraphs of at least MIN_CHARS characters that are not headings, without repeats, in the order of a seed-0 permutation; the
 first --n of them (with --shard i/k, every k-th of those from the i-th, so k shards together cover the same --n prompts and
-JacobianLens.merge combines them into the lens one machine would fit). A prompt that tokenizes too short for the skipped positions
-is skipped by jlens.fit and not counted (n_prompts in meta.json).
+JacobianLens.merge combines them into the lens one machine would fit). --start K fits only prompts K to N-1 of the first N: the
+first N prompts of a larger N begin with the first N of a smaller one, so a fitted lens is extended to more prompts by fitting
+the rest and merging. --merge takes any parts whose prompts, together, are the first N exactly once each (shards, ranges, or
+both; check_cover), fitted with the same model, revision, corpus rule and sequence length; JacobianLens.merge weights each part
+by its prompt count, so the merged lens is the one a single fit of the N prompts gives. A prompt that tokenizes too short for the
+skipped positions is skipped by jlens.fit and not counted (n_prompts in meta.json).
 
 The report (no pass/fail: scripts/check_lens.py's rule decides once the experiments can load the model). On the last 28
 positions of 32 paragraphs of WikiText-103's validation split, read at every fitted layer: the share of positions where the
@@ -26,7 +32,8 @@ J-lens, and the plain logit lens, give the model's own next-token prediction, an
 Outputs in runs/<run>/<model>/: lens.pt (fp16, jlens's format), meta.json (the model, the corpus and the settings, with
 sha256s, the seconds per prompt and the projected time for other prompt counts), report.csv, checkpoint.pt while it runs
 (resumed after an interruption), run.log. --push-to REPO also uploads lens.pt and meta.json to that Hugging Face repo under
-<model name>/ (needs a write token in .env); the experiments then pin that repo's commit and the lens's sha256 in config.py.
+<model name>/ (--push-dir: another folder in the repo, so a new lens does not replace one already pinned; needs a write token in
+.env); the experiments then pin that repo's commit and the lens's sha256 in config.py.
 """
 
 import argparse
@@ -82,16 +89,32 @@ def paragraphs(texts, min_chars=MIN_CHARS, seed=SEED):
     return [out[i] for i in order]
 
 
-def select(prompts, n, shard=None):
-    """the first n prompts, or with shard (i, k) every k-th of them from the i-th"""
-    first = prompts[:n]
-    if len(first) < n:
-        raise SystemExit(f"the corpus has {len(first)} prompts, fewer than --n {n}")
+def covered(n, start=0, shard=None):
+    """the indices, in the corpus rule's order, of the prompts a fit with these settings reads"""
+    assert 0 <= start < n, (start, n)
+    idx = list(range(start, n))
     if shard is None:
-        return first
+        return idx
     i, k = shard
     assert 0 <= i < k, shard
-    return first[i::k]
+    return idx[i::k]
+
+
+def select(prompts, n, shard=None, start=0):
+    """prompts start to n-1 of the first n, or with shard (i, k) every k-th of those from the i-th"""
+    if len(prompts) < n:
+        raise SystemExit(f"the corpus has {len(prompts)} prompts, fewer than --n {n}")
+    return [prompts[j] for j in covered(n, start, shard)]
+
+
+def check_cover(metas):
+    """the parts of a merge: together, the first N prompts exactly once each, for N their largest --n. Returns N"""
+    n = max(m["n_requested"] for m in metas)
+    seen = [j for m in metas for j in covered(m["n_requested"], m.get("start", 0), tuple(m["shard"]) if m.get("shard") else None)]
+    if sorted(seen) != list(range(n)):
+        dup = sorted({j for j in seen if seen.count(j) > 1})[:5]
+        raise SystemExit(f"the parts do not cover prompts 0 to {n - 1} exactly once (repeated: {dup}; missing: {sorted(set(range(n)) - set(seen))[:5]})")
+    return n
 
 
 def parse_shard(s):
@@ -139,14 +162,14 @@ def report(lm, lens, texts):
     return pd.DataFrame(rows)
 
 
-def push(run, repo, name):
+def push(run, repo, folder):
     from huggingface_hub import HfApi
 
     api = HfApi()
     api.create_repo(repo, exist_ok=True)
-    for f in ("lens.pt", "meta.json"):
-        api.upload_file(path_or_fileobj=str(run.path(f)), path_in_repo=f"{name.split('/')[-1]}/{f}", repo_id=repo)
-    print(f"uploaded to {repo}/{name.split('/')[-1]}/: pin the repo's commit and the lens's sha256 in config.py")
+    for f in ("lens.pt", "meta.json", "report.csv"):
+        api.upload_file(path_or_fileobj=str(run.path(f)), path_in_repo=f"{folder}/{f}", repo_id=repo)
+    print(f"uploaded to {repo}/{folder}/: pin the repo's commit and the lens's sha256 in config.py")
 
 
 def main():
@@ -154,12 +177,14 @@ def main():
     ap.add_argument("--model", required=True, choices=sorted(config.FIT_MODELS))
     ap.add_argument("--n", type=int, default=250, help="prompts (the corpus rule's first N)")
     ap.add_argument("--shard", help="i/k: fit every k-th of the N prompts from the i-th; merge the k shards with --merge")
-    ap.add_argument("--merge", nargs="+", type=Path, help="run folders of the shards to merge into one lens (no fitting)")
+    ap.add_argument("--start", type=int, default=0, help="fit prompts START to N-1 only (to extend a lens of START prompts to N)")
+    ap.add_argument("--merge", nargs="+", type=Path, help="run folders of parts (shards, ranges) to merge into one lens (no fitting)")
     ap.add_argument("--dim-batch", type=int, default=8, help="output dimensions per backward pass: speed and memory only")
     ap.add_argument("--run", default="fit_lens")
     ap.add_argument("--runs-dir", type=Path, default=config.RUNS_DIR)
     ap.add_argument("--data-dir", type=Path, default=config.DATA_DIR)
-    ap.add_argument("--push-to", help="a Hugging Face model repo to upload lens.pt and meta.json to")
+    ap.add_argument("--push-to", help="a Hugging Face model repo to upload lens.pt, meta.json and report.csv to")
+    ap.add_argument("--push-dir", help="the folder in that repo (default: the model's name)")
     args = ap.parse_args()
     load_env()
     assert torch.cuda.is_available(), "fitting needs a CUDA GPU"
@@ -179,19 +204,22 @@ def main():
     if args.merge:
         parts = [JacobianLens.load(str(Path(d) / args.model.split("/")[-1] / "lens.pt")) for d in args.merge]
         metas = [json.loads((Path(d) / args.model.split("/")[-1] / "meta.json").read_text()) for d in args.merge]
-        if {(m["model"], m["revision"], m["n_requested"], m["max_seq_len"]) for m in metas} != {(args.model, spec.revision, metas[0]["n_requested"], MAX_SEQ_LEN)}:
-            raise SystemExit("the shards differ in model, revision, prompt count or sequence length")
-        shards = sorted(tuple(m["shard"]) for m in metas)
-        if shards != [(i, len(shards)) for i in range(len(shards))]:
-            raise SystemExit(f"the shards {shards} are not 0/k to k-1/k")
+        if {(m["model"], m["revision"], m["max_seq_len"], json.dumps(m["corpus"], sort_keys=True)) for m in metas} != {
+            (args.model, spec.revision, MAX_SEQ_LEN, json.dumps(meta["corpus"], sort_keys=True))
+        }:
+            raise SystemExit("the parts differ in model, revision, sequence length or corpus rule")
+        n = check_cover(metas)
         lens = JacobianLens.merge(parts)
-        meta.update(n_requested=metas[0]["n_requested"], shard=None, merged=[str(d) for d in args.merge], seconds=sum(m["seconds"] for m in metas))
+        parts_meta = [
+            dict(run=str(d), n_requested=m["n_requested"], start=m.get("start", 0), shard=m.get("shard"), n_prompts=m["n_prompts"], lens_sha256=m["lens_sha256"]) for d, m in zip(args.merge, metas)
+        ]
+        meta.update(n_requested=n, start=0, shard=None, merged=parts_meta, seconds=sum(m["seconds"] for m in metas))
     else:
-        prompts = select(paragraphs(pd.read_parquet(wikitext(args.data_dir, "train"))["text"]), args.n, parse_shard(args.shard))
-        print(f"{args.model} @ {spec.revision[:8]}: {lm.n_layers} layers, d {lm.d_model}; {len(prompts)} prompts (of --n {args.n}, shard {args.shard})")
+        prompts = select(paragraphs(pd.read_parquet(wikitext(args.data_dir, "train"))["text"]), args.n, parse_shard(args.shard), args.start)
+        print(f"{args.model} @ {spec.revision[:8]}: {lm.n_layers} layers, d {lm.d_model}; {len(prompts)} prompts (of --n {args.n}, from {args.start}, shard {args.shard})")
         lens = jlens.fit(lm, prompts, dim_batch=args.dim_batch, max_seq_len=MAX_SEQ_LEN, checkpoint_path=str(run.path("checkpoint.pt")), checkpoint_every=CHECKPOINT_EVERY)
         sec = time.time() - t0
-        meta.update(n_requested=args.n, shard=parse_shard(args.shard), seconds=sec, seconds_per_prompt=sec / max(lens.n_prompts, 1))
+        meta.update(n_requested=args.n, start=args.start, shard=parse_shard(args.shard), seconds=sec, seconds_per_prompt=sec / max(lens.n_prompts, 1))
         meta["projected_hours_one_gpu"] = {k: round(meta["seconds_per_prompt"] * k / 3600, 2) for k in (100, 250, 1000)}
     lens.save(str(run.path("lens.pt")))
     meta.update(
@@ -212,7 +240,7 @@ def main():
         print(f"{r['readout']:5s} layer {int(r['layer']):2d} ({r['depth']:.2f}): top-1 {r['top1']:.3f}  median rank {r['median_rank']:.0f}")
     print(f"lens {meta['n_prompts']} prompts, sha256 {meta['lens_sha256'][:12]}; {meta.get('seconds_per_prompt', 0):.1f} s per prompt; projected {meta.get('projected_hours_one_gpu')}")
     if args.push_to:
-        push(run, args.push_to, args.model)
+        push(run, args.push_to, args.push_dir or args.model.split("/")[-1])
 
 
 if __name__ == "__main__":
