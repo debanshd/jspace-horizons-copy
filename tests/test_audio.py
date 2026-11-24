@@ -526,3 +526,26 @@ def test_pilot_gate_lets_an_unperceived_counterpart_be_untestable(tmp_path):
     s = summary(1.0, 1.0, True)
     s["controls_pass"]["q_audio"] = False  # the spoken input must always pass
     assert run(s).returncode == 1
+
+
+def test_diagnose_lens_readout_stats():
+    import importlib.util
+
+    stub = types.ModuleType("jspace.model")
+    stub.Session = None
+    had = sys.modules.get("jspace.model")
+    sys.modules["jspace.model"] = stub
+    try:
+        spec = importlib.util.spec_from_file_location("diagnose_lens", ROOT / "scripts/diagnose_lens.py")
+        dl = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(dl)
+        p = dl.prompts(types.SimpleNamespace(tokenizer=types.SimpleNamespace(bos_token="<bos>")))  # loads check_lens
+    finally:
+        if had is None:
+            del sys.modules["jspace.model"]
+        else:
+            sys.modules["jspace.model"] = had
+    lg = {3: torch.tensor([[0.1, 0.9, 0.0], [0.5, 0.2, 0.3]])}
+    out = dl.readout_stats(lg, torch.tensor([1, 2]))  # the model's tops: 1 (the readout's top) and 2 (its second)
+    assert out == {3: (1, [1, 2])}
+    assert len(p) == 48 and all(x.startswith("<bos>") for x in p)
