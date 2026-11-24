@@ -28,6 +28,13 @@ This must print `4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75`.
 
 ## 1. First pass: a loading test on the 250-prompt lenses (one H200, about 30 minutes)
 
+**If an earlier first pass ran before the end-token fix** (`omni_defaults`), its `audio_clean` answers ran to the token limit and
+are void. The chain would reuse them, so move them aside first. `check_lens_n250` generates nothing and stays as it is.
+
+```bash
+mkdir -p runs/void_noeos && for m in Qwen2.5-Omni-3B Qwen2.5-Omni-7B Qwen3-Omni-30B-A3B-Instruct; do [ -d runs/audio_clean/$m ] && mv runs/audio_clean/$m runs/void_noeos/; done
+```
+
 ```bash
 scripts/omni_first_pass.sh 2>&1 | tee runs/omni_first_pass.log
 ```

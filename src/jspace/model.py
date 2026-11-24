@@ -30,6 +30,17 @@ CPU_THREADS = 16
 IMG_TOKENS = (448 // 32) * (224 // 32) + 8  # the batch planner's token allowance per picture
 
 
+def omni_defaults(generation_config, tokenizer, processor_template):
+    """what a Qwen omni checkpoint leaves out, filled from its own files: an end token for generation (their
+    generation_config.json names none, so every answer would run to the token limit and past <|im_end|>; the tokenizer's end
+    token is <|im_end|>), and the tokenizer's chat template (Qwen3-Omni keeps it with the processor only: processor_template()
+    loads it). The other models' settings are never touched."""
+    if generation_config.eos_token_id is None:
+        generation_config.eos_token_id = [int(tokenizer.eos_token_id)]
+    if getattr(tokenizer, "chat_template", None) is None:
+        tokenizer.chat_template = processor_template()
+
+
 def entry_points(spec):
     """the forward entry points the picture check tries, in order: the base model ("base") or the full model ("logits_to_keep").
     A Qwen omni thinker's base model is its text decoder alone, whose forward takes **kwargs: it would accept the picture and the
@@ -53,6 +64,8 @@ class Session:
             cls = getattr(transformers, self.spec.loader)
         self.hf = cls.from_pretrained(name, revision=self.spec.revision, dtype=torch.bfloat16).cuda()
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(name, revision=self.spec.revision)
+        if self.spec.loader:  # a Qwen omni checkpoint lacks two things the other models' carry
+            omni_defaults(self.hf.generation_config, self.tokenizer, lambda: transformers.AutoProcessor.from_pretrained(name, revision=self.spec.revision).chat_template)
         # the chat templates supply any BOS themselves (force_bos=True gave Gemma prompts two <bos> in lens.apply)
         self.model = jlens.from_hf(self.hf, self.tokenizer, force_bos=False)
         repo, rev = self.spec.lens_source()  # Neuronpedia's repo, unless the model's lens is pinned elsewhere

@@ -595,3 +595,18 @@ def test_an_omni_model_runs_only_on_its_deciding_lens():
     assert config.deciding_lens_pinned("google/gemma-4-E4B-it") and config.deciding_lens_pinned("google/gemma-4-12B-it")
     for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"):
         assert not config.deciding_lens_pinned(name)  # pinned at the 250-prompt lens: the first pass only
+
+
+def test_omni_defaults_fill_only_what_is_missing():
+    import importlib
+
+    try:
+        model = importlib.import_module("jspace.model")
+    except ImportError:
+        pytest.skip("jlens is not installed here")
+    gc, tok = types.SimpleNamespace(eos_token_id=None), types.SimpleNamespace(eos_token_id=151645, chat_template=None)
+    model.omni_defaults(gc, tok, lambda: "{{ template }}")
+    assert gc.eos_token_id == [151645] and tok.chat_template == "{{ template }}"  # Qwen3-Omni: both missing
+    gc, tok = types.SimpleNamespace(eos_token_id=[1, 106]), types.SimpleNamespace(eos_token_id=1, chat_template="mine")
+    model.omni_defaults(gc, tok, lambda: pytest.fail("the processor is not read when the tokenizer has a template"))
+    assert gc.eos_token_id == [1, 106] and tok.chat_template == "mine"
