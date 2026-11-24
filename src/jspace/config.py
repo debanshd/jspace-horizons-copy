@@ -162,6 +162,39 @@ WIKITEXT_FILES = {
     "validation": ("wikitext-103-raw-v1/validation-00000-of-00001.parquet", "204929b7ff9d6184953f867dedb860e40aa69c078fc1e54b3baaa8fb28511c4c"),
 }
 
+
+# Other lenses for a model, chosen per run with --lens (video_sweep2), so a model's pinned lens, and the runs that read it, stay
+# as they are. Qwen3.5-9B's pinned lens is Neuronpedia's J++ lens (Neuronpedia has no J-lens for the instruct 9B), which the
+# results tables read; "jlens" is a standard J-lens for the instruct model, added 25 Nov for the mid-size video runs (PR #15):
+# bcywinski/jacobian-lens-qwen3.5-9b, 1000 WikiText-103 prompts with the recipe Neuronpedia used for the 9B base model, every
+# source layer 0 to 30, Neuronpedia's format, MIT; sha256 as its card records it and as the Hub stores it.
+@dataclass(frozen=True)
+class LensSpec:
+    repo: str
+    revision: str
+    file: str
+    sha256: str
+
+
+ALT_LENSES = {
+    "Qwen/Qwen3.5-9B": {
+        "jlens": LensSpec("bcywinski/jacobian-lens-qwen3.5-9b", "3711de15301882c0629970f687192804966840a3", "lens_n1000.pt", "25f7c003432b44f01b94a45a32322a4994186aad9110060a463392806a6525ba"),
+    },
+}
+
+
+def lens_for(name, lens=None):
+    """(repo, revision, file, sha256) of a model's lens: its pinned one, or with lens the ALT_LENSES entry of that name"""
+    s = MODELS[name]
+    if lens is None:
+        repo, rev = s.lens_source()
+        return repo, rev, s.lens_file, s.lens_sha256
+    if lens not in ALT_LENSES.get(name, {}):
+        raise SystemExit(f"{name} has no lens {lens!r}; ALT_LENSES has {sorted(ALT_LENSES.get(name, {}))}")
+    a = ALT_LENSES[name][lens]
+    return a.repo, a.revision, a.file, a.sha256
+
+
 # The datasets, at the revisions the runs read; scripts/download.py checks the sha256 of every file
 GQA_REPO, GQA_REVISION = "lmms-lab-encoder/GQA", "a6e72d6e1b912da88af8b2f9eba05d5ea8ec2dd8"
 SCAM_REPO, SCAM_REVISION = "BLISS-e-V/SCAM", "8c674f50dfa83e1d2a0a1c95653c39c347069d72"

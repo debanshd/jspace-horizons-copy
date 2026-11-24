@@ -24,7 +24,7 @@ import requests
 from huggingface_hub import constants, hf_hub_download, snapshot_download
 from tqdm.auto import tqdm
 
-from jspace.config import DATA_DIR, GQA_REPO, GQA_REVISION, MODELS, SCAM_REPO, SCAM_REVISION
+from jspace.config import DATA_DIR, GQA_REPO, GQA_REVISION, MODELS, SCAM_REPO, SCAM_REVISION, lens_for
 from jspace.runs import load_env
 
 DATA_SHA256 = {
@@ -93,7 +93,7 @@ def data():
         check(d / "gqa" / rel, DATA_SHA256[f"gqa/{rel}"], f"data/gqa/{rel}")
 
 
-def models(names):
+def models(names, lens=None):
     for name in names:
         spec = MODELS[name]
         print(f"{name} at {spec.revision[:8]} ({spec.size_gb:.0f} GB) ...")
@@ -104,6 +104,10 @@ def models(names):
                 repo, rev = spec.lens_source()
                 path = Path(snapshot_download(repo, allow_patterns=[file], revision=rev)) / file  # the call jlens makes
                 check(path, expected, f"{repo}/{file}")
+        if lens:  # an alternative lens a run reads with --lens (config.ALT_LENSES), checked the same way
+            repo, rev, file, expected = lens_for(name, lens)
+            path = Path(snapshot_download(repo, allow_patterns=[file], revision=rev)) / file
+            check(path, expected, f"{repo}/{file}")
 
 
 def main():
@@ -111,6 +115,7 @@ def main():
     ap.add_argument("--gemma", action="store_true", help="also Gemma-4-31B and its lenses (69 GB; only its two runs need them)")
     ap.add_argument("--data-only", action="store_true", help="only the data")
     ap.add_argument("--models", default="", help="comma list: only these models and their lenses (media_steer's chain uses this)")
+    ap.add_argument("--lens", help="also this alternative lens of each model in --models (config.ALT_LENSES, e.g. jlens)")
     ap.add_argument("--skip-data", action="store_true", help="not the COCO, SCAM and GQA data (media_steer reads none of them)")
     args = ap.parse_args()
     load_env()  # HF_TOKEN from .env, if there is one
@@ -126,7 +131,9 @@ def main():
     print(f"data -> {DATA_DIR}; models and lenses -> {cache} ({shutil.disk_usage(cache).free / 1e9:.0f} GB free; the models need {sum(MODELS[n].size_gb for n in names):.0f} GB)")
     if not args.skip_data:
         data()
-    models(names)
+    if args.lens and not args.models:
+        raise SystemExit("--lens needs --models")
+    models(names, args.lens)
     print("everything the experiments read is here and matches the original runs")
 
 
