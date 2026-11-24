@@ -121,6 +121,10 @@ FIT_MODELS = {
     # added 25 Nov: the mid-size Gemma-4 for the video experiments (pictures and video, no audio): a mixture of experts, 128
     # experts with 8 active (about 4B parameters per token); no published lens covers it. Loaded whole, as Session loads Gemma.
     "google/gemma-4-26B-A4B-it": FitSpec("4d7ae4984b7db7de8f8457170b3f1a419ee76d52", "AutoModelForMultimodalLM", 51.6, 30, 2816),
+    # added 25 Nov: the dense mid-size Gemma-4 (pictures, video and audio). Its two published lenses failed check_lens (hlampes,
+    # 250 prompts; lamm-mit, 25 layers mapped to layer 46), and diagnose_lens found its late layers unreadable by either. Fitted
+    # here with this recipe, at the revision config.MODELS pins for it, to tell a lens problem from the model's own.
+    "google/gemma-4-12B-it": FitSpec("707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7", "AutoModelForMultimodalLM", 23.9, 48, 3840),
 }
 # The fitting corpus: WikiText-103 (raw), Neuronpedia's corpus for its lenses, at the revision lamm-mit's Gemma-4 lenses record;
 # the first training shard and the validation split (for the fitted lens's report), each checked against its sha256
