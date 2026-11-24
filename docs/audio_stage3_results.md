@@ -51,8 +51,8 @@ later (L_use = L_say) than on video.
   416 positions (0.995; largest log-probability difference 1.70); E4B's: 416 of 416.
 - **The 12B's prediction is formed at the very end.** The plain logit lens at layer 46 agrees with the model's prediction on
   0.5% of positions (median rank 87,128), against 8–9% at layers 41–44; the J-lens is best at layer 46 (0.139, median rank 848).
-- **`layer_scalar`** (Gemma-4's per-layer output scale): the 12B's layer 0 is 0.053 and its layer 11 0.0045, as read from the
-  weights before the run.
+- **`layer_scalar`** (Gemma-4's per-layer output scale): the 12B's last layer (47) is 0.048 and its layer 11 0.0045, against
+  E4B's 0.445 (last) and 0.520 (layer 11); as read from the weights before the run.
 
 So the check measured the 12B's lens correctly; the lens is weak because this model's last layers rewrite its prediction. A
 decision on the 12B needs a new lens check written before it runs.
