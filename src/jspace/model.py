@@ -31,7 +31,7 @@ IMG_TOKENS = (448 // 32) * (224 // 32) + 8  # the batch planner's token allowanc
 
 
 class Session:
-    def __init__(self, name):
+    def __init__(self, name, lens=None):
         missing = [f for f in stimuli.FONT_FILES if not os.path.exists(f)]
         assert not missing, f"{missing} not found: the stimuli are drawn in DejaVu Sans (Debian / Ubuntu: apt install fonts-dejavu-core)"
         assert torch.cuda.is_available(), "the experiments need a CUDA GPU"
@@ -45,9 +45,13 @@ class Session:
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(name, revision=self.spec.revision)
         # the chat templates supply any BOS themselves (force_bos=True gave Gemma prompts two <bos> in lens.apply)
         self.model = jlens.from_hf(self.hf, self.tokenizer, force_bos=False)
-        repo, rev = self.spec.lens_source()  # Neuronpedia's repo, unless the model's lens is pinned elsewhere
-        self.lens = JacobianLens.from_pretrained(repo, filename=self.spec.lens_file, revision=rev)
-        self.lens_jpp = JacobianLens.from_pretrained(repo, filename=self.spec.jpp_file, revision=rev) if self.spec.jpp_file else None
+        # the pinned lens (Neuronpedia's repo, unless pinned elsewhere), or with lens an alternative from config.ALT_LENSES
+        self.lens_name = lens
+        repo, rev, file, _ = config.lens_for(name, lens)
+        self.lens_source = dict(repo=repo, revision=rev, file=file)
+        self.lens = JacobianLens.from_pretrained(repo, filename=file, revision=rev)
+        prepo, prev = self.spec.lens_source()
+        self.lens_jpp = JacobianLens.from_pretrained(prepo, filename=self.spec.jpp_file, revision=prev) if self.spec.jpp_file else None
         torch.manual_seed(0)  # after loading, as in the original runs: the PCA control in gqa_ablation draws from this stream
 
         n = self.n_layers = self.model.n_layers
@@ -74,7 +78,7 @@ class Session:
         self.cache = {}  # lens Gram matrix and eigenbases (lens.py)
         print(
             f"{name} @ {self.spec.revision[:8]}: {n} layers, {self.dtype}, d = {self.d_model}, on {torch.cuda.get_device_name(0)}; "
-            f"lens {self.spec.lens_file} ({'with' if self.jpp else 'no'} J++), read layers {self.layers}; batch {self.batch} / {self.batch_tokens} tokens"
+            f"lens {repo}/{file} ({'with' if self.jpp else 'no'} J++), read layers {self.layers}; batch {self.batch} / {self.batch_tokens} tokens"
         )
         gc.collect()
         torch.cuda.empty_cache()
