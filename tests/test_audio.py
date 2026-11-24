@@ -573,3 +573,17 @@ def test_audio_token_id_from_the_processor_or_its_token():
     gemma = types.SimpleNamespace(processor=types.SimpleNamespace(audio_token_id=258881), tokenizer=None)
     qwen = types.SimpleNamespace(processor=types.SimpleNamespace(audio_token="<|AUDIO|>"), tokenizer=types.SimpleNamespace(convert_tokens_to_ids=lambda t: {"<|AUDIO|>": 151646}[t]))
     assert Session.audio_token_id.fget(gemma) == 258881 and Session.audio_token_id.fget(qwen) == 151646
+
+
+def test_a_thinker_is_read_through_the_full_model():
+    import importlib
+
+    try:
+        model = importlib.import_module("jspace.model")
+    except ImportError:
+        pytest.skip("jlens is not installed here")
+    from jspace import config
+
+    assert model.entry_points(config.MODELS["Qwen/Qwen2.5-Omni-3B"]) == ("logits_to_keep",)  # its base model drops media silently
+    assert model.entry_points(config.MODELS["google/gemma-4-E4B-it"]) == ("base", "logits_to_keep")  # as before
+    assert model.entry_points(config.MODELS["Qwen/Qwen3.5-4B"]) == ("base", "logits_to_keep")

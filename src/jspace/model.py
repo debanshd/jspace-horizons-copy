@@ -30,6 +30,14 @@ CPU_THREADS = 16
 IMG_TOKENS = (448 // 32) * (224 // 32) + 8  # the batch planner's token allowance per picture
 
 
+def entry_points(spec):
+    """the forward entry points the picture check tries, in order: the base model ("base") or the full model ("logits_to_keep").
+    A Qwen omni thinker's base model is its text decoder alone, whose forward takes **kwargs: it would accept the picture and the
+    audio, leave them out without an error, and the check would then fail as "not read" (or, by chance, pass with every media
+    forward reading no media). Only the full thinker reads them."""
+    return ("logits_to_keep",) if spec.loader else ("base", "logits_to_keep")
+
+
 class Session:
     def __init__(self, name):
         missing = [f for f in stimuli.FONT_FILES if not os.path.exists(f)]
@@ -356,7 +364,7 @@ class Session:
         texts = [self.chat_messages(msgs) + self.answer_prefix] * 3
         imgs = [stimuli.text_picture(c) for c in "ACD"]
         err = ""
-        for path in ("base", "logits_to_keep"):
+        for path in entry_points(self.spec):
             self.vision_path = path
             try:
                 P, mass = self._letters(texts, imgs)
