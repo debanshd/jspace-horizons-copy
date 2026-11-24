@@ -7,15 +7,15 @@ PR #12's. Numbers are copied from each run's `meta.json` and `report.csv`.
 
 ## The lenses, on Hugging Face
 
-In the private model repo `debanshd/jspace-omni-lenses` at commit `4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75`, each under
+In the private model repo [`debanshd/jspace-omni-lenses`](https://huggingface.co/debanshd/jspace-omni-lenses) at commit [`4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75`](https://huggingface.co/debanshd/jspace-omni-lenses/tree/4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75), each under
 `<model>/` with its `meta.json` and `report.csv`. The sha256 Hugging Face stores for each `lens.pt` matches the one `meta.json`
 records:
 
 | model | file | size | sha256 |
 |---|---|---|---|
-| Qwen2.5-Omni-3B | `Qwen2.5-Omni-3B/lens.pt` | 294 MB | `8a10a569f4fe3614bf4575280079b5a2ddad7b39c173bec59f25da237992cde7` |
-| Qwen2.5-Omni-7B | `Qwen2.5-Omni-7B/lens.pt` | 694 MB | `d1696e876294f9e1d3510339905d64613d49125d9b74898e435a0583ef94e859` |
-| Qwen3-Omni-30B-A3B-Instruct | `Qwen3-Omni-30B-A3B-Instruct/lens.pt` | 394 MB | `2c2fa06026a42307282e79d2ad120879fe01826287ffd15018c578ad36d50bcb` |
+| Qwen2.5-Omni-3B | [`Qwen2.5-Omni-3B/lens.pt`](https://huggingface.co/debanshd/jspace-omni-lenses/blob/4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75/Qwen2.5-Omni-3B/lens.pt) | 294 MB | `8a10a569f4fe3614bf4575280079b5a2ddad7b39c173bec59f25da237992cde7` |
+| Qwen2.5-Omni-7B | [`Qwen2.5-Omni-7B/lens.pt`](https://huggingface.co/debanshd/jspace-omni-lenses/blob/4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75/Qwen2.5-Omni-7B/lens.pt) | 694 MB | `d1696e876294f9e1d3510339905d64613d49125d9b74898e435a0583ef94e859` |
+| Qwen3-Omni-30B-A3B-Instruct | [`Qwen3-Omni-30B-A3B-Instruct/lens.pt`](https://huggingface.co/debanshd/jspace-omni-lenses/blob/4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75/Qwen3-Omni-30B-A3B-Instruct/lens.pt) | 394 MB | `2c2fa06026a42307282e79d2ad120879fe01826287ffd15018c578ad36d50bcb` |
 
 The experiments pin the repo, that commit and each sha256 in `config.py` (the next PR, with `Session` loading a thinker).
 `meta.json`, `report.csv`, each fit's `run.log` and the chain logs, without the lenses: `docs/omni_lens_fit.tar.gz` (sha256
