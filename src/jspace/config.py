@@ -17,6 +17,12 @@ class ModelSpec:
     lens_sha256: str  # of the lens file the original runs read
     jpp_file: str | None = None  # J++ lens file, where Neuronpedia fitted one
     jpp_sha256: str | None = None
+    lens_repo: str | None = None  # a lens from another Hub repo than LENS_REPO (None: LENS_REPO at LENS_REVISION)
+    lens_revision: str | None = None  # that repo's pinned commit
+
+    def lens_source(self):
+        """(repo, revision) the lens files are read from"""
+        return (self.lens_repo, self.lens_revision) if self.lens_repo else (LENS_REPO, LENS_REVISION)
 
 
 LENS_REPO = "neuronpedia/jacobian-lens"
@@ -80,6 +86,19 @@ MODELS = {
         lens_file="gemma-4-e2b/jlens/Salesforce-wikitext/gemma-4-E2B_jacobian_lens.pt",
         lens_sha256="f0fbecd3de565d93fd088292b3c12b56f39a47f7ea0698a3ca5301c9690a6ab8",
     ),
+    # added 24 Nov for the audio experiments: the third Gemma-4 that takes audio (48 layers, d 3840; audio embedded straight into
+    # the language model). Neuronpedia has no lens for it, so the lens is hlampes/jacobian-lens's: Neuronpedia's format, every
+    # source layer 0 to 46, fitted on 250 WikiText prompts, uploaded 6 Aug 2026 with no card or licence. Every commit of the
+    # model has the same weights, so the lens fits the pinned one; 707f0a3b is the last before the 30 Oct tokenizer change.
+    # scripts/check_lens.py tests the lens against the model before any audio run uses it.
+    "google/gemma-4-12B-it": ModelSpec(
+        revision="707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7",
+        size_gb=23.9,
+        lens_file="gemma-4-12B-it/WikiText/gemma-4-12B-it-lens.pt",
+        lens_sha256="a8fa480c674be8d263e4899dc02b9c201ee8e95bba15262c73065fb9fc92a61a",
+        lens_repo="hlampes/jacobian-lens",
+        lens_revision="b23c89843f001b9cd14999f6d5a188c1c39a9146",
+    ),
 }
 
 # The datasets, at the revisions the runs read; scripts/download.py checks the sha256 of every file
@@ -93,12 +112,16 @@ VGG_CSV_REPO, VGG_CSV_REVISION = "Loie/VGGSound", "2ca3012ef85a60143a8f97b83a45b
 # The matched video set for experiments/video_sweep.py (plan.md, part 3): 64 donor-receiver scenes on the image experiment's
 # schedule, made by Nayan Saxena from Wikimedia Commons and uCO3D clips. None until scripts/pin_media.py pins it.
 MATCHED_REPO, MATCHED_REVISION = "saxenan3/jspace-matched-video", "e33c6ae8ab234c5e0f9819d0ba7a36a63a198d1f"
+# The matched spoken-audio set for experiments/audio_clean.py and audio_sweep.py: the same 64 scenes, each object's name spoken
+# (15 recordings, one synthetic voice), by Nayan Saxena; pinned at the revision checked on 20 Nov 2026
+SPOKEN_REPO, SPOKEN_REVISION = "saxenan3/jspace-matched-spoken-audio", "d95fa45effb9559e73865a20348177ceb730702e"
 DATA_FILES = {
     "coco": ["coco2017/val2017.zip", "coco2017/annotations/instances_val2017.json"],
     "scam": ["scam/images/train/metadata.jsonl"],
     "gqa": ["gqa/testdev_balanced_images/testdev-00000-of-00001.parquet", "gqa/testdev_balanced_instructions/testdev-00000-of-00001.parquet"],
     "vggsound": ["vggsound/manifest.json"],
     "matched": ["matched_video/test/metadata.jsonl", "matched_video/ATTRIBUTION.tsv"],
+    "spoken": ["matched_audio/metadata.jsonl", "matched_audio/checksums.json", "matched_audio/protocol.json"],
 }
 
 

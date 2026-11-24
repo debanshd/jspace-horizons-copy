@@ -24,7 +24,7 @@ import requests
 from huggingface_hub import constants, hf_hub_download, snapshot_download
 from tqdm.auto import tqdm
 
-from jspace.config import DATA_DIR, GQA_REPO, GQA_REVISION, LENS_REPO, LENS_REVISION, MODELS, SCAM_REPO, SCAM_REVISION
+from jspace.config import DATA_DIR, GQA_REPO, GQA_REVISION, MODELS, SCAM_REPO, SCAM_REVISION
 from jspace.runs import load_env
 
 DATA_SHA256 = {
@@ -101,8 +101,9 @@ def models(names):
         print(f"ok  {name}")
         for file, expected in ((spec.lens_file, spec.lens_sha256), (spec.jpp_file, spec.jpp_sha256)):
             if file:
-                path = Path(snapshot_download(LENS_REPO, allow_patterns=[file], revision=LENS_REVISION)) / file  # the call jlens makes
-                check(path, expected, f"{LENS_REPO}/{file}")
+                repo, rev = spec.lens_source()
+                path = Path(snapshot_download(repo, allow_patterns=[file], revision=rev)) / file  # the call jlens makes
+                check(path, expected, f"{repo}/{file}")
 
 
 def main():
