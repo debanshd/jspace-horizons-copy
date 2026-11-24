@@ -92,10 +92,11 @@ asks for each affected experiment to be run at small size before and after the c
 1. Run `video_sweep2` with `--n 4 --parts patch` on Gemma-4-E4B twice, from the same gate run:
    - at `26657cd`, as run `before_pr10`;
    - at PR #10's head, as run `after_pr10`.
-2. Compare the two:
+2. Compare the two, row by row. `scripts/check.py` only compares `results/`'s fixed file list, and would report a match here
+   without comparing anything; stage 3 caught this. Use `compare_media.py` instead:
 
    ```bash
-   uv run --frozen scripts/check.py --runs runs/after_pr10 --reference runs/before_pr10
+   uv run --frozen scripts/compare_media.py --file video_sweep2.csv --model gemma-4-E4B-it runs/before_pr10 runs/after_pr10
    ```
 
-The outputs must be identical.
+The outputs must be identical. Stage 3 ran this at `26657cd` and `1891f64`: identical, 2,160 rows.
