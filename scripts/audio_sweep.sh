@@ -6,6 +6,7 @@
 #      Then experiments/audio_rules.py (RULES=1, the default): the three wordings of the 7-or-3 rules, a diagnosis only.
 #   2. a 5-scene patch-only pilot of experiments/audio_sweep.py (clean, self, full donor, per-window arms), twice, compared
 #      answer by answer; then its controls must pass (scripts/audio_gate.py pilot). Matching answers alone are not enough.
+#      A frozen or typed input the model does not perceive is untestable, as audio_sweep_static's rule says, and goes on.
 #   3. the full sweep, only with FULL=1, after the pilot's outputs have been inspected (the CSV and summary.json).
 # Before step 1, a model whose lens is not Neuronpedia's (Gemma-4-12B: hlampes/jacobian-lens) must pass scripts/check_lens.py
 # against LENS_REF's lens; otherwise the model is skipped. A step whose output exists is skipped, so the chain picks up where it

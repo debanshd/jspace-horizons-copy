@@ -300,7 +300,7 @@ def test_gate_script(tmp_path):
     r = subprocess.run([sys.executable, str(ROOT / "scripts/audio_gate.py"), "clean", str(tmp_path / "c.json")], capture_output=True, text=True)
     assert r.returncode == 1 and "FAILS" in r.stdout
     pilot = dict(
-        controls_pass={"all": True},
+        controls_pass={"q_audio": True, "all": True},
         patch=dict(controls={"q_audio": dict(self_patch_same=1.0, every_layer_say_follows_donor=[1.0, 1, 1])}, gate={"q_audio": {"say": dict(clean=1.0), "animal": dict(clean=1.0)}}),
         donor_clean={"q_audio": {"say": 1.0, "animal": 0.8}},
         hit_limit=0.0,
@@ -497,3 +497,32 @@ def test_steer_static_compare():
     e = out["q_audio vs q_typed"]
     assert e["early"]["same"] and not e["late"]["same"] and e["verdict"] == "differs"
     assert sw.steer_static_compare(pd.DataFrame(rows), ["q_audio"], ["early"], {"q_audio": 2.0}, True).startswith("smoke")
+
+
+def test_pilot_gate_lets_an_unperceived_counterpart_be_untestable(tmp_path):
+    import json
+    import subprocess
+
+    def summary(frozen_clean, frozen_donor, frozen_positive):
+        ok = dict(self_patch_same=1.0, every_layer_say_follows_donor=[1.0, 1, 1])
+        gate = lambda c: {"say": dict(clean=c, passes=c >= 0.9), "animal": dict(clean=1.0, passes=True)}  # noqa: E731
+        return dict(
+            controls_pass={"q_audio": True, "q_frozen": frozen_positive and frozen_clean >= 0.9, "q_typed": True, "all": False},
+            patch=dict(
+                controls={"q_audio": ok, "q_frozen": dict(ok, every_layer_say_follows_donor=[1.0 if frozen_positive else 0.0, 0, 0]), "q_typed": ok},
+                gate={"q_audio": gate(1.0), "q_frozen": gate(frozen_clean), "q_typed": gate(1.0)},
+            ),
+            donor_clean={"q_audio": {"say": 1.0, "animal": 1.0}, "q_frozen": {"say": frozen_donor, "animal": 1.0}, "q_typed": {"say": 1.0, "animal": 1.0}},
+            hit_limit=0.0,
+        )
+
+    def run(s):
+        (tmp_path / "p.json").write_text(json.dumps(s))
+        return subprocess.run([sys.executable, str(ROOT / "scripts/audio_gate.py"), "pilot", str(tmp_path / "p.json")], capture_output=True, text=True)
+
+    r = run(summary(0.0, 0.0, False))  # Gemma-4-E2B's pilot: the frozen word not named, so its donor patch cannot work
+    assert r.returncode == 0 and "q_frozen: not perceived" in r.stdout
+    assert run(summary(1.0, 1.0, False)).returncode == 1  # perceived, but the positive control fails: stop
+    s = summary(1.0, 1.0, True)
+    s["controls_pass"]["q_audio"] = False  # the spoken input must always pass
+    assert run(s).returncode == 1
