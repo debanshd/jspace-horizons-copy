@@ -180,11 +180,22 @@ def waveform_png(wavs, labels, path, w=1200, h=160):
     im.save(path)
 
 
-def main():
-    ap = parser(__doc__, "audio_sweep")
+def both_orders(args, gate, gate_dir):
+    """audio_sweep's schedule: audio_clean's ready (both orders) and its gated scenes; nothing added to the gate record"""
+    if not gate.get("ready"):
+        raise SystemExit(f"{gate_dir / 'summary.json'}: the clean answers do not pass audio_clean's gates (ready is false); nothing to patch")
+    return vs2.gated_scenes(gate, args.n), {}
+
+
+BOTH = ",".join(spoken.INPUTS)
+
+
+def main(experiment="audio_sweep", doc=__doc__, schedule=both_orders, default_inputs=BOTH):
+    """the sweep; audio_sweep_qfirst gives its own name, docstring, schedule (one order's gate) and inputs"""
+    ap = parser(doc, experiment)
     ap.add_argument("--gate-run", default="audio_clean", help="the audio_clean run whose gated schedule this model runs on")
     ap.add_argument("--n", type=int, default=0, help="the first N gated scenes, for a pilot (counts only); 0 for all")
-    ap.add_argument("--inputs", default=",".join(spoken.INPUTS))
+    ap.add_argument("--inputs", default=default_inputs)
     ap.add_argument("--parts", default="patch,steer", help="patch, steer, or both")
     ap.add_argument("--donor-gb", type=float, default=16.0, help="host memory for donor states at a time: scenes run in chunks that fit")
     ap.add_argument("--max-rows", type=int, default=512)
@@ -194,11 +205,9 @@ def main():
     if not gate_file.exists():
         raise SystemExit(f"{gate_file} not found: run audio_clean for {args.model} first")
     gate = json.loads(gate_file.read_text())
-    if not gate.get("ready"):
-        raise SystemExit(f"{gate_file}: the clean answers do not pass audio_clean's gates (ready is false); nothing to patch")
-    wanted = vs2.gated_scenes(gate, args.n)
+    wanted, gate_extra = schedule(args, gate, gate_file.parent)
     smoke = args.n > 0
-    run = Run(args, "audio_sweep")
+    run = Run(args, experiment)
     lm = Session(args.model)
     if not has_audio(lm):
         raise SystemExit(f"{lm.name} takes no audio")
@@ -221,7 +230,7 @@ def main():
         for role in ("donor", "receiver"):
             media[(role, sc)] = spoken.load_wav(root / m[f"{role}_audio"])
             used[m[f"{role}_audio_id"]] = m[f"{role}_sha256"]
-    run.save_json(dict(scenes=S, recordings=used, gate=dict(run=args.gate_run, file=str(gate_file), scenes=wanted)), "scenes.json")
+    run.save_json(dict(scenes=S, recordings=used, gate=dict(run=args.gate_run, file=str(gate_file), scenes=wanted, **gate_extra)), "scenes.json")
     waveform_png([media[("receiver", S[0]["scene"])], media[("donor", S[0]["scene"])]], [f"scene {S[0]['scene']} receiver: {S[0]['X']}", f"donor: {S[0]['Y']}"], run.path("stimuli.png"))
     print(f"{len(S)} scenes from {args.gate_run}; {len(used)} recordings  [{time.time() - t0:.0f}s]")
 
@@ -354,7 +363,7 @@ def main():
         print(f"{inp}: patching and phase A done  [{time.time() - t0:.0f}s]")
 
     R = pd.concat(R_parts, ignore_index=True)
-    out = dict(n=len(S), smoke=smoke, gate=dict(run=args.gate_run, scenes=wanted))
+    out = dict(n=len(S), smoke=smoke, gate=dict(run=args.gate_run, scenes=wanted, **gate_extra))
     family, kv = ("gemma" if "gemma" in lm.name.lower() else "qwen"), kv_limit(lm)
     starts = dose_of = None
     if "steer" in parts:
