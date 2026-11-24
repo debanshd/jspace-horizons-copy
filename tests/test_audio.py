@@ -587,3 +587,11 @@ def test_a_thinker_is_read_through_the_full_model():
     assert model.entry_points(config.MODELS["Qwen/Qwen2.5-Omni-3B"]) == ("logits_to_keep",)  # its base model drops media silently
     assert model.entry_points(config.MODELS["google/gemma-4-E4B-it"]) == ("base", "logits_to_keep")  # as before
     assert model.entry_points(config.MODELS["Qwen/Qwen3.5-4B"]) == ("base", "logits_to_keep")
+
+
+def test_an_omni_model_runs_only_on_its_deciding_lens():
+    from jspace import config
+
+    assert config.deciding_lens_pinned("google/gemma-4-E4B-it") and config.deciding_lens_pinned("google/gemma-4-12B-it")
+    for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"):
+        assert not config.deciding_lens_pinned(name)  # pinned at the 250-prompt lens: the first pass only

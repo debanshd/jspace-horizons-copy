@@ -78,6 +78,9 @@ model() {  # model <model>: the three steps; returns non-zero at the first step 
     local m=$1 tag=${1#*/}
     wait_for "$m"
     # 0. a lens from outside Neuronpedia: checked on the model against the reference model's lens first
+    # a Qwen omni model runs on its 1000-prompt lens only: decided before any check_lens run (config.DECIDING_LENS)
+    uv run --frozen python -c "import sys; from jspace.config import deciding_lens_pinned; sys.exit(0 if deciding_lens_pinned(sys.argv[1]) else 1)" "$m" ||
+        { echo "$m: the pinned lens is not its deciding 1000-prompt lens; pin that first (docs/omni_audio_run.md)" >&2; return 1; }
     if uv run --frozen python -c "import sys; from jspace.config import MODELS; sys.exit(0 if MODELS[sys.argv[1]].lens_repo else 1)" "$m"; then
         download "$LENS_REF" || { echo "the download of $LENS_REF failed" >&2; return 1; }
         [ -f "runs/check_lens/${LENS_REF#*/}/summary.json" ] || uv run --frozen scripts/check_lens.py --model "$LENS_REF" --run check_lens || { echo "check_lens of $LENS_REF failed" >&2; return 1; }

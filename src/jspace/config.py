@@ -122,6 +122,10 @@ MODELS = {
     # "thinker", FIT_MODELS' loader) at FIT_MODELS' revision, with the lens this project fitted (scripts/fit_lens.py, 250
     # WikiText-103 prompts each; PR #13): the private repo debanshd/jspace-omni-lenses at the commit the fits were uploaded in,
     # each file's sha256 as its meta.json records it. scripts/check_lens.py tests each lens before any audio run reads it.
+    # Decided 25 Nov, before any check_lens run on these models: the lens that decides (check_lens, then the audio runs) is each
+    # model's 1000-prompt lens (scripts/fit_lens.py's extension, uploaded under <model>/n1000/). The 250-prompt lenses pinned
+    # here serve only scripts/omni_first_pass.sh, a loading test whose check_lens result decides nothing; scripts/audio_sweep.sh
+    # refuses an omni model until its pin is the 1000-prompt lens (DECIDING_LENS).
     **{
         name: ModelSpec(
             revision=FIT_MODELS[name].revision,
@@ -139,6 +143,15 @@ MODELS = {
         )
     },
 }
+
+
+DECIDING_LENS = "n1000"  # the folder of the omni models' deciding lenses in debanshd/jspace-omni-lenses (see MODELS)
+
+
+def deciding_lens_pinned(name):
+    """a model's pinned lens may decide: any model but a Qwen omni one, or an omni one pinned at its 1000-prompt lens"""
+    s = MODELS[name]
+    return not s.loader or f"/{DECIDING_LENS}/" in s.lens_file
 
 
 # The fitting corpus: WikiText-103 (raw), Neuronpedia's corpus for its lenses, at the revision lamm-mit's Gemma-4 lenses record;
