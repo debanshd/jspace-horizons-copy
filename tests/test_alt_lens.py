@@ -19,3 +19,12 @@ def test_qwen35_9b_reads_a_j_lens_on_request():
         config.lens_for("Qwen/Qwen3.5-4B", "jlens")
     with pytest.raises(SystemExit):
         config.lens_for("Qwen/Qwen3.5-9B", "jpp2")
+
+
+def test_check_lens_reads_the_alternative_lens():
+    from pathlib import Path
+
+    src = (Path(__file__).resolve().parents[1] / "scripts/check_lens.py").read_text()
+    assert "Session(args.model, lens=args.lens)" in src and "alt=args.lens" in src
+    sh = (Path(__file__).resolve().parents[1] / "scripts/video_sweep2.sh").read_text()
+    assert "s['lens'].get('alt') == sys.argv[2] and s.get('passes')" in sh  # the 9B runs on its J-lens only once it passed

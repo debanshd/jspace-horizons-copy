@@ -85,6 +85,10 @@ for m in "${M[@]}"; do
     wait_for "$m"
     g=$(gate_of "$m")
     l=$(lens_of "$m")
+    if [ -n "$l" ]; then  # an alternative lens is read only after its check_lens passed (scripts/lens_checks.sh)
+        uv run --frozen python -c "import json, sys; s = json.load(open(sys.argv[1])); sys.exit(0 if s['lens'].get('alt') == sys.argv[2] and s.get('passes') else 1)" "runs/check_lens/${m#*/}/summary.json" "$l" ||
+            { keep_going "$m: its $l lens has no passing check_lens in runs/check_lens (run scripts/lens_checks.sh)"; continue; }
+    fi
     for r in "${RUN}_smoke" "${RUN}_smoke_repeat"; do
         [ -f "runs/$r/${m#*/}/video_sweep2.csv" ] || uv run --frozen $AV experiments/video_sweep2.py --model "$m" --run "$r" --gate-run "$g" --n 5 --donor-gb "$DONOR_GB" ${l:+--lens "$l"} || keep_going "the $r run of $m failed"
     done

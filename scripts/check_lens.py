@@ -57,6 +57,7 @@ def agreement(lm, lens, layers, texts):
 def main():
     ap = parser(__doc__, "check_lens")
     ap.add_argument("--reference", help="a model whose check_lens summary in this run sets the bar (near_reference)")
+    ap.add_argument("--lens", help="check this alternative lens of the model (config.ALT_LENSES, e.g. Qwen3.5-9B's jlens), not its pinned one")
     ap.add_argument("--extra-lens", help="repo:file@revision of another lens for this model, read at the layers it shares")
     args = ap.parse_args()
     ref = None
@@ -66,7 +67,7 @@ def main():
             raise SystemExit(f"{f} not found: run check_lens for the reference {args.reference} first")
         ref = json.loads(f.read_text())
     run = Run(args, "check_lens")
-    lm = Session(args.model)
+    lm = Session(args.model, lens=args.lens)
     run.write_config(lm)
     # the Session's lens model adds no BOS (its chat templates carry one); plain text gets the tokenizer's own, as in training
     texts = [(lm.tokenizer.bos_token or "") + t for t in prompts()]
@@ -90,11 +91,11 @@ def main():
         extra = dict(lens=args.extra_lens, n_prompts=int(other.n_prompts), layers=shared, jlens={L: got2[(L, "jlens")] for L in shared}, model_lens={L: got[(L, "jlens")] for L in shared})
     R = pd.DataFrame(rows)
     run.save_csv(R, "check_lens.csv")
-    repo, rev = lm.spec.lens_source()
+    repo, rev, file = lm.lens_source["repo"], lm.lens_source["revision"], lm.lens_source["file"]  # the lens the session read
     mine = R[R["lens"] == "model's"]
     late = mine[mine["depth"] >= 0.5]
     out = dict(
-        lens=dict(repo=repo, revision=rev, file=lm.spec.lens_file, n_prompts=int(lm.lens.n_prompts), source_layers=list(lm.lens.source_layers)),
+        lens=dict(repo=repo, revision=rev, file=file, alt=args.lens, n_prompts=int(lm.lens.n_prompts), source_layers=list(lm.lens.source_layers)),
         n_layers=n,
         read_layers=lm.layers,
         positions=positions,

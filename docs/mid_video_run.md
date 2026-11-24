@@ -21,6 +21,11 @@ git checkout claude/mid-video
 git merge --ff-only origin/claude/mid-video
 ```
 
+## 0. The 9B's J-lens check (`scripts/lens_checks.sh`, run once)
+
+The 9B's J-lens is not Neuronpedia's, so it must pass `check_lens` first. `scripts/lens_checks.sh` runs that check into
+`runs/check_lens`; `scripts/video_sweep2.sh` stops the 9B unless its summary names the `jlens` lens and passes.
+
 ## 1. The naming gate (`clip_naming3`, the same rule as the 4B's and the Gemmas')
 
 ```bash

@@ -26,7 +26,7 @@ uv run --frozen python -c "from huggingface_hub import HfApi; from jspace.runs i
 
 This must print `4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75`.
 
-## 1. NOW: `check_lens` only (one H200, about 15 minutes)
+## 1. NOW: the lens checks only (one H200, about 25 minutes)
 
 **This is the only step to run now.** Steps 2 to 5 below come later, and only with a separate go-ahead.
 
@@ -41,10 +41,15 @@ mkdir -p runs/void_noeos && for m in Qwen2.5-Omni-3B Qwen2.5-Omni-7B Qwen3-Omni-
 Then run the check:
 
 ```bash
-scripts/omni_first_pass.sh 2>&1 | tee runs/omni_first_pass.log
+scripts/lens_checks.sh 2>&1 | tee runs/lens_checks.log
 ```
 
-It runs `check_lens` on each model's 250-prompt lens, into `runs/check_lens_n250`, and nothing else: no audio experiment. A model
+It runs `check_lens` on every lens that is not Neuronpedia's own and would be read now:
+
+- **Qwen3.5-9B's J-lens** (`--lens jlens`, PR #15), into `runs/check_lens`. This check decides: `scripts/video_sweep2.sh` reads the 9B through it only if it passes.
+- **The Qwen omni models' 250-prompt lenses**, into `runs/check_lens_n250`, through `scripts/omni_first_pass.sh`, as described below.
+
+For the omni models, `check_lens` runs on each model's 250-prompt lens, into `runs/check_lens_n250`, and nothing else: no audio experiment. A model
 whose summary already exists there (the 3B, the 7B) is skipped, so this mainly runs Qwen3-Omni-30B-A3B. The check shows three
 things:
 
