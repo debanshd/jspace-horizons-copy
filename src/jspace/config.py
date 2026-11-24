@@ -101,6 +101,32 @@ MODELS = {
     ),
 }
 
+
+# Models whose J-lens this project fits itself (scripts/fit_lens.py): audio-trained models no published lens covers. Each is
+# loaded as its text-generating part ("thinker", the class named in loader), which reads the audio, pictures and video and
+# writes the text; the speech-output parts are not loaded. Pinned at the commits checked on 25 Nov 2026.
+@dataclass(frozen=True)
+class FitSpec:
+    revision: str
+    loader: str  # the transformers class that loads the model's text-generating part from the full checkpoint
+    size_gb: float  # the full checkpoint's download size
+    n_layers: int
+    d_model: int
+
+
+FIT_MODELS = {
+    "Qwen/Qwen2.5-Omni-3B": FitSpec("f75b40e3da2003cdd6e1829b1f420ca70797c34e", "Qwen2_5OmniThinkerForConditionalGeneration", 12.0, 36, 2048),
+    "Qwen/Qwen2.5-Omni-7B": FitSpec("ae9e1690543ffd5c0221dc27f79834d0294cba00", "Qwen2_5OmniThinkerForConditionalGeneration", 22.4, 28, 3584),
+    "Qwen/Qwen3-Omni-30B-A3B-Instruct": FitSpec("26291f793822fb6be9555850f06dfe95f2d7e695", "Qwen3OmniMoeThinkerForConditionalGeneration", 70.5, 48, 2048),
+}
+# The fitting corpus: WikiText-103 (raw), Neuronpedia's corpus for its lenses, at the revision lamm-mit's Gemma-4 lenses record;
+# the first training shard and the validation split (for the fitted lens's report), each checked against its sha256
+WIKITEXT_REPO, WIKITEXT_REVISION = "Salesforce/wikitext", "b08601e04326c79dfdd32d625aee71d232d685c3"
+WIKITEXT_FILES = {
+    "train": ("wikitext-103-raw-v1/train-00000-of-00002.parquet", "74da360f23826045b3e6ac6375411fdb15f003030aa74f2596ed08b857cb9212"),
+    "validation": ("wikitext-103-raw-v1/validation-00000-of-00001.parquet", "204929b7ff9d6184953f867dedb860e40aa69c078fc1e54b3baaa8fb28511c4c"),
+}
+
 # The datasets, at the revisions the runs read; scripts/download.py checks the sha256 of every file
 GQA_REPO, GQA_REVISION = "lmms-lab-encoder/GQA", "a6e72d6e1b912da88af8b2f9eba05d5ea8ec2dd8"
 SCAM_REPO, SCAM_REVISION = "BLISS-e-V/SCAM", "8c674f50dfa83e1d2a0a1c95653c39c347069d72"
