@@ -200,6 +200,7 @@ def main():
     ap.add_argument("--donor-gb", type=float, default=16.0, help="host memory for donor states at a time: scenes run in chunks that fit")
     ap.add_argument("--max-rows", type=int, default=512)
     ap.add_argument("--no-encoder-cache", action="store_true")
+    ap.add_argument("--lens", help="another lens for the model, from config.ALT_LENSES (Qwen3.5-9B: jlens); default its pinned one")
     args = ap.parse_args()
     require_data(args.data_dir, "matched")
     gate_file = args.runs_dir / args.gate_run / args.model.split("/")[-1] / "summary.json"
@@ -209,7 +210,7 @@ def main():
     wanted = gated_scenes(gate, args.n)
     smoke = args.n > 0
     run = Run(args, "video_sweep2")
-    lm = Session(args.model)
+    lm = Session(args.model, lens=args.lens)
     run.write_config(lm)
     t0 = time.time()
     mon = batched.GpuMonitor(run.path("gpu.csv"))
