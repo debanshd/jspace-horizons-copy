@@ -6,6 +6,7 @@
 #   TIMING_ONLY=1 scripts/fit_lenses.sh                      the three timing runs: decide N and the GPUs from them
 #   scripts/fit_lenses.sh                                    all three, 250 prompts each
 #   MODELS="Qwen/Qwen2.5-Omni-3B" N=250 scripts/fit_lenses.sh
+#   MODELS="google/gemma-4-26B-A4B-it" scripts/fit_lenses.sh  the mid-size Gemma-4 for video (51.6 GB: an H200), timing then 250
 #   EXTEND_TO=1000 scripts/fit_lenses.sh                     each lens in runs/fit_lens extended to 1000 prompts: the prompts it
 #       lacks are fitted (runs/fit_lens_ext1000) and merged with it (runs/fit_lens_n1000); the same lens a 1000-prompt fit gives
 #

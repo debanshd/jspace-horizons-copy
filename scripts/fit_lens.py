@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-"""Fit a J-lens for an audio model no published lens covers (config.FIT_MODELS: the Qwen omni models), with the lens library the
-experiments use (jlens, pinned in uv.lock), on WikiText-103, Neuronpedia's corpus.
+"""Fit a J-lens for a model no published lens covers (config.FIT_MODELS: the Qwen omni models, for audio, and Gemma-4-26B-A4B, the
+mid-size Gemma-4, for video), with the lens library the experiments use (jlens, pinned in uv.lock), on WikiText-103, Neuronpedia's
+corpus.
 
     uv run scripts/fit_lens.py --model Qwen/Qwen2.5-Omni-3B --n 10 --run fit_lens_timing      # time it first: about 10 prompts
     uv run scripts/fit_lens.py --model Qwen/Qwen2.5-Omni-3B --n 250 --run fit_lens             # the lens
@@ -9,8 +10,8 @@ experiments use (jlens, pinned in uv.lock), on WikiText-103, Neuronpedia's corpu
     uv run scripts/fit_lens.py --model Qwen/Qwen2.5-Omni-3B --n 1000 --start 250 --run fit_lens_ext            # prompts 250-999
     uv run scripts/fit_lens.py --model Qwen/Qwen2.5-Omni-3B --merge runs/fit_lens runs/fit_lens_ext --run fit_lens_n1000  # = 1000
 
-What is fitted. The model is loaded as its text-generating part (FitSpec.loader, the "thinker", at the pinned revision, bf16)
-and read by jlens at its decoder. The lens is jlens.fit's estimator with the paper's settings and jlens's defaults: the average
+What is fitted. The model is loaded with FitSpec.loader at the pinned revision, in bf16: a Qwen omni model as its text-generating
+part (the "thinker"), Gemma-4-26B-A4B whole, as the experiments load Gemma; jlens reads it at its decoder. The lens is jlens.fit's estimator with the paper's settings and jlens's defaults: the average
 Jacobian from every source layer (0 to the last but one) to the final layer, over 128-token prompts, positions before 16
 excluded; jlens.fit's dim_batch (output dimensions per backward pass) sets only the speed. This is the convention of
 Neuronpedia's lenses, so the experiments read the result as they read theirs (JacobianLens.load).

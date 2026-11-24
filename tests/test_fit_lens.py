@@ -42,9 +42,10 @@ def test_selection_and_shards_cover_the_same_prompts():
 
 
 def test_pins():
-    assert set(config.FIT_MODELS) == {"Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"}
-    for s in config.FIT_MODELS.values():
-        assert len(s.revision) == 40 and s.loader.endswith("ThinkerForConditionalGeneration") and s.n_layers > 0 and s.d_model > 0
+    assert set(config.FIT_MODELS) == {"Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct", "google/gemma-4-26B-A4B-it"}
+    for name, s in config.FIT_MODELS.items():
+        assert len(s.revision) == 40 and s.n_layers > 0 and s.d_model > 0
+        assert s.loader.endswith("ThinkerForConditionalGeneration") if "Omni" in name else s.loader == "AutoModelForMultimodalLM"
     assert len(config.WIKITEXT_REVISION) == 40 and all(len(h) == 64 for _, h in config.WIKITEXT_FILES.values())
 
 

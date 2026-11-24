@@ -118,6 +118,9 @@ FIT_MODELS = {
     "Qwen/Qwen2.5-Omni-3B": FitSpec("f75b40e3da2003cdd6e1829b1f420ca70797c34e", "Qwen2_5OmniThinkerForConditionalGeneration", 12.0, 36, 2048),
     "Qwen/Qwen2.5-Omni-7B": FitSpec("ae9e1690543ffd5c0221dc27f79834d0294cba00", "Qwen2_5OmniThinkerForConditionalGeneration", 22.4, 28, 3584),
     "Qwen/Qwen3-Omni-30B-A3B-Instruct": FitSpec("26291f793822fb6be9555850f06dfe95f2d7e695", "Qwen3OmniMoeThinkerForConditionalGeneration", 70.5, 48, 2048),
+    # added 25 Nov: the mid-size Gemma-4 for the video experiments (pictures and video, no audio): a mixture of experts, 128
+    # experts with 8 active (about 4B parameters per token); no published lens covers it. Loaded whole, as Session loads Gemma.
+    "google/gemma-4-26B-A4B-it": FitSpec("4d7ae4984b7db7de8f8457170b3f1a419ee76d52", "AutoModelForMultimodalLM", 51.6, 30, 2816),
 }
 # The fitting corpus: WikiText-103 (raw), Neuronpedia's corpus for its lenses, at the revision lamm-mit's Gemma-4 lenses record;
 # the first training shard and the validation split (for the fitted lens's report), each checked against its sha256
