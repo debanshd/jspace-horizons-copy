@@ -22,7 +22,8 @@ positive control (every-layer donor patch, say follows the donor >= 0.9), the ho
 media_steer's frozen rule and predictions 1 to 6 for the other interventions. Recordings recur across scenes (15 recordings, one
 voice), so intervals bootstrapped over scenes are narrower than intervals over recordings would be; any write-up says so.
 Models: Gemma-4-E2B and E4B, and Gemma-4-12B (added 24 Nov, with the lens config.py pins for it) once scripts/check_lens.py
-passes for its lens; its own audio_clean run decides its question-first schedule like the others'.
+passes for its lens; its own audio_clean run decides its question-first schedule like the others'. Qwen2.5-Omni-3B and 7B and
+Qwen3-Omni-30B-A3B (added 25 Nov, with this project's lenses, PR #13): likewise, each once check_lens passes for its lens.
 
     uv run experiments/audio_sweep_qfirst.py --model google/gemma-4-E4B-it --parts patch --n 5 --run audio_qfirst_pilot
     uv run experiments/audio_sweep_qfirst.py --model google/gemma-4-E4B-it --run audio_qfirst

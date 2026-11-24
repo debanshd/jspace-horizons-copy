@@ -389,7 +389,8 @@ def test_the_12b_lens_is_pinned_outside_neuronpedia():
     spec = config.MODELS["google/gemma-4-12B-it"]
     assert spec.lens_source() == ("hlampes/jacobian-lens", "b23c89843f001b9cd14999f6d5a188c1c39a9146")
     assert len(spec.revision) == 40 and len(spec.lens_sha256) == 64
-    assert all(s.lens_source() == (config.LENS_REPO, config.LENS_REVISION) for n, s in config.MODELS.items() if n != "google/gemma-4-12B-it")
+    others = [s for n, s in config.MODELS.items() if n != "google/gemma-4-12B-it" and not s.loader]  # the omni models: their own test
+    assert all(s.lens_source() == (config.LENS_REPO, config.LENS_REVISION) for s in others)
 
 
 def test_check_lens_prompts_and_gate(tmp_path):
@@ -549,3 +550,26 @@ def test_diagnose_lens_readout_stats():
     out = dl.readout_stats(lg, torch.tensor([1, 2]))  # the model's tops: 1 (the readout's top) and 2 (its second)
     assert out == {3: (1, [1, 2])}
     assert len(p) == 48 and all(x.startswith("<bos>") for x in p)
+
+
+def test_the_qwen_omni_models_load_their_thinker_with_this_projects_lens():
+    from jspace import config
+
+    for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"):
+        s, f = config.MODELS[name], config.FIT_MODELS[name]
+        assert s.loader == f.loader and s.revision == f.revision
+        assert s.lens_source() == ("debanshd/jspace-omni-lenses", "4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75")
+        assert s.lens_file == f"{name.split('/')[-1]}/lens.pt" and len(s.lens_sha256) == 64
+    assert all(s.loader is None for n, s in config.MODELS.items() if not n.startswith("Qwen/Qwen") or "Omni" not in n)
+
+
+def test_audio_token_id_from_the_processor_or_its_token():
+    import importlib
+
+    try:
+        Session = importlib.import_module("jspace.model").Session
+    except ImportError:
+        pytest.skip("jlens is not installed here")
+    gemma = types.SimpleNamespace(processor=types.SimpleNamespace(audio_token_id=258881), tokenizer=None)
+    qwen = types.SimpleNamespace(processor=types.SimpleNamespace(audio_token="<|AUDIO|>"), tokenizer=types.SimpleNamespace(convert_tokens_to_ids=lambda t: {"<|AUDIO|>": 151646}[t]))
+    assert Session.audio_token_id.fget(gemma) == 258881 and Session.audio_token_id.fget(qwen) == 151646

@@ -41,6 +41,8 @@ class Session:
         self.name, self.spec, self.tag = name, config.MODELS[name], name.split("/")[-1]
         jlens.configure_logging()
         cls = transformers.AutoModelForMultimodalLM if "gemma" in name.lower() else transformers.AutoModelForImageTextToText
+        if self.spec.loader:  # a Qwen omni model: its text-generating part ("thinker") alone, from the full checkpoint
+            cls = getattr(transformers, self.spec.loader)
         self.hf = cls.from_pretrained(name, revision=self.spec.revision, dtype=torch.bfloat16).cuda()
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(name, revision=self.spec.revision)
         # the chat templates supply any BOS themselves (force_bos=True gave Gemma prompts two <bos> in lens.apply)
@@ -222,6 +224,15 @@ class Session:
             return [self.tokenizer.decode(row[enc["input_ids"].shape[1] :], skip_special_tokens=True).strip() for row in g]
 
         return self.run_batches(texts, images, fn)
+
+    @property
+    def audio_token_id(self):
+        """the token the processor expands into a clip's audio positions: the processor's id where it gives one (Gemma-4), else
+        its audio token's id (the Qwen omni processors name the token only)"""
+        tid = getattr(self.processor, "audio_token_id", None)
+        if tid is None:
+            tid = self.tokenizer.convert_tokens_to_ids(self.processor.audio_token)
+        return int(tid)
 
     def all_layers(self):
         """[-1, 0, ..., final]: every layer an intervention can address. Loads the J-lens maps of all of them"""

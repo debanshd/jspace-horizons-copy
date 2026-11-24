@@ -19,6 +19,7 @@ class ModelSpec:
     jpp_sha256: str | None = None
     lens_repo: str | None = None  # a lens from another Hub repo than LENS_REPO (None: LENS_REPO at LENS_REVISION)
     lens_revision: str | None = None  # that repo's pinned commit
+    loader: str | None = None  # the transformers class that loads the model, where it is not the default (a Qwen omni "thinker")
 
     def lens_source(self):
         """(repo, revision) the lens files are read from"""
@@ -31,6 +32,24 @@ LENS_REPO = "neuronpedia/jacobian-lens"
 # were last changed before the runs. scripts/download.py checks every lens file against these hashes.
 LENS_REVISION = "e166deb5ad540932100ef803c8c9bcc2a5453694"
 
+
+# Models whose J-lens this project fits itself (scripts/fit_lens.py): audio-trained models no published lens covers. Each is
+# loaded as its text-generating part ("thinker", the class named in loader), which reads the audio, pictures and video and
+# writes the text; the speech-output parts are not loaded. Pinned at the commits checked on 25 Nov 2026.
+@dataclass(frozen=True)
+class FitSpec:
+    revision: str
+    loader: str  # the transformers class that loads the model's text-generating part from the full checkpoint
+    size_gb: float  # the full checkpoint's download size
+    n_layers: int
+    d_model: int
+
+
+FIT_MODELS = {
+    "Qwen/Qwen2.5-Omni-3B": FitSpec("f75b40e3da2003cdd6e1829b1f420ca70797c34e", "Qwen2_5OmniThinkerForConditionalGeneration", 12.0, 36, 2048),
+    "Qwen/Qwen2.5-Omni-7B": FitSpec("ae9e1690543ffd5c0221dc27f79834d0294cba00", "Qwen2_5OmniThinkerForConditionalGeneration", 22.4, 28, 3584),
+    "Qwen/Qwen3-Omni-30B-A3B-Instruct": FitSpec("26291f793822fb6be9555850f06dfe95f2d7e695", "Qwen3OmniMoeThinkerForConditionalGeneration", 70.5, 48, 2048),
+}
 MODELS = {
     "Qwen/Qwen3.5-4B": ModelSpec(
         revision="851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
@@ -99,26 +118,29 @@ MODELS = {
         lens_repo="hlampes/jacobian-lens",
         lens_revision="b23c89843f001b9cd14999f6d5a188c1c39a9146",
     ),
+    # added 25 Nov for the audio experiments: the Qwen omni models, audio-trained, each loaded as its text-generating part (the
+    # "thinker", FIT_MODELS' loader) at FIT_MODELS' revision, with the lens this project fitted (scripts/fit_lens.py, 250
+    # WikiText-103 prompts each; PR #13): the private repo debanshd/jspace-omni-lenses at the commit the fits were uploaded in,
+    # each file's sha256 as its meta.json records it. scripts/check_lens.py tests each lens before any audio run reads it.
+    **{
+        name: ModelSpec(
+            revision=FIT_MODELS[name].revision,
+            size_gb=FIT_MODELS[name].size_gb,
+            lens_file=f"{name.split('/')[-1]}/lens.pt",
+            lens_sha256=sha,
+            lens_repo="debanshd/jspace-omni-lenses",
+            lens_revision="4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75",
+            loader=FIT_MODELS[name].loader,
+        )
+        for name, sha in (
+            ("Qwen/Qwen2.5-Omni-3B", "8a10a569f4fe3614bf4575280079b5a2ddad7b39c173bec59f25da237992cde7"),
+            ("Qwen/Qwen2.5-Omni-7B", "d1696e876294f9e1d3510339905d64613d49125d9b74898e435a0583ef94e859"),
+            ("Qwen/Qwen3-Omni-30B-A3B-Instruct", "2c2fa06026a42307282e79d2ad120879fe01826287ffd15018c578ad36d50bcb"),
+        )
+    },
 }
 
 
-# Models whose J-lens this project fits itself (scripts/fit_lens.py): audio-trained models no published lens covers. Each is
-# loaded as its text-generating part ("thinker", the class named in loader), which reads the audio, pictures and video and
-# writes the text; the speech-output parts are not loaded. Pinned at the commits checked on 25 Nov 2026.
-@dataclass(frozen=True)
-class FitSpec:
-    revision: str
-    loader: str  # the transformers class that loads the model's text-generating part from the full checkpoint
-    size_gb: float  # the full checkpoint's download size
-    n_layers: int
-    d_model: int
-
-
-FIT_MODELS = {
-    "Qwen/Qwen2.5-Omni-3B": FitSpec("f75b40e3da2003cdd6e1829b1f420ca70797c34e", "Qwen2_5OmniThinkerForConditionalGeneration", 12.0, 36, 2048),
-    "Qwen/Qwen2.5-Omni-7B": FitSpec("ae9e1690543ffd5c0221dc27f79834d0294cba00", "Qwen2_5OmniThinkerForConditionalGeneration", 22.4, 28, 3584),
-    "Qwen/Qwen3-Omni-30B-A3B-Instruct": FitSpec("26291f793822fb6be9555850f06dfe95f2d7e695", "Qwen3OmniMoeThinkerForConditionalGeneration", 70.5, 48, 2048),
-}
 # The fitting corpus: WikiText-103 (raw), Neuronpedia's corpus for its lenses, at the revision lamm-mit's Gemma-4 lenses record;
 # the first training shard and the validation split (for the fitted lens's report), each checked against its sha256
 WIKITEXT_REPO, WIKITEXT_REVISION = "Salesforce/wikitext", "b08601e04326c79dfdd32d625aee71d232d685c3"

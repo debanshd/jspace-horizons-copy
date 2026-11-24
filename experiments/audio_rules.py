@@ -30,7 +30,7 @@ The rule (written before the run):
 - passes: per input and variant, whether the animal rule reaches video_sweep's patching gate (>= 0.85) for receivers and donors
   over the 64 scenes. A variant that passes with the audio first is a candidate wording for an audio-first sweep, which would be a
   new experiment with its own rule.
-Run on the audio-capable models (Gemma-4-E2B, E4B and 12B).
+Run on the audio-capable models (Gemma-4-E2B, E4B and 12B; Qwen2.5-Omni-3B and 7B and Qwen3-Omni-30B-A3B (added 25 Nov, with this project's lenses, PR #13)).
 
 Outputs in runs/<run>/<model>/: audio_rules.csv (every answer), summary.json, config.json, run.log.
 """

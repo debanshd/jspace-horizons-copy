@@ -114,7 +114,8 @@ def main():
     ap.add_argument("--skip-data", action="store_true", help="not the COCO, SCAM and GQA data (media_steer reads none of them)")
     args = ap.parse_args()
     load_env()  # HF_TOKEN from .env, if there is one
-    names = [] if args.data_only else [n for n in MODELS if args.gemma or "gemma" not in n]
+    # the Qwen omni models (a loader of their own, 12 to 70 GB) are downloaded only when --models names them
+    names = [] if args.data_only else [n for n in MODELS if (args.gemma or "gemma" not in n) and not MODELS[n].loader]
     if args.models:
         unknown = [m for m in args.models.split(",") if m not in MODELS]
         if unknown:
