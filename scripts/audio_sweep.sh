@@ -9,7 +9,7 @@
 #      A frozen or typed input the model does not perceive is untestable, as audio_sweep_static's rule says, and goes on.
 #   3. the full sweep, only with FULL=1, after the pilot's outputs have been inspected (the CSV and summary.json).
 # Before step 1, a model whose lens is not Neuronpedia's (Gemma-4-12B: hlampes/jacobian-lens) must pass scripts/check_lens.py
-# against LENS_REF's lens; otherwise the model is skipped. A step whose output exists is skipped, so the chain picks up where it
+# against LENS_REF's lens (a Qwen model: the Qwen rule, against the Neuronpedia Qwen lenses in CAL_RUN); otherwise the model is skipped. A step whose output exists is skipped, so the chain picks up where it
 # stopped.
 #
 #   scripts/audio_sweep.sh                                 steps 1 and 2 for Gemma-4-E2B, E4B and 12B (an L40S); then stop
@@ -25,6 +25,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 MODELS=${MODELS:-"google/gemma-4-E2B-it google/gemma-4-E4B-it google/gemma-4-12B-it"}
+CAL_RUN=${CAL_RUN:-check_lens_calibration}  # the Neuronpedia Qwen lenses' check_lens summaries (scripts/lens_calibration.sh)
 LENS_REF=${LENS_REF:-google/gemma-4-E4B-it}   # the model whose Neuronpedia lens sets the bar for a lens from elsewhere
 # Gemma-4-12B's other lens (25 of its layers, 1000 prompts), read beside its own at the layers they share: reported, not judged.
 # Only the 12B has one; the Qwen omni models' lenses are this project's own fits (scripts/fit_lens.py).
@@ -81,7 +82,10 @@ model() {  # model <model>: the three steps; returns non-zero at the first step 
     # a Qwen omni model runs on its 1000-prompt lens only: decided before any check_lens run (config.DECIDING_LENS)
     uv run --frozen python -c "import sys; from jspace.config import deciding_lens_pinned; sys.exit(0 if deciding_lens_pinned(sys.argv[1]) else 1)" "$m" ||
         { echo "$m: the pinned lens is not its deciding 1000-prompt lens; pin that first (docs/omni_audio_run.md)" >&2; return 1; }
-    if uv run --frozen python -c "import sys; from jspace.config import MODELS; sys.exit(0 if MODELS[sys.argv[1]].lens_repo else 1)" "$m"; then
+    if [ "${m%%/*}" = Qwen ] && uv run --frozen python -c "import sys; from jspace.config import MODELS; sys.exit(0 if MODELS[sys.argv[1]].lens_repo else 1)" "$m"; then  # a Qwen lens from outside Neuronpedia: the Qwen rule (config.QWEN_CALIBRATION), into its own run, check_lens_qwen
+        [ -f "runs/check_lens_qwen/$tag/summary.json" ] || uv run --frozen scripts/check_lens.py --model "$m" --run check_lens_qwen --calibration "$CAL_RUN" || { echo "check_lens of $m failed" >&2; return 1; }
+        uv run --frozen scripts/audio_gate.py lens "runs/check_lens_qwen/$tag/summary.json" || { echo "$m: its lens fails the Qwen rule" >&2; return 1; }
+    elif uv run --frozen python -c "import sys; from jspace.config import MODELS; sys.exit(0 if MODELS[sys.argv[1]].lens_repo else 1)" "$m"; then
         download "$LENS_REF" || { echo "the download of $LENS_REF failed" >&2; return 1; }
         [ -f "runs/check_lens/${LENS_REF#*/}/summary.json" ] || uv run --frozen scripts/check_lens.py --model "$LENS_REF" --run check_lens || { echo "check_lens of $LENS_REF failed" >&2; return 1; }
         local extra=()

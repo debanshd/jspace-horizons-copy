@@ -148,6 +148,15 @@ MODELS = {
 DECIDING_LENS = "n1000"  # the folder of the omni models' deciding lenses in debanshd/jspace-omni-lenses (see MODELS)
 
 
+# check_lens's Qwen rule (written 25 Nov, before any lens is judged by it). The first rule (beat the logit lens from half depth,
+# deepest >= Gemma-4-E4B's - 0.10) failed three of the four Neuronpedia Qwen lenses the original results read
+# (runs/check_lens_calibration: the 2B passed at 0.486; the 4B 0.312, the 9B's J++ 0.177, the 27B 0.264), so it says nothing
+# about a Qwen lens. A Qwen lens is judged instead against these four: at every read layer from half depth, its agreement with the
+# model must be at least the lowest of theirs at the nearest depth (scripts/check_lens.py --calibration). The weakest lens the
+# original results trusted sets the bar, so each of the four passes it by construction.
+QWEN_CALIBRATION = ("Qwen/Qwen3.5-2B", "Qwen/Qwen3.5-4B", "Qwen/Qwen3.5-9B", "Qwen/Qwen3.5-27B")
+
+
 def deciding_lens_pinned(name):
     """a model's pinned lens may decide: any model but a Qwen omni one, or an omni one pinned at its 1000-prompt lens"""
     s = MODELS[name]

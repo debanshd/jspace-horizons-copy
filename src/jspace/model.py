@@ -105,7 +105,10 @@ class Session:
         )
         gc.collect()
         torch.cuda.empty_cache()
-        self._check_batching()
+        # a Qwen omni model takes its answer prefix from the picture check itself: on the text-only questions Qwen3-Omni-30B-A3B
+        # chose no prefix, and with it put 0.24-0.40 of its first token on the letters after a picture, against 0.59-0.74 after
+        # "(" (runs/diagnose_preflight, 25 Nov). Written before any omni experiment ran; the other models choose as they did.
+        self._check_batching(self._picture_prefix() if self.spec.loader else None)
         self._preflight()
 
     # ---- tokens and chat templates
@@ -324,10 +327,39 @@ class Session:
                 out[s : s + self.batch, li] = ((x[:, None, :] > v[:, :, None]).sum(-1) + 1).cpu().numpy()
         return out
 
-    def _check_batching(self):
-        """Which answer-letter scheme the model uses, and whether left-padded batches give the numbers lens.apply gives one prompt
-        at a time (letter distributions within 0.02, option ranks within 0.25 in log10); otherwise batching is turned off."""
-        schemes = {"(": {c: self.single_ids((c, " " + c)) for c in "ABCD"}, "": {c: self.single_ids(("(" + c, "(" + c + ")", c, " " + c)) for c in "ABCD"}}
+    def _schemes(self):
+        """the two answer-letter schemes: prefill "(" and read the letter, or prefill nothing and read "(A", "A", ..."""
+        return {"(": {c: self.single_ids((c, " " + c)) for c in "ABCD"}, "": {c: self.single_ids(("(" + c, "(" + c + ")", c, " " + c)) for c in "ABCD"}}
+
+    def _load_processor(self):
+        if getattr(self, "processor", None) is None:
+            self.processor = transformers.AutoProcessor.from_pretrained(self.name, revision=self.spec.revision)
+            self.processor.tokenizer.padding_side = "left"
+
+    def _picture_texts(self):
+        """the picture check's three prompts without the answer prefix, and their cards (A, C, D)"""
+        q = "Which letter is written in the picture?\n(A) A\n(B) B\n(C) C\n(D) D" + INSTR
+        msgs = [{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": q}]}]
+        return [self.chat_messages(msgs)] * 3, [stimuli.text_picture(c) for c in "ACD"]
+
+    def _picture_prefix(self):
+        """the scheme whose letters get the most next-token probability on the picture check (the omni models' choice)"""
+        self._load_processor()
+        self.vision_path = entry_points(self.spec)[-1]  # the full model, the only entry point a loader model has
+        texts, imgs = self._picture_texts()
+        masses = {}
+        for p, ids in self._schemes().items():
+            pr = torch.softmax(self.forward([t + p for t in texts], imgs)[0], -1)
+            masses[p] = float(sum(pr[:, t].sum(-1) for c in "ABCD" for t in [ids[c]]).mean())
+        best = max(masses, key=masses.get)
+        print(f"answer prefix from the picture check: {best!r} (letter mass {masses[best]:.2f}; the other scheme {min(masses.values()):.2f})")
+        return best
+
+    def _check_batching(self, prefix=None):
+        """Which answer-letter scheme the model uses (prefix, when given, chooses it), and whether left-padded batches give the
+        numbers lens.apply gives one prompt at a time (letter distributions within 0.02, option ranks within 0.25 in log10);
+        otherwise batching is turned off."""
+        schemes = self._schemes()
         qs = [
             "Pick one of these for dinner.\n(A) pizza\n(B) sushi\n(C) pasta\n(D) salad",
             "Pick one of these colours for a room.\n(A) red\n(B) blue\n(C) green\n(D) white",
@@ -338,7 +370,7 @@ class Session:
         assert all(len(t) == 1 for o in opts for t in o), "check words must be single tokens"
         opts = [[t[0] for t in o] for o in opts]
         masses = {p: float(self._letter_dists([self.chat([("user", q + INSTR)]) + p for q in qs], ids)[1].mean()) for p, ids in schemes.items()}
-        self.answer_prefix = max(masses, key=masses.get)
+        self.answer_prefix = max(masses, key=masses.get) if prefix is None else prefix
         self.letter_ids = schemes[self.answer_prefix]
         prompts = [self.chat([("user", q + INSTR)]) + self.answer_prefix for q in qs]
         print(f"answer readout: prefill {self.answer_prefix!r} (letter mass {masses[self.answer_prefix]:.2f}; the other scheme {min(masses.values()):.2f})")
@@ -374,12 +406,9 @@ class Session:
 
     def _preflight(self):
         """the model must read a letter off a picture: three cards whose answer exists only in the picture"""
-        self.processor = transformers.AutoProcessor.from_pretrained(self.name, revision=self.spec.revision)
-        self.processor.tokenizer.padding_side = "left"
-        q = "Which letter is written in the picture?\n(A) A\n(B) B\n(C) C\n(D) D" + INSTR
-        msgs = [{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": q}]}]
-        texts = [self.chat_messages(msgs) + self.answer_prefix] * 3
-        imgs = [stimuli.text_picture(c) for c in "ACD"]
+        self._load_processor()
+        texts, imgs = self._picture_texts()
+        texts = [t + self.answer_prefix for t in texts]
         err = ""
         for path in entry_points(self.spec):
             self.vision_path = path

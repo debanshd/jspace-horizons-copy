@@ -61,7 +61,10 @@ def pilot(s):
 
 def lens(s):
     print(f"  lens {s['lens']['repo']}/{s['lens']['file']} ({s['lens']['n_prompts']} prompts): agreement with the model by layer {s['jlens']}")
-    print(f"  logit lens {s['logit']}; deepest {s['deepest']:.3f} against the reference's {s['reference']['deepest']:.3f}")
+    if s.get("rule") == "qwen":
+        print(f"  logit lens {s['logit']} (reported, decides nothing); the Qwen rule's bar by layer {s['calibration']['bar']}")
+    else:
+        print(f"  logit lens {s['logit']}; deepest {s['deepest']:.3f} against the reference's {s['reference']['deepest']:.3f}")
     return bool(s["passes"])
 
 

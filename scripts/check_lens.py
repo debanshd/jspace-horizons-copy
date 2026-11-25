@@ -19,6 +19,11 @@ The rule (written before the run), with --reference (that model's own check_lens
   minus 0.10.
 - passes: both. scripts/audio_sweep.sh runs a model with a lens from outside Neuronpedia only when it passes.
 
+The Qwen rule (written 25 Nov, before any lens is judged by it; config.QWEN_CALIBRATION), with --calibration <run> in place of
+--reference: the rule above failed three of the four Neuronpedia Qwen lenses the original results read, so for a Qwen lens:
+- meets_calibration: at every read layer from half depth on, the J-lens agreement is at least the lowest agreement of the four
+  calibration lenses (their check_lens summaries in runs/<calibration run>/) at their read layer nearest that depth.
+- passes: meets_calibration. beats_logit_lens is still reported, and decides nothing.
 Outputs in runs/<run>/<model>/: check_lens.csv (per layer and lens), summary.json, config.json, run.log.
 """
 
@@ -27,7 +32,7 @@ import json
 import pandas as pd
 import torch
 
-from jspace import stimuli
+from jspace import config, stimuli
 from jspace.model import Session
 from jspace.runs import Run, parser
 
@@ -54,10 +59,37 @@ def agreement(lm, lens, layers, texts):
     return {k: v / n for k, v in hit.items()}, n
 
 
+def calibration_bar(summaries, depths):
+    """per depth: the lowest J-lens agreement among the calibration summaries, each read at its read layer nearest that depth"""
+    bar = []
+    for d in depths:
+        vals = []
+        for s in summaries:
+            by_depth = {int(L) / s["n_layers"]: v for L, v in s["jlens"].items()}
+            vals.append(by_depth[min(by_depth, key=lambda x: abs(x - d))])
+        bar.append(min(vals))
+    return bar
+
+
+def load_calibration(runs_dir, run):
+    """the calibration lenses' check_lens summaries: each must exist and be their pinned (Neuronpedia) lens"""
+    out = {}
+    for m in config.QWEN_CALIBRATION:
+        f = runs_dir / run / m.split("/")[-1] / "summary.json"
+        if not f.exists():
+            raise SystemExit(f"{f} not found: run scripts/lens_calibration.sh first")
+        s = json.loads(f.read_text())
+        if s["lens"].get("alt") or s["lens"]["file"] != config.MODELS[m].lens_file:
+            raise SystemExit(f"{f} is not {m}'s pinned lens")
+        out[m] = s
+    return out
+
+
 def main():
     ap = parser(__doc__, "check_lens")
     ap.add_argument("--reference", help="a model whose check_lens summary in this run sets the bar (near_reference)")
     ap.add_argument("--lens", help="check this alternative lens of the model (config.ALT_LENSES, e.g. Qwen3.5-9B's jlens), not its pinned one")
+    ap.add_argument("--calibration", help="a run holding the Qwen calibration lenses' summaries: judge by the Qwen rule")
     ap.add_argument("--extra-lens", help="repo:file@revision of another lens for this model, read at the layers it shares")
     args = ap.parse_args()
     ref = None
@@ -66,6 +98,11 @@ def main():
         if not f.exists():
             raise SystemExit(f"{f} not found: run check_lens for the reference {args.reference} first")
         ref = json.loads(f.read_text())
+    cal = None
+    if args.calibration:
+        if not args.model.startswith("Qwen/"):
+            raise SystemExit("the Qwen rule (--calibration) judges Qwen lenses only")
+        cal = load_calibration(args.runs_dir, args.calibration)
     run = Run(args, "check_lens")
     lm = Session(args.model, lens=args.lens)
     run.write_config(lm)
@@ -110,10 +147,18 @@ def main():
         out["reference"] = dict(model=args.reference, deepest=ref["deepest"])
         out["near_reference"] = bool(out["deepest"] >= ref["deepest"] - MARGIN)
         out["passes"] = bool(out["beats_logit_lens"] and out["near_reference"])
+    if cal is not None:
+        bar = calibration_bar(list(cal.values()), list(late["depth"]))
+        out["calibration"] = dict(run=args.calibration, models=list(cal), bar={int(L): b for L, b in zip(late["layer"], bar)})
+        out["meets_calibration"] = bool(all(v >= b for v, b in zip(late["jlens"], bar)))
+        out["rule"] = "qwen"
+        out["passes"] = out["meets_calibration"]
     run.save_json(out, "summary.json")
     for _, r in R.iterrows():
         print(f"{r['lens'][:40]:40s} layer {int(r['layer']):2d} ({r['depth']:.2f}): J-lens {r['jlens']:.3f}  logit lens {r['logit']:.3f}")
     print(f"deepest {out['deepest']:.3f}; beats the logit lens from half depth: {out['beats_logit_lens']}" + (f"; reference {ref['deepest']:.3f}; passes: {out['passes']}" if ref else ""))
+    if cal is not None:
+        print(f"Qwen rule: bar by layer {out['calibration']['bar']}; passes: {out['passes']}")
 
 
 if __name__ == "__main__":
