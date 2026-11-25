@@ -389,7 +389,8 @@ def test_the_12b_lens_is_pinned_outside_neuronpedia():
     spec = config.MODELS["google/gemma-4-12B-it"]
     assert spec.lens_source() == ("hlampes/jacobian-lens", "b23c89843f001b9cd14999f6d5a188c1c39a9146")
     assert len(spec.revision) == 40 and len(spec.lens_sha256) == 64
-    assert all(s.lens_source() == (config.LENS_REPO, config.LENS_REVISION) for n, s in config.MODELS.items() if n != "google/gemma-4-12B-it")
+    others = [s for n, s in config.MODELS.items() if n != "google/gemma-4-12B-it" and not s.loader]  # the omni models: their own test
+    assert all(s.lens_source() == (config.LENS_REPO, config.LENS_REVISION) for s in others)
 
 
 def test_check_lens_prompts_and_gate(tmp_path):
@@ -549,3 +550,69 @@ def test_diagnose_lens_readout_stats():
     out = dl.readout_stats(lg, torch.tensor([1, 2]))  # the model's tops: 1 (the readout's top) and 2 (its second)
     assert out == {3: (1, [1, 2])}
     assert len(p) == 48 and all(x.startswith("<bos>") for x in p)
+
+
+def test_the_qwen_omni_models_load_their_thinker_with_this_projects_lens():
+    from jspace import config
+
+    for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"):
+        s, f = config.MODELS[name], config.FIT_MODELS[name]
+        assert s.loader == f.loader and s.revision == f.revision
+        assert s.lens_source()[0] == "debanshd/jspace-omni-lenses" and len(s.lens_source()[1]) == 40 and len(s.lens_sha256) == 64
+    # the 3B and 7B at their validated 500-prompt lenses (PR #13); the 30B, whose 500-prompt lens failed, at its 250-prompt one
+    for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"):
+        assert config.MODELS[name].lens_file == f"{name.split('/')[-1]}/n500/lens.pt"
+        assert config.MODELS[name].lens_revision == "a473c0784d05057a15f278b703a9cfae6499880c"
+    # the 30B's lens failed check 2 and is used by the recorded exception, for that very file only
+    assert config.LENS_EXCEPTIONS == {config.MODELS["Qwen/Qwen3-Omni-30B-A3B-Instruct"].lens_sha256: "Qwen/Qwen3-Omni-30B-A3B-Instruct"}
+    assert all(s.loader is None for n, s in config.MODELS.items() if not n.startswith("Qwen/Qwen") or "Omni" not in n)
+
+
+def test_audio_token_id_from_the_processor_or_its_token():
+    import importlib
+
+    try:
+        Session = importlib.import_module("jspace.model").Session
+    except ImportError:
+        pytest.skip("jlens is not installed here")
+    gemma = types.SimpleNamespace(processor=types.SimpleNamespace(audio_token_id=258881), tokenizer=None)
+    qwen = types.SimpleNamespace(processor=types.SimpleNamespace(audio_token="<|AUDIO|>"), tokenizer=types.SimpleNamespace(convert_tokens_to_ids=lambda t: {"<|AUDIO|>": 151646}[t]))
+    assert Session.audio_token_id.fget(gemma) == 258881 and Session.audio_token_id.fget(qwen) == 151646
+
+
+def test_a_thinker_is_read_through_the_full_model():
+    import importlib
+
+    try:
+        model = importlib.import_module("jspace.model")
+    except ImportError:
+        pytest.skip("jlens is not installed here")
+    from jspace import config
+
+    assert model.entry_points(config.MODELS["Qwen/Qwen2.5-Omni-3B"]) == ("logits_to_keep",)  # its base model drops media silently
+    assert model.entry_points(config.MODELS["google/gemma-4-E4B-it"]) == ("base", "logits_to_keep")  # as before
+    assert model.entry_points(config.MODELS["Qwen/Qwen3.5-4B"]) == ("base", "logits_to_keep")
+
+
+def test_an_omni_model_runs_only_on_its_deciding_lens():
+    from jspace import config
+
+    assert config.deciding_lens_pinned("google/gemma-4-E4B-it") and config.deciding_lens_pinned("google/gemma-4-12B-it")
+    for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"):
+        assert config.deciding_lens_pinned(name)  # each at its 500-prompt lens
+    assert config.DECIDING_LENS == "n500"  # the 500-prompt lenses decide since 25 Nov (config.LENS_CHECKS)
+
+
+def test_omni_defaults_fill_only_what_is_missing():
+    import importlib
+
+    try:
+        model = importlib.import_module("jspace.model")
+    except ImportError:
+        pytest.skip("jlens is not installed here")
+    gc, tok = types.SimpleNamespace(eos_token_id=None), types.SimpleNamespace(eos_token_id=151645, chat_template=None)
+    model.omni_defaults(gc, tok, lambda: "{{ template }}")
+    assert gc.eos_token_id == [151645] and tok.chat_template == "{{ template }}"  # Qwen3-Omni: both missing
+    gc, tok = types.SimpleNamespace(eos_token_id=[1, 106]), types.SimpleNamespace(eos_token_id=1, chat_template="mine")
+    model.omni_defaults(gc, tok, lambda: pytest.fail("the processor is not read when the tokenizer has a template"))
+    assert gc.eos_token_id == [1, 106] and tok.chat_template == "mine"

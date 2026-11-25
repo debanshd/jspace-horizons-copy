@@ -30,8 +30,27 @@ CPU_THREADS = 16
 IMG_TOKENS = (448 // 32) * (224 // 32) + 8  # the batch planner's token allowance per picture
 
 
+def omni_defaults(generation_config, tokenizer, processor_template):
+    """what a Qwen omni checkpoint leaves out, filled from its own files: an end token for generation (their
+    generation_config.json names none, so every answer would run to the token limit and past <|im_end|>; the tokenizer's end
+    token is <|im_end|>), and the tokenizer's chat template (Qwen3-Omni keeps it with the processor only: processor_template()
+    loads it). The other models' settings are never touched."""
+    if generation_config.eos_token_id is None:
+        generation_config.eos_token_id = [int(tokenizer.eos_token_id)]
+    if getattr(tokenizer, "chat_template", None) is None:
+        tokenizer.chat_template = processor_template()
+
+
+def entry_points(spec):
+    """the forward entry points the picture check tries, in order: the base model ("base") or the full model ("logits_to_keep").
+    A Qwen omni thinker's base model is its text decoder alone, whose forward takes **kwargs: it would accept the picture and the
+    audio, leave them out without an error, and the check would then fail as "not read" (or, by chance, pass with every media
+    forward reading no media). Only the full thinker reads them."""
+    return ("logits_to_keep",) if spec.loader else ("base", "logits_to_keep")
+
+
 class Session:
-    def __init__(self, name):
+    def __init__(self, name, lens=None):
         missing = [f for f in stimuli.FONT_FILES if not os.path.exists(f)]
         assert not missing, f"{missing} not found: the stimuli are drawn in DejaVu Sans (Debian / Ubuntu: apt install fonts-dejavu-core)"
         assert torch.cuda.is_available(), "the experiments need a CUDA GPU"
@@ -41,13 +60,21 @@ class Session:
         self.name, self.spec, self.tag = name, config.MODELS[name], name.split("/")[-1]
         jlens.configure_logging()
         cls = transformers.AutoModelForMultimodalLM if "gemma" in name.lower() else transformers.AutoModelForImageTextToText
+        if self.spec.loader:  # a Qwen omni model: its text-generating part ("thinker") alone, from the full checkpoint
+            cls = getattr(transformers, self.spec.loader)
         self.hf = cls.from_pretrained(name, revision=self.spec.revision, dtype=torch.bfloat16).cuda()
         self.tokenizer = transformers.AutoTokenizer.from_pretrained(name, revision=self.spec.revision)
+        if self.spec.loader:  # a Qwen omni checkpoint lacks two things the other models' carry
+            omni_defaults(self.hf.generation_config, self.tokenizer, lambda: transformers.AutoProcessor.from_pretrained(name, revision=self.spec.revision).chat_template)
         # the chat templates supply any BOS themselves (force_bos=True gave Gemma prompts two <bos> in lens.apply)
         self.model = jlens.from_hf(self.hf, self.tokenizer, force_bos=False)
-        repo, rev = self.spec.lens_source()  # Neuronpedia's repo, unless the model's lens is pinned elsewhere
-        self.lens = JacobianLens.from_pretrained(repo, filename=self.spec.lens_file, revision=rev)
-        self.lens_jpp = JacobianLens.from_pretrained(repo, filename=self.spec.jpp_file, revision=rev) if self.spec.jpp_file else None
+        # the pinned lens (Neuronpedia's repo, unless pinned elsewhere), or with lens an alternative from config.ALT_LENSES
+        self.lens_name = lens
+        repo, rev, file, _ = config.lens_for(name, lens)
+        self.lens_source = dict(repo=repo, revision=rev, file=file)
+        self.lens = JacobianLens.from_pretrained(repo, filename=file, revision=rev)
+        prepo, prev = self.spec.lens_source()
+        self.lens_jpp = JacobianLens.from_pretrained(prepo, filename=self.spec.jpp_file, revision=prev) if self.spec.jpp_file else None
         torch.manual_seed(0)  # after loading, as in the original runs: the PCA control in gqa_ablation draws from this stream
 
         n = self.n_layers = self.model.n_layers
@@ -74,11 +101,15 @@ class Session:
         self.cache = {}  # lens Gram matrix and eigenbases (lens.py)
         print(
             f"{name} @ {self.spec.revision[:8]}: {n} layers, {self.dtype}, d = {self.d_model}, on {torch.cuda.get_device_name(0)}; "
-            f"lens {self.spec.lens_file} ({'with' if self.jpp else 'no'} J++), read layers {self.layers}; batch {self.batch} / {self.batch_tokens} tokens"
+            f"lens {repo}/{file} ({'with' if self.jpp else 'no'} J++), read layers {self.layers}; batch {self.batch} / {self.batch_tokens} tokens"
         )
         gc.collect()
         torch.cuda.empty_cache()
-        self._check_batching()
+        # a Qwen omni model takes its answer prefix from a picture, not the text-only questions: there Qwen3-Omni-30B-A3B chose no
+        # prefix, and with it put 0.24-0.40 of its first token on the letters after a picture, against 0.59-0.74 after "("
+        # (runs/diagnose_preflight, 25 Nov). The choice is made on card B, which the picture check (cards A, C, D) never shows, so
+        # the check does not grade its own choice. Written before any omni experiment ran; the other models choose as they did.
+        self._check_batching(self._picture_prefix() if self.spec.loader else None)
         self._preflight()
 
     # ---- tokens and chat templates
@@ -223,6 +254,15 @@ class Session:
 
         return self.run_batches(texts, images, fn)
 
+    @property
+    def audio_token_id(self):
+        """the token the processor expands into a clip's audio positions: the processor's id where it gives one (Gemma-4), else
+        its audio token's id (the Qwen omni processors name the token only)"""
+        tid = getattr(self.processor, "audio_token_id", None)
+        if tid is None:
+            tid = self.tokenizer.convert_tokens_to_ids(self.processor.audio_token)
+        return int(tid)
+
     def all_layers(self):
         """[-1, 0, ..., final]: every layer an intervention can address. Loads the J-lens maps of all of them"""
         for L in range(self.final):
@@ -288,10 +328,40 @@ class Session:
                 out[s : s + self.batch, li] = ((x[:, None, :] > v[:, :, None]).sum(-1) + 1).cpu().numpy()
         return out
 
-    def _check_batching(self):
-        """Which answer-letter scheme the model uses, and whether left-padded batches give the numbers lens.apply gives one prompt
-        at a time (letter distributions within 0.02, option ranks within 0.25 in log10); otherwise batching is turned off."""
-        schemes = {"(": {c: self.single_ids((c, " " + c)) for c in "ABCD"}, "": {c: self.single_ids(("(" + c, "(" + c + ")", c, " " + c)) for c in "ABCD"}}
+    def _schemes(self):
+        """the two answer-letter schemes: prefill "(" and read the letter, or prefill nothing and read "(A", "A", ..."""
+        return {"(": {c: self.single_ids((c, " " + c)) for c in "ABCD"}, "": {c: self.single_ids(("(" + c, "(" + c + ")", c, " " + c)) for c in "ABCD"}}
+
+    def _load_processor(self):
+        if getattr(self, "processor", None) is None:
+            self.processor = transformers.AutoProcessor.from_pretrained(self.name, revision=self.spec.revision)
+            self.processor.tokenizer.padding_side = "left"
+
+    def _picture_texts(self, cards="ACD"):
+        """the picture question without the answer prefix, one prompt per card: the picture check's are A, C and D"""
+        q = "Which letter is written in the picture?\n(A) A\n(B) B\n(C) C\n(D) D" + INSTR
+        msgs = [{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": q}]}]
+        return [self.chat_messages(msgs)] * len(cards), [stimuli.text_picture(c) for c in cards]
+
+    def _picture_prefix(self):
+        """the scheme whose letters get the most next-token probability on card B, a card the picture check never shows (the
+        omni models' choice)"""
+        self._load_processor()
+        self.vision_path = entry_points(self.spec)[-1]  # the full model, the only entry point a loader model has
+        texts, imgs = self._picture_texts("B")
+        masses = {}
+        for p, ids in self._schemes().items():
+            pr = torch.softmax(self.forward([t + p for t in texts], imgs)[0], -1)
+            masses[p] = float(sum(pr[:, t].sum(-1) for c in "ABCD" for t in [ids[c]]).mean())
+        best = max(masses, key=masses.get)
+        print(f"answer prefix from card B: {best!r} (letter mass {masses[best]:.2f}; the other scheme {min(masses.values()):.2f})")
+        return best
+
+    def _check_batching(self, prefix=None):
+        """Which answer-letter scheme the model uses (prefix, when given, chooses it), and whether left-padded batches give the
+        numbers lens.apply gives one prompt at a time (letter distributions within 0.02, option ranks within 0.25 in log10);
+        otherwise batching is turned off."""
+        schemes = self._schemes()
         qs = [
             "Pick one of these for dinner.\n(A) pizza\n(B) sushi\n(C) pasta\n(D) salad",
             "Pick one of these colours for a room.\n(A) red\n(B) blue\n(C) green\n(D) white",
@@ -302,7 +372,7 @@ class Session:
         assert all(len(t) == 1 for o in opts for t in o), "check words must be single tokens"
         opts = [[t[0] for t in o] for o in opts]
         masses = {p: float(self._letter_dists([self.chat([("user", q + INSTR)]) + p for q in qs], ids)[1].mean()) for p, ids in schemes.items()}
-        self.answer_prefix = max(masses, key=masses.get)
+        self.answer_prefix = max(masses, key=masses.get) if prefix is None else prefix
         self.letter_ids = schemes[self.answer_prefix]
         prompts = [self.chat([("user", q + INSTR)]) + self.answer_prefix for q in qs]
         print(f"answer readout: prefill {self.answer_prefix!r} (letter mass {masses[self.answer_prefix]:.2f}; the other scheme {min(masses.values()):.2f})")
@@ -338,14 +408,11 @@ class Session:
 
     def _preflight(self):
         """the model must read a letter off a picture: three cards whose answer exists only in the picture"""
-        self.processor = transformers.AutoProcessor.from_pretrained(self.name, revision=self.spec.revision)
-        self.processor.tokenizer.padding_side = "left"
-        q = "Which letter is written in the picture?\n(A) A\n(B) B\n(C) C\n(D) D" + INSTR
-        msgs = [{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": q}]}]
-        texts = [self.chat_messages(msgs) + self.answer_prefix] * 3
-        imgs = [stimuli.text_picture(c) for c in "ACD"]
+        self._load_processor()
+        texts, imgs = self._picture_texts()
+        texts = [t + self.answer_prefix for t in texts]
         err = ""
-        for path in ("base", "logits_to_keep"):
+        for path in entry_points(self.spec):
             self.vision_path = path
             try:
                 P, mass = self._letters(texts, imgs)

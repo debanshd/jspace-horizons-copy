@@ -19,6 +19,7 @@ class ModelSpec:
     jpp_sha256: str | None = None
     lens_repo: str | None = None  # a lens from another Hub repo than LENS_REPO (None: LENS_REPO at LENS_REVISION)
     lens_revision: str | None = None  # that repo's pinned commit
+    loader: str | None = None  # the transformers class that loads the model, where it is not the default (a Qwen omni "thinker")
 
     def lens_source(self):
         """(repo, revision) the lens files are read from"""
@@ -31,6 +32,41 @@ LENS_REPO = "neuronpedia/jacobian-lens"
 # were last changed before the runs. scripts/download.py checks every lens file against these hashes.
 LENS_REVISION = "e166deb5ad540932100ef803c8c9bcc2a5453694"
 
+
+# Models whose J-lens this project fits itself (scripts/fit_lens.py): audio-trained models no published lens covers. Each is
+# loaded as its text-generating part ("thinker", the class named in loader), which reads the audio, pictures and video and
+# writes the text; the speech-output parts are not loaded. Pinned at the commits checked on 25 Nov 2026.
+@dataclass(frozen=True)
+class FitSpec:
+    revision: str
+    loader: str  # the transformers class that loads the model's text-generating part from the full checkpoint
+    size_gb: float  # the full checkpoint's download size
+    n_layers: int
+    d_model: int
+
+
+FIT_MODELS = {
+    "Qwen/Qwen2.5-Omni-3B": FitSpec("f75b40e3da2003cdd6e1829b1f420ca70797c34e", "Qwen2_5OmniThinkerForConditionalGeneration", 12.0, 36, 2048),
+    "Qwen/Qwen2.5-Omni-7B": FitSpec("ae9e1690543ffd5c0221dc27f79834d0294cba00", "Qwen2_5OmniThinkerForConditionalGeneration", 22.4, 28, 3584),
+    "Qwen/Qwen3-Omni-30B-A3B-Instruct": FitSpec("26291f793822fb6be9555850f06dfe95f2d7e695", "Qwen3OmniMoeThinkerForConditionalGeneration", 70.5, 48, 2048),
+    # added 25 Nov: the mid-size Gemma-4 for the video experiments (pictures and video, no audio): a mixture of experts, 128
+    # experts with 8 active (about 4B parameters per token); no published lens covers it. Loaded whole, as Session loads Gemma.
+    "google/gemma-4-26B-A4B-it": FitSpec("4d7ae4984b7db7de8f8457170b3f1a419ee76d52", "AutoModelForMultimodalLM", 51.6, 30, 2816),
+    # added 25 Nov: the dense mid-size Gemma-4 (pictures, video and audio). Its two published lenses failed check_lens (hlampes,
+    # 250 prompts; lamm-mit, 25 layers mapped to layer 46), and diagnose_lens found its late layers unreadable by either. Fitted
+    # here with this recipe, at the revision config.MODELS pins for it, to tell a lens problem from the model's own.
+    "google/gemma-4-12B-it": FitSpec("707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7", "AutoModelForMultimodalLM", 23.9, 48, 3840),
+    # added 25 Nov: not to be used, only refitted, to check this recipe against Neuronpedia's own lens of it (LENS_CHECKS)
+    "Qwen/Qwen3.5-2B": FitSpec("15852e8c16360a2fea060d615a32b45270f8a8fc", "AutoModelForImageTextToText", 4.5, 24, 2048),
+    # added 25 Nov: the mid-size Qwen for the video experiments (PR #15). Neuronpedia fitted only a J++ lens for the instruct 9B,
+    # and the third-party J-lens (bcywinski) failed check_lens and stays a miss; the experiments want a J-lens, so it is fitted
+    # here, at the revision config.MODELS pins, and validated by LENS_CHECKS like the omni lenses (250 prompts, then 500).
+    "Qwen/Qwen3.5-9B": FitSpec("c202236235762e1c871ad0ccb60c8ee5ba337b9a", "AutoModelForImageTextToText", 19.3, 32, 4096),
+    # added 25 Nov: not to be used, only refitted, for the Gemma family's check 1 (LENS_FAMILIES): the base Gemma-4-E2B, the model
+    # Neuronpedia fitted its E2B lens on (455 prompts, 12 Jun 2026), at its last commit before that fit (3 Jun; a tokenizer fix
+    # came on 3 Nov)
+    "google/gemma-4-E2B": FitSpec("63db66a33dc06d58c02b1e887446e103c202602c", "AutoModelForMultimodalLM", 10.2, 35, 1536),
+}
 MODELS = {
     "Qwen/Qwen3.5-4B": ModelSpec(
         revision="851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",
@@ -99,42 +135,71 @@ MODELS = {
         lens_repo="hlampes/jacobian-lens",
         lens_revision="b23c89843f001b9cd14999f6d5a188c1c39a9146",
     ),
+    # added 25 Nov for the audio experiments: the Qwen omni models, audio-trained, each loaded as its text-generating part (the
+    # "thinker", FIT_MODELS' loader) at FIT_MODELS' revision, with the lens this project fitted (scripts/fit_lens.py, 250
+    # WikiText-103 prompts each; PR #13): the private repo debanshd/jspace-omni-lenses at the commit the fits were uploaded in,
+    # each file's sha256 as its meta.json records it. scripts/check_lens.py tests each lens before any audio run reads it.
+    # Decided 25 Nov, before any check_lens run on these models: the lens that decides (check_lens, then the audio runs) is each
+    # model's 1000-prompt lens (scripts/fit_lens.py's extension, uploaded under <model>/n1000/). The 250-prompt lenses pinned
+    # here serve only scripts/omni_first_pass.sh, a loading test whose check_lens result decides nothing; scripts/audio_sweep.sh
+    # refuses an omni model until its pin is the 1000-prompt lens (DECIDING_LENS).
+    # Changed 25 Nov, with the project owner's approval, after check 3 of config.LENS_CHECKS came out void and before any audio
+    # result was read through these lenses: the deciding lens is each model's 500-prompt lens (uploaded under <model>/n500/), on
+    # the footing of the video's lenses (Neuronpedia's fits stopped at 233 to 861 prompts). See config.LENS_CHECKS.
+    # Pinned 25 Nov (PR #13, docs/omni_lens_n500_results.md): the 3B's and 7B's deciding 500-prompt lenses, which passed
+    # scripts/validate_lens.py (halves 0.9949 and 0.9953), at the repo commit they were uploaded in. The 30B's 500-prompt lens
+    # failed check 2 (0.9887); it is pinned too, and used only under LENS_EXCEPTIONS (25 Nov, approved after that result).
+    **{
+        name: ModelSpec(
+            revision=FIT_MODELS[name].revision,
+            size_gb=FIT_MODELS[name].size_gb,
+            lens_file=f"{name.split('/')[-1]}/{folder}lens.pt",
+            lens_sha256=sha,
+            lens_repo="debanshd/jspace-omni-lenses",
+            lens_revision=rev,
+            loader=FIT_MODELS[name].loader,
+        )
+        for name, folder, rev, sha in (
+            ("Qwen/Qwen2.5-Omni-3B", "n500/", "a473c0784d05057a15f278b703a9cfae6499880c", "a7535af6f48b566e4da89fd39a54c3b418fe3ce5d001efcf34c0983bec7c141c"),
+            ("Qwen/Qwen2.5-Omni-7B", "n500/", "a473c0784d05057a15f278b703a9cfae6499880c", "e2e88d60d9567a3a8225e46725938453ff7b1fc3bf899b6d710af1bf41596ba5"),
+            ("Qwen/Qwen3-Omni-30B-A3B-Instruct", "n500/", "a473c0784d05057a15f278b703a9cfae6499880c", "257e34cc4209b9ab4e006fd41fc36d9bec7f2ba8686cbcea86ee3406d93c179e"),
+        )
+    },
 }
 
 
-# Models whose J-lens this project fits itself (scripts/fit_lens.py): audio-trained models no published lens covers. Each is
-# loaded as its text-generating part ("thinker", the class named in loader), which reads the audio, pictures and video and
-# writes the text; the speech-output parts are not loaded. Pinned at the commits checked on 25 Nov 2026.
-@dataclass(frozen=True)
-class FitSpec:
-    revision: str
-    loader: str  # the transformers class that loads the model's text-generating part from the full checkpoint
-    size_gb: float  # the full checkpoint's download size
-    n_layers: int
-    d_model: int
+# Lenses used although their scripts/validate_lens.py verdict fails, each by the project owner's explicit decision after the
+# result, recorded here as a change of rule after a result (the verdict itself stands as it is). By sha256 of the lens file:
+# scripts/audio_sweep.sh accepts a failing verdict only for the very file named here.
+LENS_EXCEPTIONS = {
+    # Qwen3-Omni-30B-A3B-Instruct's 500-prompt lens: check 2's halves agree at 0.9887 at layer 14 (0.9900 at 15, 0.9908 at 16),
+    # under the bar of 0.99 by about 0.001; the 3B's and 7B's passed at 0.9949 and 0.9953. Decided 25 Nov ("Use the 500 lens as
+    # is"), offered beside extending the lens to 1000 prompts under the unchanged rule, before any audio result was read through
+    # it. Any result read through this lens carries that caveat.
+    "257e34cc4209b9ab4e006fd41fc36d9bec7f2ba8686cbcea86ee3406d93c179e": "Qwen/Qwen3-Omni-30B-A3B-Instruct",
+}
+
+DECIDING_LENS = "n500"  # the folder of the omni models' deciding lenses in debanshd/jspace-omni-lenses (see MODELS; n1000 until 25 Nov)
 
 
-FIT_MODELS = {
-    "Qwen/Qwen2.5-Omni-3B": FitSpec("f75b40e3da2003cdd6e1829b1f420ca70797c34e", "Qwen2_5OmniThinkerForConditionalGeneration", 12.0, 36, 2048),
-    "Qwen/Qwen2.5-Omni-7B": FitSpec("ae9e1690543ffd5c0221dc27f79834d0294cba00", "Qwen2_5OmniThinkerForConditionalGeneration", 22.4, 28, 3584),
-    "Qwen/Qwen3-Omni-30B-A3B-Instruct": FitSpec("26291f793822fb6be9555850f06dfe95f2d7e695", "Qwen3OmniMoeThinkerForConditionalGeneration", 70.5, 48, 2048),
-    # added 25 Nov: the mid-size Gemma-4 for the video experiments (pictures and video, no audio): a mixture of experts, 128
-    # experts with 8 active (about 4B parameters per token); no published lens covers it. Loaded whole, as Session loads Gemma.
-    "google/gemma-4-26B-A4B-it": FitSpec("4d7ae4984b7db7de8f8457170b3f1a419ee76d52", "AutoModelForMultimodalLM", 51.6, 30, 2816),
-    # added 25 Nov: the dense mid-size Gemma-4 (pictures, video and audio). Its two published lenses failed check_lens (hlampes,
-    # 250 prompts; lamm-mit, 25 layers mapped to layer 46), and diagnose_lens found its late layers unreadable by either. Fitted
-    # here with this recipe, at the revision config.MODELS pins for it, to tell a lens problem from the model's own.
-    "google/gemma-4-12B-it": FitSpec("707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7", "AutoModelForMultimodalLM", 23.9, 48, 3840),
-    # added 25 Nov: not to be used, only refitted, to check this recipe against Neuronpedia's own lens of it (LENS_CHECKS)
-    "Qwen/Qwen3.5-2B": FitSpec("15852e8c16360a2fea060d615a32b45270f8a8fc", "AutoModelForImageTextToText", 4.5, 24, 2048),
-    # added 25 Nov: the mid-size Qwen for the video experiments (PR #15). Neuronpedia fitted only a J++ lens for the instruct 9B,
-    # and the third-party J-lens (bcywinski) failed check_lens and stays a miss; the experiments want a J-lens, so it is fitted
-    # here, at the revision config.MODELS pins, and validated by LENS_CHECKS like the omni lenses (250 prompts, then 500).
-    "Qwen/Qwen3.5-9B": FitSpec("c202236235762e1c871ad0ccb60c8ee5ba337b9a", "AutoModelForImageTextToText", 19.3, 32, 4096),
-    # added 25 Nov: not to be used, only refitted, for the Gemma family's check 1 (LENS_FAMILIES): the base Gemma-4-E2B, the model
-    # Neuronpedia fitted its E2B lens on (455 prompts, 12 Jun 2026), at its last commit before that fit (3 Jun; a tokenizer fix
-    # came on 3 Nov)
-    "google/gemma-4-E2B": FitSpec("63db66a33dc06d58c02b1e887446e103c202602c", "AutoModelForMultimodalLM", 10.2, 35, 1536),
+# Retired 25 Nov, having judged nothing: runs/check_lens_calibration_ranks found it void (Qwen3.5-9B's J++ lens ranks the model's
+# top token worse than its logit lens), and a lens fitted here is validated by LENS_CHECKS instead. Kept as the record.
+# check_lens's Qwen rule (the second version, written 25 Nov before any lens is judged by it; the first version, a bar of the
+# weakest top-token agreement, was 0.00 at most layers and passed any lens, and was withdrawn before it judged anything). The
+# first rule (beat the logit lens from half depth, deepest >= Gemma-4-E4B's - 0.10) failed three of the four Neuronpedia Qwen
+# lenses the original results read (runs/check_lens_calibration), so it says nothing about a Qwen lens. The Qwen rule measures
+# where the model's top token ranks in the readout (the median over positions of log10 rank, check_lens --ranks), which a lens
+# can improve even where it rarely makes that token the top one. Its bar is set from these four lenses' ranks (scripts/
+# lens_calibration.sh), and it is void unless the bar rejects each of the four models' plain logit lens: a bar no lens can fail
+# says nothing. It judges only lenses checked for the first time (SEEN_LENSES are refused). See scripts/check_lens.py.
+QWEN_CALIBRATION = ("Qwen/Qwen3.5-2B", "Qwen/Qwen3.5-4B", "Qwen/Qwen3.5-9B", "Qwen/Qwen3.5-27B")
+# the lenses whose check_lens numbers were seen before the Qwen rule was written, by sha256: the Qwen rule never judges them
+# (their first-rule results stand): Qwen3.5-9B's J-lens and the three omni 250-prompt lenses
+SEEN_LENSES = {
+    "25f7c003432b44f01b94a45a32322a4994186aad9110060a463392806a6525ba": "Qwen/Qwen3.5-9B jlens",
+    "8a10a569f4fe3614bf4575280079b5a2ddad7b39c173bec59f25da237992cde7": "Qwen/Qwen2.5-Omni-3B, 250 prompts",
+    "d1696e876294f9e1d3510339905d64613d49125d9b74898e435a0583ef94e859": "Qwen/Qwen2.5-Omni-7B, 250 prompts",
+    "2c2fa06026a42307282e79d2ad120879fe01826287ffd15018c578ad36d50bcb": "Qwen/Qwen3-Omni-30B-A3B-Instruct, 250 prompts",
 }
 
 # How a lens fitted here is validated (written 25 Nov, before any of these checks ran). Agreement with the model's next-token
@@ -203,6 +268,14 @@ LENS_EVAL_FILES = {  # src/jspace/lens_eval/, from anthropics/jacobian-lens at 5
     "poetry": "6aeb3415c5a5c3f3827c9efe63f006de02f5ef39a816bbac68e15e733aba60cc",
     "typo": "9d05e16b7234a57d0773d120a4e1c4e94fd3bc2235a8125d4200a70e60ab17aa",
 }
+
+
+def deciding_lens_pinned(name):
+    """a model's pinned lens may decide: any model but a Qwen omni one, or an omni one pinned at its deciding (500-prompt) lens"""
+    s = MODELS[name]
+    return not s.loader or f"/{DECIDING_LENS}/" in s.lens_file
+
+
 # The fitting corpus: WikiText-103 (raw), Neuronpedia's corpus for its lenses, at the revision lamm-mit's Gemma-4 lenses record;
 # the first training shard and the validation split (for the fitted lens's report), each checked against its sha256
 WIKITEXT_REPO, WIKITEXT_REVISION = "Salesforce/wikitext", "b08601e04326c79dfdd32d625aee71d232d685c3"
@@ -210,6 +283,43 @@ WIKITEXT_FILES = {
     "train": ("wikitext-103-raw-v1/train-00000-of-00002.parquet", "74da360f23826045b3e6ac6375411fdb15f003030aa74f2596ed08b857cb9212"),
     "validation": ("wikitext-103-raw-v1/validation-00000-of-00001.parquet", "204929b7ff9d6184953f867dedb860e40aa69c078fc1e54b3baaa8fb28511c4c"),
 }
+
+
+# Other lenses for a model, chosen per run with --lens (video_sweep2), so a model's pinned lens, and the runs that read it, stay
+# as they are. Qwen3.5-9B's pinned lens is Neuronpedia's J++ lens (Neuronpedia has no J-lens for the instruct 9B), which the
+# results tables read; "jlens" is a standard J-lens for the instruct model, added 25 Nov for the mid-size video runs (PR #15):
+# bcywinski/jacobian-lens-qwen3.5-9b, 1000 WikiText-103 prompts with the recipe Neuronpedia used for the 9B base model, every
+# source layer 0 to 30, Neuronpedia's format, MIT; sha256 as its card records it and as the Hub stores it.
+@dataclass(frozen=True)
+class LensSpec:
+    repo: str
+    revision: str
+    file: str
+    sha256: str
+
+
+FITTED_LENS_REPO = "debanshd/jspace-omni-lenses"  # where scripts/fit_lens.py's lenses are uploaded; such a lens needs a passing
+# scripts/validate_lens.py verdict before an experiment reads it (scripts/video_sweep2.sh, scripts/audio_sweep.sh). A fitted video
+# lens (Qwen3.5-9B, Gemma-4-26B-A4B, Gemma-4-12B) joins ALT_LENSES as "fit" once uploaded, with its commit and sha256.
+
+ALT_LENSES = {
+    "Qwen/Qwen3.5-9B": {
+        "jlens": LensSpec("bcywinski/jacobian-lens-qwen3.5-9b", "3711de15301882c0629970f687192804966840a3", "lens_n1000.pt", "25f7c003432b44f01b94a45a32322a4994186aad9110060a463392806a6525ba"),
+    },
+}
+
+
+def lens_for(name, lens=None):
+    """(repo, revision, file, sha256) of a model's lens: its pinned one, or with lens the ALT_LENSES entry of that name"""
+    s = MODELS[name]
+    if lens is None:
+        repo, rev = s.lens_source()
+        return repo, rev, s.lens_file, s.lens_sha256
+    if lens not in ALT_LENSES.get(name, {}):
+        raise SystemExit(f"{name} has no lens {lens!r}; ALT_LENSES has {sorted(ALT_LENSES.get(name, {}))}")
+    a = ALT_LENSES[name][lens]
+    return a.repo, a.revision, a.file, a.sha256
+
 
 # The datasets, at the revisions the runs read; scripts/download.py checks the sha256 of every file
 GQA_REPO, GQA_REVISION = "lmms-lab-encoder/GQA", "a6e72d6e1b912da88af8b2f9eba05d5ea8ec2dd8"

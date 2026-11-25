@@ -4,6 +4,10 @@
 #
 #   scripts/video_sweep2.sh                                  the two small and the two medium models (a 48 GB card is enough)
 #   MODELS="Qwen/Qwen3.5-27B google/gemma-4-31B-it" scripts/video_sweep2.sh    the large ones, once their naming gate has run
+#   MODELS="Qwen/Qwen3.5-2B Qwen/Qwen3.5-9B" scripts/video_sweep2.sh            the mid-size ones (PR #15), after their naming gate
+#
+# LENSES: a lens other than the pinned one, per model (config.ALT_LENSES), as model=lens pairs; the default reads Qwen3.5-9B
+# through its J-lens (bcywinski/jacobian-lens-qwen3.5-9b) rather than its pinned J++ lens, so every Qwen size reads a J-lens.
 #
 # The gate: Qwen3.5-0.8B reads runs/clip_naming4/<model>/summary.json and every other model runs/clip_naming3/<model>/summary.json,
 # whose gated_scenes is the moving input's schedule. On a fresh pod those summaries come from the committed archives
@@ -17,6 +21,13 @@ MODELS=${MODELS:-"Qwen/Qwen3.5-0.8B google/gemma-4-E2B-it Qwen/Qwen3.5-4B google
 RUN=${RUN:-video_sweep2}
 DONOR_GB=${DONOR_GB:-16}
 KEEP_GOING=${KEEP_GOING:-0}
+LENSES=${LENSES:-"Qwen/Qwen3.5-9B=jlens"}
+
+lens_of() {  # lens_of <model>: its lens from LENSES, or nothing (the pinned one)
+    local p
+    for p in $LENSES; do [ "${p%%=*}" = "$1" ] && { echo "${p#*=}"; return; }; done
+    echo ""
+}
 
 keep_going() {
     if [ "$KEEP_GOING" = 1 ]; then echo "video_sweep2: $1; going on (KEEP_GOING=1)" >&2; else echo "video_sweep2: $1" >&2; exit 1; fi
@@ -46,7 +57,8 @@ done
 download() {  # download <model>: the model and its lens, checked; leaves the .ok file on success
     local m=$1 tag=${1#*/}
     [ -f "$DL/$tag.ok" ] && return 0
-    uv run --frozen scripts/download.py --skip-data --models "$m" > "$DL/$tag.log" 2>&1 && touch "$DL/$tag.ok"
+    local l; l=$(lens_of "$m")
+    uv run --frozen scripts/download.py --skip-data --models "$m" ${l:+--lens "$l"} > "$DL/$tag.log" 2>&1 && touch "$DL/$tag.ok"
 }
 
 wait_for() {  # wait_for <model>: until its background download is done; stop if it failed
@@ -72,10 +84,21 @@ fi
 for m in "${M[@]}"; do
     wait_for "$m"
     g=$(gate_of "$m")
+    l=$(lens_of "$m")
+    if [ -n "$l" ]; then  # an alternative lens is read only after its check passed
+        if uv run --frozen python -c "import sys; from jspace import config; sys.exit(0 if config.ALT_LENSES[sys.argv[1]][sys.argv[2]].repo == config.FITTED_LENS_REPO else 1)" "$m" "$l"; then
+            # a lens fitted here: scripts/validate_lens.py's verdict (config.LENS_CHECKS) must pass that very file
+            uv run --frozen python -c "import json, sys; from jspace import config; s = json.load(open(sys.argv[1])); sys.exit(0 if s['passes'] and s['lens']['sha256'] == config.ALT_LENSES[sys.argv[2]][sys.argv[3]].sha256 else 1)" "runs/lens_validation/${m#*/}/summary.json" "$m" "$l" ||
+                { keep_going "$m: its $l lens has no passing verdict in runs/lens_validation (docs/lens_validation_run.md)"; continue; }
+        else
+            uv run --frozen python -c "import json, sys; s = json.load(open(sys.argv[1])); sys.exit(0 if s['lens'].get('alt') == sys.argv[2] and s.get('passes') else 1)" "runs/check_lens/${m#*/}/summary.json" "$l" ||
+                { keep_going "$m: its $l lens has no passing check_lens in runs/check_lens (run scripts/lens_checks.sh)"; continue; }
+        fi
+    fi
     for r in "${RUN}_smoke" "${RUN}_smoke_repeat"; do
-        [ -f "runs/$r/${m#*/}/video_sweep2.csv" ] || uv run --frozen $AV experiments/video_sweep2.py --model "$m" --run "$r" --gate-run "$g" --n 5 --donor-gb "$DONOR_GB" || keep_going "the $r run of $m failed"
+        [ -f "runs/$r/${m#*/}/video_sweep2.csv" ] || uv run --frozen $AV experiments/video_sweep2.py --model "$m" --run "$r" --gate-run "$g" --n 5 --donor-gb "$DONOR_GB" ${l:+--lens "$l"} || keep_going "the $r run of $m failed"
     done
     # this model's pair only: on a shared volume another pod's model may still be mid-repeat
     uv run --frozen scripts/compare_media.py --file video_sweep2.csv --model "${m#*/}" "runs/${RUN}_smoke" "runs/${RUN}_smoke_repeat" || keep_going "the two smoke runs of $m differ (listed above)"
-    [ -f "runs/$RUN/${m#*/}/video_sweep2.csv" ] || uv run --frozen $AV experiments/video_sweep2.py --model "$m" --run "$RUN" --gate-run "$g" --donor-gb "$DONOR_GB" || keep_going "the $RUN run of $m failed"
+    [ -f "runs/$RUN/${m#*/}/video_sweep2.csv" ] || uv run --frozen $AV experiments/video_sweep2.py --model "$m" --run "$RUN" --gate-run "$g" --donor-gb "$DONOR_GB" ${l:+--lens "$l"} || keep_going "the $RUN run of $m failed"
 done

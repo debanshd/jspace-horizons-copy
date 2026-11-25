@@ -18,7 +18,7 @@ passed and it passes check 2. The deciding lens has 500 prompts, not 1,000, as N
 Check 1 passed: cosine ≥ 0.992 at every read layer. Check 3 came out void: the margins were 2B +0.102, 4B −0.033 and 27B
 −0.025. Kept for the record:
 
-In the worktree at PR #12's head (`claude/omni-lenses`):
+In a worktree at PR #12's head (`claude/omni-lenses`) or PR #14's (`claude/omni-models`, which includes it):
 
 ```bash
 CHECK_RECIPE=1 scripts/fit_lenses.sh 2>&1 | tee runs/check_recipe.log

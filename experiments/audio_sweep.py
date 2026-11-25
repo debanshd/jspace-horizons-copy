@@ -357,7 +357,7 @@ def main(experiment="audio_sweep", doc=__doc__, schedule=both_orders, default_in
     for L in [L for L in list(lm.jac) if L not in lm.layers]:
         del lm.jac[L]
     torch.cuda.empty_cache()
-    tid = int(lm.processor.audio_token_id)
+    tid = lm.audio_token_id
     token, medium = {}, {}
     for inp in inputs:
         # the typed input has no audio token: its media position is the typed word's place (a batched.Span)

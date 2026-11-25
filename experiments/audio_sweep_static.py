@@ -30,6 +30,9 @@ Expected beforehand, and not part of the rule: freezing may make the word unreco
 change over time), in which case q_frozen is untestable; that outcome is a result, reported as such. The typed input's single
 position makes its principal direction (the PC steering key) undefined; its PC rows are kept and read as a second random control.
 Recordings recur across scenes (15 recordings, one voice): intervals over scenes are narrower than intervals over recordings.
+Models (25 Nov): also the Qwen omni models, once check_lens passes for their lenses. The frozen input is defined in time (40-ms
+blocks, one Gemma-4 audio token); Qwen2.5-Omni also gives a 3-second clip 75 audio tokens, Qwen3-Omni 39 (about 77 ms each), so
+there two frozen blocks share a token; the spoken span is frozen all the same.
 
     uv run experiments/audio_sweep_static.py --model google/gemma-4-E4B-it --parts patch --n 5 --run audio_static_pilot
     uv run experiments/audio_sweep_static.py --model google/gemma-4-E4B-it --run audio_static
