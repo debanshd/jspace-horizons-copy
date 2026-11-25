@@ -1,5 +1,5 @@
 """The lens checks of config.LENS_CHECKS on the CPU (no model, no network): the map comparison, the readout's positions, tokens and
-scoring, the prompt sets' pins, and the halves the 1000-prompt extension fits."""
+scoring, the prompt sets' pins, and the halves the 500-prompt extension fits."""
 
 import importlib.util
 from pathlib import Path
@@ -60,12 +60,11 @@ def test_the_extension_halves_cover_the_lens():
     fl = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(fl)
     lo, hi = config.LENS_CHECKS["halves"]
-    base = dict(n_requested=250, start=0, shard=None)
-    ext_a = dict(n_requested=lo, start=250, shard=None)
-    ext_b = dict(n_requested=hi, start=lo, shard=None)
-    assert fl.check_cover([base, ext_a]) == lo  # the first half, prompts 0 to 499
-    assert fl.check_cover([base, ext_a, ext_b]) == hi  # the lens, prompts 0 to 999
-    assert fl.covered(hi, lo) == list(range(lo, hi))  # the second half alone
+    assert (lo, hi) == (250, 500) and config.LENS_CHECKS["readout_decides"] is False  # the change of 25 Nov
+    base = dict(n_requested=lo, start=0, shard=None)  # the 250-prompt fit: the first half
+    ext = dict(n_requested=hi, start=lo, shard=None)  # prompts 250 to 499: the second half
+    assert fl.check_cover([base, ext]) == hi  # together, the 500-prompt lens
+    assert fl.covered(hi, lo) == list(range(lo, hi))
 
 
 def test_the_reproduction_and_calibration_models_are_pinned():

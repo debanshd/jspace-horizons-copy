@@ -2,15 +2,17 @@
 """Whether a lens fitted here may be used: config.LENS_CHECKS's three checks (written there before any of them ran), read from
 the runs that measured them. It measures nothing itself and needs no GPU.
 
-    uv run scripts/validate_lens.py --model Qwen/Qwen2.5-Omni-3B --lens runs/fit_lens_n1000
+    uv run scripts/validate_lens.py --model Qwen/Qwen2.5-Omni-3B --lens runs/fit_lens_n500
 
 1. reproduce: runs/lens_repro/Qwen3.5-2B/compare.json (scripts/compare_lenses.py: this recipe's 283-prompt refit of Qwen3.5-2B
    against Neuronpedia's lens of it) passes.
-2. stable: runs/lens_halves/<model>/compare.json passes, and its two lenses are this lens's halves: prompts 0-499 (a merge of
-   prompts 0-249 and 250-499) and 500-999, the second of which the lens's merge contains.
-3. reads concepts: runs/lens_readout/<model>/summary.json, of this lens (its sha256): its margin over its own logit lens is at
-   least the lowest margin among runs/lens_readout_np/<model>/summary.json for config.READOUT_CALIBRATION (Neuronpedia's Qwen3.5
-   J-lenses, each the lens config.MODELS pins), and that lowest margin is above 0 (else check 3 is void and fails).
+2. stable: runs/lens_halves/<model>/compare.json passes, and its two lenses are this lens's halves: prompts 0-249 (the
+   250-prompt fit) and 250-499, the second of which the lens's merge contains.
+3. reads concepts: runs/lens_readout/<model>/summary.json, of this lens (its sha256): its margin over its own logit lens against
+   the lowest margin among runs/lens_readout_np/<model>/summary.json for config.READOUT_CALIBRATION (Neuronpedia's Qwen3.5
+   J-lenses, each the lens config.MODELS pins), and whether that lowest margin is above 0. Since the change of 25 Nov
+   (config.LENS_CHECKS, readout_decides; approved by the project owner after check 3 came out void) it is reported as a caveat
+   and decides nothing: the video's lenses fail it too. passes: checks 1 and 2.
 A missing input stops it with an error. Only Qwen lenses: the calibration lenses are Qwen's; a Gemma lens needs its own
 calibration set, written before it is validated.
 
@@ -55,7 +57,7 @@ def main():
 
     halves = read(R / "lens_halves" / tag / "compare.json")
     a, b = halves["a"], halves["b"]
-    is_halves = (a.get("n_requested"), a.get("start"), b.get("n_requested"), b.get("start")) == (lo, 0, hi, lo)
+    is_halves = (a.get("n_requested"), a.get("start"), a.get("shard"), b.get("n_requested"), b.get("start"), b.get("shard")) == (lo, 0, None, hi, lo, None)
     in_lens = meta.get("n_requested") == hi and b["sha256"] in [p["lens_sha256"] for p in meta.get("merged", [])]
     if not (is_halves and in_lens):
         raise SystemExit(f"runs/lens_halves/{tag} is not this lens's halves (prompts 0-{lo - 1} and {lo}-{hi - 1}, the second merged into it)")
@@ -78,13 +80,15 @@ def main():
     )
 
     out = dict(model=args.model, lens=dict(run=str(args.lens), sha256=sha, n_prompts=meta["n_prompts"]), reproduce=check1, stable=check2, reads_concepts=check3)
-    out["passes"] = bool(check1["passes"] and check2["passes"] and check3["passes"])
+    check3["decides"] = config.LENS_CHECKS["readout_decides"]
+    out["passes"] = bool(check1["passes"] and check2["passes"] and (check3["passes"] or not check3["decides"]))
     run.save_json(out, "summary.json")
     print(f"1. reproduce: lowest cosine {check1['lowest']:.4f}: {check1['passes']}")
     print(f"2. stable: lowest cosine between the halves {check2['lowest']:.4f}: {check2['passes']}")
     print(
         f"3. reads concepts: pass@{k} {check3['score']:.3f}, its logit lens {check3['logit_lens']:.3f}, margin {mine_margin:+.3f} against the bar {bar:+.3f} {cal}"
         f"{'' if informative else ' (VOID: a calibration lens does not beat its logit lens)'}: {check3['passes']}"
+        f"{'' if check3['decides'] else ' (a caveat; decides nothing, config.LENS_CHECKS)'}"
     )
     print(f"{args.model}: {'passes' if out['passes'] else 'FAILS'}")
 

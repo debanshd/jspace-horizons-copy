@@ -196,7 +196,21 @@ SEEN_LENSES = {
 # A lens is used only if check 1 passed and it passes 2 and 3 (scripts/validate_lens.py). Qwen lenses only: a Gemma lens needs
 # its own reproduction and calibration (Neuronpedia's Gemma-4 lenses are fitted on the base models, config.MODELS pins them for
 # the instruct ones), written before any Gemma lens is validated.
-LENS_CHECKS = dict(reproduce="Qwen/Qwen3.5-2B", reproduce_n=283, min_cosine=0.99, min_depth=0.3, halves=(500, 1000), k=10)
+#
+# What ran (runs/lens_repro, runs/lens_readout_np, 25 Nov): check 1 passed (cosine >= 0.992 at every read layer), and check 3
+# came out void: only the 2B's lens beats its logit lens (+0.102); the 4B's (-0.033) and the 27B's (-0.025), which the video
+# results read, do not. By the rule above, no fitted lens would be used.
+#
+# Changed 25 Nov AFTER that result, by the project owner's explicit approval ("I approve using the 500-prompt lenses"), and before
+# any audio result was read through a lens fitted here. This is a change of rule after a result, recorded as such. The reason:
+# the audio experiments are to repeat the video ones, lens parts included, so a fitted lens is put on the footing of the video's
+# lenses, which check 3 fails too and whose prompt counts are where Neuronpedia's fits stopped changing (233 to 861; the 4B's
+# 1000). So:
+# - check 3 is reported beside each lens, as a caveat that applies to the video's Qwen lenses alike, and decides nothing;
+# - check 2 asks that the lens has stopped changing: its prompts 0-249 (the 250-prompt fit) and 250-499, fitted apart and merged
+#   into a 500-prompt lens, agree by check 1's measure (cosine >= MIN_COSINE at every read layer);
+# - a lens is used if check 1 passed and it passes check 2. The deciding lens is the 500-prompt one (no longer 1000 prompts).
+LENS_CHECKS = dict(reproduce="Qwen/Qwen3.5-2B", reproduce_n=283, min_cosine=0.99, min_depth=0.3, halves=(250, 500), k=10, readout_decides=False)
 READOUT_CALIBRATION = (
     "Qwen/Qwen3.5-2B",
     "Qwen/Qwen3.5-4B",
