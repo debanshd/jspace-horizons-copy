@@ -71,3 +71,16 @@ def test_the_reproduction_and_calibration_models_are_pinned():
     c = config.LENS_CHECKS
     assert c["reproduce"] in config.FIT_MODELS and config.FIT_MODELS[c["reproduce"]].revision == config.MODELS[c["reproduce"]].revision
     assert all(m in config.MODELS and not config.MODELS[m].lens_repo for m in config.READOUT_CALIBRATION)
+
+
+def test_each_family_has_its_check_1_and_calibration():
+    for fam, f in config.LENS_FAMILIES.items():
+        assert f["reproduce"] in config.FIT_MODELS and f["reproduce_n"] > 0
+        pinned = config.MODELS[config.REPRO_PINNED.get(f["reproduce"], f["reproduce"])]
+        assert not pinned.lens_repo  # a Neuronpedia lens
+        assert all(m in config.MODELS and not config.MODELS[m].lens_repo and config.lens_family(m) == fam for m in f["calibration"])
+    # Gemma's check 1 refits the base E2B, the model Neuronpedia's E2B lens was fitted on, which MODELS pins for the instruct E2B
+    assert config.MODELS["google/gemma-4-E2B-it"].lens_file.startswith("gemma-4-e2b/jlens/")
+    assert config.lens_family("google/gemma-4-12B-it") == "google" and config.lens_family("Qwen/Qwen3.5-9B") == "Qwen"
+    with pytest.raises(SystemExit):
+        config.lens_family("meta-llama/Llama-3.1-8B")

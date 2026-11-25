@@ -50,6 +50,7 @@ def test_pins():
         "google/gemma-4-12B-it",
         "Qwen/Qwen3.5-2B",
         "Qwen/Qwen3.5-9B",
+        "google/gemma-4-E2B",
     }
     for name, s in config.FIT_MODELS.items():
         assert len(s.revision) == 40 and s.n_layers > 0 and s.d_model > 0

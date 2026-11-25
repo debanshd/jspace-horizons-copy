@@ -79,7 +79,25 @@ The fitting code covers three video models without a Neuronpedia J-lens:
 
   The first command's 10-prompt timing run prints the projected hours before the fit starts. For the video runs to read this
   lens, it must still be pinned (`config.ALT_LENSES`, a later commit), and `video_sweep2.sh` must gate it on its verdict.
-- **Gemma-4-26B-A4B** and **Gemma-4-12B** (fitting code since PR #12's earlier commits). They have no validation yet:
-  `validate_lens.py` judges Qwen lenses only. A Gemma rule has to be written before a Gemma lens is used, because Neuronpedia's
-  Gemma-4 lenses are fitted on the base models, which our refit check needs. The 12B's full fit goes ahead only if its
-  10-prompt test reaches 0.5.
+- **Gemma-4-26B-A4B** and **Gemma-4-12B**. They are validated like the Qwen lenses, with the Gemma family's own check 1 and
+  calibration (`config.LENS_FAMILIES`, written before any Gemma check ran). Check 1 refits the base Gemma-4-E2B with 455 prompts
+  against Neuronpedia's lens of it. Check 3's calibration is the Gemma-4-E2B, E4B and 31B lenses the video results read.
+
+  First, Gemma's check 1 and its calibration (about 1–2 hours on one H200, mostly the 31B's download and readout):
+
+  ```bash
+  FAMILY=google CHECK_RECIPE=1 scripts/fit_lenses.sh 2>&1 | tee runs/check_recipe_gemma.log
+  ```
+
+  Then, only if `runs/lens_repro/gemma-4-E2B/compare.json` passes, each lens: 250 prompts, then 500 and its verdict.
+
+  ```bash
+  MODELS="google/gemma-4-26B-A4B-it" scripts/fit_lenses.sh 2>&1 | tee runs/fit_26b.log
+  ```
+
+  ```bash
+  MODELS="google/gemma-4-26B-A4B-it" EXTEND_TO=500 PUSH_TO=debanshd/jspace-omni-lenses scripts/fit_lenses.sh 2>&1 | tee runs/fit_26b_500.log
+  ```
+
+  The 12B goes the same way, except that its 10-prompt test comes first (`TIMING_ONLY=1`). Its full fit goes ahead only if
+  that test reaches 0.5, by the rule written for it.
