@@ -125,6 +125,37 @@ FIT_MODELS = {
     # 250 prompts; lamm-mit, 25 layers mapped to layer 46), and diagnose_lens found its late layers unreadable by either. Fitted
     # here with this recipe, at the revision config.MODELS pins for it, to tell a lens problem from the model's own.
     "google/gemma-4-12B-it": FitSpec("707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7", "AutoModelForMultimodalLM", 23.9, 48, 3840),
+    # added 25 Nov: not to be used, only refitted, to check this recipe against Neuronpedia's own lens of it (LENS_CHECKS)
+    "Qwen/Qwen3.5-2B": FitSpec("15852e8c16360a2fea060d615a32b45270f8a8fc", "AutoModelForImageTextToText", 4.5, 24, 2048),
+}
+
+# How a lens fitted here is validated (written 25 Nov, before any of these checks ran). Agreement with the model's next-token
+# prediction is not a test of a J-lens: the J-lens paper finds its lens further from the model's output than the plain logit
+# lens through most layers, and Neuronpedia's own Qwen lenses fail scripts/check_lens.py. The checks, each over the layers the
+# experiments read (from 0.3 of the depth, Session.layers):
+# 1. reproduce: this recipe (scripts/fit_lens.py) refits a lens Neuronpedia fitted, Qwen3.5-2B's (283 prompts, its config.yaml),
+#    with as many prompts, and the two agree: the cosine of their maps (each layer's J, flattened) is at least MIN_COSINE at every
+#    such layer (scripts/compare_lenses.py). If not, no lens fitted here is used, and nothing more is fitted until the
+#    difference is understood.
+# 2. stable: the lens's two halves (its prompts 0-499 and 500-999, fitted apart and merged into it) agree by the same measure.
+# 3. reads concepts: on the paper's lens-quality prompts (five sets, src/jspace/lens_eval), its pass@10 averaged over the sets is
+#    at least the lowest of Neuronpedia's Qwen3.5 J-lenses' (READOUT_CALIBRATION), measured the same way (scripts/
+#    lens_readout.py). Not "beats the logit lens": on these prompts Neuronpedia's Qwen J-lenses do not, by a third-party
+#    replication (alexanderquispe/jlens-open-models).
+# A lens is used only if check 1 passed and it passes 2 and 3 (scripts/validate_lens.py). The logit lens's pass@10 is reported
+# beside each, and decides nothing.
+LENS_CHECKS = dict(reproduce="Qwen/Qwen3.5-2B", reproduce_n=283, min_cosine=0.99, min_depth=0.3, halves=(500, 1000), k=10)
+READOUT_CALIBRATION = (
+    "Qwen/Qwen3.5-2B",
+    "Qwen/Qwen3.5-4B",
+    "Qwen/Qwen3.5-27B",
+)  # the J-lenses config.MODELS pins (Neuronpedia's repo; the 4B's is mntss's 1000-prompt fit), which the original results read
+LENS_EVAL_FILES = {  # src/jspace/lens_eval/, from anthropics/jacobian-lens at 581d398 (NOTICE.md)
+    "association": "d1a98cd4911b594282e74168091c77d849dae18ffe2acb5761074853f327d71c",
+    "multihop": "50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416",
+    "multilingual": "fa70b9bd89416a6d8d985a80dc628b109ae6fd3b25b9275c0fc5065d7ff4a0ef",
+    "poetry": "6aeb3415c5a5c3f3827c9efe63f006de02f5ef39a816bbac68e15e733aba60cc",
+    "typo": "9d05e16b7234a57d0773d120a4e1c4e94fd3bc2235a8125d4200a70e60ab17aa",
 }
 # The fitting corpus: WikiText-103 (raw), Neuronpedia's corpus for its lenses, at the revision lamm-mit's Gemma-4 lenses record;
 # the first training shard and the validation split (for the fitted lens's report), each checked against its sha256

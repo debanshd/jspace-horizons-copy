@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 """Fit a J-lens for a model no published lens covers (config.FIT_MODELS: the Qwen omni models, for audio, and Gemma-4-26B-A4B, the
-mid-size Gemma-4, for video), with the lens library the experiments use (jlens, pinned in uv.lock), on WikiText-103, Neuronpedia's
+mid-size Gemma-4, for video; and Qwen3.5-2B, refitted only to check the recipe against Neuronpedia's lens of it),
+with the lens library the experiments use (jlens, pinned in uv.lock), on WikiText-103, Neuronpedia's
 corpus.
 
     uv run scripts/fit_lens.py --model Qwen/Qwen2.5-Omni-3B --n 10 --run fit_lens_timing      # time it first: about 10 prompts
@@ -26,7 +27,7 @@ both; check_cover), fitted with the same model, revision, corpus rule and sequen
 by its prompt count, so the merged lens is the one a single fit of the N prompts gives. A prompt that tokenizes too short for the
 skipped positions is skipped by jlens.fit and not counted (n_prompts in meta.json).
 
-The report (no pass/fail: scripts/check_lens.py's rule decides once the experiments can load the model). On the last 28
+The report (no pass/fail: a lens is used only once scripts/validate_lens.py passes it, config.LENS_CHECKS). On the last 28
 positions of 32 paragraphs of WikiText-103's validation split, read at every fitted layer: the share of positions where the
 J-lens, and the plain logit lens, give the model's own next-token prediction, and the median rank of that token in each readout.
 
