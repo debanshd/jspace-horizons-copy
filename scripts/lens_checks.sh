@@ -4,7 +4,7 @@
 #   1. Qwen3.5-9B's J-lens (bcywinski/jacobian-lens-qwen3.5-9b, --lens jlens, PR #15) into runs/check_lens: the deciding check
 #      for the mid-size video runs; scripts/video_sweep2.sh reads the 9B through it only if this passes.
 #   2. The Qwen omni models on their 250-prompt lenses into runs/check_lens_n250 (scripts/omni_first_pass.sh): a loading test
-#      whose pass/fail decides nothing; their deciding lenses are the 1000-prompt ones (config.DECIDING_LENS), checked later.
+#      whose pass/fail decides nothing; their deciding lenses are the 500-prompt ones since 25 Nov (config.DECIDING_LENS), validated later.
 # Not yet: Gemma-4-12B's and Gemma-4-26B-A4B's lenses (PR #12), which do not exist until they are fitted.
 #
 #   scripts/lens_checks.sh            one H200 (Qwen3-Omni-30B-A3B needs it), about 25 minutes

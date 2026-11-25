@@ -595,6 +595,7 @@ def test_an_omni_model_runs_only_on_its_deciding_lens():
     assert config.deciding_lens_pinned("google/gemma-4-E4B-it") and config.deciding_lens_pinned("google/gemma-4-12B-it")
     for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"):
         assert not config.deciding_lens_pinned(name)  # pinned at the 250-prompt lens: the first pass only
+    assert config.DECIDING_LENS == "n500"  # the 500-prompt lenses decide since 25 Nov (config.LENS_CHECKS)
 
 
 def test_omni_defaults_fill_only_what_is_missing():

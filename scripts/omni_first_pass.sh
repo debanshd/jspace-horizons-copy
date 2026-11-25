@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # What PR #14 runs for now: check_lens on the Qwen omni models, nothing else. No audio experiment runs (not audio_clean, not the
-# chain); those come later, on the 1000-prompt lenses, by a separate decision.
+# chain); those come later, on the deciding lenses (500 prompts since 25 Nov), by a separate decision.
 # Per model, on its 250-prompt lens: scripts/check_lens.py into runs/check_lens_n250, beside Gemma-4-E4B's Neuronpedia lens (run
 # there too). Session loads the thinker, its picture check must read the picture (the full thinker, model.entry_points), and the
 # lens is read at every read layer against the model's own prediction. Its pass/fail decides nothing: the deciding lenses are
-# the 1000-prompt ones (config.DECIDING_LENS, written before this ran), which get their own check_lens in runs/check_lens.
+# the deciding ones (config.DECIDING_LENS: 1000 prompts when this ran, 500 since 25 Nov), validated by scripts/validate_lens.py.
 # A model that fails to load stops with its error; the next model still runs.
 #
 #   scripts/omni_first_pass.sh            all three on one H200 (Qwen3-Omni-30B-A3B needs it; the two 2.5s fit on an L40S)

@@ -59,7 +59,8 @@ things:
 - it reads the picture through the full model;
 - the lens is read at every read layer.
 
-Its pass/fail decides nothing; the deciding lenses are the 1,000-prompt ones (`config.DECIDING_LENS`).
+Its pass/fail decides nothing; the deciding lenses were the 1,000-prompt ones then, and are the 500-prompt ones since 25 Nov
+(`config.DECIDING_LENS`).
 
 Report, for each model:
 
@@ -144,26 +145,30 @@ Report:
 
 Then stop the pod.
 
-## 1d. NOW: the lens validation's first checks
+## 1d. Done (25 Nov): the lens validation's first checks
+
+Check 1 passed (cosine ≥ 0.992); check 3 came out void (margins 2B +0.102, 4B −0.033, 27B −0.025). With the project owner's
+approval, the deciding lenses are now the 500-prompt ones, and check 3 is a caveat that decides nothing (`config.LENS_CHECKS`).
+Kept for the record:
 
 The lenses fitted here are now validated by three checks written before they run (`config.LENS_CHECKS`): our recipe
 reproduces Neuronpedia's Qwen3.5-2B lens, a lens's halves agree, and its concept readout is at least the weakest Neuronpedia
 Qwen3.5 J-lens's. Run step 1 of `docs/lens_validation_run.md` (about 1 hour, about $4), and nothing else. It needs this branch's head, which
 holds PR #12's code.
 
+## 2. NOW: the 500-prompt lenses and their verdicts (about 3 hours on one H200, about $17)
+
+Step 2 of `docs/lens_validation_run.md`, and nothing else. Its verdicts go to `runs/lens_validation/<model>/summary.json`.
+
 ---
 
-**Later, not now:** steps 2 to 5 need a separate go-ahead. Step 2 waits for check 1.
+**Later, not now:** steps 3 to 5 need a separate go-ahead.
 
-## 2. (Later) Extend the lenses to 1,000 prompts and validate them (about 9.4 hours, about $50)
+## 3. (Later) Pin the 500-prompt lenses (a commit to PR #14, not on the pod)
 
-Step 2 of `docs/lens_validation_run.md`, only after check 1 passed, and with its own go-ahead. Its verdicts go to
-`runs/lens_validation/<model>/summary.json`.
-
-## 3. (Later) Pin the 1,000-prompt lenses (a commit to PR #14, not on the pod)
-
-Each model's `lens_file` becomes `<model>/n1000/lens.pt`, with its sha256 and the new repo commit. Until then,
-`scripts/audio_sweep.sh` refuses the omni models.
+Each model's `lens_file` becomes `<model>/n500/lens.pt`, with its sha256 and the new repo commit. Until then,
+`scripts/audio_sweep.sh` refuses the omni models. It also refuses a model whose pinned lens has no passing verdict in
+`runs/lens_validation`.
 
 ## 4. (Later) The audio chain on the deciding lenses
 

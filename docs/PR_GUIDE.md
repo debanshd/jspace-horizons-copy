@@ -11,7 +11,7 @@
 - PR 9 → video_sweep2 results: the main video results, six models
 - PR 10 → audio experiments code (strict scorer, audio_clean, audio_rules, audio sweeps, 12B lens check)
 - PR 11 → audio results: stages 1–3, Gemma-4-E2B and E4B
-- PR 12 → lens-fitting code (Qwen omni models, Gemma-4-26B-A4B, Gemma-4-12B; extension to 1000 prompts) and lens validation (reproduce Neuronpedia's 2B lens, stable halves, concept readout)
+- PR 12 → lens-fitting code (Qwen omni models, Gemma-4-26B-A4B, Gemma-4-12B) and lens validation; the deciding omni lenses are 500-prompt ones (changed 25 Nov, approved; check 3 a caveat)
 - PR 13 → lens-fitting results: the three Qwen omni 250-prompt lenses
-- PR 14 → Qwen omni models loadable (answer prefix on card B); lens checks done (9B J-lens a miss; check_lens's Qwen rules retired); the omni audio chain gated on PR 12's lens validation; includes PR 12 and PR 15
+- PR 14 → Qwen omni models loadable (answer prefix on card B); lens checks done (9B J-lens a miss; check_lens's Qwen rules retired); the omni audio chain gated on PR 12's validation of the 500-prompt lenses; includes PR 12 and PR 15
 - PR 15 → mid-size video code: Qwen3.5-2B and 9B

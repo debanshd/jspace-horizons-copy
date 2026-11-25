@@ -135,6 +135,9 @@ MODELS = {
     # model's 1000-prompt lens (scripts/fit_lens.py's extension, uploaded under <model>/n1000/). The 250-prompt lenses pinned
     # here serve only scripts/omni_first_pass.sh, a loading test whose check_lens result decides nothing; scripts/audio_sweep.sh
     # refuses an omni model until its pin is the 1000-prompt lens (DECIDING_LENS).
+    # Changed 25 Nov, with the project owner's approval, after check 3 of config.LENS_CHECKS came out void and before any audio
+    # result was read through these lenses: the deciding lens is each model's 500-prompt lens (uploaded under <model>/n500/), on
+    # the footing of the video's lenses (Neuronpedia's fits stopped at 233 to 861 prompts). See config.LENS_CHECKS.
     **{
         name: ModelSpec(
             revision=FIT_MODELS[name].revision,
@@ -154,7 +157,7 @@ MODELS = {
 }
 
 
-DECIDING_LENS = "n1000"  # the folder of the omni models' deciding lenses in debanshd/jspace-omni-lenses (see MODELS)
+DECIDING_LENS = "n500"  # the folder of the omni models' deciding lenses in debanshd/jspace-omni-lenses (see MODELS; n1000 until 25 Nov)
 
 
 # Retired 25 Nov, having judged nothing: runs/check_lens_calibration_ranks found it void (Qwen3.5-9B's J++ lens ranks the model's
@@ -226,7 +229,7 @@ LENS_EVAL_FILES = {  # src/jspace/lens_eval/, from anthropics/jacobian-lens at 5
 
 
 def deciding_lens_pinned(name):
-    """a model's pinned lens may decide: any model but a Qwen omni one, or an omni one pinned at its 1000-prompt lens"""
+    """a model's pinned lens may decide: any model but a Qwen omni one, or an omni one pinned at its deciding (500-prompt) lens"""
     s = MODELS[name]
     return not s.loader or f"/{DECIDING_LENS}/" in s.lens_file
 

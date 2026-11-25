@@ -78,9 +78,9 @@ model() {  # model <model>: the three steps; returns non-zero at the first step 
     local m=$1 tag=${1#*/}
     wait_for "$m"
     # 0. a lens from outside Neuronpedia: checked on the model against the reference model's lens first
-    # a Qwen omni model runs on its 1000-prompt lens only: decided before any check_lens run (config.DECIDING_LENS)
+    # a Qwen omni model runs on its deciding lens only, the 500-prompt one (config.DECIDING_LENS, changed 25 Nov)
     uv run --frozen python -c "import sys; from jspace.config import deciding_lens_pinned; sys.exit(0 if deciding_lens_pinned(sys.argv[1]) else 1)" "$m" ||
-        { echo "$m: the pinned lens is not its deciding 1000-prompt lens; pin that first (docs/omni_audio_run.md)" >&2; return 1; }
+        { echo "$m: the pinned lens is not its deciding 500-prompt lens; pin that first (docs/omni_audio_run.md)" >&2; return 1; }
     if [ "${m%%/*}" = Qwen ] && uv run --frozen python -c "import sys; from jspace.config import MODELS; sys.exit(0 if MODELS[sys.argv[1]].lens_repo else 1)" "$m"; then
         # a Qwen lens fitted here: used only if scripts/validate_lens.py passed it (config.LENS_CHECKS), and only the lens it passed
         uv run --frozen python -c "import json, sys; from jspace.config import MODELS; s = json.load(open(sys.argv[1])); print({k: s[k]['passes'] for k in ('reproduce', 'stable', 'reads_concepts')}); sys.exit(0 if s['passes'] and s['lens']['sha256'] == MODELS[sys.argv[2]].lens_sha256 else 1)" "runs/lens_validation/$tag/summary.json" "$m" ||
