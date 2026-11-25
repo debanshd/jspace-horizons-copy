@@ -16,7 +16,7 @@ repository's `uv.lock` stays as it is.
 | Qwen2.5-Omni-3B | omni J-lens, 250 and 500 prompts | the subject |
 | Qwen2.5-Omni-7B | omni J-lens, 250 and 500 prompts | the subject |
 | Qwen2.5-7B-Instruct | Neuronpedia J-lens | the text model the Omni-7B thinker was built from, same width and depth: the nearest baseline |
-| Qwen3.5-4B | Neuronpedia J-lens (the one this repository reads), R-lens, J++ | the lens types side by side on one model |
+| Qwen3.5-4B | Neuronpedia J-lens (the one this repository reads), R-lens, J++ | the lens types side by side on one model, on the held-out split its J++ weights did not see |
 | Qwen3.6-27B | Neuronpedia J-lens, J++ (an fp16 copy of the post's own lens) | calibration against the post's numbers |
 | Qwen3-Omni-30B-A3B | omni J-lens, 500 prompts | only when asked for by name: it failed the halves check |
 
@@ -63,6 +63,7 @@ FIT=1 FIT_PROMPTS=128 jpp_evals/run_pod.sh qwen2.5-omni-3b
    Qwen3.6-27B lens and of Neuronpedia's Qwen3.5-4B R-lens and J++ lens. Neuronpedia's J-lenses run up to 1000 prompts, but they
    stop early once the lens converges.
 3. The merged experts. Their pooled Jacobian is the R-lens.
+   (Neuronpedia's Qwen3.5-4B pair used 32 router prompts and eager attention, so it does not share this router setup.)
 4. Expert weights fitted on the post's `fit:0` split of the readout items. The weighted experts are the J++ lens.
 
 `CONVERGE=1 FIT=1 jpp_evals/run_pod.sh` fits until the lens converges instead of on a fixed 64 prompts, using Neuronpedia's J-lens
@@ -89,8 +90,11 @@ thinker is not registered, so it cannot be fitted here.
 - **Omni-7B against Qwen2.5-7B-Instruct** compares two different models, each with its own lens. It is not a clean lens-vs-lens
   comparison.
 - **Omni lens n250 against n500** is the post's fitting-data question on your own lenses.
-- **The Qwen3.5-4B J++ and R-lens** were fitted by someone else (`bubskee`, see the lens's `CREDIT.md`). Their expert-weight dev
-  set is unknown, so the J++ score may be partly in-sample.
+- **The Qwen3.5-4B J++ and R-lens** were fitted by bubskee with this harness (`bubskee/qwen3.5-4b-r-jpp-lenses@c1b9747`). Their
+  J++ weights were fitted on the harness's `fit:0` split, so that model is scored on `held-out:0`. bubskee published the split
+  (`evaluation/split.json`: 64 fitting items, 265 held out), and `summary.md` reports how the scored items compare with it. A few
+  can differ, because bubskee graded correctness with eager attention and this run uses sdpa. Their router used 32 prompts, not
+  the 1000 used here.
 - The prompts are plain text with no chat template, as in the post. The omni thinkers are instruction-tuned. The correctness
   filter drops the items they don't complete.
 

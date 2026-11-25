@@ -1,7 +1,10 @@
 """Fit an R-lens and a J++ lens for Qwen2.5-Omni's thinker with the J++ post's recipe, in the post's harness.
 
-The recipe is that of the post's Qwen3.6-27B lens and of Neuronpedia's Qwen3.5-4B R-lens and J++ lens (both fitted with this harness):
-- a router of k-means clusters (E = 8 per layer) on the activations of the first 1000 WikiText-103 prompts (fit-router);
+The stages are the harness's recipe, the one the post's Qwen3.6-27B lens and Neuronpedia's Qwen3.5-4B R-lens and J++ lens were fitted
+with; the settings differ where noted:
+- a router of k-means clusters (E = 8 per layer) on the activations of the first 1000 WikiText-103 prompts, the harness's default
+  (fit-router). Neuronpedia's Qwen3.5-4B pair used 32 router prompts and eager attention (bubskee/qwen3.5-4b-r-jpp-lenses@c1b9747,
+  provenance/fit-recipe.json); these fits use 1000 and sdpa, so that baseline does not share their router;
 - expert Jacobian sums through the LRP backward pass ("rlens" rules), 128 tokens per prompt, the first 16 positions skipped
   (fit-shard), merged into the expert Jacobians (merge-experts);
 - the R-lens: the pooled Jacobian of that fit, all experts together (merge-experts --pooled-lens-out);
@@ -56,6 +59,19 @@ NP_MIN_PROMPTS = 100
 NP_STOP_WINDOW = 10
 
 
+def shard_dir_of(ran: bool, done: Path, log: Path, name: str, tag: str) -> Path:
+    """the directory a fit-shard run wrote. A shard's directory is named by the UTC date it started (artifacts/<date>/<name>/<tag>)
+    and the harness never resumes one, so a shard that failed and ran again on a later day leaves two: the one that finished is the
+    path fit-shard printed at the end of the log of the run that just ended, and a skipped shard's is in its done-marker."""
+    if not ran:
+        return Path(done.read_text().strip())
+    printed = [line.strip() for line in log.read_text().splitlines() if line.strip().endswith(f"{name}/{tag}")]
+    if not printed or not Path(printed[-1]).is_dir():
+        raise SystemExit(f"{log} does not end with the directory of shard {tag} of {name}")
+    done.write_text(printed[-1] + "\n")
+    return Path(printed[-1])
+
+
 class RunningSums:
     """the summed shard statistics, the pooled Jacobian per layer built from them, and the change each new shard makes"""
 
@@ -63,7 +79,9 @@ class RunningSums:
         import torch
 
         self.torch = torch
-        self.device = "cuda" if torch.cuda.is_available() else "cpu"  # the GPU is free between fit-shard runs
+        # CPU, not the GPU: this process stays alive while the next fit-shard and merge-experts run, and on the 7B these tensors
+        # (the sums, the experts and the pooled Jacobians, ~24 GB, ~47 GB at the peak of add) would stay reserved on the GPU
+        self.device = "cpu"
         self.sums = None
         self.pooled = None
         self.experts = None
@@ -112,15 +130,12 @@ def fit_shards_until_converged(m, d: Path, hf, layers, router: Path, artifacts: 
         done = d / f"{name}.shard{i}of{num_shards}_done"
         cmd = ["fit-shard", *hf, *layers, "--router-path", str(router), "--lrp-mode", "rlens"]
         cmd += ["--num-prompts", str(args.max_prompts), "--num-shards", str(num_shards), "--shard-idx", str(i)]
-        step(f"fit_shard{i}", done, [*cmd, "--artifacts-base-dir", str(artifacts), "--checkpoint-name", name], d, timings)
-        found = sorted(artifacts.glob(f"*/{name}/shard{i}of{num_shards}"))
-        if len(found) != 1:
-            raise SystemExit(f"expected one directory for shard {i} of {name} under {artifacts}, found {found}")
-        done.write_text(str(found[0]) + "\n")
-        shard_dirs.append(found[0])
+        ran = step(f"fit_shard{i}_{name}", done, [*cmd, "--artifacts-base-dir", str(artifacts), "--checkpoint-name", name], d, timings)
+        shard_dir = shard_dir_of(ran, done, d / f"fit_shard{i}_{name}.log", name, f"shard{i}of{num_shards}")
+        shard_dirs.append(shard_dir)
 
         n_prompts = (i + 1) * args.block
-        pooled_change, expert_change = running.add(found[0] / f"experts_K{NUM_CLUSTERS}_checkpoint.pt")
+        pooled_change, expert_change = running.add(shard_dir / f"experts_K{NUM_CLUSTERS}_checkpoint.pt")
         per_prompt = pooled_change / math.sqrt(args.block)
         log_rows.append({"n_prompts": n_prompts, "block_change": pooled_change, "per_prompt_change": per_prompt, "expert_block_change": expert_change})
         with open(log_path, "w", newline="") as f:
@@ -163,11 +178,8 @@ def fit_model(key: str, fits_dir: Path, args) -> None:
         name = f"{PREFIX[key]}_experts_n{args.num_prompts}"
         done = d / f"{name}.shard_done"  # the shard writes to artifacts/<date>/<name>/shard0of1/, so a marker records that it finished
         cmd = ["fit-shard", *hf, *layers, "--router-path", str(router), "--num-prompts", str(args.num_prompts), "--lrp-mode", "rlens"]
-        step("fit_shard", done, [*cmd, "--artifacts-base-dir", str(artifacts), "--checkpoint-name", name], d, timings)
-        shard_dirs = sorted(artifacts.glob(f"*/{name}/shard0of1"))
-        if len(shard_dirs) != 1:
-            raise SystemExit(f"expected one shard directory for {name} under {artifacts}, found {shard_dirs}")
-        done.write_text(str(shard_dirs[0]) + "\n")
+        ran = step(f"fit_shard_{name}", done, [*cmd, "--artifacts-base-dir", str(artifacts), "--checkpoint-name", name], d, timings)
+        shard_dirs = [shard_dir_of(ran, done, d / f"fit_shard_{name}.log", name, "shard0of1")]
         n_prompts = args.num_prompts
 
     experts = d / f"{name}_experts.pt"

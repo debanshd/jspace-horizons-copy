@@ -43,6 +43,9 @@ class Model:
     # so that model is scored on the post's held-out split, as the post scored it.
     items: str = "all"
     default: bool = True  # in the default run
+    # (repo, commit, file) of a published fitting/held-out split ({"fit": [[eval, item], ...], "heldout": [...]}) that a lens's
+    # expert weights were fitted on, checked against the items this run scores
+    split_reference: tuple[str, str, str] | None = None
 
     @property
     def layers(self) -> list[int]:
@@ -102,6 +105,10 @@ MODELS: tuple[Model, ...] = (
         hf_name="Qwen/Qwen3.5-4B",
         revision="851bf6e806efd8d0a36b00ddf55e13ccb7b8cd0a",  # as in src/jspace/config.py
         n_layers=32,
+        # Its J++ weights were fitted on the harness's fit:0 split (fraction 0.2, seed 0; bubskee's provenance/fit-recipe.json),
+        # 64 items, so it is scored on the held-out rest; bubskee published both lists, and the run checks them.
+        items="held-out:0",
+        split_reference=("bubskee/qwen3.5-4b-r-jpp-lenses", "c1b9747f3861977df31482adc142eb3b38811546", "evaluation/split.json"),
         lenses=(
             # the lens file this repository's experiments read (same sha256 as src/jspace/config.py)
             Lens(

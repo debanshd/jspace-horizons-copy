@@ -61,11 +61,17 @@ def fetch_lens(lens: Lens, lens_dir: Path) -> Path:
     return out
 
 
-def step(name: str, out: Path, cmd: list[str], model_dir: Path, timings: dict) -> None:
-    """run one stage unless its output exists; its output goes to <name>.log, its wall time to timings.json"""
-    if out.exists():
+def step(name: str, out: Path, cmd: list[str], model_dir: Path, timings: dict) -> bool:
+    """run one stage unless its output exists from the same command; its output goes to <name>.log, its wall time to timings.json.
+
+    The command (lenses, items, layers, correctness file) is recorded in <name>.cmd.json when the stage succeeds, and an existing
+    output counts as done only when that record matches: a second fit scored into the same folder changes the lens list, so its
+    readout and probe-swap must run again rather than be skipped. Returns whether the stage ran."""
+    record = model_dir / f"{name}.cmd.json"
+    if out.exists() and record.exists() and json.loads(record.read_text()) == cmd:
         print(f"  {name}: done before, skipped")
-        return
+        return False
+    record.unlink(missing_ok=True)
     print(f"  {name}: running", flush=True)
     t0 = time.time()
     with open(model_dir / f"{name}.log", "w") as log:
@@ -75,7 +81,9 @@ def step(name: str, out: Path, cmd: list[str], model_dir: Path, timings: dict) -
     if rc != 0:
         tail = (model_dir / f"{name}.log").read_text().splitlines()[-30:]
         raise SystemExit(f"{name} failed (exit {rc}); the end of {model_dir / f'{name}.log'}:\n" + "\n".join(tail))
+    record.write_text(json.dumps(cmd))
     print(f"  {name}: {timings[name]:.0f} s", flush=True)
+    return True
 
 
 def merged_correctness(out_dir: Path) -> Path:
@@ -156,6 +164,27 @@ def markdown_table(df: pd.DataFrame) -> list[str]:
     return lines
 
 
+def split_check(m: Model, model_dir: Path) -> str | None:
+    """how the items this run scored compare with the split a lens's expert weights were fitted on, where that split is published.
+    The correctness grading decides which items enter the split, and a grading with another attention kernel (bubskee graded with
+    eager, this run with sdpa) can tip a borderline item, so a difference is reported rather than fatal."""
+    stamp = model_dir / "readout_filtered_stamp.json"
+    if m.split_reference is None or not stamp.exists():
+        return None
+    from huggingface_hub import hf_hub_download
+
+    repo, revision, file = m.split_reference
+    ref = json.loads(Path(hf_hub_download(repo, file, revision=revision)).read_text())
+    fit = {name for _, name in ref["fit"]}
+    heldout = {name for _, name in ref["heldout"]}
+    scored = set(json.loads(stamp.read_text())["scored_item_names"])
+    return (
+        f"{m.key}: {len(scored)} items scored; {len(scored & heldout)} of the {len(heldout)} items {repo} holds out, and "
+        f"{len(scored & fit)} of the {len(fit)} its J++ weights were fitted on (0 expected); "
+        f"{len(scored - fit - heldout)} scored items are in neither list."
+    )
+
+
 def summarize(out_dir: Path, keys: list[str]) -> None:
     """one row per (model, lens): macro recall@1 and @10 with and without Readout Filtering, recall@10 per eval, probe-swap at the
     best scale"""
@@ -203,6 +232,10 @@ def summarize(out_dir: Path, keys: list[str]) -> None:
             both = ours.dropna(subset=[m.hf_name, f"{m.hf_name}_post"])
             agree = int((both[m.hf_name].astype(bool) == both[f"{m.hf_name}_post"].astype(bool)).sum())
             lines += ["", f"{key}: this run's correctness grading agrees with the post's on {agree} of {len(both)} gradeable items."]
+    for key in keys:
+        check = split_check(model_by_key(key), out_dir / key)
+        if check:
+            lines += ["", check]
     lines += ["", "Wall time per step, seconds:", ""]
     for key in keys:
         t = out_dir / key / "timings.json"
@@ -219,9 +252,14 @@ def record_environment(out_dir: Path) -> None:
     commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     if commit != JPP_LENS_COMMIT:
         raise SystemExit(f"run from a jpp_lens checkout at {JPP_LENS_COMMIT}; this directory is at {commit or 'no git commit'}")
+    # nvidia-smi rather than torch.cuda: a CUDA context in this long-lived parent would hold GPU memory while every stage runs
+    gpus = None
+    if shutil.which("nvidia-smi"):
+        smi = subprocess.run(["nvidia-smi", "--query-gpu=name,memory.total", "--format=csv,noheader"], capture_output=True, text=True)
+        gpus = smi.stdout.strip().splitlines() if smi.returncode == 0 else None
     config = {
         "jpp_lens_commit": commit,
-        "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
+        "gpu": gpus,
         "torch": torch.__version__,
         "transformers": transformers.__version__,
         "python": platform.python_version(),
