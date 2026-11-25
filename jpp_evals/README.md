@@ -65,6 +65,14 @@ FIT=1 FIT_PROMPTS=128 jpp_evals/run_pod.sh qwen2.5-omni-3b
 3. The merged experts. Their pooled Jacobian is the R-lens.
 4. Expert weights fitted on the post's `fit:0` split of the readout items. The weighted experts are the J++ lens.
 
+`CONVERGE=1 FIT=1 jpp_evals/run_pod.sh` fits until the lens converges instead of on a fixed 64 prompts, using Neuronpedia's J-lens
+rule: at most 1000 prompts and at least 100, stopping once the change per prompt, averaged over the last 10 prompts, falls below
+0.002. The harness fits in shards, so the prompts go in blocks of 25, one shard each. After each block the pooled Jacobian is
+rebuilt, and its relative change divided by √25 stands in for Neuronpedia's change per prompt, since the running mean takes 25
+nearly independent steps per block. Each block's change, and that of the experts, goes to `<name>.convergence.csv`. Both fits can
+share one `fits` directory, and `run_all.py --fits` then scores the 64-prompt and the converged lenses side by side. One shard per
+block reloads the model each time: about 40 reloads at 1000 prompts.
+
 Every source layer is fitted, as in the omni J-lenses. Then `run_all.py --fits` scores the new lenses beside the J-lenses, and
 every lens of that model is scored on the held-out split, because the J++ weights have seen the rest.
 
@@ -91,4 +99,5 @@ thinker is not registered, so it cannot be fitted here.
 Nothing here has run on a GPU yet, the evals or the fits. The harness's model loading and LRP surgery were checked by reading their
 code and the transformers 5.14.1 omni classes. At 64 prompts, the Jacobian sums should take roughly 10 minutes on the 3B and 40 on
 the 7B on one H200. That is scaled from the omni J-lens fits (7 s per prompt on the 3B, 35 s on the 7B), not measured. The router
-and the weight fit add their own time.
+and the weight fit add their own time. By the same scaling, a converged fit takes about 1 to 2 hours on the 3B and 5 to 10 on the 7B,
+depending on where it stops. Neuronpedia's Qwen2.5-7B-Instruct J-lens stopped at 485 prompts.

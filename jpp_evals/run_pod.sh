@@ -37,7 +37,10 @@ if [ "${FIT:-0}" = 1 ]; then
   # score them beside the J-lenses, every lens of the model on the held-out split. Outputs in $WORK/fits and $WORK/out_fits.
   KEYS=("$@")
   if [ ${#KEYS[@]} -eq 0 ]; then KEYS=(qwen2.5-omni-3b qwen2.5-omni-7b); fi
-  uv run python "$HERE/fit_lenses.py" --fits "$WORK/fits" --num-prompts "${FIT_PROMPTS:-64}" "${KEYS[@]}" 2>&1 | tee -a "$WORK/fit_lenses.log"
+  # CONVERGE=1 instead fits blocks of 25 prompts until Neuronpedia's convergence rule stops it, at most 1000 (fit_lenses.py --converge).
+  FIT_ARGS=(--num-prompts "${FIT_PROMPTS:-64}")
+  if [ "${CONVERGE:-0}" = 1 ]; then FIT_ARGS=(--converge); fi
+  uv run python "$HERE/fit_lenses.py" --fits "$WORK/fits" "${FIT_ARGS[@]}" "${KEYS[@]}" 2>&1 | tee -a "$WORK/fit_lenses.log"
   uv run python "$HERE/run_all.py" --out "$WORK/out_fits" --fits "$WORK/fits" "${PRUNE_FLAG[@]}" "${KEYS[@]}" 2>&1 | tee -a "$WORK/run_all.log"
   # The tables, logs and expert weights; the lens files (0.6 GB per lens on the 3B, 1.4 GB on the 7B) stay in $WORK/fits.
   tar czf "$WORK/jpp_fits_out.tgz" --exclude out_fits/lenses --exclude 'fits/*/artifacts' --exclude 'fits/*/*.pt' \
