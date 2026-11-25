@@ -19,6 +19,7 @@ import argparse
 import hashlib
 import json
 import platform
+import shutil
 import subprocess
 import sys
 import time
@@ -90,7 +91,15 @@ def merged_correctness(out_dir: Path) -> Path:
     return path
 
 
-def run_model(m: Model, out_dir: Path, prune: bool) -> None:
+def fitted_lenses(fits_dir: Path | None, key: str) -> list[Path]:
+    """the R-lens and J++ lens files fit_lenses.py wrote for this model, if any"""
+    if fits_dir is None:
+        return []
+    d = fits_dir / key
+    return sorted(d.glob("*_rlens_n*.pt")) + sorted(d.glob("*_jpp_n*.pt"))
+
+
+def run_model(m: Model, out_dir: Path, prune: bool, fits_dir: Path | None = None) -> None:
     print(f"{m.key} ({m.hf_name}@{m.revision[:7]}), layers {m.layers}", flush=True)
     model_dir = out_dir / m.key
     model_dir.mkdir(parents=True, exist_ok=True)
@@ -100,13 +109,25 @@ def run_model(m: Model, out_dir: Path, prune: bool) -> None:
     t0 = time.time()
     lens_paths = [str(fetch_lens(lens, out_dir / "lenses")) for lens in m.lenses]
     timings.setdefault("fetch_lenses", round(time.time() - t0, 1))
+    fitted = fitted_lenses(fits_dir, m.key)
+    lens_paths += [str(f) for f in fitted]
+    items_spec = m.items
+    if any("_jpp_" in f.name for f in fitted):
+        # The J++ expert weights were fitted on the "fit:0" split, so every lens of this model is scored on the rest. The fit's own
+        # grading is reused: the split is drawn from the items the correctness column keeps, so it must be the same column.
+        items_spec = "held-out:0"
+        graded = model_dir / "correctness.csv"
+        if not graded.exists():
+            shutil.copyfile(fits_dir / m.key / "correctness.csv", graded)
+    if fitted:
+        print(f"  with the fitted lenses {[f.stem for f in fitted]}, scored on {items_spec}", flush=True)
 
     common = ["--hf-model-name", m.hf_name]
     layers = ["--layers", ",".join(map(str, m.layers))]
     step("grade_correctness", model_dir / "correctness.csv", ["grade-correctness", *common, "--out", str(model_dir / "correctness.csv")], model_dir, timings)
     correctness = str(merged_correctness(out_dir))
     lenses = ["--lens", *lens_paths, "logit"]
-    items = ["--items", m.items, "--correctness-csv", correctness]
+    items = ["--items", items_spec, "--correctness-csv", correctness]
     for mode, extra in (("filtered", []), ("full", ["--no-readout-filter"])):
         out = model_dir / f"readout_{mode}.csv"
         step(f"readout_{mode}", out, ["evaluate", *common, *layers, *lenses, *items, *extra, "--out", str(out)], model_dir, timings)
@@ -146,7 +167,7 @@ def summarize(out_dir: Path, keys: list[str]) -> None:
             continue
         recall = {mode: pd.read_csv(d / f"readout_{mode}_pass_at_k.csv") for mode in ("filtered", "full")}
         swap = pd.read_csv(d / "probe_swap_best_scale.csv").set_index("lens")
-        for lens in [x.name for x in m.lenses] + ["logit"]:
+        for lens in recall["filtered"]["lens"].unique():  # the manifest's lenses, any fitted ones, and the logit lens
             row = {"model": key, "lens": lens}
             for mode, df in recall.items():
                 df = df[(df["lens"] == lens) & (df["weighting"] == "item")]
@@ -214,6 +235,7 @@ def main() -> None:
     p.add_argument("keys", nargs="*", help="models to run (default: every model the manifest marks default)")
     p.add_argument("--out", required=True, help="output directory")
     p.add_argument("--prune", action="store_true", help="delete each model from the Hugging Face cache once its evals are done")
+    p.add_argument("--fits", default=None, help="also score the R-lens and J++ lenses fit_lenses.py wrote here")
     p.add_argument("--summary-only", action="store_true")
     args = p.parse_args()
     keys = args.keys or [m.key for m in MODELS if m.default]
@@ -224,7 +246,7 @@ def main() -> None:
     if not args.summary_only:
         record_environment(out_dir)
         for key in keys:
-            run_model(model_by_key(key), out_dir, args.prune)
+            run_model(model_by_key(key), out_dir, args.prune, Path(args.fits).resolve() if args.fits else None)
     summarize(out_dir, keys)
 
 

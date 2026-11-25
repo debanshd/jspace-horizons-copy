@@ -31,6 +31,21 @@ uv sync --extra cu128
 
 PRUNE_FLAG=()
 if [ "${PRUNE:-1}" = 1 ]; then PRUNE_FLAG=(--prune); fi
+
+if [ "${FIT:-0}" = 1 ]; then
+  # FIT=1: fit an R-lens and a J++ lens for the omni thinkers (FIT_PROMPTS, default 64, the post's and Neuronpedia's count), then
+  # score them beside the J-lenses, every lens of the model on the held-out split. Outputs in $WORK/fits and $WORK/out_fits.
+  KEYS=("$@")
+  if [ ${#KEYS[@]} -eq 0 ]; then KEYS=(qwen2.5-omni-3b qwen2.5-omni-7b); fi
+  uv run python "$HERE/fit_lenses.py" --fits "$WORK/fits" --num-prompts "${FIT_PROMPTS:-64}" "${KEYS[@]}" 2>&1 | tee -a "$WORK/fit_lenses.log"
+  uv run python "$HERE/run_all.py" --out "$WORK/out_fits" --fits "$WORK/fits" "${PRUNE_FLAG[@]}" "${KEYS[@]}" 2>&1 | tee -a "$WORK/run_all.log"
+  # The tables, logs and expert weights; the lens files (0.6 GB per lens on the 3B, 1.4 GB on the 7B) stay in $WORK/fits.
+  tar czf "$WORK/jpp_fits_out.tgz" --exclude out_fits/lenses --exclude 'fits/*/artifacts' --exclude 'fits/*/*.pt' \
+    -C "$WORK" out_fits fits fit_lenses.log run_all.log
+  echo "lenses: $WORK/fits/<model>/*_rlens_n*.pt and *_jpp_n*.pt; scores: $WORK/out_fits (packed in $WORK/jpp_fits_out.tgz)"
+  exit 0
+fi
+
 uv run python "$HERE/run_all.py" --out "$WORK/out" "${PRUNE_FLAG[@]}" "$@" 2>&1 | tee -a "$WORK/run_all.log"
 
 # Everything but the lens files (links into the cache; their commits and sha256 are in manifest.py).
