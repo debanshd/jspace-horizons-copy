@@ -6,8 +6,10 @@ any of them ran. **Do not edit a check, a threshold or a script to make a step p
 1. **Reproduce.** Our fitting code refits Neuronpedia's Qwen3.5-2B lens with as many prompts (283). The two must agree: cosine
    ≥ 0.99 at every layer the experiments read.
 2. **Stable.** A lens's two halves (prompts 0–499 and 500–999) agree by the same measure.
-3. **Reads concepts.** On the J-lens paper's concept prompts, the lens scores at least as well as the weakest of Neuronpedia's
-   Qwen3.5 2B, 4B and 27B J-lenses.
+3. **Reads concepts beyond the logit lens.** On the J-lens paper's concept prompts, the lens's margin over its own model's
+   logit lens is at least the smallest margin among Neuronpedia's Qwen3.5 2B, 4B and 27B J-lenses. The check counts only if
+   that smallest margin is above 0, so a lens with no Jacobian (margin 0) fails it. If any Neuronpedia lens is at or below its
+   logit lens, check 3 is void and no fitted lens is used.
 
 A lens is used only if check 1 passed and it passes checks 2 and 3 (`scripts/validate_lens.py`).
 
@@ -27,6 +29,7 @@ Report:
 
 - `runs/lens_repro/Qwen3.5-2B/compare.json`: `passes`, `lowest`, and `cosine` and `cosine_departure` by layer;
 - for each of the three models, from `runs/lens_readout_np/<model>/summary.json`: `score`, and `logit_pass@10` → `mean`.
+- the last line of `runs/check_recipe.log`: check 3's margins, its bar, and whether it is informative or void.
 
 If check 1 fails, nothing more is fitted. The difference then has to be understood first. Neuronpedia fitted with a later jlens
 commit (`4430656`, ours is `581d398`), transformers 5.17, and its own prompt order, so report those beside the numbers.

@@ -41,6 +41,14 @@ if [ "$CHECK_RECIPE" = 1 ]; then
         uv run --frozen scripts/download.py --skip-data --models "$c"
         [ -f "runs/lens_readout_np/${c#*/}/summary.json" ] || uv run --frozen scripts/lens_readout.py --model "$c" --lens pinned --run lens_readout_np
     done
+    # check 3's bar, and whether it is informative (every calibration lens beats its own logit lens), known before any fit
+    uv run --frozen python -c "
+import json
+from jspace import config, lenscheck
+m = {c: lenscheck.margin(json.load(open(f'runs/lens_readout_np/{c.split(\"/\")[-1]}/summary.json'))) for c in config.READOUT_CALIBRATION}
+bar, ok = lenscheck.readout_bar(m)
+print('check 3: margins over the logit lens', {c: round(v, 3) for c, v in m.items()}, 'bar', round(bar, 3), '->', 'informative' if ok else 'VOID: no fitted lens can pass check 3')
+" || true
     exit 0
 fi
 for m in $MODELS; do
