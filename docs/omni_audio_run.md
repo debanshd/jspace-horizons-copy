@@ -26,9 +26,11 @@ uv run --frozen python -c "from huggingface_hub import HfApi; from jspace.runs i
 
 This must print `4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75`.
 
-## 1. NOW: the lens checks only (one H200, about 25 minutes)
+## 1. Done (25 Nov): the lens checks
 
-**This is the only step to run now.** Steps 2 to 5 below come later, and only with a separate go-ahead.
+Run on 25 Nov. The 9B J-lens failed `check_lens` (deepest 0.353 against E4B's 0.486, and it loses to the logit lens): recorded
+as a miss, it stays one. Qwen3-Omni-30B-A3B stopped at the startup picture check (picks ACD, letter mass 0.32 < 0.5). Kept here
+for the record:
 
 First, a clean-up. An earlier first pass, run before the end-token fix (`omni_defaults`), left `audio_clean` folders whose answers
 ran to the token limit. They are void, and a later chain would reuse them, so move them aside. `check_lens_n250` generates
@@ -66,9 +68,37 @@ Report, for each model:
 
 If a model fails to load, report its `run.log`.
 
+## 1b. NOW: the calibration and the Qwen3-Omni diagnosis (one H200, about 30 minutes, about $2)
+
+**These two are the only things to run now.** Neither changes a rule or a threshold.
+
+The calibration: `check_lens` on Neuronpedia's own Qwen3.5-2B, 4B and 27B J-lenses and its 9B J++ lens, the lenses the original
+Qwen results read, into `runs/check_lens_calibration`. What it decides is written in the script's header, before the run: if all
+four pass, the rule stands for Qwen; if any fails, a new Qwen rule is written before any Qwen lens check is rerun.
+
+```bash
+scripts/lens_calibration.sh 2>&1 | tee runs/lens_calibration.log
+```
+
+The diagnosis: Qwen3-Omni-30B-A3B loaded as `Session` loads it, its picture check run as written (the failure recorded, not
+raised), then the ten most likely next tokens at the answer position and its greedy answers. It measures and decides nothing.
+
+```bash
+uv run --frozen scripts/diagnose_preflight.py --model Qwen/Qwen3-Omni-30B-A3B-Instruct --run diagnose_preflight 2>&1 | tee runs/diagnose_preflight.log
+```
+
+Report:
+
+- for each of the four calibration models, `deepest`, `beats_logit_lens`, `passes`, and `jlens` and `logit` by layer from
+  `runs/check_lens_calibration/<model>/summary.json`;
+- the whole of `runs/diagnose_preflight/Qwen3-Omni-30B-A3B-Instruct/summary.json`.
+
+Then stop the pod.
+
 ---
 
-**Later, not now:** steps 2 to 5 need a separate go-ahead.
+**Later, not now:** steps 2 to 5 need a separate go-ahead. Step 2 waits for the calibration: it is worth its cost only if the
+four Neuronpedia lenses pass.
 
 ## 2. (Later) Extend the lenses to 1,000 prompts (PR #12's code; one H200, about 9.4 hours, about $50)
 
