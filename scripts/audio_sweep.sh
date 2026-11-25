@@ -25,7 +25,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 MODELS=${MODELS:-"google/gemma-4-E2B-it google/gemma-4-E4B-it google/gemma-4-12B-it"}
-CAL_RUN=${CAL_RUN:-check_lens_calibration}  # the Neuronpedia Qwen lenses' check_lens summaries (scripts/lens_calibration.sh)
+CAL_RUN=${CAL_RUN:-check_lens_calibration_ranks}  # the Neuronpedia Qwen lenses' ranks, the Qwen rule's bar (scripts/lens_calibration.sh)
 LENS_REF=${LENS_REF:-google/gemma-4-E4B-it}   # the model whose Neuronpedia lens sets the bar for a lens from elsewhere
 # Gemma-4-12B's other lens (25 of its layers, 1000 prompts), read beside its own at the layers they share: reported, not judged.
 # Only the 12B has one; the Qwen omni models' lenses are this project's own fits (scripts/fit_lens.py).

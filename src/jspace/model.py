@@ -105,9 +105,10 @@ class Session:
         )
         gc.collect()
         torch.cuda.empty_cache()
-        # a Qwen omni model takes its answer prefix from the picture check itself: on the text-only questions Qwen3-Omni-30B-A3B
-        # chose no prefix, and with it put 0.24-0.40 of its first token on the letters after a picture, against 0.59-0.74 after
-        # "(" (runs/diagnose_preflight, 25 Nov). Written before any omni experiment ran; the other models choose as they did.
+        # a Qwen omni model takes its answer prefix from a picture, not the text-only questions: there Qwen3-Omni-30B-A3B chose no
+        # prefix, and with it put 0.24-0.40 of its first token on the letters after a picture, against 0.59-0.74 after "("
+        # (runs/diagnose_preflight, 25 Nov). The choice is made on card B, which the picture check (cards A, C, D) never shows, so
+        # the check does not grade its own choice. Written before any omni experiment ran; the other models choose as they did.
         self._check_batching(self._picture_prefix() if self.spec.loader else None)
         self._preflight()
 
@@ -336,23 +337,24 @@ class Session:
             self.processor = transformers.AutoProcessor.from_pretrained(self.name, revision=self.spec.revision)
             self.processor.tokenizer.padding_side = "left"
 
-    def _picture_texts(self):
-        """the picture check's three prompts without the answer prefix, and their cards (A, C, D)"""
+    def _picture_texts(self, cards="ACD"):
+        """the picture question without the answer prefix, one prompt per card: the picture check's are A, C and D"""
         q = "Which letter is written in the picture?\n(A) A\n(B) B\n(C) C\n(D) D" + INSTR
         msgs = [{"role": "user", "content": [{"type": "image"}, {"type": "text", "text": q}]}]
-        return [self.chat_messages(msgs)] * 3, [stimuli.text_picture(c) for c in "ACD"]
+        return [self.chat_messages(msgs)] * len(cards), [stimuli.text_picture(c) for c in cards]
 
     def _picture_prefix(self):
-        """the scheme whose letters get the most next-token probability on the picture check (the omni models' choice)"""
+        """the scheme whose letters get the most next-token probability on card B, a card the picture check never shows (the
+        omni models' choice)"""
         self._load_processor()
         self.vision_path = entry_points(self.spec)[-1]  # the full model, the only entry point a loader model has
-        texts, imgs = self._picture_texts()
+        texts, imgs = self._picture_texts("B")
         masses = {}
         for p, ids in self._schemes().items():
             pr = torch.softmax(self.forward([t + p for t in texts], imgs)[0], -1)
             masses[p] = float(sum(pr[:, t].sum(-1) for c in "ABCD" for t in [ids[c]]).mean())
         best = max(masses, key=masses.get)
-        print(f"answer prefix from the picture check: {best!r} (letter mass {masses[best]:.2f}; the other scheme {min(masses.values()):.2f})")
+        print(f"answer prefix from card B: {best!r} (letter mass {masses[best]:.2f}; the other scheme {min(masses.values()):.2f})")
         return best
 
     def _check_batching(self, prefix=None):

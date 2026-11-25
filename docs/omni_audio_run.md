@@ -97,40 +97,53 @@ Report:
 
 Then stop the pod.
 
-## 1c. NOW: Qwen3-Omni's load, and the Qwen rule on the 250-prompt lenses (one H200, about 20 minutes, about $1)
+## 1c. NOW: the Qwen rule's rank calibration, and Qwen3-Omni's load (one H200, about 25 minutes, about $1.50)
 
-Two changes, both written before they run (25 Nov):
-
-- **The Qwen rule** (`config.QWEN_CALIBRATION`, `scripts/check_lens.py --calibration`). A Qwen lens from outside Neuronpedia
-  passes if, at every read layer from half depth, it agrees with the model at least as often as the weakest of Neuronpedia's four
-  Qwen lenses at the nearest depth. Each of the four passes it by construction. It has its own run folders (`check_lens_qwen`,
-  `check_lens_qwen_n250`); `runs/check_lens` and its first rule stay as they are, for Gemma.
-- **The omni models choose their answer prefix on the picture check** (`Session._picture_prefix`), not on the text-only
-  questions. No other model is touched.
-
-The 9B J-lens is not rechecked: its number was seen before the Qwen rule was written, so the rule cannot judge it fairly. The
-9B's video run reads Neuronpedia's J++ lens, as the original results did.
-
-This needs `runs/check_lens_calibration` from step 1b in the same worktree. Then:
+**These two are the only things to run now.** A first version of the Qwen rule (`38d96f9`) was withdrawn before it judged
+anything: its bar was the weakest top-token agreement among the Neuronpedia Qwen lenses, 0.00 at most layers, so it passed any
+lens. Move aside anything run with it:
 
 ```bash
-scripts/omni_first_pass.sh 2>&1 | tee runs/omni_first_pass2.log
+mkdir -p runs/void_qwen_rule1 && for d in check_lens_qwen check_lens_qwen_n250; do [ -d runs/$d ] && mv runs/$d runs/void_qwen_rule1/; done
+[ -d runs/check_lens_n250/Qwen3-Omni-30B-A3B-Instruct ] && mv runs/check_lens_n250/Qwen3-Omni-30B-A3B-Instruct runs/void_qwen_rule1/
 ```
 
-The 3B and 7B keep their first-rule summaries; Qwen3-Omni-30B, which stopped at the picture check, runs again. Each gets the
-Qwen rule into `runs/check_lens_qwen_n250`. Neither decides anything: the 1,000-prompt lenses decide.
+The Qwen rule, second version, written before any lens is judged by it (`config.QWEN_CALIBRATION`, `scripts/check_lens.py`'s
+docstring):
 
-Report, for each model:
+- **The measure:** where the model's top token ranks in the lens readout (median log10 rank), not whether it is the top one.
+  The Neuronpedia Qwen lenses almost never make it the top one at mid depth.
+- **The bar:** set mechanically from the four Neuronpedia Qwen lenses' ranks, measured now. Each of the four meets it.
+- **Informative or void:** the bar must reject each of the four models' plain logit lens. Otherwise it is void, and no Qwen lens
+  passes it.
+- **New lenses only:** the 9B J-lens and the three 250-prompt omni lenses were seen before this rule and are refused
+  (`config.SEEN_LENSES`); their first-rule results stand. The rule judges the 1,000-prompt lenses, once they exist.
 
-- whether it loaded, the answer prefix it chose, and its picture check line from `run.log`;
-- `passes`, `deepest`, and `jlens` against `calibration.bar` by layer from `runs/check_lens_qwen_n250/<model>/summary.json`.
+The prefix change is also fixed: an omni model chooses its answer prefix on card B, which the picture check (A, C, D) never
+shows, and the 0.5 bar stays.
+
+```bash
+scripts/lens_calibration.sh 2>&1 | tee runs/lens_calibration_ranks.log
+```
+
+```bash
+MODELS=Qwen/Qwen3-Omni-30B-A3B-Instruct scripts/omni_first_pass.sh 2>&1 | tee runs/omni_first_pass2.log
+```
+
+Report:
+
+- the last line of `runs/lens_calibration_ranks.log`: whether the Qwen rule is usable or void, and the four models'
+  `rank_jlens` and `rank_logit` by layer printed above it;
+- for Qwen3-Omni-30B, whether it loaded, the answer prefix it chose on card B, its picture check line from `run.log`, and
+  `deepest`, `beats_logit_lens` and `jlens` by layer from `runs/check_lens_n250/Qwen3-Omni-30B-A3B-Instruct/summary.json`.
+  These decide nothing.
 
 Then stop the pod.
 
 ---
 
-**Later, not now:** steps 2 to 5 need a separate go-ahead. Step 2 (about $50) is worth it if the 250-prompt lenses come close
-to the Qwen rule's bar.
+**Later, not now:** steps 2 to 5 need a separate go-ahead. Step 2 (about $50) is worth it only if the calibration finds the
+Qwen rule usable.
 
 ## 2. (Later) Extend the lenses to 1,000 prompts (PR #12's code; one H200, about 9.4 hours, about $50)
 
@@ -168,7 +181,7 @@ For each model, the chain runs these steps in order:
 
 Report for each model:
 
-- `runs/check_lens_qwen/<model>/summary.json`: `passes`, `jlens` and `calibration.bar` by layer;
+- `runs/check_lens_qwen/<model>/summary.json`: `passes`, `informative`, `rank_jlens` and `calibration.bar` by layer;
 - `runs/audio_rules/<model>/summary.json`: `diagnosis` and `passes`;
 - the pilot gate's output.
 
@@ -192,7 +205,7 @@ SWEEP=audio_sweep_static MODELS="Qwen/Qwen3-Omni-30B-A3B-Instruct" FULL=1 script
 
 ## What can stop a model, and what it means
 
-- **`check_lens` fails:** by the Qwen rule, the lens falls below the weakest Neuronpedia Qwen lens at some read layer from half depth. The fit reports (PR #13) showed a few such layers on WikiText. A failure means no audio run for that model. Report it; the rule stays as written.
+- **`check_lens` fails:** by the Qwen rule, the lens ranks the model's top token worse than every Neuronpedia Qwen lens does at some read layer from half depth, or the rule is void. The fit reports (PR #13) showed a few such layers on WikiText. A failure means no audio run for that model. Report it; the rule stays as written.
 - **`audio_clean` not ready:** the model does not name the recordings, or does not apply the say or animal rule, with the question first. Its audio is untestable by this design.
 - **The pilot's controls fail on the spoken input:** stop and report. A frozen input the model does not recognize is untestable and does not stop the chain.
 
@@ -209,7 +222,7 @@ Write the report:
 1. Pack the run folders:
 
    ```bash
-   tar czf docs/omni_audio.tar.gz runs/check_lens runs/check_lens_n250 runs/check_lens_calibration runs/check_lens_qwen* runs/audio_clean runs/audio_rules runs/audio_sweep_static* runs/omni_chain_*.log runs/omni_first_pass.log
+   tar czf docs/omni_audio.tar.gz runs/check_lens runs/check_lens_n250 runs/check_lens_calibration* runs/check_lens_qwen runs/audio_clean runs/audio_rules runs/audio_sweep_static* runs/omni_chain_*.log runs/omni_first_pass.log
    ```
 
 2. Write `docs/omni_audio_results.md` in the style of the audio stage 3 write-up, with numbers copied from the `summary.json` files. Give every interval's caveat beside it: 64 scenes reuse 15 recordings in one voice.

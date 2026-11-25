@@ -148,13 +148,23 @@ MODELS = {
 DECIDING_LENS = "n1000"  # the folder of the omni models' deciding lenses in debanshd/jspace-omni-lenses (see MODELS)
 
 
-# check_lens's Qwen rule (written 25 Nov, before any lens is judged by it). The first rule (beat the logit lens from half depth,
-# deepest >= Gemma-4-E4B's - 0.10) failed three of the four Neuronpedia Qwen lenses the original results read
-# (runs/check_lens_calibration: the 2B passed at 0.486; the 4B 0.312, the 9B's J++ 0.177, the 27B 0.264), so it says nothing
-# about a Qwen lens. A Qwen lens is judged instead against these four: at every read layer from half depth, its agreement with the
-# model must be at least the lowest of theirs at the nearest depth (scripts/check_lens.py --calibration). The weakest lens the
-# original results trusted sets the bar, so each of the four passes it by construction.
+# check_lens's Qwen rule (the second version, written 25 Nov before any lens is judged by it; the first version, a bar of the
+# weakest top-token agreement, was 0.00 at most layers and passed any lens, and was withdrawn before it judged anything). The
+# first rule (beat the logit lens from half depth, deepest >= Gemma-4-E4B's - 0.10) failed three of the four Neuronpedia Qwen
+# lenses the original results read (runs/check_lens_calibration), so it says nothing about a Qwen lens. The Qwen rule measures
+# where the model's top token ranks in the readout (the median over positions of log10 rank, check_lens --ranks), which a lens
+# can improve even where it rarely makes that token the top one. Its bar is set from these four lenses' ranks (scripts/
+# lens_calibration.sh), and it is void unless the bar rejects each of the four models' plain logit lens: a bar no lens can fail
+# says nothing. It judges only lenses checked for the first time (SEEN_LENSES are refused). See scripts/check_lens.py.
 QWEN_CALIBRATION = ("Qwen/Qwen3.5-2B", "Qwen/Qwen3.5-4B", "Qwen/Qwen3.5-9B", "Qwen/Qwen3.5-27B")
+# the lenses whose check_lens numbers were seen before the Qwen rule was written, by sha256: the Qwen rule never judges them
+# (their first-rule results stand): Qwen3.5-9B's J-lens and the three omni 250-prompt lenses
+SEEN_LENSES = {
+    "25f7c003432b44f01b94a45a32322a4994186aad9110060a463392806a6525ba": "Qwen/Qwen3.5-9B jlens",
+    "8a10a569f4fe3614bf4575280079b5a2ddad7b39c173bec59f25da237992cde7": "Qwen/Qwen2.5-Omni-3B, 250 prompts",
+    "d1696e876294f9e1d3510339905d64613d49125d9b74898e435a0583ef94e859": "Qwen/Qwen2.5-Omni-7B, 250 prompts",
+    "2c2fa06026a42307282e79d2ad120879fe01826287ffd15018c578ad36d50bcb": "Qwen/Qwen3-Omni-30B-A3B-Instruct, 250 prompts",
+}
 
 
 def deciding_lens_pinned(name):

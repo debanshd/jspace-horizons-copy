@@ -13,5 +13,5 @@
 - PR 11 → audio results: stages 1–3, Gemma-4-E2B and E4B
 - PR 12 → lens-fitting code (Qwen omni models, Gemma-4-26B-A4B, Gemma-4-12B; extension to 1000 prompts)
 - PR 13 → lens-fitting results: the three Qwen omni 250-prompt lenses
-- PR 14 → lens checks (Qwen omni lenses, Qwen3.5-9B J-lens: done); the Qwen calibration and Qwen3-Omni diagnosis (done); now the Qwen rule for check_lens and the omni answer-prefix fix; Qwen omni models loadable; includes PR 15
+- PR 14 → lens checks (Qwen omni lenses, Qwen3.5-9B J-lens: done); the Qwen calibration and Qwen3-Omni diagnosis (done); now the Qwen rule (rank-based, new lenses only) and the omni answer prefix chosen on card B; Qwen omni models loadable; includes PR 15
 - PR 15 → mid-size video code: Qwen3.5-2B and 9B

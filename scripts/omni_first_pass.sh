@@ -27,9 +27,4 @@ for m in $MODELS; do
         echo "$m: check_lens did not run to the end (loading or the picture check): see runs/$RUN/$tag/run.log" >&2
         continue
     fi
-    # the same lens by the Qwen rule (config.QWEN_CALIBRATION), into check_lens_qwen_n250: a preview of what the 1000-prompt
-    # lens faces; this decides nothing either
-    [ -f "runs/check_lens_qwen_n250/$tag/summary.json" ] || uv run --frozen scripts/check_lens.py --model "$m" --run check_lens_qwen_n250 --calibration check_lens_calibration ||
-        { echo "$m: the Qwen-rule check_lens did not run to the end: see runs/check_lens_qwen_n250/$tag/run.log" >&2; continue; }
-    uv run --frozen scripts/audio_gate.py lens "runs/check_lens_qwen_n250/$tag/summary.json" || true
 done
