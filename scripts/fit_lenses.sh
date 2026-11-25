@@ -7,6 +7,8 @@
 #   scripts/fit_lenses.sh                                    all three, 250 prompts each
 #   MODELS="Qwen/Qwen2.5-Omni-3B" N=250 scripts/fit_lenses.sh
 #   MODELS="google/gemma-4-26B-A4B-it" scripts/fit_lenses.sh  the mid-size Gemma-4 for video (51.6 GB: an H200), timing then 250
+#   MODELS="Qwen/Qwen3.5-9B" scripts/fit_lenses.sh            the mid-size Qwen for video (19.3 GB), timing then 250 prompts; then
+#   MODELS="Qwen/Qwen3.5-9B" EXTEND_TO=500 scripts/fit_lenses.sh   its 500-prompt lens and verdict, as for the omni models
 #   MODELS="google/gemma-4-12B-it" TIMING_ONLY=1 scripts/fit_lenses.sh   the dense 12B's 10-prompt test first (written before it
 #       runs: the full fit goes ahead only if the J-lens agrees with the model on at least 0.5 of the report's positions at the
 #       deepest fitted layer; the three omni models' 10-prompt lenses gave 0.63, the 12B's published lens 0.14 on check_lens)
