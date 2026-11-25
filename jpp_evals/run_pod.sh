@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# On a GPU pod: fetch the J++ harness at its pinned commit, build its environment, run the evals, pack the outputs.
+#
+#   jpp_evals/run_pod.sh                      # the default models (manifest.py keys)
+#   jpp_evals/run_pod.sh qwen2.5-omni-3b      # some of them, by key (manifest.py all-keys lists them)
+#
+# Run from this repository's root. WORK (default /workspace/jpp) holds the checkout, the Hugging Face cache and the outputs;
+# PRUNE=0 keeps every model in the cache (by default each is deleted once its evals are done, to fit a 200 GB volume).
+# Every file it downloads is public, so no token is needed. The harness's environment pins torch for CUDA 12.8: pick a pod
+# image whose driver supports it.
+set -euo pipefail
+
+HERE=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+WORK=${WORK:-/workspace/jpp}
+export HF_HOME=${HF_HOME:-$WORK/hf}
+mkdir -p "$WORK"
+
+if ! command -v uv >/dev/null; then
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+export PATH="$HOME/.local/bin:$PATH"
+
+# The harness keeps its own uv.lock (torch 2.11, transformers 5.14.1), apart from this repository's, which stays as it is.
+COMMIT=$(python3 "$HERE/manifest.py" jpp-commit)
+if [ ! -d "$WORK/jpp_lens/.git" ]; then
+  git clone --quiet https://github.com/safety-research/jpp_lens.git "$WORK/jpp_lens"
+fi
+git -C "$WORK/jpp_lens" checkout --quiet "$COMMIT"
+cd "$WORK/jpp_lens"
+uv sync --extra cu128
+
+PRUNE_FLAG=()
+if [ "${PRUNE:-1}" = 1 ]; then PRUNE_FLAG=(--prune); fi
+uv run python "$HERE/run_all.py" --out "$WORK/out" "${PRUNE_FLAG[@]}" "$@" 2>&1 | tee -a "$WORK/run_all.log"
+
+# Everything but the lens files (links into the cache; their commits and sha256 are in manifest.py).
+tar czf "$WORK/jpp_evals_out.tgz" --exclude out/lenses -C "$WORK" out run_all.log
+echo "outputs: $WORK/out (packed in $WORK/jpp_evals_out.tgz)"

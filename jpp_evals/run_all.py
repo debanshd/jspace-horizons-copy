@@ -1,0 +1,232 @@
+"""Run the J++ post's readout and probe-swap evals on the manifest's models, one model after another, and write one summary.
+
+Per model, in <out>/<model key>/:
+- correctness.csv: which items the model answers itself (run_cli.py grade-correctness). The readout evals keep multihop,
+  multilingual and poetry items only where the model is right (typo and association are always kept). For Qwen3.6-27B the
+  post's own column is used, and this grading is kept beside it as a check of the pipeline.
+- readout_filtered*.csv / readout_full*.csv: the readout evals with Readout Filtering (tokens with no letter or digit out of the
+  ranking, as the post scores J++) and over the full vocabulary (as the post scores the J-lens and R-lens); every lens of the model
+  and the logit lens.
+- probe_swap*.parquet / *_success.csv / *_best_scale.csv: the probe-swap causal eval, every lens and the logit lens.
+- timings.json: the wall time of each step, and *.log: each step's output.
+
+Then <out>/summary.csv and <out>/summary.md. A step whose output exists is skipped, so a stopped run resumes where it stopped.
+
+Run from the root of a jpp_lens checkout, in its environment: uv run python <repo>/jpp_evals/run_all.py --out <dir> [keys ...]
+"""
+
+import argparse
+import hashlib
+import json
+import platform
+import subprocess
+import sys
+import time
+from pathlib import Path
+
+import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from manifest import JPP_LENS_COMMIT, MODELS, Lens, Model, model_by_key  # noqa: E402
+
+HERE = Path(__file__).resolve().parent
+SHIPPED_CORRECTNESS = Path("data/jlens/evaluations/model_correctness.csv")
+MACRO_EVALS = ["multihop", "multilingual", "typo", "association", "poetry"]
+
+
+def sha256(path: Path) -> str:
+    h = hashlib.sha256()
+    with open(path, "rb") as f:
+        while chunk := f.read(1 << 24):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def fetch_lens(lens: Lens, lens_dir: Path) -> Path:
+    """the lens file at its pinned commit, checked against its sha256, linked as <lens.name>.pt (the harness names a lens by its stem)"""
+    from huggingface_hub import hf_hub_download
+
+    out = lens_dir / f"{lens.name}.pt"
+    if out.exists():
+        return out
+    repo, revision = lens.repo
+    cached = Path(hf_hub_download(repo, lens.file, revision=revision))
+    got = sha256(cached)
+    if got != lens.sha256:
+        raise SystemExit(f"{repo}@{revision}:{lens.file} has sha256 {got}, the manifest pins {lens.sha256}")
+    lens_dir.mkdir(parents=True, exist_ok=True)
+    out.symlink_to(cached)
+    return out
+
+
+def step(name: str, out: Path, cmd: list[str], model_dir: Path, timings: dict) -> None:
+    """run one stage unless its output exists; its output goes to <name>.log, its wall time to timings.json"""
+    if out.exists():
+        print(f"  {name}: done before, skipped")
+        return
+    print(f"  {name}: running", flush=True)
+    t0 = time.time()
+    with open(model_dir / f"{name}.log", "w") as log:
+        rc = subprocess.run([sys.executable, str(HERE / "run_cli.py"), *cmd], stdout=log, stderr=subprocess.STDOUT).returncode
+    timings[name] = round(time.time() - t0, 1)
+    (model_dir / "timings.json").write_text(json.dumps(timings, indent=2))
+    if rc != 0:
+        tail = (model_dir / f"{name}.log").read_text().splitlines()[-30:]
+        raise SystemExit(f"{name} failed (exit {rc}); the end of {model_dir / f'{name}.log'}:\n" + "\n".join(tail))
+    print(f"  {name}: {timings[name]:.0f} s", flush=True)
+
+
+def merged_correctness(out_dir: Path) -> Path:
+    """the shipped correctness CSV with a column added for every graded model it lacks; a model it has keeps the post's column"""
+    df = pd.read_csv(SHIPPED_CORRECTNESS)
+    for m in MODELS:
+        graded = out_dir / m.key / "correctness.csv"
+        if m.hf_name in df.columns or not graded.exists():
+            continue
+        df = df.merge(pd.read_csv(graded), on=["eval", "item"], how="left")
+    path = out_dir / "model_correctness.csv"
+    df.to_csv(path, index=False)
+    return path
+
+
+def run_model(m: Model, out_dir: Path, prune: bool) -> None:
+    print(f"{m.key} ({m.hf_name}@{m.revision[:7]}), layers {m.layers}", flush=True)
+    model_dir = out_dir / m.key
+    model_dir.mkdir(parents=True, exist_ok=True)
+    timings_path = model_dir / "timings.json"
+    timings = json.loads(timings_path.read_text()) if timings_path.exists() else {}
+
+    t0 = time.time()
+    lens_paths = [str(fetch_lens(lens, out_dir / "lenses")) for lens in m.lenses]
+    timings.setdefault("fetch_lenses", round(time.time() - t0, 1))
+
+    common = ["--hf-model-name", m.hf_name]
+    layers = ["--layers", ",".join(map(str, m.layers))]
+    step("grade_correctness", model_dir / "correctness.csv", ["grade-correctness", *common, "--out", str(model_dir / "correctness.csv")], model_dir, timings)
+    correctness = str(merged_correctness(out_dir))
+    lenses = ["--lens", *lens_paths, "logit"]
+    items = ["--items", m.items, "--correctness-csv", correctness]
+    for mode, extra in (("filtered", []), ("full", ["--no-readout-filter"])):
+        out = model_dir / f"readout_{mode}.csv"
+        step(f"readout_{mode}", out, ["evaluate", *common, *layers, *lenses, *items, *extra, "--out", str(out)], model_dir, timings)
+    out = model_dir / "probe_swap.parquet"
+    step("probe_swap", out, ["probe-swap", *common, *layers, *lenses, "--out", str(out)], model_dir, timings)
+
+    if prune:  # the 30B and 27B checkpoints alone fill most of a 200 GB volume
+        from huggingface_hub import scan_cache_dir
+
+        cache = scan_cache_dir()
+        hashes = [r.commit_hash for repo in cache.repos if repo.repo_id == m.hf_name for r in repo.revisions]
+        if hashes:
+            strategy = cache.delete_revisions(*hashes)
+            print(f"  pruned {m.hf_name} from the cache ({strategy.expected_freed_size_str})")
+            strategy.execute()
+
+
+def markdown_table(df: pd.DataFrame) -> list[str]:
+    """a Markdown table with one decimal (DataFrame.to_markdown needs tabulate, which the harness's environment does not have)"""
+
+    def cell(v) -> str:
+        return f"{v:.1f}" if isinstance(v, float) else str(v)
+
+    lines = ["| " + " | ".join(df.columns) + " |", "|" + "---|" * len(df.columns)]
+    lines += ["| " + " | ".join(cell(v) for v in row) + " |" for row in df.itertuples(index=False)]
+    return lines
+
+
+def summarize(out_dir: Path, keys: list[str]) -> None:
+    """one row per (model, lens): macro recall@1 and @10 with and without Readout Filtering, recall@10 per eval, probe-swap at the
+    best scale"""
+    rows = []
+    for key in keys:
+        m = model_by_key(key)
+        d = out_dir / key
+        if not (d / "probe_swap_best_scale.csv").exists():
+            continue
+        recall = {mode: pd.read_csv(d / f"readout_{mode}_pass_at_k.csv") for mode in ("filtered", "full")}
+        swap = pd.read_csv(d / "probe_swap_best_scale.csv").set_index("lens")
+        for lens in [x.name for x in m.lenses] + ["logit"]:
+            row = {"model": key, "lens": lens}
+            for mode, df in recall.items():
+                df = df[(df["lens"] == lens) & (df["weighting"] == "item")]
+                for k in (1, 10):
+                    row[f"{mode}_macro_r@{k}"] = 100 * df[(df["eval"] == "macro") & (df["k"] == k)]["pass_at_k"].item()
+                if mode == "filtered":
+                    for ev in MACRO_EVALS:
+                        sel = df[(df["eval"] == ev) & (df["k"] == 10)]["pass_at_k"]
+                        row[f"{ev}_r@10"] = 100 * sel.item() if len(sel) else float("nan")
+            s = swap.loc[lens]
+            row |= {
+                "swap_top1": 100 * s["top1_rate"],
+                "swap_top1_hits": f"{s['top1_hits']}/{s['top1_trials']}",
+                "swap_top5": 100 * s["top5_rate"],
+                "swap_scale": s["scale"],
+            }
+            rows.append(row)
+    if not rows:
+        return
+    df = pd.DataFrame(rows)
+    df.to_csv(out_dir / "summary.csv", index=False)
+
+    lines = ["# J++ post evals: omni J-lenses and Neuronpedia baselines", ""]
+    lines += [f"jpp_lens {JPP_LENS_COMMIT[:7]}. Recall in % of items (item weighting), best rank over the seven layers; probe-swap at", ""]
+    lines += ["the scale with the best top-1 rate. `filtered`: Readout Filtering on (the post's J++ scoring); `full`: the whole vocabulary", ""]
+    lines += ["(the post's J-lens and R-lens scoring). The post, Qwen3.6-27B: J-lens 35.7, R-lens 37.7, J++ 55.2 recall@10.", ""]
+    lines += markdown_table(df)
+    for key in keys:
+        m = model_by_key(key)
+        graded = out_dir / key / "correctness.csv"
+        if graded.exists() and m.hf_name in pd.read_csv(SHIPPED_CORRECTNESS).columns:
+            ours = pd.read_csv(graded).merge(pd.read_csv(SHIPPED_CORRECTNESS)[["eval", "item", m.hf_name]], on=["eval", "item"], suffixes=("", "_post"))
+            both = ours.dropna(subset=[m.hf_name, f"{m.hf_name}_post"])
+            agree = int((both[m.hf_name].astype(bool) == both[f"{m.hf_name}_post"].astype(bool)).sum())
+            lines += ["", f"{key}: this run's correctness grading agrees with the post's on {agree} of {len(both)} gradeable items."]
+    lines += ["", "Wall time per step, seconds:", ""]
+    for key in keys:
+        t = out_dir / key / "timings.json"
+        if t.exists():
+            lines.append(f"- {key}: " + ", ".join(f"{k} {v:.0f}" for k, v in json.loads(t.read_text()).items()))
+    (out_dir / "summary.md").write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+
+
+def record_environment(out_dir: Path) -> None:
+    import torch
+    import transformers
+
+    commit = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    if commit != JPP_LENS_COMMIT:
+        raise SystemExit(f"run from a jpp_lens checkout at {JPP_LENS_COMMIT}; this directory is at {commit or 'no git commit'}")
+    config = {
+        "jpp_lens_commit": commit,
+        "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
+        "torch": torch.__version__,
+        "transformers": transformers.__version__,
+        "python": platform.python_version(),
+        "argv": sys.argv,
+    }
+    (out_dir / "config.json").write_text(json.dumps(config, indent=2))
+
+
+def main() -> None:
+    p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    p.add_argument("keys", nargs="*", help="models to run (default: every model the manifest marks default)")
+    p.add_argument("--out", required=True, help="output directory")
+    p.add_argument("--prune", action="store_true", help="delete each model from the Hugging Face cache once its evals are done")
+    p.add_argument("--summary-only", action="store_true")
+    args = p.parse_args()
+    keys = args.keys or [m.key for m in MODELS if m.default]
+    for key in keys:
+        model_by_key(key)  # an unknown key stops the run before anything is downloaded
+    out_dir = Path(args.out).resolve()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    if not args.summary_only:
+        record_environment(out_dir)
+        for key in keys:
+            run_model(model_by_key(key), out_dir, args.prune)
+    summarize(out_dir, keys)
+
+
+if __name__ == "__main__":
+    main()
