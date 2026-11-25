@@ -42,7 +42,25 @@ def test_selection_and_shards_cover_the_same_prompts():
 
 
 def test_pins():
-    assert set(config.FIT_MODELS) == {"Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"}
-    for s in config.FIT_MODELS.values():
-        assert len(s.revision) == 40 and s.loader.endswith("ThinkerForConditionalGeneration") and s.n_layers > 0 and s.d_model > 0
+    assert set(config.FIT_MODELS) == {"Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct", "google/gemma-4-26B-A4B-it", "google/gemma-4-12B-it", "Qwen/Qwen3.5-2B"}
+    for name, s in config.FIT_MODELS.items():
+        assert len(s.revision) == 40 and s.n_layers > 0 and s.d_model > 0
+        loader = "ThinkerForConditionalGeneration" if "Omni" in name else ("AutoModelForMultimodalLM" if "gemma" in name else "AutoModelForImageTextToText")
+        assert s.loader.endswith(loader)
+    assert config.FIT_MODELS["google/gemma-4-12B-it"].revision == config.MODELS["google/gemma-4-12B-it"].revision  # one model
     assert len(config.WIKITEXT_REVISION) == 40 and all(len(h) == 64 for _, h in config.WIKITEXT_FILES.values())
+
+
+def test_a_lens_extends_by_fitting_the_rest():
+    fl = load()
+    prompts = [f"p{i}" for i in range(30)]
+    assert fl.select(prompts, 20, start=8) == prompts[8:20]
+    assert fl.select(prompts, 8) + fl.select(prompts, 20, start=8) == prompts[:20]  # the first 8 of 20 are the first 8
+    assert fl.select(prompts, 20, (1, 2), start=8) == prompts[9:20:2]
+    m = lambda n, start=0, shard=None: dict(n_requested=n, start=start, shard=shard)  # noqa: E731
+    assert fl.check_cover([dict(n_requested=8, shard=None), m(20, 8)]) == 20  # an old meta has no start
+    assert fl.check_cover([m(8), m(20, 8, [0, 2]), m(20, 8, [1, 2])]) == 20
+    assert fl.check_cover([m(20, 0, [0, 2]), m(20, 0, [1, 2])]) == 20
+    for bad in ([m(8), m(20, 6)], [m(8), m(20, 10)], [m(8), m(20, 8, [0, 2])]):  # overlap, gap, half a range
+        with pytest.raises(SystemExit):
+            fl.check_cover(bad)

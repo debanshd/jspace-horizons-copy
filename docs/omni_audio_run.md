@@ -97,9 +97,13 @@ Report:
 
 Then stop the pod.
 
-## 1c. NOW: the Qwen rule's rank calibration, and Qwen3-Omni's load (one H200, about 25 minutes, about $1.50)
+## 1c. Done (25 Nov): the Qwen rule's rank calibration, and Qwen3-Omni's load
 
-**These two are the only things to run now.** A first version of the Qwen rule (`38d96f9`) was withdrawn before it judged
+Run on 25 Nov. The Qwen rule came out void: Qwen3.5-9B's J++ lens ranks the model's top token worse than its own logit lens,
+so the bar cannot reject a lens with no Jacobian, and the rule is retired. Qwen3-Omni-30B loads, picks "(" on card B (letter
+mass 0.52) and reads the picture. Kept here for the record:
+
+A first version of the Qwen rule (`38d96f9`) was withdrawn before it judged
 anything: its bar was the weakest top-token agreement among the Neuronpedia Qwen lenses, 0.00 at most layers, so it passed any
 lens. Move aside anything run with it:
 
@@ -140,23 +144,21 @@ Report:
 
 Then stop the pod.
 
+## 1d. NOW: the lens validation's first checks
+
+The lenses fitted here are now validated by three checks written before they run (`config.LENS_CHECKS`): our recipe
+reproduces Neuronpedia's Qwen3.5-2B lens, a lens's halves agree, and its concept readout is at least the weakest Neuronpedia
+Qwen3.5 J-lens's. Run step 1 of `docs/lens_validation_run.md` (about 1 hour, about $4), and nothing else. It needs this branch's head, which
+holds PR #12's code.
+
 ---
 
-**Later, not now:** steps 2 to 5 need a separate go-ahead. Step 2 (about $50) is worth it only if the calibration finds the
-Qwen rule usable.
+**Later, not now:** steps 2 to 5 need a separate go-ahead. Step 2 waits for check 1.
 
-## 2. (Later) Extend the lenses to 1,000 prompts (PR #12's code; one H200, about 9.4 hours, about $50)
+## 2. (Later) Extend the lenses to 1,000 prompts and validate them (about 9.4 hours, about $50)
 
-Run this in the worktree that holds `runs/fit_lens` (the three 250-prompt fits), at PR #12's head:
-
-```bash
-EXTEND_TO=1000 PUSH_TO=debanshd/jspace-omni-lenses scripts/fit_lenses.sh 2>&1 | tee runs/fit_extend.log
-```
-
-Each lens is uploaded under `<model>/n1000/`. Report:
-
-- the repo's new commit;
-- each `runs/fit_lens_n1000/<model>/meta.json`: `n_prompts`, `lens_sha256`, and the merged parts.
+Step 2 of `docs/lens_validation_run.md`, only after check 1 passed, and with its own go-ahead. Its verdicts go to
+`runs/lens_validation/<model>/summary.json`.
 
 ## 3. (Later) Pin the 1,000-prompt lenses (a commit to PR #14, not on the pod)
 
@@ -174,14 +176,14 @@ SWEEP=audio_sweep_static MODELS="Qwen/Qwen2.5-Omni-3B Qwen/Qwen2.5-Omni-7B" KEEP
 For each model, the chain runs these steps in order:
 
 1. **Download:** the checkpoint and the deciding lens, its sha256 checked.
-2. **`check_lens` by the Qwen rule, into `runs/check_lens_qwen`:** the deciding check. If it fails, the model stops.
+2. **The lens's verdict, `runs/lens_validation/<model>/summary.json`:** it must pass, for the lens that is pinned. If not, the model stops.
 3. **`audio_clean`.**
 4. **`audio_rules`.**
 5. **Pilot:** the spoken / frozen / typed pilot, run twice and compared, then its gates. Then the chain stops for inspection.
 
 Report for each model:
 
-- `runs/check_lens_qwen/<model>/summary.json`: `passes`, `informative`, `rank_jlens` and `calibration.bar` by layer;
+- `runs/lens_validation/<model>/summary.json`: the three checks and `passes`;
 - `runs/audio_rules/<model>/summary.json`: `diagnosis` and `passes`;
 - the pilot gate's output.
 
@@ -205,7 +207,7 @@ SWEEP=audio_sweep_static MODELS="Qwen/Qwen3-Omni-30B-A3B-Instruct" FULL=1 script
 
 ## What can stop a model, and what it means
 
-- **`check_lens` fails:** by the Qwen rule, the lens ranks the model's top token worse than every Neuronpedia Qwen lens does at some read layer from half depth, or the rule is void. The fit reports (PR #13) showed a few such layers on WikiText. A failure means no audio run for that model. Report it; the rule stays as written.
+- **The lens fails validation:** our recipe does not reproduce Neuronpedia's lens, its halves disagree, or its concept readout is below the weakest Neuronpedia Qwen3.5 J-lens's. The fit reports (PR #13) showed a few such layers on WikiText. A failure means no audio run for that model. Report it; the rule stays as written.
 - **`audio_clean` not ready:** the model does not name the recordings, or does not apply the say or animal rule, with the question first. Its audio is untestable by this design.
 - **The pilot's controls fail on the spoken input:** stop and report. A frozen input the model does not recognize is untestable and does not stop the chain.
 
@@ -222,7 +224,7 @@ Write the report:
 1. Pack the run folders:
 
    ```bash
-   tar czf docs/omni_audio.tar.gz runs/check_lens runs/check_lens_n250 runs/check_lens_calibration* runs/check_lens_qwen runs/audio_clean runs/audio_rules runs/audio_sweep_static* runs/omni_chain_*.log runs/omni_first_pass.log
+   tar czf docs/omni_audio.tar.gz runs/check_lens runs/check_lens_n250 runs/check_lens_calibration* runs/lens_repro runs/lens_halves runs/lens_readout* runs/lens_validation runs/audio_clean runs/audio_rules runs/audio_sweep_static* runs/omni_chain_*.log runs/omni_first_pass.log
    ```
 
 2. Write `docs/omni_audio_results.md` in the style of the audio stage 3 write-up, with numbers copied from the `summary.json` files. Give every interval's caveat beside it: 64 scenes reuse 15 recordings in one voice.

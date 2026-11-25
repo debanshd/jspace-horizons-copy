@@ -1,0 +1,87 @@
+#!/usr/bin/env python
+"""Whether a lens fitted here may be used: config.LENS_CHECKS's three checks (written there before any of them ran), read from
+the runs that measured them. It measures nothing itself and needs no GPU.
+
+    uv run scripts/validate_lens.py --model Qwen/Qwen2.5-Omni-3B --lens runs/fit_lens_n1000
+
+1. reproduce: runs/lens_repro/Qwen3.5-2B/compare.json (scripts/compare_lenses.py: this recipe's 283-prompt refit of Qwen3.5-2B
+   against Neuronpedia's lens of it) passes.
+2. stable: runs/lens_halves/<model>/compare.json passes, and its two lenses are this lens's halves: prompts 0-499 (a merge of
+   prompts 0-249 and 250-499) and 500-999, the second of which the lens's merge contains.
+3. reads concepts: runs/lens_readout/<model>/summary.json, of this lens (its sha256), scores at least the lowest score among
+   runs/lens_readout_np/<model>/summary.json for config.READOUT_CALIBRATION (Neuronpedia's Qwen3.5 J-lenses, each the lens
+   config.MODELS pins).
+A missing input stops it with an error. Only Qwen lenses: the calibration lenses are Qwen's; a Gemma lens needs its own
+calibration set, written before it is validated.
+
+Outputs in runs/lens_validation/<model>/: summary.json (each check with its numbers, and passes), run.log.
+"""
+
+import argparse
+import json
+from pathlib import Path
+
+from jspace import config, lenscheck
+from jspace.runs import Run
+
+
+def read(path):
+    p = Path(path)
+    if not p.exists():
+        raise SystemExit(f"{p} not found: run the step that writes it first (scripts/fit_lenses.sh)")
+    return json.loads(p.read_text())
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--model", required=True)
+    ap.add_argument("--lens", required=True, type=Path, help="the scripts/fit_lens.py run folder of the lens (its <model>/lens.pt)")
+    ap.add_argument("--runs-dir", type=Path, default=config.RUNS_DIR)
+    args = ap.parse_args()
+    if not args.model.startswith("Qwen/"):
+        raise SystemExit("only Qwen lenses: the readout calibration (config.READOUT_CALIBRATION) is Neuronpedia's Qwen lenses")
+    run = Run(argparse.Namespace(model=args.model, run="lens_validation", runs_dir=args.runs_dir), "validate_lens")
+    tag, R = args.model.split("/")[-1], args.runs_dir
+    meta = read(args.lens / tag / "meta.json")
+    sha = lenscheck.sha256(args.lens / tag / "lens.pt")
+    if sha != meta["lens_sha256"]:
+        raise SystemExit(f"{args.lens / tag / 'lens.pt'}: sha256 {sha}, its meta.json says {meta['lens_sha256']}")
+    lo, hi = config.LENS_CHECKS["halves"]
+
+    repro = read(R / "lens_repro" / config.LENS_CHECKS["reproduce"].split("/")[-1] / "compare.json")
+    if repro["a"]["source"] != "pinned" or repro["b"].get("n_requested") != config.LENS_CHECKS["reproduce_n"]:
+        raise SystemExit("runs/lens_repro is not the reproduction check: Neuronpedia's pinned lens against a refit of reproduce_n prompts")
+    check1 = dict(passes=repro["passes"], lowest=repro["lowest"], layers=repro["checked_layers"])
+
+    halves = read(R / "lens_halves" / tag / "compare.json")
+    a, b = halves["a"], halves["b"]
+    is_halves = (a.get("n_requested"), a.get("start"), b.get("n_requested"), b.get("start")) == (lo, 0, hi, lo)
+    in_lens = meta.get("n_requested") == hi and b["sha256"] in [p["lens_sha256"] for p in meta.get("merged", [])]
+    if not (is_halves and in_lens):
+        raise SystemExit(f"runs/lens_halves/{tag} is not this lens's halves (prompts 0-{lo - 1} and {lo}-{hi - 1}, the second merged into it)")
+    check2 = dict(passes=halves["passes"], lowest=halves["lowest"], layers=halves["checked_layers"])
+
+    mine = read(R / "lens_readout" / tag / "summary.json")
+    if mine["lens"]["sha256"] != sha:
+        raise SystemExit(f"runs/lens_readout/{tag} read another lens ({mine['lens']['sha256'][:12]}), not {sha[:12]}")
+    cal = {}
+    for m in config.READOUT_CALIBRATION:
+        s = read(R / "lens_readout_np" / m.split("/")[-1] / "summary.json")
+        if s["lens"]["source"] != "pinned" or s["lens"]["sha256"] != config.MODELS[m].lens_sha256:
+            raise SystemExit(f"runs/lens_readout_np/{m.split('/')[-1]} is not {m}'s pinned lens")
+        cal[m] = s["score"]
+    bar = lenscheck.readout_bar(cal)
+    k = config.LENS_CHECKS["k"]
+    check3 = dict(passes=bool(mine["score"] >= bar), score=mine["score"], bar=bar, calibration=cal, logit_lens=mine[f"logit_pass@{k}"]["mean"])
+
+    out = dict(model=args.model, lens=dict(run=str(args.lens), sha256=sha, n_prompts=meta["n_prompts"]), reproduce=check1, stable=check2, reads_concepts=check3)
+    out["passes"] = bool(check1["passes"] and check2["passes"] and check3["passes"])
+    run.save_json(out, "summary.json")
+    print(f"1. reproduce: lowest cosine {check1['lowest']:.4f}: {check1['passes']}")
+    print(f"2. stable: lowest cosine between the halves {check2['lowest']:.4f}: {check2['passes']}")
+    print(f"3. reads concepts: pass@{k} {check3['score']:.3f} against the bar {bar:.3f} {cal} (logit lens {check3['logit_lens']:.3f}): {check3['passes']}")
+    print(f"{args.model}: {'passes' if out['passes'] else 'FAILS'}")
+
+
+if __name__ == "__main__":
+    main()

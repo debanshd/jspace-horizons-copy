@@ -19,7 +19,8 @@ The rule (written before the run), with --reference (that model's own check_lens
   minus 0.10.
 - passes: both. scripts/audio_sweep.sh runs a model with a lens from outside Neuronpedia only when it passes.
 
-The Qwen rule (the second version, written 25 Nov before any lens is judged by it; config.QWEN_CALIBRATION). The rule above
+Retired 25 Nov, having judged nothing (void: runs/check_lens_calibration_ranks); lenses fitted here are validated by
+config.LENS_CHECKS instead (scripts/validate_lens.py). Kept as the record: The Qwen rule (the second version, written 25 Nov before any lens is judged by it; config.QWEN_CALIBRATION). The rule above
 failed three of the four Neuronpedia Qwen lenses the original results read, which rarely make the model's top token their top
 one before the last layers. So for a Qwen lens:
 - the measure (--ranks): per read layer, the median over positions of log10 of the model's top token's rank in the readout (1
