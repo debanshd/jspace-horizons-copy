@@ -50,11 +50,11 @@ a log and the wall time of each step. `summary.md` and `summary.csv` hold one ro
 where it stopped. `uv run python <repo>/jpp_evals/run_all.py --out <dir> --summary-only` (run from the checkout) rebuilds the
 summary.
 
-## Fitting an R-lens and a J++ lens for the omni models
+## Fitting an R-lens and a J++ lens for Qwen2.5-Omni-7B
 
 ```bash
-FIT=1 jpp_evals/run_pod.sh                     # Omni-3B and Omni-7B, 64 prompts
-FIT=1 FIT_PROMPTS=128 jpp_evals/run_pod.sh qwen2.5-omni-3b
+FIT=1 jpp_evals/run_pod.sh                     # Omni-7B, 64 prompts
+CONVERGE=1 FIT=1 jpp_evals/run_pod.sh          # Omni-7B, until converged
 ```
 
 `fit_lenses.py` runs the post's recipe in the post's harness, one stage at a time:
@@ -101,7 +101,6 @@ thinker is not registered, so it cannot be fitted here.
 ## Status
 
 Nothing here has run on a GPU yet, the evals or the fits. The harness's model loading and LRP surgery were checked by reading their
-code and the transformers 5.14.1 omni classes. At 64 prompts, the Jacobian sums should take roughly 10 minutes on the 3B and 40 on
-the 7B on one H200. That is scaled from the omni J-lens fits (7 s per prompt on the 3B, 35 s on the 7B), not measured. The router
-and the weight fit add their own time. By the same scaling, a converged fit takes about 1 to 2 hours on the 3B and 5 to 10 on the 7B,
-depending on where it stops. Neuronpedia's Qwen2.5-7B-Instruct J-lens stopped at 485 prompts.
+code and the transformers 5.14.1 omni classes. Only Omni-7B is fitted. At 64 prompts, its Jacobian sums should take roughly 40 minutes on one
+H200. That is scaled from its J-lens fit (35 s per prompt), not measured. The router and the weight fit add their own time. By the
+same scaling, a converged fit takes about 5 to 10 hours, depending on where it stops. Neuronpedia's Qwen2.5-7B-Instruct J-lens stopped at 485 prompts.

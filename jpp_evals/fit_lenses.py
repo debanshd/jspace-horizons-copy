@@ -1,4 +1,4 @@
-"""Fit an R-lens and a J++ lens for Qwen2.5-Omni's thinker with the J++ post's recipe, in the post's harness.
+"""Fit an R-lens and a J++ lens for Qwen2.5-Omni-7B's thinker with the J++ post's recipe, in the post's harness.
 
 The stages are the harness's recipe, the one the post's Qwen3.6-27B lens and Neuronpedia's Qwen3.5-4B R-lens and J++ lens were fitted
 with; the settings differ where noted:
@@ -27,7 +27,8 @@ Every source layer is fitted (0 to n - 2; the target is the last block), as in t
 repository's experiments as well as the post's seven readout layers. A backward pass yields every source layer at once, so the extra
 layers cost memory for their sums, not passes.
 
-Qwen3-Omni-30B-A3B is left out: its MoE thinker has classes the LRP surgery has no verified rules for.
+Only Qwen2.5-Omni-7B is fitted. Qwen2.5-Omni-3B keeps its J-lenses only. Qwen3-Omni-30B-A3B is left out too: its MoE thinker has classes the LRP
+surgery has no verified rules for.
 
 Per model, in <fits>/<model key>/: correctness.csv, router.pt, artifacts/ (the shard sums), <name>_experts.pt,
 <prefix>_rlens_n<N>.pt, <prefix>_jpp_n<N>.pt with its expert weights (N the prompts the sums saw), convergence.csv for a converged
@@ -48,8 +49,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from manifest import model_by_key  # noqa: E402
 from run_all import merged_correctness, record_environment, step  # noqa: E402
 
-FITTABLE = ("qwen2.5-omni-3b", "qwen2.5-omni-7b")
-PREFIX = {"qwen2.5-omni-3b": "omni3b", "qwen2.5-omni-7b": "omni7b"}
+FITTABLE = ("qwen2.5-omni-7b",)
+PREFIX = {"qwen2.5-omni-7b": "omni7b"}
 NUM_CLUSTERS = 8  # the harness's recipe; the shard checkpoint file is named by it
 MIN_KEPT_POSITIONS = 50  # merge-experts' default: an expert with fewer positions falls back to the pooled Jacobian
 
