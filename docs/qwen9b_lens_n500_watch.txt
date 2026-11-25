@@ -1,0 +1,56 @@
+v9_chain: 2026-11-25 05:18:39 start at 8853711  on NVIDIA RTX PRO 6000 Blackwell Server Edition; watchdog 946
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens_timing/Qwen3.5-9B · 2026-11-25 05:19:06
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 10 prompts (of --n 10, from 0, shard None)
+lens 10 prompts, sha256 d0f8c2530fe3; 51.7 s per prompt; projected {100: 1.44, 250: 3.59, 1000: 14.36}
+Qwen/Qwen3.5-9B 51.7 s per prompt; projected hours on one GPU {'100': 1.44, '250': 3.59, '1000': 14.36}
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens/Qwen3.5-9B · 2026-11-25 05:29:39
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 250 prompts (of --n 250, from 0, shard None)
+v9_chain: 2026-11-25 05:18:39 start at 8853711  on NVIDIA RTX PRO 6000 Blackwell Server Edition; watchdog 946
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens_timing/Qwen3.5-9B · 2026-11-25 05:19:06
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 10 prompts (of --n 10, from 0, shard None)
+lens 10 prompts, sha256 d0f8c2530fe3; 51.7 s per prompt; projected {100: 1.44, 250: 3.59, 1000: 14.36}
+Qwen/Qwen3.5-9B 51.7 s per prompt; projected hours on one GPU {'100': 1.44, '250': 3.59, '1000': 14.36}
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens/Qwen3.5-9B · 2026-11-25 05:29:39
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 250 prompts (of --n 250, from 0, shard None)
+v9_chain: 2026-11-25 05:18:39 start at 8853711  on NVIDIA RTX PRO 6000 Blackwell Server Edition; watchdog 946
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens_timing/Qwen3.5-9B · 2026-11-25 05:19:06
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 10 prompts (of --n 10, from 0, shard None)
+lens 10 prompts, sha256 d0f8c2530fe3; 51.7 s per prompt; projected {100: 1.44, 250: 3.59, 1000: 14.36}
+Qwen/Qwen3.5-9B 51.7 s per prompt; projected hours on one GPU {'100': 1.44, '250': 3.59, '1000': 14.36}
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens/Qwen3.5-9B · 2026-11-25 05:29:39
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 250 prompts (of --n 250, from 0, shard None)
+lens 250 prompts, sha256 e1b6cc1067a7; 46.7 s per prompt; projected {100: 1.3, 250: 3.24, 1000: 12.97}
+v9_chain: 2026-11-25 08:45:19 9B fit exit 0
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens_ext500/Qwen3.5-9B · 2026-11-25 08:45:22
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 250 prompts (of --n 500, from 250, shard None)
+v9_chain: 2026-11-25 05:18:39 start at 8853711  on NVIDIA RTX PRO 6000 Blackwell Server Edition; watchdog 946
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens_timing/Qwen3.5-9B · 2026-11-25 05:19:06
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 10 prompts (of --n 10, from 0, shard None)
+lens 10 prompts, sha256 d0f8c2530fe3; 51.7 s per prompt; projected {100: 1.44, 250: 3.59, 1000: 14.36}
+Qwen/Qwen3.5-9B 51.7 s per prompt; projected hours on one GPU {'100': 1.44, '250': 3.59, '1000': 14.36}
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens/Qwen3.5-9B · 2026-11-25 05:29:39
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 250 prompts (of --n 250, from 0, shard None)
+lens 250 prompts, sha256 e1b6cc1067a7; 46.7 s per prompt; projected {100: 1.3, 250: 3.24, 1000: 12.97}
+v9_chain: 2026-11-25 08:45:19 9B fit exit 0
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens_ext500/Qwen3.5-9B · 2026-11-25 08:45:22
+Qwen/Qwen3.5-9B @ c2022362: 32 layers, d 4096; 250 prompts (of --n 500, from 250, shard None)
+lens 250 prompts, sha256 ad63c6877aa3; 45.8 s per prompt; projected {100: 1.27, 250: 3.18, 1000: 12.72}
+===== fit_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/fit_lens_n500/Qwen3.5-9B · 2026-11-25 11:57:11
+lens 500 prompts, sha256 9e9b705b43e2; 0.0 s per prompt; projected None
+===== compare_lenses · Qwen/Qwen3.5-9B · /workspace/repo/runs/lens_halves/Qwen3.5-9B · 2026-11-25 11:58:23
+lowest cosine over the checked layers (*) 0.9946, against 0.99: passes
+===== lens_readout · Qwen/Qwen3.5-9B · /workspace/repo/runs/lens_readout/Qwen3.5-9B · 2026-11-25 11:58:32
+score (J-lens pass@10, averaged over the sets): 0.301; the logit lens: 0.311
+===== validate_lens · Qwen/Qwen3.5-9B · /workspace/repo/runs/lens_validation/Qwen3.5-9B · 2026-11-25 12:02:26
+1. reproduce: lowest cosine 0.9920: True
+2. stable: lowest cosine between the halves 0.9946: True
+3. reads concepts: pass@10 0.301, its logit lens 0.311, margin -0.010 against the bar -0.033 {'Qwen/Qwen3.5-2B': 0.10196767054726627, 'Qwen/Qwen3.5-4B': -0.0332669787842782, 'Qwen/Qwen3.5-27B': -0.024
+Qwen/Qwen3.5-9B: passes
+v9_chain: 2026-11-25 12:02:27 9B extension exit 0
+v9_chain: 2026-11-25 12:02:29 packed e32ec095bee0185aab8736aac3728d02c1331367178f3cab6b8d72bffcfe27f9 (993M)
+curl: (92) HTTP/2 stream 1 was not closed cleanly: INTERNAL_ERROR (err 2)
+curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 404
+curl: (22) The requested URL returned error: 404
+sha mismatch: want e32ec095bee0185aab8736aac3728d02c1331367178f3cab6b8d72bffcfe27f9 got 21b265d33f068d7e54ad78ea0e2807361270f91b4ed26e431cf1b47a1317d0f4; retrying
