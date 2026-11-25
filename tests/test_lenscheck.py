@@ -39,7 +39,13 @@ def test_readout_positions_tokens_and_pass_at_k():
     enc = {"Brazil": [11, 12], " Brazil": [13]}.__getitem__
     assert lenscheck.word_ids(enc, "Brazil") == [11, 13]
     assert lenscheck.pass_at_k([[1, 50], [3]], 10) == pytest.approx((0.5 + 1.0) / 2)
-    assert lenscheck.readout_bar({"a": 0.4, "b": 0.3, "c": 0.5}) == 0.3
+    assert lenscheck.readout_bar({"a": 0.04, "b": 0.03, "c": 0.05}) == (0.03, True)
+    assert lenscheck.readout_bar({"a": 0.04, "b": -0.05}) == (-0.05, False)  # a calibration lens below its logit lens: void
+    s = {"jlens_pass@10": {"mean": 0.30}, "logit_pass@10": {"mean": 0.25}}
+    assert lenscheck.margin(s) == pytest.approx(0.05)
+    identity = {"jlens_pass@10": {"mean": 0.25}, "logit_pass@10": {"mean": 0.25}}
+    bar, ok = lenscheck.readout_bar({"a": 0.03})
+    assert ok and not lenscheck.margin(identity) >= bar  # the identity map's margin is 0: it fails an informative bar
 
 
 def test_the_prompt_sets_match_their_pins():

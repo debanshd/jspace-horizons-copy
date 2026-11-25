@@ -8,9 +8,9 @@ the runs that measured them. It measures nothing itself and needs no GPU.
    against Neuronpedia's lens of it) passes.
 2. stable: runs/lens_halves/<model>/compare.json passes, and its two lenses are this lens's halves: prompts 0-499 (a merge of
    prompts 0-249 and 250-499) and 500-999, the second of which the lens's merge contains.
-3. reads concepts: runs/lens_readout/<model>/summary.json, of this lens (its sha256), scores at least the lowest score among
-   runs/lens_readout_np/<model>/summary.json for config.READOUT_CALIBRATION (Neuronpedia's Qwen3.5 J-lenses, each the lens
-   config.MODELS pins).
+3. reads concepts: runs/lens_readout/<model>/summary.json, of this lens (its sha256): its margin over its own logit lens is at
+   least the lowest margin among runs/lens_readout_np/<model>/summary.json for config.READOUT_CALIBRATION (Neuronpedia's Qwen3.5
+   J-lenses, each the lens config.MODELS pins), and that lowest margin is above 0 (else check 3 is void and fails).
 A missing input stops it with an error. Only Qwen lenses: the calibration lenses are Qwen's; a Gemma lens needs its own
 calibration set, written before it is validated.
 
@@ -69,17 +69,23 @@ def main():
         s = read(R / "lens_readout_np" / m.split("/")[-1] / "summary.json")
         if s["lens"]["source"] != "pinned" or s["lens"]["sha256"] != config.MODELS[m].lens_sha256:
             raise SystemExit(f"runs/lens_readout_np/{m.split('/')[-1]} is not {m}'s pinned lens")
-        cal[m] = s["score"]
-    bar = lenscheck.readout_bar(cal)
+        cal[m] = lenscheck.margin(s)
+    bar, informative = lenscheck.readout_bar(cal)
     k = config.LENS_CHECKS["k"]
-    check3 = dict(passes=bool(mine["score"] >= bar), score=mine["score"], bar=bar, calibration=cal, logit_lens=mine[f"logit_pass@{k}"]["mean"])
+    mine_margin = lenscheck.margin(mine)
+    check3 = dict(
+        passes=bool(informative and mine_margin >= bar), informative=informative, margin=mine_margin, bar=bar, calibration_margins=cal, score=mine["score"], logit_lens=mine[f"logit_pass@{k}"]["mean"]
+    )
 
     out = dict(model=args.model, lens=dict(run=str(args.lens), sha256=sha, n_prompts=meta["n_prompts"]), reproduce=check1, stable=check2, reads_concepts=check3)
     out["passes"] = bool(check1["passes"] and check2["passes"] and check3["passes"])
     run.save_json(out, "summary.json")
     print(f"1. reproduce: lowest cosine {check1['lowest']:.4f}: {check1['passes']}")
     print(f"2. stable: lowest cosine between the halves {check2['lowest']:.4f}: {check2['passes']}")
-    print(f"3. reads concepts: pass@{k} {check3['score']:.3f} against the bar {bar:.3f} {cal} (logit lens {check3['logit_lens']:.3f}): {check3['passes']}")
+    print(
+        f"3. reads concepts: pass@{k} {check3['score']:.3f}, its logit lens {check3['logit_lens']:.3f}, margin {mine_margin:+.3f} against the bar {bar:+.3f} {cal}"
+        f"{'' if informative else ' (VOID: a calibration lens does not beat its logit lens)'}: {check3['passes']}"
+    )
     print(f"{args.model}: {'passes' if out['passes'] else 'FAILS'}")
 
 

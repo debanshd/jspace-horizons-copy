@@ -81,6 +81,13 @@ def pass_at_k(item_ranks, k):
     return float(np.mean([np.mean([r <= k for r in ranks]) for ranks in item_ranks]))
 
 
-def readout_bar(calibration_scores):
-    """check 3's bar: the lowest macro pass@k among the calibration lenses"""
-    return min(calibration_scores.values())
+def margin(summary, k=config.LENS_CHECKS["k"]):
+    """a lens_readout summary's margin: the J-lens's pass@k averaged over the sets minus the logit lens's (the identity map's)"""
+    return summary[f"jlens_pass@{k}"]["mean"] - summary[f"logit_pass@{k}"]["mean"]
+
+
+def readout_bar(calibration_margins):
+    """check 3's bar, the lowest margin among the calibration lenses, and whether it is informative (above 0, so the identity
+    map, whose margin is 0, fails it)"""
+    bar = min(calibration_margins.values())
+    return bar, bool(bar > 0)

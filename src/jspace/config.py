@@ -186,12 +186,16 @@ SEEN_LENSES = {
 #    such layer (scripts/compare_lenses.py). If not, no lens fitted here is used, and nothing more is fitted until the
 #    difference is understood.
 # 2. stable: the lens's two halves (its prompts 0-499 and 500-999, fitted apart and merged into it) agree by the same measure.
-# 3. reads concepts: on the paper's lens-quality prompts (five sets, src/jspace/lens_eval), its pass@10 averaged over the sets is
-#    at least the lowest of Neuronpedia's Qwen3.5 J-lenses' (READOUT_CALIBRATION), measured the same way (scripts/
-#    lens_readout.py). Not "beats the logit lens": on these prompts Neuronpedia's Qwen J-lenses do not, by a third-party
-#    replication (alexanderquispe/jlens-open-models).
-# A lens is used only if check 1 passed and it passes 2 and 3 (scripts/validate_lens.py). The logit lens's pass@10 is reported
-# beside each, and decides nothing.
+# 3. reads concepts (revised 25 Nov, before any check ran: the first wording compared raw scores, which a lens with no Jacobian,
+#    the identity map, could pass): on the paper's lens-quality prompts (five sets, src/jspace/lens_eval), the lens's margin, its
+#    pass@10 averaged over the sets minus its own model's logit lens's (the identity map's) on the same prompts, is at least
+#    the lowest margin of Neuronpedia's Qwen3.5 J-lenses (READOUT_CALIBRATION), measured the same way (scripts/lens_readout.py).
+#    The check is informative only if that lowest margin is above 0, i.e. every calibration lens reads concepts better than
+#    its logit lens, so the identity map (margin 0) fails it. If not, check 3 is void: no lens fitted here can be shown to
+#    read concepts beyond the logit lens, and none is used.
+# A lens is used only if check 1 passed and it passes 2 and 3 (scripts/validate_lens.py). Qwen lenses only: a Gemma lens needs
+# its own reproduction and calibration (Neuronpedia's Gemma-4 lenses are fitted on the base models, config.MODELS pins them for
+# the instruct ones), written before any Gemma lens is validated.
 LENS_CHECKS = dict(reproduce="Qwen/Qwen3.5-2B", reproduce_n=283, min_cosine=0.99, min_depth=0.3, halves=(500, 1000), k=10)
 READOUT_CALIBRATION = (
     "Qwen/Qwen3.5-2B",
