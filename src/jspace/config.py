@@ -146,20 +146,23 @@ MODELS = {
     # Changed 25 Nov, with the project owner's approval, after check 3 of config.LENS_CHECKS came out void and before any audio
     # result was read through these lenses: the deciding lens is each model's 500-prompt lens (uploaded under <model>/n500/), on
     # the footing of the video's lenses (Neuronpedia's fits stopped at 233 to 861 prompts). See config.LENS_CHECKS.
+    # Pinned 25 Nov (PR #13, docs/omni_lens_n500_results.md): the 3B's and 7B's deciding 500-prompt lenses, which passed
+    # scripts/validate_lens.py (halves 0.9949 and 0.9953), at the repo commit they were uploaded in. The 30B's 500-prompt lens
+    # failed check 2 (0.9887) and is not used: it stays at its 250-prompt lens, which scripts/audio_sweep.sh refuses.
     **{
         name: ModelSpec(
             revision=FIT_MODELS[name].revision,
             size_gb=FIT_MODELS[name].size_gb,
-            lens_file=f"{name.split('/')[-1]}/lens.pt",
+            lens_file=f"{name.split('/')[-1]}/{folder}lens.pt",
             lens_sha256=sha,
             lens_repo="debanshd/jspace-omni-lenses",
-            lens_revision="4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75",
+            lens_revision=rev,
             loader=FIT_MODELS[name].loader,
         )
-        for name, sha in (
-            ("Qwen/Qwen2.5-Omni-3B", "8a10a569f4fe3614bf4575280079b5a2ddad7b39c173bec59f25da237992cde7"),
-            ("Qwen/Qwen2.5-Omni-7B", "d1696e876294f9e1d3510339905d64613d49125d9b74898e435a0583ef94e859"),
-            ("Qwen/Qwen3-Omni-30B-A3B-Instruct", "2c2fa06026a42307282e79d2ad120879fe01826287ffd15018c578ad36d50bcb"),
+        for name, folder, rev, sha in (
+            ("Qwen/Qwen2.5-Omni-3B", "n500/", "a473c0784d05057a15f278b703a9cfae6499880c", "a7535af6f48b566e4da89fd39a54c3b418fe3ce5d001efcf34c0983bec7c141c"),
+            ("Qwen/Qwen2.5-Omni-7B", "n500/", "a473c0784d05057a15f278b703a9cfae6499880c", "e2e88d60d9567a3a8225e46725938453ff7b1fc3bf899b6d710af1bf41596ba5"),
+            ("Qwen/Qwen3-Omni-30B-A3B-Instruct", "", "4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75", "2c2fa06026a42307282e79d2ad120879fe01826287ffd15018c578ad36d50bcb"),
         )
     },
 }

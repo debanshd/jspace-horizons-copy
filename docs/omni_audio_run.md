@@ -156,23 +156,20 @@ reproduces Neuronpedia's Qwen3.5-2B lens, a lens's halves agree, and its concept
 Qwen3.5 J-lens's. Run step 1 of `docs/lens_validation_run.md` (about 1 hour, about $4), and nothing else. It needs this branch's head, which
 holds PR #12's code.
 
-## 2. NOW: the 500-prompt lenses and their verdicts (about 3 hours on one H200, about $17)
+## 2. Done (24–25 Nov): the 500-prompt lenses and their verdicts
 
-Step 2 of `docs/lens_validation_run.md`, and nothing else. Its verdicts go to `runs/lens_validation/<model>/summary.json`.
+PR #13, `docs/omni_lens_n500_results.md`. The 3B and 7B pass: their halves agree at 0.9949 and 0.9953. The 30B fails check 2
+(0.9887 at layer 14), a miss recorded as such.
 
----
+## 3. Done (25 Nov): the 3B's and 7B's 500-prompt lenses are pinned
 
-**Later, not now:** steps 3 to 5 need a separate go-ahead.
+In `config.MODELS`, at the repo commit `a473c078`. The 30B stays at its 250-prompt lens, which `scripts/audio_sweep.sh` refuses.
 
-## 3. (Later) Pin the 500-prompt lenses (a commit to PR #14, not on the pod)
+## 4. NOW: the audio chain on the 3B and 7B
 
-Each model's `lens_file` becomes `<model>/n500/lens.pt`, with its sha256 and the new repo commit. Until then,
-`scripts/audio_sweep.sh` refuses the omni models. It also refuses a model whose pinned lens has no passing verdict in
-`runs/lens_validation`.
-
-## 4. (Later) The audio chain on the deciding lenses
-
-The two Qwen2.5-Omni models (an L40S is enough, but the H200 works too):
+Run it in the omni worktree, the one whose `runs/lens_validation` holds the two passing verdicts; the chain refuses a model
+without one. Update it to this branch's head first, between runs, never during one. Use a network volume, so that nothing is
+lost if the pod stops. One L40S is enough for both models; an H200 also works.
 
 ```bash
 SWEEP=audio_sweep_static MODELS="Qwen/Qwen2.5-Omni-3B Qwen/Qwen2.5-Omni-7B" KEEP_GOING=1 scripts/audio_sweep.sh 2>&1 | tee runs/omni_chain_small.log
@@ -198,21 +195,12 @@ Then run the full sweeps of the models whose pilots passed:
 SWEEP=audio_sweep_static MODELS="<those models>" FULL=1 scripts/audio_sweep.sh 2>&1 | tee runs/omni_chain_small_full.log
 ```
 
-Qwen3-Omni-30B-A3B needs an H200, since its text-generating part alone is about 60 GB in bf16:
-
-```bash
-SWEEP=audio_sweep_static MODELS="Qwen/Qwen3-Omni-30B-A3B-Instruct" scripts/audio_sweep.sh 2>&1 | tee runs/omni_chain_30b.log
-```
-
-If its pilot passed:
-
-```bash
-SWEEP=audio_sweep_static MODELS="Qwen/Qwen3-Omni-30B-A3B-Instruct" FULL=1 scripts/audio_sweep.sh 2>&1 | tee runs/omni_chain_30b_full.log
-```
+Qwen3-Omni-30B-A3B does not run: its 500-prompt lens failed check 2.
 
 ## What can stop a model, and what it means
 
-- **The lens fails validation:** our recipe does not reproduce Neuronpedia's lens, its halves disagree, or its concept readout is below the weakest Neuronpedia Qwen3.5 J-lens's. The fit reports (PR #13) showed a few such layers on WikiText. A failure means no audio run for that model. Report it; the rule stays as written.
+- **The lens fails validation:** our recipe does not reproduce Neuronpedia's lens, or the lens's halves disagree (the concept
+  readout is a caveat and does not stop a model). A failure means no audio run for that model. Report it; the rule stays as written.
 - **`audio_clean` not ready:** the model does not name the recordings, or does not apply the say or animal rule, with the question first. Its audio is untestable by this design.
 - **The pilot's controls fail on the spoken input:** stop and report. A frozen input the model does not recognize is untestable and does not stop the chain.
 
