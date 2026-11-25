@@ -82,8 +82,9 @@ model() {  # model <model>: the three steps; returns non-zero at the first step 
     uv run --frozen python -c "import sys; from jspace.config import deciding_lens_pinned; sys.exit(0 if deciding_lens_pinned(sys.argv[1]) else 1)" "$m" ||
         { echo "$m: the pinned lens is not its deciding 500-prompt lens; pin that first (docs/omni_audio_run.md)" >&2; return 1; }
     if [ "${m%%/*}" = Qwen ] && uv run --frozen python -c "import sys; from jspace.config import MODELS; sys.exit(0 if MODELS[sys.argv[1]].lens_repo else 1)" "$m"; then
-        # a Qwen lens fitted here: used only if scripts/validate_lens.py passed it (config.LENS_CHECKS), and only the lens it passed
-        uv run --frozen python -c "import json, sys; from jspace.config import MODELS; s = json.load(open(sys.argv[1])); print({k: s[k]['passes'] for k in ('reproduce', 'stable', 'reads_concepts')}); sys.exit(0 if s['passes'] and s['lens']['sha256'] == MODELS[sys.argv[2]].lens_sha256 else 1)" "runs/lens_validation/$tag/summary.json" "$m" ||
+        # a Qwen lens fitted here: used only if scripts/validate_lens.py passed it (config.LENS_CHECKS), or config.LENS_EXCEPTIONS names
+        # that very file (a decision after a failing verdict, recorded there), and only the lens the verdict read
+        uv run --frozen python -c "import json, sys; from jspace.config import MODELS; s = json.load(open(sys.argv[1])); print({k: s[k]['passes'] for k in ('reproduce', 'stable', 'reads_concepts')}); from jspace.config import LENS_EXCEPTIONS as X; sha = MODELS[sys.argv[2]].lens_sha256; ok = s['lens']['sha256'] == sha and (s['passes'] or X.get(sha) == sys.argv[2]); print('' if s['passes'] or not ok else 'its verdict fails; used by config.LENS_EXCEPTIONS (a decision after the result)'); sys.exit(0 if ok else 1)" "runs/lens_validation/$tag/summary.json" "$m" ||
             { echo "$m: its pinned lens has no passing verdict in runs/lens_validation (docs/lens_validation_run.md)" >&2; return 1; }
     elif uv run --frozen python -c "import sys; from jspace.config import MODELS; sys.exit(0 if MODELS[sys.argv[1]].lens_repo else 1)" "$m"; then
         download "$LENS_REF" || { echo "the download of $LENS_REF failed" >&2; return 1; }

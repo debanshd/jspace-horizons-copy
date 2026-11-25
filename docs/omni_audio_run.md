@@ -161,13 +161,15 @@ holds PR #12's code.
 PR #13, `docs/omni_lens_n500_results.md`. The 3B and 7B pass: their halves agree at 0.9949 and 0.9953. The 30B fails check 2
 (0.9887 at layer 14), a miss recorded as such.
 
-## 3. Done (25 Nov): the 3B's and 7B's 500-prompt lenses are pinned
+## 3. Done (25 Nov): the three 500-prompt lenses are pinned
 
-In `config.MODELS`, at the repo commit `a473c078`. The 30B stays at its 250-prompt lens, which `scripts/audio_sweep.sh` refuses.
+In `config.MODELS`, at the repo commit `a473c078`. The 30B's 500-prompt lens is pinned too. It failed check 2 by about 0.001
+(0.9887 against 0.99) and is used by an exception, decided after that result by the project owner and recorded in
+`config.LENS_EXCEPTIONS`; its verdict still reads "fails". Any 30B result carries that caveat.
 
-## 4. NOW: the audio chain on the 3B and 7B
+## 4. NOW: the audio chain on the 3B, the 7B and the 30B
 
-Run it in the omni worktree, the one whose `runs/lens_validation` holds the two passing verdicts; the chain refuses a model
+Run it in the omni worktree, the one whose `runs/lens_validation` holds the three verdicts; the chain refuses a model
 without one. Update it to this branch's head first, between runs, never during one. Use a network volume, so that nothing is
 lost if the pod stops. One L40S is enough for both models; an H200 also works.
 
@@ -195,7 +197,18 @@ Then run the full sweeps of the models whose pilots passed:
 SWEEP=audio_sweep_static MODELS="<those models>" FULL=1 scripts/audio_sweep.sh 2>&1 | tee runs/omni_chain_small_full.log
 ```
 
-Qwen3-Omni-30B-A3B does not run: its 500-prompt lens failed check 2.
+Qwen3-Omni-30B-A3B needs an H200, since its text-generating part alone is about 60 GB in bf16. The chain prints that its verdict
+fails and that `config.LENS_EXCEPTIONS` lets it run:
+
+```bash
+SWEEP=audio_sweep_static MODELS="Qwen/Qwen3-Omni-30B-A3B-Instruct" scripts/audio_sweep.sh 2>&1 | tee runs/omni_chain_30b.log
+```
+
+If its pilot passed:
+
+```bash
+SWEEP=audio_sweep_static MODELS="Qwen/Qwen3-Omni-30B-A3B-Instruct" FULL=1 scripts/audio_sweep.sh 2>&1 | tee runs/omni_chain_30b_full.log
+```
 
 ## What can stop a model, and what it means
 

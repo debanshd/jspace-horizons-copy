@@ -560,10 +560,11 @@ def test_the_qwen_omni_models_load_their_thinker_with_this_projects_lens():
         assert s.loader == f.loader and s.revision == f.revision
         assert s.lens_source()[0] == "debanshd/jspace-omni-lenses" and len(s.lens_source()[1]) == 40 and len(s.lens_sha256) == 64
     # the 3B and 7B at their validated 500-prompt lenses (PR #13); the 30B, whose 500-prompt lens failed, at its 250-prompt one
-    for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B"):
+    for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"):
         assert config.MODELS[name].lens_file == f"{name.split('/')[-1]}/n500/lens.pt"
         assert config.MODELS[name].lens_revision == "a473c0784d05057a15f278b703a9cfae6499880c"
-    assert config.MODELS["Qwen/Qwen3-Omni-30B-A3B-Instruct"].lens_file == "Qwen3-Omni-30B-A3B-Instruct/lens.pt"
+    # the 30B's lens failed check 2 and is used by the recorded exception, for that very file only
+    assert config.LENS_EXCEPTIONS == {config.MODELS["Qwen/Qwen3-Omni-30B-A3B-Instruct"].lens_sha256: "Qwen/Qwen3-Omni-30B-A3B-Instruct"}
     assert all(s.loader is None for n, s in config.MODELS.items() if not n.startswith("Qwen/Qwen") or "Omni" not in n)
 
 
@@ -597,8 +598,8 @@ def test_an_omni_model_runs_only_on_its_deciding_lens():
     from jspace import config
 
     assert config.deciding_lens_pinned("google/gemma-4-E4B-it") and config.deciding_lens_pinned("google/gemma-4-12B-it")
-    assert config.deciding_lens_pinned("Qwen/Qwen2.5-Omni-3B") and config.deciding_lens_pinned("Qwen/Qwen2.5-Omni-7B")
-    assert not config.deciding_lens_pinned("Qwen/Qwen3-Omni-30B-A3B-Instruct")  # its 500-prompt lens failed: refused
+    for name in ("Qwen/Qwen2.5-Omni-3B", "Qwen/Qwen2.5-Omni-7B", "Qwen/Qwen3-Omni-30B-A3B-Instruct"):
+        assert config.deciding_lens_pinned(name)  # each at its 500-prompt lens
     assert config.DECIDING_LENS == "n500"  # the 500-prompt lenses decide since 25 Nov (config.LENS_CHECKS)
 
 

@@ -148,7 +148,7 @@ MODELS = {
     # the footing of the video's lenses (Neuronpedia's fits stopped at 233 to 861 prompts). See config.LENS_CHECKS.
     # Pinned 25 Nov (PR #13, docs/omni_lens_n500_results.md): the 3B's and 7B's deciding 500-prompt lenses, which passed
     # scripts/validate_lens.py (halves 0.9949 and 0.9953), at the repo commit they were uploaded in. The 30B's 500-prompt lens
-    # failed check 2 (0.9887) and is not used: it stays at its 250-prompt lens, which scripts/audio_sweep.sh refuses.
+    # failed check 2 (0.9887); it is pinned too, and used only under LENS_EXCEPTIONS (25 Nov, approved after that result).
     **{
         name: ModelSpec(
             revision=FIT_MODELS[name].revision,
@@ -162,11 +162,22 @@ MODELS = {
         for name, folder, rev, sha in (
             ("Qwen/Qwen2.5-Omni-3B", "n500/", "a473c0784d05057a15f278b703a9cfae6499880c", "a7535af6f48b566e4da89fd39a54c3b418fe3ce5d001efcf34c0983bec7c141c"),
             ("Qwen/Qwen2.5-Omni-7B", "n500/", "a473c0784d05057a15f278b703a9cfae6499880c", "e2e88d60d9567a3a8225e46725938453ff7b1fc3bf899b6d710af1bf41596ba5"),
-            ("Qwen/Qwen3-Omni-30B-A3B-Instruct", "", "4648419f6346d3cbb356ed7b16b8a8b1fa2cbe75", "2c2fa06026a42307282e79d2ad120879fe01826287ffd15018c578ad36d50bcb"),
+            ("Qwen/Qwen3-Omni-30B-A3B-Instruct", "n500/", "a473c0784d05057a15f278b703a9cfae6499880c", "257e34cc4209b9ab4e006fd41fc36d9bec7f2ba8686cbcea86ee3406d93c179e"),
         )
     },
 }
 
+
+# Lenses used although their scripts/validate_lens.py verdict fails, each by the project owner's explicit decision after the
+# result, recorded here as a change of rule after a result (the verdict itself stands as it is). By sha256 of the lens file:
+# scripts/audio_sweep.sh accepts a failing verdict only for the very file named here.
+LENS_EXCEPTIONS = {
+    # Qwen3-Omni-30B-A3B-Instruct's 500-prompt lens: check 2's halves agree at 0.9887 at layer 14 (0.9900 at 15, 0.9908 at 16),
+    # under the bar of 0.99 by about 0.001; the 3B's and 7B's passed at 0.9949 and 0.9953. Decided 25 Nov ("Use the 500 lens as
+    # is"), offered beside extending the lens to 1000 prompts under the unchanged rule, before any audio result was read through
+    # it. Any result read through this lens carries that caveat.
+    "257e34cc4209b9ab4e006fd41fc36d9bec7f2ba8686cbcea86ee3406d93c179e": "Qwen/Qwen3-Omni-30B-A3B-Instruct",
+}
 
 DECIDING_LENS = "n500"  # the folder of the omni models' deciding lenses in debanshd/jspace-omni-lenses (see MODELS; n1000 until 25 Nov)
 
