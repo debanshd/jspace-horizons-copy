@@ -4,17 +4,16 @@ the runs that measured them. It measures nothing itself and needs no GPU.
 
     uv run scripts/validate_lens.py --model Qwen/Qwen2.5-Omni-3B --lens runs/fit_lens_n500
 
-1. reproduce: runs/lens_repro/Qwen3.5-2B/compare.json (scripts/compare_lenses.py: this recipe's 283-prompt refit of Qwen3.5-2B
-   against Neuronpedia's lens of it) passes.
+1. reproduce: runs/lens_repro/<the family's model>/compare.json (scripts/compare_lenses.py: this recipe's refit of a Neuronpedia
+   lens of the model's family, config.LENS_FAMILIES: Qwen3.5-2B's, 283 prompts; Gemma-4-E2B's, 455) passes.
 2. stable: runs/lens_halves/<model>/compare.json passes, and its two lenses are this lens's halves: prompts 0-249 (the
    250-prompt fit) and 250-499, the second of which the lens's merge contains.
 3. reads concepts: runs/lens_readout/<model>/summary.json, of this lens (its sha256): its margin over its own logit lens against
-   the lowest margin among runs/lens_readout_np/<model>/summary.json for config.READOUT_CALIBRATION (Neuronpedia's Qwen3.5
-   J-lenses, each the lens config.MODELS pins), and whether that lowest margin is above 0. Since the change of 25 Nov
+   the lowest margin among runs/lens_readout_np/<model>/summary.json for the family's calibration (config.LENS_FAMILIES:
+   Neuronpedia's J-lenses of that family, each the lens config.MODELS pins), and whether that lowest margin is above 0. Since the change of 25 Nov
    (config.LENS_CHECKS, readout_decides; approved by the project owner after check 3 came out void) it is reported as a caveat
    and decides nothing: the video's lenses fail it too. passes: checks 1 and 2.
-A missing input stops it with an error. Only Qwen lenses: the calibration lenses are Qwen's; a Gemma lens needs its own
-calibration set, written before it is validated.
+A missing input stops it with an error. Qwen and Gemma lenses (config.LENS_FAMILIES).
 
 Outputs in runs/lens_validation/<model>/: summary.json (each check with its numbers, and passes), run.log.
 """
@@ -40,8 +39,7 @@ def main():
     ap.add_argument("--lens", required=True, type=Path, help="the scripts/fit_lens.py run folder of the lens (its <model>/lens.pt)")
     ap.add_argument("--runs-dir", type=Path, default=config.RUNS_DIR)
     args = ap.parse_args()
-    if not args.model.startswith("Qwen/"):
-        raise SystemExit("only Qwen lenses: the readout calibration (config.READOUT_CALIBRATION) is Neuronpedia's Qwen lenses")
+    fam = config.LENS_FAMILIES[config.lens_family(args.model)]  # the model's family's check 1 and calibration
     run = Run(argparse.Namespace(model=args.model, run="lens_validation", runs_dir=args.runs_dir), "validate_lens")
     tag, R = args.model.split("/")[-1], args.runs_dir
     meta = read(args.lens / tag / "meta.json")
@@ -50,8 +48,8 @@ def main():
         raise SystemExit(f"{args.lens / tag / 'lens.pt'}: sha256 {sha}, its meta.json says {meta['lens_sha256']}")
     lo, hi = config.LENS_CHECKS["halves"]
 
-    repro = read(R / "lens_repro" / config.LENS_CHECKS["reproduce"].split("/")[-1] / "compare.json")
-    if repro["a"]["source"] != "pinned" or repro["b"].get("n_requested") != config.LENS_CHECKS["reproduce_n"]:
+    repro = read(R / "lens_repro" / fam["reproduce"].split("/")[-1] / "compare.json")
+    if repro["model"] != fam["reproduce"] or repro["a"]["source"] != "pinned" or repro["b"].get("n_requested") != fam["reproduce_n"]:
         raise SystemExit("runs/lens_repro is not the reproduction check: Neuronpedia's pinned lens against a refit of reproduce_n prompts")
     check1 = dict(passes=repro["passes"], lowest=repro["lowest"], layers=repro["checked_layers"])
 
@@ -67,7 +65,7 @@ def main():
     if mine["lens"]["sha256"] != sha:
         raise SystemExit(f"runs/lens_readout/{tag} read another lens ({mine['lens']['sha256'][:12]}), not {sha[:12]}")
     cal = {}
-    for m in config.READOUT_CALIBRATION:
+    for m in fam["calibration"]:
         s = read(R / "lens_readout_np" / m.split("/")[-1] / "summary.json")
         if s["lens"]["source"] != "pinned" or s["lens"]["sha256"] != config.MODELS[m].lens_sha256:
             raise SystemExit(f"runs/lens_readout_np/{m.split('/')[-1]} is not {m}'s pinned lens")

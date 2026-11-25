@@ -12,6 +12,8 @@
 #   MODELS="google/gemma-4-12B-it" TIMING_ONLY=1 scripts/fit_lenses.sh   the dense 12B's 10-prompt test first (written before it
 #       runs: the full fit goes ahead only if the J-lens agrees with the model on at least 0.5 of the report's positions at the
 #       deepest fitted layer; the three omni models' 10-prompt lenses gave 0.63, the 12B's published lens 0.14 on check_lens)
+#   FAMILY=google CHECK_RECIPE=1 scripts/fit_lenses.sh       the same for Gemma (config.LENS_FAMILIES): the base Gemma-4-E2B refitted
+#       with 455 prompts against Neuronpedia's lens of it, and the Gemma-4-E2B, E4B and 31B lenses' concept readout
 #   CHECK_RECIPE=1 scripts/fit_lenses.sh                     the cheap checks first (config.LENS_CHECKS, about 1 hour on one H200):
 #       1. this recipe refits Qwen3.5-2B with 283 prompts (runs/lens_repro_fit) and is compared with Neuronpedia's lens of it
 #          (runs/lens_repro); 3's calibration: Neuronpedia's Qwen3.5-2B, 4B and 27B J-lenses' concept readout (runs/lens_readout_np)
@@ -31,34 +33,40 @@ DIM_BATCH=${DIM_BATCH:-8}
 PUSH_TO=${PUSH_TO:-}
 EXTEND_TO=${EXTEND_TO:-}
 CHECK_RECIPE=${CHECK_RECIPE:-0}
+FAMILY=${FAMILY:-Qwen}
 
 uv sync --frozen
-if [ "$CHECK_RECIPE" = 1 ]; then
-    ref=$(uv run --frozen python -c "from jspace.config import LENS_CHECKS as c; print(c['reproduce'], c['reproduce_n'])")
+if [ "$CHECK_RECIPE" = 1 ]; then  # FAMILY: config.LENS_FAMILIES's key, Qwen (done 25 Nov) or google
+    ref=$(uv run --frozen python -c "import sys; from jspace.config import LENS_FAMILIES as F; f = F[sys.argv[1]]; print(f['reproduce'], f['reproduce_n'])" "$FAMILY")
     rm_=${ref% *}; rn=${ref#* }
-    uv run --frozen scripts/download.py --skip-data --models "$rm_"
+    # a model config.MODELS lists is downloaded and checked; a base model refitted only for check 1 is fetched by fit_lens itself
+    if uv run --frozen python -c "import sys; from jspace.config import MODELS; sys.exit(0 if sys.argv[1] in MODELS else 1)" "$rm_"; then
+        uv run --frozen scripts/download.py --skip-data --models "$rm_"
+    fi
     [ -f "runs/lens_repro_fit/${rm_#*/}/lens.pt" ] || uv run --frozen scripts/fit_lens.py --model "$rm_" --n "$rn" --run lens_repro_fit --dim-batch "$DIM_BATCH"
     uv run --frozen scripts/compare_lenses.py --model "$rm_" --a pinned --b runs/lens_repro_fit --run lens_repro || true
-    for c in $(uv run --frozen python -c "from jspace.config import READOUT_CALIBRATION as r; print(' '.join(r))"); do
+    for c in $(uv run --frozen python -c "import sys; from jspace.config import LENS_FAMILIES as F; print(' '.join(F[sys.argv[1]]['calibration']))" "$FAMILY"); do
         uv run --frozen scripts/download.py --skip-data --models "$c"
         [ -f "runs/lens_readout_np/${c#*/}/summary.json" ] || uv run --frozen scripts/lens_readout.py --model "$c" --lens pinned --run lens_readout_np
     done
-    # check 3's bar, and whether it is informative (every calibration lens beats its own logit lens), known before any fit
-    uv run --frozen python -c "
-import json
+    # check 3's bar, and whether it is informative (every calibration lens beats its own logit lens): a caveat, reported
+    uv run --frozen python - "$FAMILY" <<'PY' || true
+import json, sys
 from jspace import config, lenscheck
-m = {c: lenscheck.margin(json.load(open(f'runs/lens_readout_np/{c.split(\"/\")[-1]}/summary.json'))) for c in config.READOUT_CALIBRATION}
+cal = config.LENS_FAMILIES[sys.argv[1]]["calibration"]
+m = {c: lenscheck.margin(json.load(open(f"runs/lens_readout_np/{c.split('/')[-1]}/summary.json"))) for c in cal}
 bar, ok = lenscheck.readout_bar(m)
-print('check 3: margins over the logit lens', {c: round(v, 3) for c, v in m.items()}, 'bar', round(bar, 3), '->', 'informative' if ok else 'VOID: no fitted lens can pass check 3')
-" || true
+print("check 3 (a caveat): margins over the logit lens", {c: round(v, 3) for c, v in m.items()}, "bar", round(bar, 3), "->", "informative" if ok else "void")
+PY
     exit 0
 fi
 for m in $MODELS; do
     tag=${m#*/}
     if [ -n "$EXTEND_TO" ]; then  # the existing lens's prompts are 0-249; fit 250-499, merge, then check it
         [ "$EXTEND_TO" = 500 ] || { echo "EXTEND_TO=500 only: its halves are config.LENS_CHECKS's" >&2; exit 1; }
-        uv run --frozen python -c "import json, sys; sys.exit(0 if json.load(open(sys.argv[1]))['passes'] else 1)" "runs/lens_repro/Qwen3.5-2B/compare.json" ||
-            { echo "check 1 has not passed (runs/lens_repro: run CHECK_RECIPE=1 first): nothing more is fitted" >&2; exit 1; }
+        repro=$(uv run --frozen python -c "import sys; from jspace import config; print(config.LENS_FAMILIES[config.lens_family(sys.argv[1])]['reproduce'].split('/')[-1])" "$m")
+        uv run --frozen python -c "import json, sys; sys.exit(0 if json.load(open(sys.argv[1]))['passes'] else 1)" "runs/lens_repro/$repro/compare.json" ||
+            { echo "$m: its family's check 1 has not passed (runs/lens_repro/$repro: run CHECK_RECIPE=1 with its FAMILY first): nothing more is fitted" >&2; exit 1; }
         [ -f "runs/fit_lens/$tag/meta.json" ] || { echo "$m: no lens in runs/fit_lens to extend" >&2; exit 1; }
         n0=$(uv run --frozen python -c "import json, sys; m = json.load(open(sys.argv[1])); assert not m.get('shard') and not m.get('start'), m; print(m['n_requested'])" "runs/fit_lens/$tag/meta.json")
         [ "$n0" = 250 ] || { echo "$m: its lens has $n0 prompts, not 250" >&2; exit 1; }

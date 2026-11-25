@@ -30,7 +30,7 @@ def load(model, source):
     if source == "pinned":
         from huggingface_hub import hf_hub_download
 
-        spec = config.MODELS[model]
+        spec = config.MODELS[config.REPRO_PINNED.get(model, model)]  # a base model refitted for check 1: its instruct model's pin
         repo, rev = spec.lens_source()
         path = Path(hf_hub_download(repo, spec.lens_file, revision=rev))
         got = lenscheck.sha256(path)

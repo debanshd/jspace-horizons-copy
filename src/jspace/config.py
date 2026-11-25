@@ -62,6 +62,10 @@ FIT_MODELS = {
     # and the third-party J-lens (bcywinski) failed check_lens and stays a miss; the experiments want a J-lens, so it is fitted
     # here, at the revision config.MODELS pins, and validated by LENS_CHECKS like the omni lenses (250 prompts, then 500).
     "Qwen/Qwen3.5-9B": FitSpec("c202236235762e1c871ad0ccb60c8ee5ba337b9a", "AutoModelForImageTextToText", 19.3, 32, 4096),
+    # added 25 Nov: not to be used, only refitted, for the Gemma family's check 1 (LENS_FAMILIES): the base Gemma-4-E2B, the model
+    # Neuronpedia fitted its E2B lens on (455 prompts, 12 Jun 2026), at its last commit before that fit (3 Jun; a tokenizer fix
+    # came on 3 Nov)
+    "google/gemma-4-E2B": FitSpec("63db66a33dc06d58c02b1e887446e103c202602c", "AutoModelForMultimodalLM", 10.2, 35, 1536),
 }
 MODELS = {
     "Qwen/Qwen3.5-4B": ModelSpec(
@@ -223,6 +227,26 @@ READOUT_CALIBRATION = (
     "Qwen/Qwen3.5-4B",
     "Qwen/Qwen3.5-27B",
 )  # the J-lenses config.MODELS pins (Neuronpedia's repo; the 4B's is mntss's 1000-prompt fit), which the original results read
+# The checks per model family (written 25 Nov; for the Gemma family before any Gemma check ran). Each family has its own check 1
+# (a Neuronpedia lens of that family refitted with as many prompts) and its own check 3 calibration (the Neuronpedia J-lenses of
+# that family the video results read, as config.MODELS pins them). The thresholds, the halves and check 3's standing (a caveat,
+# readout_decides) are LENS_CHECKS's for both. Gemma's check 1 refits the base Gemma-4-E2B, because Neuronpedia fitted its Gemma-4
+# lenses on the base models; config.MODELS pins that lens file for the instruct E2B (REPRO_PINNED).
+LENS_FAMILIES = {
+    "Qwen": dict(reproduce=LENS_CHECKS["reproduce"], reproduce_n=LENS_CHECKS["reproduce_n"], calibration=READOUT_CALIBRATION),
+    "google": dict(reproduce="google/gemma-4-E2B", reproduce_n=455, calibration=("google/gemma-4-E2B-it", "google/gemma-4-E4B-it", "google/gemma-4-31B-it")),
+}
+REPRO_PINNED = {"google/gemma-4-E2B": "google/gemma-4-E2B-it"}  # a refitted model -> the config.MODELS entry pinning its Neuronpedia lens
+
+
+def lens_family(name):
+    """a model's LENS_FAMILIES key: its Hub owner (Qwen, google)"""
+    fam = name.split("/")[0]
+    if fam not in LENS_FAMILIES:
+        raise SystemExit(f"{name}: no lens checks for the {fam} family (config.LENS_FAMILIES)")
+    return fam
+
+
 LENS_EVAL_FILES = {  # src/jspace/lens_eval/, from anthropics/jacobian-lens at 581d398 (NOTICE.md)
     "association": "d1a98cd4911b594282e74168091c77d849dae18ffe2acb5761074853f327d71c",
     "multihop": "50b7e4c9255291c0ca2a8e94615be9f44531fa57bb1a844e4f9616056d987416",
@@ -259,6 +283,10 @@ class LensSpec:
     file: str
     sha256: str
 
+
+FITTED_LENS_REPO = "debanshd/jspace-omni-lenses"  # where scripts/fit_lens.py's lenses are uploaded; such a lens needs a passing
+# scripts/validate_lens.py verdict before an experiment reads it (scripts/video_sweep2.sh, scripts/audio_sweep.sh). A fitted video
+# lens (Qwen3.5-9B, Gemma-4-26B-A4B, Gemma-4-12B) joins ALT_LENSES as "fit" once uploaded, with its commit and sha256.
 
 ALT_LENSES = {
     "Qwen/Qwen3.5-9B": {

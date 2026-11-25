@@ -85,9 +85,15 @@ for m in "${M[@]}"; do
     wait_for "$m"
     g=$(gate_of "$m")
     l=$(lens_of "$m")
-    if [ -n "$l" ]; then  # an alternative lens is read only after its check_lens passed (scripts/lens_checks.sh)
-        uv run --frozen python -c "import json, sys; s = json.load(open(sys.argv[1])); sys.exit(0 if s['lens'].get('alt') == sys.argv[2] and s.get('passes') else 1)" "runs/check_lens/${m#*/}/summary.json" "$l" ||
-            { keep_going "$m: its $l lens has no passing check_lens in runs/check_lens (run scripts/lens_checks.sh)"; continue; }
+    if [ -n "$l" ]; then  # an alternative lens is read only after its check passed
+        if uv run --frozen python -c "import sys; from jspace import config; sys.exit(0 if config.ALT_LENSES[sys.argv[1]][sys.argv[2]].repo == config.FITTED_LENS_REPO else 1)" "$m" "$l"; then
+            # a lens fitted here: scripts/validate_lens.py's verdict (config.LENS_CHECKS) must pass that very file
+            uv run --frozen python -c "import json, sys; from jspace import config; s = json.load(open(sys.argv[1])); sys.exit(0 if s['passes'] and s['lens']['sha256'] == config.ALT_LENSES[sys.argv[2]][sys.argv[3]].sha256 else 1)" "runs/lens_validation/${m#*/}/summary.json" "$m" "$l" ||
+                { keep_going "$m: its $l lens has no passing verdict in runs/lens_validation (docs/lens_validation_run.md)"; continue; }
+        else
+            uv run --frozen python -c "import json, sys; s = json.load(open(sys.argv[1])); sys.exit(0 if s['lens'].get('alt') == sys.argv[2] and s.get('passes') else 1)" "runs/check_lens/${m#*/}/summary.json" "$l" ||
+                { keep_going "$m: its $l lens has no passing check_lens in runs/check_lens (run scripts/lens_checks.sh)"; continue; }
+        fi
     fi
     for r in "${RUN}_smoke" "${RUN}_smoke_repeat"; do
         [ -f "runs/$r/${m#*/}/video_sweep2.csv" ] || uv run --frozen $AV experiments/video_sweep2.py --model "$m" --run "$r" --gate-run "$g" --n 5 --donor-gb "$DONOR_GB" ${l:+--lens "$l"} || keep_going "the $r run of $m failed"
