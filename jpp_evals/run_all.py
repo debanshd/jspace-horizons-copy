@@ -86,15 +86,14 @@ def step(name: str, out: Path, cmd: list[str], model_dir: Path, timings: dict) -
     return True
 
 
-def merged_correctness(out_dir: Path) -> Path:
-    """the shipped correctness CSV with a column added for every graded model it lacks; a model it has keeps the post's column"""
+def merged_correctness(out_dir: Path, m: Model) -> Path:
+    """the correctness CSV for one model: the shipped CSV, with this model's graded column added unless the shipped CSV has it (the
+    post's own column is kept). One file per model, because the harness names the column by the repo, and two checkpoints of one
+    repo (OLMo at 100% and 50%) answer differently."""
     df = pd.read_csv(SHIPPED_CORRECTNESS)
-    for m in MODELS:
-        graded = out_dir / m.key / "correctness.csv"
-        if m.hf_name in df.columns or not graded.exists():
-            continue
-        df = df.merge(pd.read_csv(graded), on=["eval", "item"], how="left")
-    path = out_dir / "model_correctness.csv"
+    if m.hf_name not in df.columns:
+        df = df.merge(pd.read_csv(out_dir / m.key / "correctness.csv"), on=["eval", "item"], how="left")
+    path = out_dir / m.key / "model_correctness.csv"
     df.to_csv(path, index=False)
     return path
 
@@ -130,10 +129,10 @@ def run_model(m: Model, out_dir: Path, prune: bool, fits_dir: Path | None = None
     if fitted:
         print(f"  with the fitted lenses {[f.stem for f in fitted]}, scored on {items_spec}", flush=True)
 
-    common = ["--hf-model-name", m.hf_name]
+    common = ["--model-key", m.key, "--hf-model-name", m.hf_name]
     layers = ["--layers", ",".join(map(str, m.layers))]
     step("grade_correctness", model_dir / "correctness.csv", ["grade-correctness", *common, "--out", str(model_dir / "correctness.csv")], model_dir, timings)
-    correctness = str(merged_correctness(out_dir))
+    correctness = str(merged_correctness(out_dir, m))
     lenses = ["--lens", *lens_paths, "logit"]
     items = ["--items", items_spec, "--correctness-csv", correctness]
     for mode, extra in (("filtered", []), ("full", ["--no-readout-filter"])):
