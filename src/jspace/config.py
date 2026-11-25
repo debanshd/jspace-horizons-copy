@@ -127,6 +127,10 @@ FIT_MODELS = {
     "google/gemma-4-12B-it": FitSpec("707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7", "AutoModelForMultimodalLM", 23.9, 48, 3840),
     # added 25 Nov: not to be used, only refitted, to check this recipe against Neuronpedia's own lens of it (LENS_CHECKS)
     "Qwen/Qwen3.5-2B": FitSpec("15852e8c16360a2fea060d615a32b45270f8a8fc", "AutoModelForImageTextToText", 4.5, 24, 2048),
+    # added 25 Nov: the mid-size Qwen for the video experiments (PR #15). Neuronpedia fitted only a J++ lens for the instruct 9B,
+    # and the third-party J-lens (bcywinski) failed check_lens and stays a miss; the experiments want a J-lens, so it is fitted
+    # here, at the revision config.MODELS pins, and validated by LENS_CHECKS like the omni lenses (250 prompts, then 500).
+    "Qwen/Qwen3.5-9B": FitSpec("c202236235762e1c871ad0ccb60c8ee5ba337b9a", "AutoModelForImageTextToText", 19.3, 32, 4096),
 }
 
 # How a lens fitted here is validated (written 25 Nov, before any of these checks ran). Agreement with the model's next-token

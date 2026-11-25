@@ -61,3 +61,25 @@ Report:
 - each `runs/fit_lens_n500/<model>/meta.json`: `n_prompts` and `lens_sha256`.
 
 Then stop the pod.
+
+## 3. Later, with a separate go-ahead: the mid-size video models' lenses
+
+The fitting code covers three video models without a Neuronpedia J-lens:
+
+- **Qwen3.5-9B** (`config.FIT_MODELS`). It is fitted and validated like the omni models: 250 prompts, then the 500-prompt lens
+  and its verdict.
+
+  ```bash
+  MODELS="Qwen/Qwen3.5-9B" scripts/fit_lenses.sh 2>&1 | tee runs/fit_9b.log
+  ```
+
+  ```bash
+  MODELS="Qwen/Qwen3.5-9B" EXTEND_TO=500 PUSH_TO=debanshd/jspace-omni-lenses scripts/fit_lenses.sh 2>&1 | tee runs/fit_9b_500.log
+  ```
+
+  The first command's 10-prompt timing run prints the projected hours before the fit starts. For the video runs to read this
+  lens, it must still be pinned (`config.ALT_LENSES`, a later commit), and `video_sweep2.sh` must gate it on its verdict.
+- **Gemma-4-26B-A4B** and **Gemma-4-12B** (fitting code since PR #12's earlier commits). They have no validation yet:
+  `validate_lens.py` judges Qwen lenses only. A Gemma rule has to be written before a Gemma lens is used, because Neuronpedia's
+  Gemma-4 lenses are fitted on the base models, which our refit check needs. The 12B's full fit goes ahead only if its
+  10-prompt test reaches 0.5.
