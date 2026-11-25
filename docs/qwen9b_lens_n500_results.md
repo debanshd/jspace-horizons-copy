@@ -16,7 +16,9 @@ linear-attention backward refuses Hopper GPUs with the Triton `uv.lock` pins), a
 deciding nothing): pass@10 0.301 against its own logit lens's 0.311, a margin of −0.010, above the void bar of −0.033.
 
 **The lens file was lost.** The pod packed its results at 4:02 AM PST (sha256 `e32ec095…`, 993 MB). My first download failed its
-checksum, and before the retry the pod's idle watchdog stopped it (20 minutes without GPU work). The pod had no network volume,
+checksum, and before the retry the pod's idle watchdog stopped it (20 minutes without GPU work). That was a setup error of
+the run's (mine): the watchdog's 20-minute idle limit was shorter than the chain's 90-minute wait for its download, and my local
+watcher had died in a container restart. The pod had no network volume,
 and a stop clears the container disk, so on restart `/workspace` was empty; the pod was then terminated. What remains are the
 lines the watcher copied from the run's log, in `docs/qwen9b_lens_n500_watch.txt`: the numbers above. Nothing was uploaded to
 Hugging Face. Using this lens needs the fit run again (about 7 hours on an RTX PRO 6000, about $15). The next such run should
