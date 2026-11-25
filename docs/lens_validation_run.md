@@ -5,15 +5,18 @@ any of them ran. **Do not edit a check, a threshold or a script to make a step p
 
 1. **Reproduce.** Our fitting code refits Neuronpedia's Qwen3.5-2B lens with as many prompts (283). The two must agree: cosine
    ≥ 0.99 at every layer the experiments read.
-2. **Stable.** A lens's two halves (prompts 0–499 and 500–999) agree by the same measure.
+2. **Stable.** A lens's two halves (prompts 0–249 and 250–499) agree by the same measure.
 3. **Reads concepts beyond the logit lens.** On the J-lens paper's concept prompts, the lens's margin over its own model's
-   logit lens is at least the smallest margin among Neuronpedia's Qwen3.5 2B, 4B and 27B J-lenses. The check counts only if
-   that smallest margin is above 0, so a lens with no Jacobian (margin 0) fails it. If any Neuronpedia lens is at or below its
-   logit lens, check 3 is void and no fitted lens is used.
+   logit lens, against the smallest margin among Neuronpedia's Qwen3.5 2B, 4B and 27B J-lenses.
 
-A lens is used only if check 1 passed and it passes checks 2 and 3 (`scripts/validate_lens.py`).
+**Changed on 25 Nov, after check 3 came out void, with the project owner's explicit approval** (`config.LENS_CHECKS`). Check 3
+is now a caveat: it is reported and decides nothing, because the video's Qwen lenses fail it too. A lens is used if check 1
+passed and it passes check 2. The deciding lens has 500 prompts, not 1,000, as Neuronpedia's fits stopped at 233–861 prompts.
 
-## 1. NOW: check 1 and check 3's calibration (one H200, about 1 hour, about $4)
+## 1. Done (25 Nov): check 1 and check 3's calibration
+
+Check 1 passed: cosine ≥ 0.992 at every read layer. Check 3 came out void: the margins were 2B +0.102, 4B −0.033 and 27B
+−0.025. Kept for the record:
 
 In the worktree at PR #12's head (`claude/omni-lenses`):
 
@@ -34,24 +37,27 @@ Report:
 If check 1 fails, nothing more is fitted. The difference then has to be understood first. Neuronpedia fitted with a later jlens
 commit (`4430656`, ours is `581d398`), transformers 5.17, and its own prompt order, so report those beside the numbers.
 
-## 2. Later, with a separate go-ahead: the 1,000-prompt lenses (one H200, about 9.4 hours, about $50)
+## 2. NOW: the 500-prompt lenses (about 3 hours on one H200, about $17)
 
-Only if check 1 passed. Run it in the worktree that holds `runs/fit_lens`, the three 250-prompt fits:
+Run it in the worktree that holds `runs/fit_lens` (the three 250-prompt fits) and `runs/lens_repro` (step 1):
 
 ```bash
-EXTEND_TO=1000 PUSH_TO=debanshd/jspace-omni-lenses scripts/fit_lenses.sh 2>&1 | tee runs/fit_extend.log
+EXTEND_TO=500 PUSH_TO=debanshd/jspace-omni-lenses scripts/fit_lenses.sh 2>&1 | tee runs/fit_extend500.log
 ```
 
 Per model it does the following:
 
-1. Fits prompts 250–499 and 500–999 separately.
-2. Merges the three parts into the 1,000-prompt lens. The lens is uploaded under `<model>/n1000/`.
-3. Compares the halves (check 2).
-4. Scores the concept readout (check 3).
+1. Fits prompts 250–499 (`runs/fit_lens_ext500`).
+2. Merges them with the 250-prompt fit into the 500-prompt lens (`runs/fit_lens_n500`). The lens is uploaded under
+   `<model>/n500/`.
+3. Compares the two halves (check 2, `runs/lens_halves`).
+4. Scores the concept readout (check 3, a caveat, `runs/lens_readout`).
 5. Writes the verdict to `runs/lens_validation/<model>/summary.json`.
 
 Report:
 
 - each verdict file whole;
 - the Hugging Face repo's new commit;
-- each `runs/fit_lens_n1000/<model>/meta.json`: `n_prompts` and `lens_sha256`.
+- each `runs/fit_lens_n500/<model>/meta.json`: `n_prompts` and `lens_sha256`.
+
+Then stop the pod.
