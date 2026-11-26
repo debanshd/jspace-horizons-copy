@@ -35,13 +35,14 @@ PRUNE_FLAG=()
 if [ "${PRUNE:-1}" = 1 ]; then PRUNE_FLAG=(--prune); fi
 
 if [ "${FIT:-0}" = 1 ]; then
-  # FIT=1: fit an R-lens and a J++ lens for Qwen2.5-Omni-7B's thinker (FIT_PROMPTS, default 64, the post's and Neuronpedia's count), then
+  # FIT=1: fit an R-lens and a J++ lens for Qwen2.5-Omni-7B's thinker on the J-lenses' footing: blocks of 25 prompts until
+  # Neuronpedia's convergence rule stops it, at most 1000 (fit_lenses.py --converge). FIT_PROMPTS=64 fits a fixed count instead
+  # (the post's and Neuronpedia's count for these lens types, which the first Omni-7B run on Hugging Face used). Then
   # score them beside the J-lenses, every lens of the model on the held-out split. Outputs in $WORK/fits and $WORK/out_fits.
   KEYS=("$@")
   if [ ${#KEYS[@]} -eq 0 ]; then KEYS=(qwen2.5-omni-7b); fi
-  # CONVERGE=1 instead fits blocks of 25 prompts until Neuronpedia's convergence rule stops it, at most 1000 (fit_lenses.py --converge).
-  FIT_ARGS=(--num-prompts "${FIT_PROMPTS:-64}")
-  if [ "${CONVERGE:-0}" = 1 ]; then FIT_ARGS=(--converge); fi
+  FIT_ARGS=(--converge)
+  if [ -n "${FIT_PROMPTS:-}" ]; then FIT_ARGS=(--num-prompts "$FIT_PROMPTS"); fi
   uv run python "$HERE/fit_lenses.py" --fits "$WORK/fits" "${FIT_ARGS[@]}" "${KEYS[@]}" 2>&1 | tee -a "$WORK/fit_lenses.log"
   uv run python "$HERE/run_all.py" --out "$WORK/out_fits" --fits "$WORK/fits" "${PRUNE_FLAG[@]}" "${KEYS[@]}" 2>&1 | tee -a "$WORK/run_all.log"
   # The tables, logs and expert weights; the lens files (1.4 GB each) stay in $WORK/fits.
