@@ -1,0 +1,7 @@
+{
+  "grade_correctness": 67.7,
+  "fit_router": 207.6,
+  "fit_shard_olmo7b50pct_experts_n64": 1810.7,
+  "merge_olmo7b50pct_experts_n64": 23.6,
+  "fit_weights_olmo7b50pct_experts_n64": 127.2
+}
