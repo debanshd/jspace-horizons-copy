@@ -146,28 +146,47 @@ def main() -> None:
     if got != SOURCE_SHA256:
         raise SystemExit(f"{args.lens} has sha256 {got}, the rule pins {SOURCE_SHA256}")
     source = torch.load(args.lens, map_location="cpu", weights_only=True)
-    # float32 as stored; each layer is lifted to float64 only while it is edited, so the three edited lenses fit in memory
+    # float32 as stored; each layer is lifted to float64 only while it is edited
     J100 = source["parameters"]["jacobians"]
     w100, w50 = Weights(args.m100), Weights(args.m50)
 
-    A, diag_out = output_map(w100, w50)
-    print("output map", json.dumps(diag_out), flush=True)
-    diagnostics = {"output": diag_out, "input": {}}
-
-    variants = {f"wspV{v}_jpp_n64": {} for v in range(4)}
+    # Each layer's edited matrices go to disk as they are made, and a lens file is assembled from them one variant at a time:
+    # four lenses held in memory at once (8 GB) next to the working float64 matrices overran a 15 GB machine. A layer whose
+    # shards exist is not recomputed, so a stopped run resumes.
+    shards = args.out / "shards"
+    shards.mkdir(exist_ok=True)
+    names = [f"wspV{v}_jpp_n64" for v in range(4)]
+    A = None
+    diagnostics = {"input": {}, "lens_change_rel": {n: {} for n in names}}
     for L in source["source_layers"]:
+        shard = shards / f"layer{L}.pt"
+        if shard.exists():
+            print(f"layer {L}: done before", flush=True)
+            continue
+        if A is None:
+            A, diag_out = output_map(w100, w50)
+            print("output map", json.dumps(diag_out), flush=True)
+            (shards / "output.json").write_text(json.dumps(diag_out))
         B, d_in = input_map(w100, w50, L + 1)  # the residual after block L is read by block L + 1
-        diagnostics["input"][L] = d_in
         print(f"layer {L}", json.dumps(d_in), flush=True)
         J = J100[L].double()
         edited = {"wspV0_jpp_n64": J, "wspV1_jpp_n64": A @ J @ B, "wspV2_jpp_n64": A @ J, "wspV3_jpp_n64": J @ B}
-        for name, Jv in edited.items():
-            diagnostics.setdefault("lens_change_rel", {}).setdefault(name, {})[L] = float((Jv - J).norm() / J.norm())
-            variants[name][L] = Jv.float()
+        change = {n: float((Jv - J).norm() / J.norm()) for n, Jv in edited.items()}
+        torch.save({"J": {n: Jv.float() for n, Jv in edited.items()}, "input": d_in, "change": change}, shard)
+        del edited, B, J
 
+    diagnostics["output"] = json.loads((shards / "output.json").read_text())
     hashes = {}
-    for name, jac in variants.items():
+    for name in names:
+        jac = {}
+        for L in source["source_layers"]:
+            s = torch.load(shards / f"layer{L}.pt", map_location="cpu", weights_only=True)
+            jac[L] = s["J"][name]
+            diagnostics["input"][L] = s["input"]
+            diagnostics["lens_change_rel"][name][L] = s["change"][name]
+            del s
         path = save_lens(source, jac, name, args.out)
+        del jac
         hashes[name] = sha256(path)
         print(name, hashes[name], flush=True)
     (args.out / "diagnostics.json").write_text(json.dumps(diagnostics, indent=1))
