@@ -1,0 +1,10 @@
+{
+ "wspV0_jpp_n64.pt": ["wsp/wspV0_jpp_n64.pt", "2ee74a2d2c7081d035f2ac2ffd7937dfdf5ba635"],
+ "wspV1_jpp_n64.pt": ["wsp/wspV1_jpp_n64.pt", "2ee74a2d2c7081d035f2ac2ffd7937dfdf5ba635"],
+ "wspV2_jpp_n64.pt": ["wsp/wspV2_jpp_n64.pt", "2ee74a2d2c7081d035f2ac2ffd7937dfdf5ba635"],
+ "wspV3_jpp_n64.pt": ["wsp/wspV3_jpp_n64.pt", "2ee74a2d2c7081d035f2ac2ffd7937dfdf5ba635"],
+ "wspP1_jpp_n64.pt": ["wsp/wspP1_jpp_n64.pt", "20e51251547b696fdf5a269d1b67d7bc42de6e59"],
+ "wspP2_jpp_n64.pt": ["wsp/wspP2_jpp_n64.pt", "20e51251547b696fdf5a269d1b67d7bc42de6e59"],
+ "wspP3_jpp_n64.pt": ["wsp/wspP3_jpp_n64.pt", "20e51251547b696fdf5a269d1b67d7bc42de6e59"],
+ "olmo7b50pct_jpp_n64.pt": ["olmo-3-7b_n64/olmo7b50pct_jpp_n64.pt", "main"]
+}
