@@ -82,6 +82,30 @@ The harness's LRP surgery picks its rules by class name. `run_cli.register_omni_
 `Qwen2_5OmniRMSNorm`, whose forward is the same as `Qwen2RMSNorm`'s, and skips the thinker's `visual` tower. Qwen3-Omni-30B's MoE
 thinker is not registered, so it cannot be fitted here.
 
+## J++ lenses for OLMo 3 7B at 100% and 50% of training
+
+```bash
+FIT=1 jpp_evals/run_pod.sh olmo-3-7b olmo-3-7b-pretrain-end olmo-3-7b-50pct   # each until converged, at most 1000 prompts
+FIT=1 FIT_PROMPTS=64 jpp_evals/run_pod.sh olmo-3-7b olmo-3-7b-pretrain-end olmo-3-7b-50pct   # a fixed 64 each
+```
+
+This fits a J++ lens only, with no R-lens, for two checkpoints of the official `allenai/Olmo-3-1025-7B`:
+- **100%** is the released model (`main`).
+- **50%** is `stage1-step725000`. The model card gives the stages as 5.93T tokens of pretraining, 100B of mid-training and 50B of
+  long context, so half of the 6.08T falls in pretraining near step 724,788. That count assumes the batch size stayed constant
+  through pretraining, at about 4.19M tokens a step.
+
+A third checkpoint, the end of pretraining (`stage1-step1413814`), makes the comparison by training amount clean. The released
+model adds mid-training, the long-context stage and YaRN rope scaling (factor 8, from 8192 positions), which neither pretraining
+checkpoint has. So 50% against end-of-pretraining isolates pretraining tokens (3.04T vs 5.93T), and end-of-pretraining against
+100% shows what the later stages change.
+
+Each checkpoint gets its own correctness grading, since the two answer differently, and is scored on its held-out split. The 100%
+model also gets Neuronpedia's J-lens as a baseline, which converged at 568 prompts. No lens is published for the 50% checkpoint, so
+its J++ lens is compared with the logit lens only. The harness's LRP rules cover OLMo 3 natively: the post fitted Olmo 3 32B. Fitted until converged, like Neuronpedia's J-lens
+(568 prompts), each J++ lens takes roughly 3 to 6 hours of Jacobian sums on one H200. That estimate comes from the Omni-7B fit's
+22 s per prompt, a model of similar size, and is not measured on OLMo.
+
 ## How to read it
 
 - **Qwen3.6-27B is the check of the setup.** It is scored on the post's held-out split, with the post's own correctness column.

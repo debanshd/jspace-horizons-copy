@@ -121,6 +121,45 @@ MODELS: tuple[Model, ...] = (
             Lens("np_qwen3.5-4b_jpp", NEURONPEDIA, "qwen3.5-4b/jpp/Salesforce-wikitext/Qwen3.5-4B_jpp_lens.pt", "cf0168a259a095e188b7ba17cdafceb8c92c04893a1469922a6d2a9093c1d7d7"),
         ),
     ),
+    # OLMo 3 7B at 100% and 50% of its training, for J++ lenses (fit_lenses.py). The base model was trained in three stages: 5.93T
+    # tokens of pretraining (stage1-step0 to step1413814), 100B of mid-training, 50B of long context (the model card), 6.08T in all.
+    # 100% is the released model (main); 50%, 3.04T tokens, falls in pretraining at step 3.04 / 5.93 * 1413814 = 724788, and the
+    # nearest checkpoint is stage1-step725000 (checkpoints are every 1000 steps; 4.19M tokens a step on average).
+    Model(
+        key="olmo-3-7b",
+        hf_name="allenai/Olmo-3-1025-7B",
+        revision="a81bae42db3975be1671e27b9c9a56da1a9f980f",  # main
+        n_layers=32,
+        lenses=(
+            # Neuronpedia's J-lens of the released model (fit_lens.py, stopped converged at 568 of 1000 prompts)
+            Lens(
+                "np_olmo-3-7b_jlens",
+                NEURONPEDIA,
+                "olmo-3-1025-7b/jlens/Salesforce-wikitext/Olmo-3-1025-7B_jacobian_lens.pt",
+                "0683d9725bc9c09881c56784ee1371956ad5793b41731ea1213f025757073183",
+            ),
+        ),
+        default=False,
+    ),
+    # The end of pretraining: the same stage as the 50% checkpoint, so the two differ only in pretraining tokens (5.93T vs 3.04T).
+    # The released model adds mid-training, the long-context stage and YaRN rope scaling (factor 8, from an original 8192
+    # positions) that neither pretraining checkpoint has, so 50% against 100% mixes training amount with those.
+    Model(
+        key="olmo-3-7b-pretrain-end",
+        hf_name="allenai/Olmo-3-1025-7B",
+        revision="373bad25002f1624757a73235c5ca844c6375c25",  # stage1-step1413814, the last pretraining step
+        n_layers=32,
+        lenses=(),  # no published lens for an intermediate checkpoint
+        default=False,
+    ),
+    Model(
+        key="olmo-3-7b-50pct",
+        hf_name="allenai/Olmo-3-1025-7B",
+        revision="6bfdeb0b7d9e0cf0e076529031b7576d0dab67c3",  # stage1-step725000
+        n_layers=32,
+        lenses=(),  # no published lens for an intermediate checkpoint: its J++ lens is scored against the logit lens only
+        default=False,
+    ),
     Model(
         key="qwen3.6-27b",
         hf_name="Qwen/Qwen3.6-27B",
@@ -149,10 +188,12 @@ def model_by_key(key: str) -> Model:
 
 
 def model_by_hf_name(hf_name: str) -> Model:
-    for m in MODELS:
-        if m.hf_name == hf_name:
-            return m
-    raise KeyError(f"no model {hf_name!r} in the manifest: every model is loaded at a pinned revision, so add it there first")
+    found = [m for m in MODELS if m.hf_name == hf_name]
+    if not found:
+        raise KeyError(f"no model {hf_name!r} in the manifest: every model is loaded at a pinned revision, so add it there first")
+    if len(found) > 1:  # two checkpoints of one repo: only the key says which revision to load
+        raise KeyError(f"{hf_name!r} has several entries in the manifest ({[m.key for m in found]}): pass --model-key")
+    return found[0]
 
 
 if __name__ == "__main__":
