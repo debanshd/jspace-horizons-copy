@@ -16,7 +16,6 @@ import base64
 import json
 import os
 import secrets
-import subprocess
 import sys
 import time
 from pathlib import Path
@@ -70,7 +69,11 @@ class Jupyter:
         ws = websocket.create_connection(
             f"wss://{self.base.removeprefix('https://')}/terminals/websocket/{name}",
             header=[f"Authorization: {self.h['Authorization']}"],
-            http_proxy_host=PROXY[0], http_proxy_port=PROXY[1], proxy_type="http", sslopt={"ca_certs": CA}, timeout=60,
+            http_proxy_host=PROXY[0],
+            http_proxy_port=PROXY[1],
+            proxy_type="http",
+            sslopt={"ca_certs": CA},
+            timeout=60,
         )
         ws.send(json.dumps(["stdin", command + "\r"]))
         time.sleep(3)
@@ -102,8 +105,15 @@ def main() -> None:
     if args.cmd == "create":
         token = secrets.token_urlsafe(24)
         inp = {
-            "cloudType": "SECURE", "gpuCount": 1, "volumeInGb": 100, "containerDiskInGb": 50, "gpuTypeId": args.gpu,
-            "name": "jspace-olmo-wsp2", "imageName": IMAGE, "ports": "8888/http", "volumeMountPath": "/workspace",
+            "cloudType": "SECURE",
+            "gpuCount": 1,
+            "volumeInGb": 100,
+            "containerDiskInGb": 50,
+            "gpuTypeId": args.gpu,
+            "name": "jspace-olmo-wsp2",
+            "imageName": IMAGE,
+            "ports": "8888/http",
+            "volumeMountPath": "/workspace",
             "env": [{"key": "JUPYTER_PASSWORD", "value": token}],
         }
         q = "mutation($i: PodFindAndDeployOnDemandInput) { podFindAndDeployOnDemand(input: $i) { id costPerHr machine { gpuDisplayName } } }"
@@ -137,12 +147,12 @@ def main() -> None:
         print("started")
     elif args.cmd == "status":
         log = jp.read(f"{WORK}/run.log") or b"(no log yet)"
-        gpu = gql('query($p: String!) { pod(input: {podId: $p}) { runtime { uptimeInSeconds gpus { gpuUtilPercent memoryUtilPercent } } } }',
-                  {"p": state["pod"]})
+        gpu = gql("query($p: String!) { pod(input: {podId: $p}) { runtime { uptimeInSeconds gpus { gpuUtilPercent memoryUtilPercent } } } }", {"p": state["pod"]})
         done = "DONE" if jp.read(f"{WORK}/DONE") is not None else "FAILED" if jp.read(f"{WORK}/FAILED") is not None else "running"
         print("\n".join(log.decode(errors="replace").splitlines()[-15:]))
         print(json.dumps(gpu["pod"]["runtime"]), done)
     elif args.cmd == "fetch":
+
         def pull(remote: str, local: Path) -> None:
             for item in jp.ls(remote):
                 if item["type"] == "directory":
@@ -150,6 +160,7 @@ def main() -> None:
                 elif not item["name"].endswith(".pt"):
                     local.mkdir(parents=True, exist_ok=True)
                     (local / item["name"]).write_bytes(jp.read(item["path"]))
+
         pull(f"{WORK}/out", args.dest)
         (args.dest / "run.log").write_bytes(jp.read(f"{WORK}/run.log") or b"")
         print("fetched to", args.dest)

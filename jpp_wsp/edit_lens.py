@@ -84,9 +84,7 @@ def input_map(w100: Weights, w50: Weights, block: int) -> tuple[torch.Tensor, di
 def output_map(w100: Weights, w50: Weights) -> tuple[torch.Tensor, dict]:
     """A_L with M50 A_L ~= M100, M = lm_head diag(g), accumulated over row chunks of the head"""
     g100, g50 = w100.get("model.norm.weight"), w50.get("model.norm.weight")
-    with safe_open(w100.root / w100.where["lm_head.weight"], framework="pt") as f100, safe_open(
-        w50.root / w50.where["lm_head.weight"], framework="pt"
-    ) as f50:
+    with safe_open(w100.root / w100.where["lm_head.weight"], framework="pt") as f100, safe_open(w50.root / w50.where["lm_head.weight"], framework="pt") as f50:
         u100, u50 = f100.get_slice("lm_head.weight"), f50.get_slice("lm_head.weight")
         vocab = u100.get_shape()[0]
         assert u50.get_shape()[0] == vocab
