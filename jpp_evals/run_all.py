@@ -119,20 +119,26 @@ def run_model(m: Model, out_dir: Path, prune: bool, fits_dir: Path | None = None
     fitted = fitted_lenses(fits_dir, m.key)
     lens_paths += [str(f) for f in fitted]
     items_spec = m.items
-    if any("_jpp_" in f.name for f in fitted):
-        # The J++ expert weights were fitted on the "fit:0" split, so every lens of this model is scored on the rest. The fit's own
-        # grading is reused: the split is drawn from the items the correctness column keeps, so it must be the same column.
+    reuse_fit_grading = any("_jpp_" in f.name for f in fitted)
+    if reuse_fit_grading:
+        # The J++ expert weights were fitted on the "fit:0" split, so every lens of this model is scored on the rest. The split is
+        # drawn from the items the correctness column keeps, so the scoring must read the very file fit-weights read: no grading
+        # here (a regrade, even of the same model, could tip a borderline item and move the split).
         items_spec = "held-out:0"
-        graded = model_dir / "correctness.csv"
-        if not graded.exists():
-            shutil.copyfile(fits_dir / m.key / "correctness.csv", graded)
     if fitted:
         print(f"  with the fitted lenses {[f.stem for f in fitted]}, scored on {items_spec}", flush=True)
 
     common = ["--model-key", m.key, "--hf-model-name", m.hf_name]
     layers = ["--layers", ",".join(map(str, m.layers))]
-    step("grade_correctness", model_dir / "correctness.csv", ["grade-correctness", *common, "--out", str(model_dir / "correctness.csv")], model_dir, timings)
-    correctness = str(merged_correctness(out_dir, m))
+    if reuse_fit_grading:
+        fit_correctness = fits_dir / m.key / "model_correctness.csv"
+        if not fit_correctness.exists():
+            raise SystemExit(f"{fit_correctness} is missing: the J++ lens's fit wrote it, and its split depends on it")
+        shutil.copyfile(fits_dir / m.key / "correctness.csv", model_dir / "correctness.csv")  # kept beside the scores, for reading
+        correctness = str(fit_correctness)
+    else:
+        step("grade_correctness", model_dir / "correctness.csv", ["grade-correctness", *common, "--out", str(model_dir / "correctness.csv")], model_dir, timings)
+        correctness = str(merged_correctness(out_dir, m))
     lenses = ["--lens", *lens_paths, "logit"]
     items = ["--items", items_spec, "--correctness-csv", correctness]
     for mode, extra in (("filtered", []), ("full", ["--no-readout-filter"])):
@@ -144,11 +150,13 @@ def run_model(m: Model, out_dir: Path, prune: bool, fits_dir: Path | None = None
     if prune:  # the 30B and 27B checkpoints alone fill most of a 200 GB volume
         from huggingface_hub import scan_cache_dir
 
+        # This model's revision only: OLMo's checkpoints share one repo, and deleting all its revisions would make the next
+        # checkpoint download again. Files another cached revision shares are kept by the cache.
         cache = scan_cache_dir()
-        hashes = [r.commit_hash for repo in cache.repos if repo.repo_id == m.hf_name for r in repo.revisions]
+        hashes = [r.commit_hash for repo in cache.repos if repo.repo_id == m.hf_name for r in repo.revisions if r.commit_hash == m.revision]
         if hashes:
             strategy = cache.delete_revisions(*hashes)
-            print(f"  pruned {m.hf_name} from the cache ({strategy.expected_freed_size_str})")
+            print(f"  pruned {m.hf_name}@{m.revision[:7]} from the cache ({strategy.expected_freed_size_str})")
             strategy.execute()
 
 

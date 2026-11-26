@@ -84,7 +84,7 @@ thinker is not registered, so it cannot be fitted here.
 ## J++ lenses for OLMo 3 7B at 100% and 50% of training
 
 ```bash
-FIT=1 jpp_evals/run_pod.sh olmo-3-7b olmo-3-7b-50pct      # 64 prompts each; CONVERGE=1 for the convergence rule
+FIT=1 jpp_evals/run_pod.sh olmo-3-7b olmo-3-7b-pretrain-end olmo-3-7b-50pct   # 64 prompts each; CONVERGE=1 for the convergence rule
 ```
 
 This fits a J++ lens only, with no R-lens, for two checkpoints of the official `allenai/Olmo-3-1025-7B`:
@@ -92,6 +92,11 @@ This fits a J++ lens only, with no R-lens, for two checkpoints of the official `
 - **50%** is `stage1-step725000`. The model card gives the stages as 5.93T tokens of pretraining, 100B of mid-training and 50B of
   long context, so half of the 6.08T falls in pretraining near step 724,788. That count assumes the batch size stayed constant
   through pretraining, at about 4.19M tokens a step.
+
+A third checkpoint, the end of pretraining (`stage1-step1413814`), makes the comparison by training amount clean. The released
+model adds mid-training, the long-context stage and YaRN rope scaling (factor 8, from 8192 positions), which neither pretraining
+checkpoint has. So 50% against end-of-pretraining isolates pretraining tokens (3.04T vs 5.93T), and end-of-pretraining against
+100% shows what the later stages change.
 
 Each checkpoint gets its own correctness grading, since the two answer differently, and is scored on its held-out split. The 100%
 model also gets Neuronpedia's J-lens as a baseline, which converged at 568 prompts. No lens is published for the 50% checkpoint, so

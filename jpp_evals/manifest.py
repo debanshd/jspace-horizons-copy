@@ -141,6 +141,17 @@ MODELS: tuple[Model, ...] = (
         ),
         default=False,
     ),
+    # The end of pretraining: the same stage as the 50% checkpoint, so the two differ only in pretraining tokens (5.93T vs 3.04T).
+    # The released model adds mid-training, the long-context stage and YaRN rope scaling (factor 8, from an original 8192
+    # positions) that neither pretraining checkpoint has, so 50% against 100% mixes training amount with those.
+    Model(
+        key="olmo-3-7b-pretrain-end",
+        hf_name="allenai/Olmo-3-1025-7B",
+        revision="373bad25002f1624757a73235c5ca844c6375c25",  # stage1-step1413814, the last pretraining step
+        n_layers=32,
+        lenses=(),  # no published lens for an intermediate checkpoint
+        default=False,
+    ),
     Model(
         key="olmo-3-7b-50pct",
         hf_name="allenai/Olmo-3-1025-7B",

@@ -56,6 +56,7 @@ from run_all import merged_correctness, record_environment, step  # noqa: E402
 FITTABLE = {
     "qwen2.5-omni-7b": ("omni7b", True),
     "olmo-3-7b": ("olmo7b", False),
+    "olmo-3-7b-pretrain-end": ("olmo7bs1end", False),
     "olmo-3-7b-50pct": ("olmo7b50pct", False),
 }
 PREFIX = {key: prefix for key, (prefix, _) in FITTABLE.items()}

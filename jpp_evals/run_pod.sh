@@ -4,7 +4,7 @@
 #   jpp_evals/run_pod.sh                      # the default models (manifest.py keys)
 #   jpp_evals/run_pod.sh qwen2.5-omni-3b      # some of them, by key (manifest.py all-keys lists them)
 #   FIT=1 jpp_evals/run_pod.sh                       # R-lens and J++ for Qwen2.5-Omni-7B
-#   FIT=1 jpp_evals/run_pod.sh olmo-3-7b olmo-3-7b-50pct   # J++ only, OLMo 3 7B at 100% and 50% of training
+#   FIT=1 jpp_evals/run_pod.sh olmo-3-7b olmo-3-7b-pretrain-end olmo-3-7b-50pct   # J++ only: OLMo 3 7B released, end of pretraining, 50%
 #
 # Run from this repository's root. WORK (default /workspace/jpp) holds the checkout, the Hugging Face cache and the outputs;
 # PRUNE=0 keeps every model in the cache (by default each is deleted once its evals are done, to fit a 200 GB volume).
