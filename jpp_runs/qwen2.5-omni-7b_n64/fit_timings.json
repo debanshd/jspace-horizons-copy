@@ -1,0 +1,7 @@
+{
+  "grade_correctness": 56.6,
+  "fit_router": 332.2,
+  "fit_shard": 1395.9,
+  "merge_omni7b_experts_n64": 20.8,
+  "fit_weights_omni7b_experts_n64": 99.5
+}
