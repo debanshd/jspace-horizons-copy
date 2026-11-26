@@ -1,0 +1,17 @@
+{
+  "jpp_lens_commit": "d7efc0de372e20589e899188c0cfe8434acc63ec",
+  "gpu": [
+    "NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB"
+  ],
+  "torch": "2.11.0+cu128",
+  "transformers": "5.14.1",
+  "python": "3.12.3",
+  "argv": [
+    "/workspace/olmoconv/jpp_evals/run_all.py",
+    "--out",
+    "/workspace/olmoconv/work/out_fits",
+    "--fits",
+    "/workspace/olmoconv/work/fits",
+    "olmo-3-7b-50pct"
+  ]
+}
