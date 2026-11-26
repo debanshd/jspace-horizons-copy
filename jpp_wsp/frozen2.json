@@ -1,0 +1,8 @@
+{
+ "note": "experiment 2 (RULE2.md), frozen before any eval score of either experiment was seen",
+ "sha256": {
+  "wspP1_jpp_n64.pt": "efc8b4eceaee26cf4a282f0aff97ee68f33735cd50529d7a254c273551018e29",
+  "wspP2_jpp_n64.pt": "38b68a2ef64c155dd518257229e647a7f7698a8aa23e0428421e79b6944993ba",
+  "wspP3_jpp_n64.pt": "4df56d987d8f486f86435ec8b9db240b8012f52c6e129cd1a0f5969436c726f8"
+ }
+}
