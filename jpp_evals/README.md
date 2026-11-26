@@ -53,8 +53,8 @@ summary.
 ## Fitting an R-lens and a J++ lens for Qwen2.5-Omni-7B
 
 ```bash
-FIT=1 jpp_evals/run_pod.sh                     # Omni-7B, 64 prompts
-CONVERGE=1 FIT=1 jpp_evals/run_pod.sh          # Omni-7B, until converged
+FIT=1 jpp_evals/run_pod.sh                     # Omni-7B, until converged (at most 1000 prompts), like the J-lenses
+FIT=1 FIT_PROMPTS=64 jpp_evals/run_pod.sh      # Omni-7B, a fixed 64 prompts (the post's count)
 ```
 
 `fit_lenses.py` runs the post's recipe in the post's harness, one stage at a time:
@@ -66,7 +66,8 @@ CONVERGE=1 FIT=1 jpp_evals/run_pod.sh          # Omni-7B, until converged
    (Neuronpedia's Qwen3.5-4B pair used 32 router prompts and eager attention, so it does not share this router setup.)
 4. Expert weights fitted on the post's `fit:0` split of the readout items. The weighted experts are the J++ lens.
 
-`CONVERGE=1 FIT=1 jpp_evals/run_pod.sh` fits until the lens converges instead of on a fixed 64 prompts, using Neuronpedia's J-lens
+By default `FIT=1` fits until the lens converges, so the R-lens and J++ lens get the same prompt budget as the J-lenses they are
+compared with, rather than a fixed 64 prompts. It uses Neuronpedia's J-lens
 rule: at most 1000 prompts and at least 100, stopping once the change per prompt, averaged over the last 10 prompts, falls below
 0.002. The harness fits in shards, so the prompts go in blocks of 25, one shard each. After each block the pooled Jacobian is
 rebuilt, and its relative change divided by √25 stands in for Neuronpedia's change per prompt, since the running mean takes 25
