@@ -1,0 +1,17 @@
+{
+  "jpp_lens_commit": "d7efc0de372e20589e899188c0cfe8434acc63ec",
+  "gpu": [
+    "NVIDIA H200, 143771 MiB"
+  ],
+  "torch": "2.11.0+cu128",
+  "transformers": "5.14.1",
+  "python": "3.12.3",
+  "argv": [
+    "/workspace/wsp/code/jpp_evals/run_all.py",
+    "--out",
+    "/workspace/wsp/out",
+    "--fits",
+    "/workspace/wsp/fits",
+    "olmo-3-7b-50pct"
+  ]
+}

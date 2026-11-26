@@ -1,0 +1,116 @@
+{
+ "filtered_macro_r@1": {
+  "logit": 8.89,
+  "olmo7b50pct_jpp_n64": 21.22,
+  "wspP1_jpp_n64": 24.43,
+  "wspP2_jpp_n64": 21.48,
+  "wspP3_jpp_n64": 17.3,
+  "wspV0_jpp_n64": 17.18,
+  "wspV1_jpp_n64": 26.62,
+  "wspV2_jpp_n64": 22.51,
+  "wspV3_jpp_n64": 17.43
+ },
+ "filtered_macro_r@10": {
+  "logit": 28.12,
+  "olmo7b50pct_jpp_n64": 39.53,
+  "wspP1_jpp_n64": 40.8,
+  "wspP2_jpp_n64": 42.26,
+  "wspP3_jpp_n64": 34.72,
+  "wspV0_jpp_n64": 36.13,
+  "wspV1_jpp_n64": 46.21,
+  "wspV2_jpp_n64": 49.05,
+  "wspV3_jpp_n64": 35.48
+ },
+ "full_macro_r@1": {
+  "logit": 8.63,
+  "olmo7b50pct_jpp_n64": 18.89,
+  "wspP1_jpp_n64": 22.87,
+  "wspP2_jpp_n64": 18.63,
+  "wspP3_jpp_n64": 16.78,
+  "wspV0_jpp_n64": 16.4,
+  "wspV1_jpp_n64": 23.12,
+  "wspV2_jpp_n64": 19.4,
+  "wspV3_jpp_n64": 16.91
+ },
+ "full_macro_r@10": {
+  "logit": 28.12,
+  "olmo7b50pct_jpp_n64": 38.89,
+  "wspP1_jpp_n64": 39.76,
+  "wspP2_jpp_n64": 40.58,
+  "wspP3_jpp_n64": 34.2,
+  "wspV0_jpp_n64": 34.71,
+  "wspV1_jpp_n64": 43.45,
+  "wspV2_jpp_n64": 46.98,
+  "wspV3_jpp_n64": 34.7
+ },
+ "n_items": {
+  "multihop": 12,
+  "multilingual": 13,
+  "typo": 77,
+  "association": 77,
+  "poetry": 19
+ },
+ "primary": "wspP1_jpp_n64",
+ "diff_primary_minus_V0": [
+  4.665334665334662,
+  0.6642524142524134,
+  9.298035298035298
+ ],
+ "diff_primary_minus_target": [
+  1.2617207354049427,
+  -3.572830678093837,
+  6.423109784951872
+ ],
+ "diff_primary_minus_wspV1_jpp_n64": [
+  -5.418265944581734,
+  -11.491052806842283,
+  0.5177563664405727
+ ],
+ "diff_primary_minus_wspP2_jpp_n64": [
+  -1.467567520199104,
+  -5.975577054524427,
+  3.437877911562115
+ ],
+ "diff_primary_minus_wspP3_jpp_n64": [
+  6.072261072261071,
+  1.0367549117549122,
+  11.713369963369969
+ ],
+ "diff_V0_minus_target": [
+  -3.403613929929719,
+  -7.283151059466853,
+  0.3615551115551127
+ ],
+ "verdict_1": "the edit helps",
+ "verdict_2": "matches the fitted lens",
+ "verdict_3": "the 100% lens does not transfer",
+ "unseen_by_100pct_n_items": {
+  "multihop": 10,
+  "multilingual": 9,
+  "typo": 64,
+  "association": 77,
+  "poetry": 18
+ },
+ "unseen_by_100pct_filtered_macro_r@10": {
+  "logit": 27.76,
+  "olmo7b50pct_jpp_n64": 39.24,
+  "wspP1_jpp_n64": 39.69,
+  "wspP2_jpp_n64": 41.84,
+  "wspP3_jpp_n64": 34.36,
+  "wspV0_jpp_n64": 35.49,
+  "wspV1_jpp_n64": 43.86,
+  "wspV2_jpp_n64": 49.49,
+  "wspV3_jpp_n64": 34.74
+ },
+ "filtered_macro_r@10_primary_table": {
+  "logit": 28.12,
+  "olmo7b50pct_jpp_n64": 39.53,
+  "wspP1_jpp_n64": 40.8,
+  "wspP2_jpp_n64": 42.26,
+  "wspP3_jpp_n64": 34.72,
+  "wspV0_jpp_n64": 36.13,
+  "wspV1_jpp_n64": 46.21,
+  "wspV2_jpp_n64": 49.05,
+  "wspV3_jpp_n64": 35.48
+ }
+}

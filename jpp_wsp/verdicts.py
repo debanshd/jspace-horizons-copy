@@ -50,7 +50,11 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--out", type=Path, required=True, help="the pod's output folder of the 50% model")
     ap.add_argument("--stamp100", type=Path, required=True, help="the 100% J++ fit's stamp, for the items its weights saw")
+    ap.add_argument("--primary", default=PRIMARY, help="the primary lens: wspV1_jpp_n64 (RULE.md) or wspP1_jpp_n64 (RULE2.md)")
+    ap.add_argument("--name", default="verdicts.json", help="the output file, beside --out")
+    ap.add_argument("--also", nargs="*", default=[], help="lenses to compare with the primary, reported without a verdict")
     args = ap.parse_args()
+    primary = args.primary
 
     report = {}
     for mode in ("filtered", "full"):
@@ -69,11 +73,14 @@ def main() -> None:
     hits = item_hits(pd.read_csv(args.out / "readout_filtered.csv"), 10)
     report["n_items"] = {t: int(len(hits.loc[t])) for t in TASKS}
     r10 = macro(hits)
-    d_help = bootstrap_diff(hits, PRIMARY, CONTROL)
-    d_match = bootstrap_diff(hits, PRIMARY, TARGET)
+    d_help = bootstrap_diff(hits, primary, CONTROL)
+    d_match = bootstrap_diff(hits, primary, TARGET)
     d_transfer = bootstrap_diff(hits, CONTROL, TARGET)
-    report["diff_V1_minus_V0"] = d_help
-    report["diff_V1_minus_target"] = d_match
+    report["primary"] = primary
+    report["diff_primary_minus_V0"] = d_help
+    report["diff_primary_minus_target"] = d_match
+    for other in args.also:
+        report[f"diff_primary_minus_{other}"] = bootstrap_diff(hits, primary, other)
     report["diff_V0_minus_target"] = d_transfer
 
     if d_help[0] >= MARGIN and d_help[1] > 0:
@@ -93,7 +100,7 @@ def main() -> None:
     report["unseen_by_100pct_filtered_macro_r@10"] = macro(unseen).round(2).to_dict()
 
     report["filtered_macro_r@10_primary_table"] = r10.round(2).to_dict()
-    (args.out.parent / "verdicts.json").write_text(json.dumps(report, indent=1))
+    (args.out.parent / args.name).write_text(json.dumps(report, indent=1))
     print(json.dumps(report, indent=1))
 
 

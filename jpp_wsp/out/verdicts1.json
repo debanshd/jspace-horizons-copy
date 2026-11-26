@@ -1,0 +1,111 @@
+{
+ "filtered_macro_r@1": {
+  "logit": 8.89,
+  "olmo7b50pct_jpp_n64": 21.22,
+  "wspP1_jpp_n64": 24.43,
+  "wspP2_jpp_n64": 21.48,
+  "wspP3_jpp_n64": 17.3,
+  "wspV0_jpp_n64": 17.18,
+  "wspV1_jpp_n64": 26.62,
+  "wspV2_jpp_n64": 22.51,
+  "wspV3_jpp_n64": 17.43
+ },
+ "filtered_macro_r@10": {
+  "logit": 28.12,
+  "olmo7b50pct_jpp_n64": 39.53,
+  "wspP1_jpp_n64": 40.8,
+  "wspP2_jpp_n64": 42.26,
+  "wspP3_jpp_n64": 34.72,
+  "wspV0_jpp_n64": 36.13,
+  "wspV1_jpp_n64": 46.21,
+  "wspV2_jpp_n64": 49.05,
+  "wspV3_jpp_n64": 35.48
+ },
+ "full_macro_r@1": {
+  "logit": 8.63,
+  "olmo7b50pct_jpp_n64": 18.89,
+  "wspP1_jpp_n64": 22.87,
+  "wspP2_jpp_n64": 18.63,
+  "wspP3_jpp_n64": 16.78,
+  "wspV0_jpp_n64": 16.4,
+  "wspV1_jpp_n64": 23.12,
+  "wspV2_jpp_n64": 19.4,
+  "wspV3_jpp_n64": 16.91
+ },
+ "full_macro_r@10": {
+  "logit": 28.12,
+  "olmo7b50pct_jpp_n64": 38.89,
+  "wspP1_jpp_n64": 39.76,
+  "wspP2_jpp_n64": 40.58,
+  "wspP3_jpp_n64": 34.2,
+  "wspV0_jpp_n64": 34.71,
+  "wspV1_jpp_n64": 43.45,
+  "wspV2_jpp_n64": 46.98,
+  "wspV3_jpp_n64": 34.7
+ },
+ "n_items": {
+  "multihop": 12,
+  "multilingual": 13,
+  "typo": 77,
+  "association": 77,
+  "poetry": 19
+ },
+ "primary": "wspV1_jpp_n64",
+ "diff_primary_minus_V0": [
+  10.083600609916395,
+  4.945322221638009,
+  15.67439358886727
+ ],
+ "diff_primary_minus_target": [
+  6.679986679986676,
+  1.4168331668331693,
+  12.557525807525817
+ ],
+ "diff_primary_minus_wspV2_jpp_n64": [
+  -2.8371628371628432,
+  -10.22460215223373,
+  4.27125506072874
+ ],
+ "diff_primary_minus_wspV3_jpp_n64": [
+  10.73794626426205,
+  5.070271833429736,
+  16.646721699353265
+ ],
+ "diff_V0_minus_target": [
+  -3.403613929929719,
+  -7.283151059466853,
+  0.3615551115551127
+ ],
+ "verdict_1": "the edit helps",
+ "verdict_2": "matches the fitted lens",
+ "verdict_3": "the 100% lens does not transfer",
+ "unseen_by_100pct_n_items": {
+  "multihop": 10,
+  "multilingual": 9,
+  "typo": 64,
+  "association": 77,
+  "poetry": 18
+ },
+ "unseen_by_100pct_filtered_macro_r@10": {
+  "logit": 27.76,
+  "olmo7b50pct_jpp_n64": 39.24,
+  "wspP1_jpp_n64": 39.69,
+  "wspP2_jpp_n64": 41.84,
+  "wspP3_jpp_n64": 34.36,
+  "wspV0_jpp_n64": 35.49,
+  "wspV1_jpp_n64": 43.86,
+  "wspV2_jpp_n64": 49.49,
+  "wspV3_jpp_n64": 34.74
+ },
+ "filtered_macro_r@10_primary_table": {
+  "logit": 28.12,
+  "olmo7b50pct_jpp_n64": 39.53,
+  "wspP1_jpp_n64": 40.8,
+  "wspP2_jpp_n64": 42.26,
+  "wspP3_jpp_n64": 34.72,
+  "wspV0_jpp_n64": 36.13,
+  "wspV1_jpp_n64": 46.21,
+  "wspV2_jpp_n64": 49.05,
+  "wspV3_jpp_n64": 35.48
+ }
+}
