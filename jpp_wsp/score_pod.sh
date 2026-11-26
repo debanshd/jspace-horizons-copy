@@ -2,9 +2,10 @@
 # On a GPU pod: score the weight-space-programmed lenses (jpp_wsp/RULE.md) beside the 50% fit's own J++ lens and the logit lens,
 # with the J++ post's evals, then push the outputs to this repository's branch.
 #
-# Env: GITHUB_TOKEN (the pod's secret), BRANCH (where the outputs go), WSP_URLS (base64 JSON {file name: URL}: the four variants,
-# the target lens and the 50% fit's two correctness files, as short-lived signed links, since the pod holds no Hugging Face token).
-# Every lens is checked against jpp_wsp/frozen.json before anything runs; the correctness files' hashes are logged.
+# Env: GITHUB_TOKEN (the pod's secret), BRANCH (where the outputs go), WSP_URLS (base64 JSON {file name: URL}: the four variants
+# and the target lens, as short-lived signed links, since the pod holds no Hugging Face token). The 50% fit's two correctness
+# files come from jpp_wsp/inputs/ on the branch, committed after the edit was frozen. Every lens is checked against
+# jpp_wsp/frozen.json before anything runs.
 set -euo pipefail
 
 WORK=/workspace/wsp
@@ -48,13 +49,12 @@ for name, url in urls.items():
         while chunk := f.read(1 << 24):
             h.update(chunk)
     want = frozen["sha256"].get(name)
-    if want == "record":  # the 50% fit's correctness files: their hash is recorded, not known in advance
-        print(name, "sha256", h.hexdigest(), flush=True)
-        continue
     if want is None or h.hexdigest() != want:
         raise SystemExit(f"{name}: sha256 {h.hexdigest()}, frozen.json has {want}")
     print(name, "ok", flush=True)
 EOF
+# the split the target was scored on: run_all.py --fits reads it from the fit's folder rather than regrading
+cp "$WORK/repo/jpp_wsp/inputs/model_correctness.csv" "$WORK/repo/jpp_wsp/inputs/correctness.csv" "$FITS/"
 
 export PATH="$HOME/.local/bin:$PATH"
 command -v uv >/dev/null || curl -LsSf https://astral.sh/uv/install.sh | sh
