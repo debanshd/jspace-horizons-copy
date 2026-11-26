@@ -1,0 +1,17 @@
+{
+  "jpp_lens_commit": "d7efc0de372e20589e899188c0cfe8434acc63ec",
+  "gpu": [
+    "NVIDIA H100 80GB HBM3, 81559 MiB"
+  ],
+  "torch": "2.11.0+cu128",
+  "transformers": "5.14.1",
+  "python": "3.12.3",
+  "argv": [
+    "/workspace/conv/jpp_evals/run_all.py",
+    "--out",
+    "/workspace/conv/work/out_fits",
+    "--fits",
+    "/workspace/conv/work/fits",
+    "qwen2.5-omni-7b"
+  ]
+}
