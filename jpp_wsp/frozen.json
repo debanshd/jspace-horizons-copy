@@ -1,0 +1,11 @@
+{
+ "note": "frozen before the scoring step read anything about the 50% fit; the edited lenses and the target, by file name",
+ "sha256": {
+  "wspV0_jpp_n64.pt": "373924124f10fcfad1f97140cc7a7f6f2729a7344a1d57503c5db9246352b550",
+  "wspV1_jpp_n64.pt": "d3f5ccb46eb139e8a670d15b275e4d4af1056319c4e3f4ae88572dfd5c7cab75",
+  "wspV2_jpp_n64.pt": "42aa3fe53b4120ddbb98c01628de13b6d88eb59032d5d6812e9b396c1b2d51be",
+  "wspV3_jpp_n64.pt": "b826a7b0aaf2fd9eca4ee256d7911dde63adfe89e7de2195bf7ccf68d247efa2",
+  "olmo7b50pct_jpp_n64.pt": "58bc90768ee0958c4398acebdbc9d38e094a212f76203e518dda34844228e233"
+ },
+ "source_sha256": "6b853a64ab98384058949f3349765bddc39cc05d4bb0b4283174444e77378add"
+}
