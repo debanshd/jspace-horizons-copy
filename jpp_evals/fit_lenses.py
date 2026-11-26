@@ -1,5 +1,4 @@
-"""Fit J++ lenses with the J++ post's recipe, in the post's harness: an R-lens and a J++ lens for Qwen2.5-Omni-7B's thinker, and a J++
-lens only for OLMo 3 7B at 100% and at 50% of its training (manifest.py: the released model and stage1-step725000).
+"""Fit an R-lens and a J++ lens for Qwen2.5-Omni-7B's thinker with the J++ post's recipe, in the post's harness.
 
 The stages are the harness's recipe, the one the post's Qwen3.6-27B lens and Neuronpedia's Qwen3.5-4B R-lens and J++ lens were fitted
 with; the settings differ where noted:
@@ -28,9 +27,8 @@ Every source layer is fitted (0 to n - 2; the target is the last block), as in t
 repository's experiments as well as the post's seven readout layers. A backward pass yields every source layer at once, so the extra
 layers cost memory for their sums, not passes.
 
-The fittable models are Qwen2.5-Omni-7B (the default) and the two OLMo 3 7B checkpoints, named by key: the harness's LRP rules cover
-OLMo 3 natively (Olmo3RMSNorm, Olmo3MLP; the post fitted Olmo 3 32B). Qwen2.5-Omni-3B keeps its J-lenses only. Qwen3-Omni-30B-A3B is
-left out: its MoE thinker has classes the LRP surgery has no verified rules for.
+Only Qwen2.5-Omni-7B is fitted. Qwen2.5-Omni-3B keeps its J-lenses only. Qwen3-Omni-30B-A3B is left out too: its MoE thinker has classes the LRP
+surgery has no verified rules for.
 
 Per model, in <fits>/<model key>/: correctness.csv, router.pt, artifacts/ (the shard sums), <name>_experts.pt,
 <prefix>_rlens_n<N>.pt, <prefix>_jpp_n<N>.pt with its expert weights (N the prompts the sums saw), convergence.csv for a converged
@@ -51,15 +49,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from manifest import model_by_key  # noqa: E402
 from run_all import merged_correctness, record_environment, step  # noqa: E402
 
-# model key -> (file prefix, whether to keep the R-lens). The R-lens is the pooled Jacobian of the same sums, so it costs nothing,
-# but for OLMo only the J++ lens is wanted.
-FITTABLE = {
-    "qwen2.5-omni-7b": ("omni7b", True),
-    "olmo-3-7b": ("olmo7b", False),
-    "olmo-3-7b-50pct": ("olmo7b50pct", False),
-}
-PREFIX = {key: prefix for key, (prefix, _) in FITTABLE.items()}
-DEFAULT_KEYS = ["qwen2.5-omni-7b"]
+FITTABLE = ("qwen2.5-omni-7b",)
+PREFIX = {"qwen2.5-omni-7b": "omni7b"}
 NUM_CLUSTERS = 8  # the harness's recipe; the shard checkpoint file is named by it
 MIN_KEPT_POSITIONS = 50  # merge-experts' default: an expert with fewer positions falls back to the pooled Jacobian
 
@@ -168,14 +159,14 @@ def fit_model(key: str, fits_dir: Path, args) -> None:
     d.mkdir(parents=True, exist_ok=True)
     timings_path = d / "timings.json"
     timings = json.loads(timings_path.read_text()) if timings_path.exists() else {}
-    hf = ["--model-key", m.key, "--hf-model-name", m.hf_name]
+    hf = ["--hf-model-name", m.hf_name]
     layers = ["--layers", ",".join(str(L) for L in range(m.n_layers - 1))]
     how = f"until converged, at most {args.max_prompts}" if args.converge else str(args.num_prompts)
     print(f"{key}: fitting source layers 0-{m.n_layers - 2} on {how} prompts (router on {args.router_prompts})", flush=True)
 
     # fit-weights reads the correctness column: the expert weights are fitted only on items the model answers itself
     step("grade_correctness", d / "correctness.csv", ["grade-correctness", *hf, "--out", str(d / "correctness.csv")], d, timings)
-    correctness = str(merged_correctness(fits_dir, m))
+    correctness = str(merged_correctness(fits_dir))
 
     router = d / "router.pt"
     step("fit_router", router, ["fit-router", *hf, *layers, "--num-prompts", str(args.router_prompts), "--out", str(router)], d, timings)
@@ -196,16 +187,15 @@ def fit_model(key: str, fits_dir: Path, args) -> None:
     rlens = d / f"{PREFIX[key]}_rlens_n{n_prompts}.pt"
     jpp = d / f"{PREFIX[key]}_jpp_n{n_prompts}.pt"
     merge_cmd = ["merge-experts", "--checkpoint-dirs", *map(str, shard_dirs), "--checkpoint-name", name, "--out", str(experts)]
-    keep_rlens = FITTABLE[key][1]
-    step(f"merge_{name}", experts, [*merge_cmd, *(["--pooled-lens-out", str(rlens)] if keep_rlens else [])], d, timings)
+    step(f"merge_{name}", experts, [*merge_cmd, "--pooled-lens-out", str(rlens)], d, timings)
     weights_cmd = ["fit-weights", *hf, *layers, "--experts", str(experts), "--items", "fit:0", "--correctness-csv", correctness]
     step(f"fit_weights_{name}", jpp, [*weights_cmd, "--checkpoint-name", jpp.stem, "--out", str(jpp)], d, timings)
-    print(f"{key}: {', '.join(f.name for f in ([rlens] if keep_rlens else []) + [jpp])}", flush=True)
+    print(f"{key}: {rlens.name}, {jpp.name}", flush=True)
 
 
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    p.add_argument("keys", nargs="*", default=DEFAULT_KEYS, help=f"models to fit, of {' '.join(FITTABLE)} (default: {' '.join(DEFAULT_KEYS)})")
+    p.add_argument("keys", nargs="*", default=list(FITTABLE), help=f"models to fit (default: {' '.join(FITTABLE)})")
     p.add_argument("--fits", required=True, help="output directory")
     p.add_argument("--num-prompts", type=int, default=64, help="fixed fit: prompts for the Jacobian sums, the post's and Neuronpedia's 64 (default 64)")
     p.add_argument("--converge", action="store_true", help="fit blocks of prompts until Neuronpedia's convergence rule stops it")
@@ -216,7 +206,7 @@ def main() -> None:
     args = p.parse_args()
     for key in args.keys:
         if key not in FITTABLE:
-            raise SystemExit(f"{key} cannot be fitted here; the fittable models are {list(FITTABLE)}")
+            raise SystemExit(f"{key} cannot be fitted here; the fittable models are {FITTABLE}")
     fits_dir = Path(args.fits).resolve()
     fits_dir.mkdir(parents=True, exist_ok=True)
     record_environment(fits_dir)

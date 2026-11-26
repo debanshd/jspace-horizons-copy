@@ -81,22 +81,6 @@ The harness's LRP surgery picks its rules by class name. `run_cli.register_omni_
 `Qwen2_5OmniRMSNorm`, whose forward is the same as `Qwen2RMSNorm`'s, and skips the thinker's `visual` tower. Qwen3-Omni-30B's MoE
 thinker is not registered, so it cannot be fitted here.
 
-## J++ lenses for OLMo 3 7B at 100% and 50% of training
-
-```bash
-FIT=1 jpp_evals/run_pod.sh olmo-3-7b olmo-3-7b-50pct      # 64 prompts each; CONVERGE=1 for the convergence rule
-```
-
-This fits a J++ lens only, with no R-lens, for two checkpoints of the official `allenai/Olmo-3-1025-7B`:
-- **100%** is the released model (`main`).
-- **50%** is `stage1-step725000`. The model card gives the stages as 5.93T tokens of pretraining, 100B of mid-training and 50B of
-  long context, so half of the 6.08T falls in pretraining near step 724,788. That count assumes the batch size stayed constant
-  through pretraining, at about 4.19M tokens a step.
-
-Each checkpoint gets its own correctness grading, since the two answer differently, and is scored on its held-out split. The 100%
-model also gets Neuronpedia's J-lens as a baseline, which converged at 568 prompts. No lens is published for the 50% checkpoint, so
-its J++ lens is compared with the logit lens only. The harness's LRP rules cover OLMo 3 natively: the post fitted Olmo 3 32B.
-
 ## How to read it
 
 - **Qwen3.6-27B is the check of the setup.** It is scored on the post's held-out split, with the post's own correctness column.

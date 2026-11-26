@@ -24,7 +24,7 @@ import jpp_cli  # noqa: E402
 import torch  # noqa: E402
 import transformers  # noqa: E402
 from lens_evals.readout_evals.readout_eval_items import MACRO_EVALS, READOUT_EVALS_DATA_DIR, load_readout_eval_items  # noqa: E402
-from manifest import model_by_hf_name, model_by_key  # noqa: E402
+from manifest import model_by_hf_name  # noqa: E402
 from workspace_lens.lrp import lrp  # noqa: E402
 
 
@@ -41,22 +41,9 @@ def register_omni_lrp() -> None:
     lrp._MULTIMODAL_MODULE_SEGMENTS = lrp._MULTIMODAL_MODULE_SEGMENTS | {"visual"}
 
 
-MODEL_KEY: str | None = None  # --model-key: which manifest entry, where one repo has several checkpoints (OLMo at 100% and 50%)
-
-
-def model_spec(hf_name: str):
-    """the manifest entry to load: by --model-key when given (its repo must be --hf-model-name), else by the repo alone"""
-    if MODEL_KEY is None:
-        return model_by_hf_name(hf_name)
-    spec = model_by_key(MODEL_KEY)
-    if spec.hf_name != hf_name:
-        raise SystemExit(f"--model-key {MODEL_KEY} is {spec.hf_name}, not --hf-model-name {hf_name}")
-    return spec
-
-
 def load_model(args: argparse.Namespace):
     """The --hf-model-name model in bf16 at its pinned revision, as the harness's LensModel (replaces jpp_cli._load_model)"""
-    spec = model_spec(args.hf_model_name)
+    spec = model_by_hf_name(args.hf_model_name)
     cls = getattr(transformers, spec.loader) if spec.loader else transformers.AutoModelForCausalLM
     hf_model = cls.from_pretrained(
         spec.hf_name,
@@ -83,7 +70,7 @@ def grade_correctness(argv: list[str]) -> None:
     p.add_argument("--device-map", default=None)
     p.add_argument("--out", required=True)
     args = p.parse_args(argv)
-    spec = model_spec(args.hf_model_name)
+    spec = model_by_hf_name(args.hf_model_name)
     model = load_model(args)
     items = load_readout_eval_items(READOUT_EVALS_DATA_DIR, slugs=MACRO_EVALS)
     runner = jpp_cli.readout_runner(model, layers=spec.layers, max_seq_len=jpp_cli.RECIPE_READOUT_MAX_SEQ_LEN)
@@ -95,11 +82,6 @@ def grade_correctness(argv: list[str]) -> None:
 
 
 def main(argv: list[str]) -> int:
-    global MODEL_KEY
-    if "--model-key" in argv:  # ours, not the harness's: taken out before the harness parses the rest
-        i = argv.index("--model-key")
-        MODEL_KEY = argv[i + 1]
-        argv = argv[:i] + argv[i + 2 :]
     if argv and argv[0] == "grade-correctness":
         grade_correctness(argv[1:])
         return 0
