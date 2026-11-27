@@ -99,7 +99,10 @@ def main() -> None:
     ap.add_argument("--gpu", default="NVIDIA H200")
     ap.add_argument("--dest", type=Path)
     ap.add_argument("--pr18", type=Path, help="a checkout of jpp_evals/ at PR 18's 3d8ccd6")
-    ap.add_argument("--urls", type=Path, help="JSON {file name: [hf path, revision]} of the lenses to score")
+    ap.add_argument("--urls", type=Path, help="JSON {file name: [hf path, revision] in the private repo, or a public URL}")
+    ap.add_argument("--script", default="score_pod2.sh", help="the pod-side script in jpp_wsp/")
+    ap.add_argument("--code", nargs="*", default=["frozen.json", "frozen2.json"], help="files of jpp_wsp/ the script reads")
+    ap.add_argument("--inputs", default="inputs", help="the folder of jpp_wsp/ holding the correctness files")
     args = ap.parse_args()
 
     if args.cmd == "create":
@@ -137,13 +140,14 @@ def main() -> None:
             raise SystemExit("Jupyter did not answer in 10 minutes")
         for f in sorted(args.pr18.glob("*.py")):
             jp.put_file(f"{WORK}/code/jpp_evals/{f.name}", f.read_bytes())
-        for f in ("frozen.json", "frozen2.json", "score_pod2.sh"):
+        for f in [*args.code, args.script]:
             jp.put_file(f"{WORK}/code/{f}", (HERE / f).read_bytes())
         for f in ("model_correctness.csv", "correctness.csv"):
-            jp.put_file(f"{WORK}/inputs/{f}", (HERE / "inputs" / f).read_bytes())
-        urls = {name: signed(path, rev) for name, (path, rev) in json.loads(args.urls.read_text()).items()}
+            jp.put_file(f"{WORK}/inputs/{f}", (HERE / args.inputs / f).read_bytes())
+        spec = json.loads(args.urls.read_text())
+        urls = {name: src if isinstance(src, str) else signed(*src) for name, src in spec.items()}
         jp.put_file(f"{WORK}/urls.json", json.dumps(urls).encode())
-        jp.run(f"cd /{WORK} && nohup bash code/score_pod2.sh > run.log 2>&1 &")
+        jp.run(f"cd /{WORK} && nohup bash code/{args.script} > run.log 2>&1 &")
         print("started")
     elif args.cmd == "status":
         log = jp.read(f"{WORK}/run.log") or b"(no log yet)"

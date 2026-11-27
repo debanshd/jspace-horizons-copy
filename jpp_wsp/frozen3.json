@@ -1,0 +1,7 @@
+{
+ "note": "experiment 3 (RULE3.md): the files the pod downloads, by name",
+ "sha256": {
+  "Jall_main.pt": "582d71ee0d5b1f0fc99ccc3a7aee3da1fcfa78750445b6957c77a2837cd2f85b",
+  "olmo7b_jpp_n64.pt": "6b853a64ab98384058949f3349765bddc39cc05d4bb0b4283174444e77378add"
+ }
+}
