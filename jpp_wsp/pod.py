@@ -27,7 +27,9 @@ GRAPHQL = "https://api.runpod.io/graphql"
 IMAGE = "runpod/pytorch:1.4.1-cu1281-torch280-ubuntu2404"  # the image of the earlier jspace pods
 HF = "https://huggingface.co/debanshd/jspace-omni-jpp-runs/resolve"
 WORK = "workspace/wsp"  # relative to Jupyter's root, /
-PROXY = ("127.0.0.1", 36687)
+# the session's HTTPS proxy, read at run time: its port changes between sessions
+_proxy = os.environ.get("HTTPS_PROXY", "http://127.0.0.1:36687").rsplit("/", 1)[-1].rsplit("@", 1)[-1]
+PROXY = (_proxy.rsplit(":", 1)[0], int(_proxy.rsplit(":", 1)[1]))
 CA = "/root/.ccr/ca-bundle.crt"
 
 
