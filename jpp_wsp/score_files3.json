@@ -1,4 +1,3 @@
 {
- "Jall_main.pt": "https://huggingface.co/jeeva2812/olmo3-jlens-checkpoints/resolve/a661f25d1f10a35842e83614a815240d70c5d44f/Jall_main.pt",
- "olmo7b_jpp_n64.pt": ["olmo-3-7b_n64/olmo7b_jpp_n64.pt", "main"]
+ "Jall_main.pt": "https://huggingface.co/jeeva2812/olmo3-jlens-checkpoints/resolve/a661f25d1f10a35842e83614a815240d70c5d44f/Jall_main.pt"
 }

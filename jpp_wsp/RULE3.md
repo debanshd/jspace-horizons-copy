@@ -28,3 +28,11 @@ Filtered macro recall@10, paired bootstrap over items within each task (2000 res
 - **As good as Neuronpedia's J-lens**: jeeva's lens is within 2.0 points of it, or above it. Otherwise: below it.
 - jeeva's lens against the J++ lens and the logit lens, probe-swap, and full-vocabulary recall are reported without a verdict.
 - A lens that skips the last block is expected to read a little differently. That is part of what is being measured, not a defect.
+
+## Amendment, 27 Nov, before any score
+
+At the user's request, only jeeva's lens and the logit lens are scored, on an RTX A6000 rather than an H200, by calling the
+harness's `run_cli.py` directly with the same items (`held-out:0`, the 100% fit's `model_correctness.csv`) and the same layers.
+Neuronpedia's J-lens and the J++ lens are not re-scored. jeeva's lens is compared with their per-item ranks from the earlier run
+(`olmo-3-7b_n64/out_fits/olmo-3-7b/readout_filtered.csv`). The logit lens, scored in both runs, checks that the change of GPU leaves
+the ranks as they were (33.0 filtered recall@10 before). If it does not, the comparison is reported as across runs, with that caveat.
