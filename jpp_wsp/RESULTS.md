@@ -31,3 +31,18 @@ What this does not show:
   10 points higher.
 - Multihop, multilingual and poetry have 12 to 19 items each, so their per-task numbers move a lot with a few items. Most of the gain
   comes from typo and association.
+
+# Experiment 3: jeeva2812's OLMo 3 7B J-lens (27 Nov 2026, one RTX A6000, `out3/`)
+
+On the 100% model's held-out split (220 items), beside the earlier run's scores on the same split. The logit lens agrees with the
+earlier run on 219 of 220 items (32.8 against 33.0), so the two runs are comparable.
+
+| lens | filtered r@10 | filtered r@1 | full r@10 | probe-swap top-1 |
+|---|---|---|---|---|
+| logit | 32.8 | 12.4 | 32.8 | 16.3 |
+| Neuronpedia J-lens (earlier run) | 37.6 | 13.9 | 33.0 | 39.5 |
+| **jeeva `Jall_main` J-lens** | **42.5** | 16.2 | 41.0 | 44.2 (19/43) |
+| 100% J++ lens (earlier run) | 53.4 | 27.4 | 45.9 | 53.5 |
+
+`verdicts3.json`: jeeva - Neuronpedia = +4.9 points [1.8, 8.1], so **as good as Neuronpedia's J-lens**, in fact above it. jeeva - J++
+= -10.9 [-16.3, -5.9]. jeeva maps into block 30 rather than the last block, and its prompt count is unknown.

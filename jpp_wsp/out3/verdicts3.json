@@ -1,0 +1,83 @@
+{
+ "filtered_macro_r@1": {
+  "jeeva_Jall_main": 16.23,
+  "logit": 12.44,
+  "logit_earlier_run": 12.44,
+  "np_olmo-3-7b_jlens": 13.89,
+  "olmo7b_jpp_n64": 27.43
+ },
+ "filtered_macro_r@10": {
+  "jeeva_Jall_main": 42.5,
+  "logit": 32.77,
+  "logit_earlier_run": 33.03,
+  "np_olmo-3-7b_jlens": 37.55,
+  "olmo7b_jpp_n64": 53.42
+ },
+ "n_items_both_runs": {
+  "multihop": 17,
+  "multilingual": 29,
+  "typo": 77,
+  "association": 77,
+  "poetry": 20
+ },
+ "n_items_new": {
+  "multihop": 17,
+  "multilingual": 29,
+  "typo": 77,
+  "association": 77,
+  "poetry": 20
+ },
+ "logit_item_agreement": 0.9954545454545455,
+ "diff_jeeva_minus_np_olmo-3-7b_jlens": [
+  4.948649052097316,
+  1.803567696671142,
+  8.059243917002535
+ ],
+ "diff_jeeva_minus_olmo7b_jpp_n64": [
+  -10.921586189334668,
+  -16.27916567881071,
+  -5.918578277706055
+ ],
+ "diff_jeeva_minus_logit": [
+  9.736677115987447,
+  5.8629235706821925,
+  13.260397074190177
+ ],
+ "full_macro_r@1": {
+  "jeeva_Jall_main": 15.57,
+  "logit": 12.44,
+  "logit_earlier_run": 12.44,
+  "np_olmo-3-7b_jlens": 12.5,
+  "olmo7b_jpp_n64": 24.18
+ },
+ "full_macro_r@10": {
+  "jeeva_Jall_main": 40.98,
+  "logit": 32.77,
+  "logit_earlier_run": 32.77,
+  "np_olmo-3-7b_jlens": 32.95,
+  "olmo7b_jpp_n64": 45.9
+ },
+ "reading": "as good as Neuronpedia's J-lens",
+ "probe_swap": [
+  {
+   "lens": "jeeva_Jall_main",
+   "scale": 1.0,
+   "top1_hits": 19,
+   "top1_trials": 43,
+   "top1_rate": 0.4418604651162791,
+   "top5_hits": 20,
+   "top5_trials": 31,
+   "top5_rate": 0.6451612903225806
+  },
+  {
+   "lens": "logit",
+   "scale": 2.0,
+   "top1_hits": 7,
+   "top1_trials": 43,
+   "top1_rate": 0.16279069767441862,
+   "top5_hits": 17,
+   "top5_trials": 31,
+   "top5_rate": 0.5483870967741935
+  }
+ ]
+}
