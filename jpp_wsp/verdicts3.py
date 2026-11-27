@@ -12,7 +12,6 @@ import json
 from pathlib import Path
 
 import pandas as pd
-
 from verdicts import TASKS, bootstrap_diff, item_hits, macro
 
 JEEVA, NP, JPP = "jeeva_Jall_main", "np_olmo-3-7b_jlens", "olmo7b_jpp_n64"
