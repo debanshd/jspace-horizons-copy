@@ -1,0 +1,44 @@
+{
+  "git_hash": "d7efc0de372e20589e899188c0cfe8434acc63ec",
+  "timestamp": "2026-11-26T09:49:00+00:00",
+  "library_version": "0.1.0",
+  "stage": "probe-swap",
+  "args": {
+    "stage": "probe-swap",
+    "hf_model_name": "allenai/Olmo-3-1025-7B",
+    "device_map": null,
+    "attn_implementation": "sdpa",
+    "experts_implementation": null,
+    "dequantize_fp8": false,
+    "layers": [
+      4,
+      8,
+      12,
+      16,
+      20,
+      24,
+      28
+    ],
+    "lens": [
+      "/workspace/wsp/fits/olmo-3-7b-50pct/olmo7b50pct_jpp_n64.pt",
+      "/workspace/wsp/fits/olmo-3-7b-50pct/wspP1_jpp_n64.pt",
+      "/workspace/wsp/fits/olmo-3-7b-50pct/wspP2_jpp_n64.pt",
+      "/workspace/wsp/fits/olmo-3-7b-50pct/wspP3_jpp_n64.pt",
+      "/workspace/wsp/fits/olmo-3-7b-50pct/wspV0_jpp_n64.pt",
+      "/workspace/wsp/fits/olmo-3-7b-50pct/wspV1_jpp_n64.pt",
+      "/workspace/wsp/fits/olmo-3-7b-50pct/wspV2_jpp_n64.pt",
+      "/workspace/wsp/fits/olmo-3-7b-50pct/wspV3_jpp_n64.pt",
+      "logit"
+    ],
+    "scales": [
+      0.5,
+      1.0,
+      2.0,
+      4.0
+    ],
+    "max_seq_len": 512,
+    "out": "/workspace/wsp/out/olmo-3-7b-50pct/probe_swap.parquet"
+  },
+  "success_path": "/workspace/wsp/out/olmo-3-7b-50pct/probe_swap_success.csv",
+  "best_scale_path": "/workspace/wsp/out/olmo-3-7b-50pct/probe_swap_best_scale.csv"
+}
