@@ -1,4 +1,5 @@
-"""Rewrite jeeva2812's Jall_main.pt into the released J-lens format the J++ harness reads (RULE3.md), with the matrices unchanged.
+"""Rewrite jeeva2812's Jall_main.pt into the released J-lens format the J++ harness reads (RULE3.md), with the matrices unchanged
+(float16 widened exactly to float32).
 
 The source holds {"revision", "layers", "J", "dtype_note"}; load_legacy_format_lens wants "J", "source_layers", "d_model" and
 "n_prompts", and reads the block a lens maps into from provenance.target_layer. That block is 30, since the source's layer-30
@@ -32,7 +33,9 @@ def main() -> None:
     assert torch.equal(J[TARGET_LAYER], eye), "the layer-30 matrix is not the identity: the target block is not 30"
     torch.save(
         {
-            "J": J,
+            # float32, not the source's float16: the conversion is exact, and the harness multiplies the lens on the CPU, where
+            # float16 has no fast kernels (the first scoring run crawled at about 1/40 of the speed of the float32 lenses)
+            "J": {L: J[L].float() for L in layers},
             "source_layers": layers,
             "d_model": J[layers[0]].shape[0],
             "n_prompts": 0,  # not recorded in the source
@@ -40,7 +43,7 @@ def main() -> None:
         },
         out,
     )
-    print("wrote", out, {L: str(J[L].dtype) for L in layers[:1]})
+    print("wrote", out, "float32, from", J[layers[0]].dtype)
 
 
 if __name__ == "__main__":
